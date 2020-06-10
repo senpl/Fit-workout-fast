@@ -21,10 +21,10 @@ class ProgramsPagerFragment : Fragment() {
         mViewPager = view.findViewById(R.id.program_pager)
         if (mViewPager.adapter == null) {
             val args = this.arguments
-            args!!.putLong("machineID", -1)
-            args.putLong("machineProfile", -1)
+            args!!.putLong("programID", -1)
+            args.putLong("programProfile", -1)
             pagerAdapter = FragmentPagerItemAdapter(
-                childFragmentManager, FragmentPagerItems.with(this.context)
+                childFragmentManager, FragmentPagerItems.with(context)
                 .add(R.string.ExercisesInProgramLabel, ExercisesInProgramFragment::class.java)
                 .add(R.string.ProgramsLabel, ProgramsFragment::class.java)
                 .create())

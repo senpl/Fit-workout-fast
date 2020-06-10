@@ -6,7 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.FilterQueryProvider
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.easyfitness.DAO.DAOProgram
@@ -52,11 +55,22 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             Toast.makeText(context, "Added to program list", Toast.LENGTH_LONG).show()
         }
     }
+    private val onClickListItem = OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
+        // Get Machine Name selected
+        val textViewID = view.findViewById<TextView>(R.id.LIST_Program_ID)
+        val programID = java.lang.Long.valueOf(textViewID.text.toString())
+        val programDetailsPager = ProgramDetailsPager.newInstance(programID, (activity as MainActivity?)!!.currentProfile.id)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, programDetailsPager, "ProgramDetails")
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addProgramButton.setOnClickListener(clickAddButton)
         searchField.addTextChangedListener(onTextChangeListener)
+        programsList.onItemClickListener = onClickListItem
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

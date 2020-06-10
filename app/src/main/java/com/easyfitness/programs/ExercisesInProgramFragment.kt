@@ -73,7 +73,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             programSelect.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>,
-                                            view: View, position: Int, id: Long) {
+                                            view: View?, position: Int, id: Long) {
                     programId = daoProgram.getRecord(programs!![position])!!.id
                     refreshData()
                     Toast.makeText(context, getString(R.string.program_selection) + " " + programs!![position], Toast.LENGTH_SHORT).show()

@@ -110,12 +110,12 @@ class DAOProgram(context: Context?) : DAOBase(context) {
         return db.rawQuery(pRequest, null)
     }
 
-//    fun updateRecord(m: Program): Int {
-//        val db = this.writableDatabase
-//        val value = ContentValues()
-//        value.put(PROGRAM_NAME, m.programName)
-//        return db.update(TABLE_NAME, value, "$KEY = ?", arrayOf(m.getId().toString()))
-//    }
+    fun updateRecord(m: Program): Int {
+        val db = this.writableDatabase
+        val value = ContentValues()
+        value.put(PROGRAM_NAME, m.programName)
+        return db.update(TABLE_NAME, value, "$KEY = ?", arrayOf(m.getId().toString()))
+    }
 
     fun delete(m: Program?) {
         if (m != null) {
