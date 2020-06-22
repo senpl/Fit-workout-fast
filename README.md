@@ -1,11 +1,11 @@
 ![FastNFitness Logo](https://lh3.googleusercontent.com/KKJw0HA9fD2g9mZMhzzeretD4Tvkr7-wPVzl7WMTTXiiqO6ikS5SqR5X9E8i2HPrNQ=w300)
-# Welcome to the FastNFitness wiki!
+# Welcome to the FastNFitness next wiki!
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.easyfitness/)
 
-## Track your progress (power lifting and fitness) quickly and easily
+## Track your progress quickly and easily
 
 Now you can track your progress easily and quickly!
 You can create as many machines as you want with the name you want!
@@ -48,7 +48,7 @@ See [Contributing.md](/Contributing.md/)
 
 BSD 3-Clause License
 
-Copyright (c) 2019-2020, Charles Combes
+Copyright (c) 2019-2020, Michał Urbanek base on work of Charles Combes and others in fastnfitness(https://github.com/brodeurlv/fastnfitness)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
