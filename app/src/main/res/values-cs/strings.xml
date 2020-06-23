@@ -315,5 +315,7 @@
     <string name="playStaticExerciseFinishSoundDescription">Vysílat zvuk po skončení doby statického cvičení</string>
     <string name="programs_settings">Nastavení programů</string>
     <string name="sound_settings">Nastavení zvuku</string>
+    <string name="deleteProgram_confirm_text">Chcete tento program smazat? Všechna související cvičení v tomto programu budou vymazána.</string>
+    <string name="renameProgram_error_text2">CHYBA: Tento název programu již existuje. Není možné sloučit dva programy se stejným názvem.</string>
 
 </resources>

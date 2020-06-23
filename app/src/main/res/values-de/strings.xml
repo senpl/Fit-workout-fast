@@ -305,5 +305,7 @@
     <string name="playStaticExerciseFinishSoundDescription">Geben Sie nach Beendigung der statischen Trainingszeit einen Ton aus</string>
     <string name="programs_settings">Programmeinstellungen</string>
     <string name="sound_settings">Toneinstellungen</string>
+    <string name="deleteProgram_confirm_text">Möchten Sie dieses Programm löschen? Alle zugehörigen Übungen in diesem Programm werden gelöscht.</string>
+    <string name="renameProgram_error_text2">FEHLER: Dieser Programmname existiert bereits. Es ist nicht möglich, zwei Programme mit demselben Namen zusammenzuführen.</string>
 </resources>
 

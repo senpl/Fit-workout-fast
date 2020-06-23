@@ -295,4 +295,6 @@
     <string name="playStaticExerciseFinishSoundDescription">Émet du son après la fin de l\'exercice statique</string>
     <string name="programs_settings">Paramètres des programmes</string>
     <string name="sound_settings">Paramètres sonores</string>
+    <string name="deleteProgram_confirm_text">Voulez-vous supprimer ce programme? Tous les exercices associés à ce programme seront supprimés.</string>
+    <string name="renameProgram_error_text2">ERREUR: ce nom de programme existe déjà. Il n\'est pas possible de fusionner deux programmes avec le même nom.</string>
 </resources>

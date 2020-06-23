@@ -325,6 +325,8 @@
     <string name="playStaticExerciseFinishSoundDescription">Zend geluid uit nadat de statische trainingstijd is afgelopen</string>
     <string name="programs_settings">Programma-instellingen</string>
     <string name="sound_settings">Geluidsinstellingen</string>
+    <string name="deleteProgram_confirm_text">Wil je dit programma verwijderen? Alle bijbehorende oefeningen in dat programma worden verwijderd.</string>
+    <string name="renameProgram_error_text2">FOUT: deze programmanaam bestaat al. Het is niet mogelijk om twee programma\'s met dezelfde naam samen te voegen.</string>
 
 </resources>
 

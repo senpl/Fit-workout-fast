@@ -315,5 +315,7 @@
     <string name="playStaticExerciseFinishSoundDescription">Emitir som após o término do exercício estático</string>
     <string name="programs_settings">Configurações de Programas</string>
     <string name="sound_settings">Definições de som</string>
+    <string name="deleteProgram_confirm_text">Deseja excluir este programa? Todos os exercícios associados nesse programa serão excluídos.</string>
+    <string name="renameProgram_error_text2">ERRO: Este nome de programa já existe. Não é possível mesclar dois programas com o mesmo nome.</string>
 
 </resources>
