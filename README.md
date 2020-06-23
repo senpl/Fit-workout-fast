@@ -1,10 +1,6 @@
 ![FastNFitness Logo](https://lh3.googleusercontent.com/KKJw0HA9fD2g9mZMhzzeretD4Tvkr7-wPVzl7WMTTXiiqO6ikS5SqR5X9E8i2HPrNQ=w300)
 # Welcome to the FastNFitness next wiki!
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.easyfitness/)
-
 ## Track your progress quickly and easily
 
 Now you can track your progress easily and quickly!
