@@ -119,20 +119,11 @@ class ProgramDetailsPager : Fragment() {
         } else if (initialProgram.programName != programName) {
             val programWithSameName: Program? = mDbProgram.getRecord(programName)
             if (newProgram != null) {
-                if (programWithSameName != null && newProgram.id != programWithSameName.id && newProgram.type != programWithSameName.type) {
+                if (programWithSameName != null && newProgram.id != programWithSameName.id) {
                     val dialogBuilder = AlertDialog.Builder(this.activity)
                     dialogBuilder.setTitle(requireActivity().resources.getText(R.string.global_warning))
                     dialogBuilder.setMessage(R.string.renameProgram_error_text2)
                     dialogBuilder.setPositiveButton(resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int -> dialog.dismiss() }
-                    val dialog = dialogBuilder.create()
-                    dialog.show()
-                } else if (programWithSameName != null && newProgram.id != programWithSameName.id && newProgram.type == programWithSameName.type) {
-                    val dialogBuilder = AlertDialog.Builder(this.activity)
-                    dialogBuilder.setTitle(resources.getText(R.string.global_warning))
-                    dialogBuilder.setMessage(resources.getText(R.string.renameProgram_warning_text))
-                    dialogBuilder.setNegativeButton(resources.getText(R.string.global_no)) { dialog: DialogInterface, _: Int ->
-                        dialog.dismiss()
-                    }
                     val dialog = dialogBuilder.create()
                     dialog.show()
                 } else {
