@@ -22,8 +22,8 @@ import com.onurkaganaldemir.ktoastlib.KToast
 import kotlinx.android.synthetic.main.program_pager.*
 
 class ProgramDetailsPager : Fragment() {
-    private var machineIdArg: Long = 0
-    private var machineProfilIdArg: Long = 0
+    private var programIdArg: Long = 0
+    private var profilIdArg: Long = 0
     private var pagerAdapter: FragmentPagerItemAdapter? = null
     private lateinit var programSave: ImageButton
     private var program: Program? = null
@@ -31,11 +31,11 @@ class ProgramDetailsPager : Fragment() {
     private val onClickToolbarItem = View.OnClickListener { v: View ->
         when (v.id) {
             R.id.saveButton -> {
-                saveMachine()
+                saveProgram()
                 requireActivity().findViewById<View>(R.id.tab_machine_details).requestFocus()
             }
-            R.id.deleteButton -> deleteMachine()
-            else -> saveMachineDialog()
+            R.id.deleteButton -> deleteProgram()
+            else -> saveProgramDialog()
         }
     }
 
@@ -47,8 +47,8 @@ class ProgramDetailsPager : Fragment() {
         val mViewPager: ViewPager = view.findViewById(R.id.program_pager)
         if (mViewPager.adapter == null) {
             val args = this.arguments
-            machineIdArg = args!!.getLong("programID")
-            machineProfilIdArg = args.getLong("programProfile")
+            programIdArg = args!!.getLong("programID")
+            profilIdArg = args.getLong("programProfile")
             pagerAdapter = FragmentPagerItemAdapter(
                 childFragmentManager, FragmentPagerItems.with(context)
 //                .add(R.string.ExercisesInProgramLabel, ExercisesInProgramFragment::class.java)
@@ -73,12 +73,11 @@ class ProgramDetailsPager : Fragment() {
         val topToolbar: Toolbar = view.findViewById(R.id.actionToolbarProgram)
         topToolbar.setNavigationIcon(R.drawable.ic_back)
         topToolbar.setNavigationOnClickListener(onClickToolbarItem)
-        val machineDelete = view.findViewById<ImageButton>(R.id.deleteButton)
+        val programDelete = view.findViewById<ImageButton>(R.id.deleteButton)
         programSave = view.findViewById(R.id.saveButton)
-        program = mDbProgram.getRecord(machineIdArg)
+        program = mDbProgram.getRecord(programIdArg)
         programSave.visibility = View.GONE // Hide Save button by default
-//        machineDelete.setOnClickListener(onClickToolbarItem);
-        // Inflate the layout for this fragment
+        programDelete.setOnClickListener(onClickToolbarItem)
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,16 +88,14 @@ class ProgramDetailsPager : Fragment() {
         programSave.visibility = View.VISIBLE
     }
 
-    private fun saveMachineDialog() {
+    private fun saveProgramDialog() {
         if (getExerciseFragment()!!.toBeSaved || toBeSaved) {
-            // Afficher une boite de dialogue pour confirmer
             val backDialogBuilder = AlertDialog.Builder(activity)
             backDialogBuilder.setTitle(resources.getText(R.string.global_confirm))
             backDialogBuilder.setMessage(resources.getText(R.string.backDialog_confirm_text))
 
-            // Si oui, supprimer la base de donnee et refaire un Start.
             backDialogBuilder.setPositiveButton(resources.getString(R.string.global_yes)) { _: DialogInterface?, _: Int ->
-                if (saveMachine()) {
+                if (saveProgram()) {
                     requireActivity().onBackPressed()
                 }
             }
@@ -110,67 +107,36 @@ class ProgramDetailsPager : Fragment() {
         }
     }
 
-    private fun saveMachine(): Boolean {
+    private fun saveProgram(): Boolean {
         var result = false
-        val initialMachine: Program = program!!
-        val newMachine = getExerciseFragment()!!.machine
-        val lMachineName = newMachine?.programName // Potentiel nouveau nom dans le EditText
+        val initialProgram: Program = program!!
+        val newProgram = getExerciseFragment()!!.program
+        val programName = newProgram?.programName
         val mDbProgram = DAOProgram(context)
 
-        // Si le nom est different du nom actuel
-        if (lMachineName == "") {
+        if (programName == "") {
             KToast.warningToast(activity, resources.getText(R.string.name_is_required).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-        } else if (initialMachine.programName != lMachineName) {
-            val machineWithSameName: Program? = mDbProgram.getRecord(lMachineName)
-            // Si une machine existe avec le meme nom => Merge
-            if (newMachine != null) {
-                if (machineWithSameName != null && newMachine.id != machineWithSameName.id && newMachine.type != machineWithSameName.type) {
+        } else if (initialProgram.programName != programName) {
+            val programWithSameName: Program? = mDbProgram.getRecord(programName)
+            if (newProgram != null) {
+                if (programWithSameName != null && newProgram.id != programWithSameName.id && newProgram.type != programWithSameName.type) {
                     val dialogBuilder = AlertDialog.Builder(this.activity)
                     dialogBuilder.setTitle(requireActivity().resources.getText(R.string.global_warning))
-                    dialogBuilder.setMessage(R.string.renameMachine_error_text2)
+                    dialogBuilder.setMessage(R.string.renameProgram_error_text2)
                     dialogBuilder.setPositiveButton(resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int -> dialog.dismiss() }
                     val dialog = dialogBuilder.create()
                     dialog.show()
-                } else if (machineWithSameName != null && newMachine.id != machineWithSameName.id && newMachine.type == machineWithSameName.type) {
+                } else if (programWithSameName != null && newProgram.id != programWithSameName.id && newProgram.type == programWithSameName.type) {
                     val dialogBuilder = AlertDialog.Builder(this.activity)
                     dialogBuilder.setTitle(resources.getText(R.string.global_warning))
-                    dialogBuilder.setMessage(resources.getText(R.string.renameMachine_warning_text))
-                    // Si oui, supprimer la base de donnee et refaire un Start.
-                    dialogBuilder.setPositiveButton(resources.getText(R.string.global_yes)) { _: DialogInterface?, which: Int ->
-                        // Rename all the records with that machine and rename them
-                        val lDbRecord = DAORecord(context)
-                        val mDbProfil = DAOProfil(context)
-                        val lProfile = mDbProfil.getProfil(machineProfilIdArg)
-                        val listRecords = lDbRecord.getAllRecordByMachinesArray(lProfile, initialMachine.programName) // Recupere tous les records de la machine courante
-                        for (record in listRecords) {
-                            record.exercise = newMachine.programName // Change avec le nouveau nom. Normalement pas utile.
-                            record.exerciseKey = machineWithSameName.id // Met l'ID de la nouvelle machine
-                            lDbRecord.updateRecord(record) // Met a jour
-                        }
-                        mDbProgram.delete(initialMachine) // Supprime l'ancienne machine
-                        toBeSaved = false
-                        saveButton.visibility = View.GONE
-                        requireActivity().onBackPressed()
-                    }
+                    dialogBuilder.setMessage(resources.getText(R.string.renameProgram_warning_text))
                     dialogBuilder.setNegativeButton(resources.getText(R.string.global_no)) { dialog: DialogInterface, _: Int ->
-                        // Do nothing but close the dialog
                         dialog.dismiss()
                     }
                     val dialog = dialogBuilder.create()
                     dialog.show()
                 } else {
-//                    newMachine.favorite = favoriteButton.isFavorite()
-                    mDbProgram.updateRecord(newMachine)
-
-                    // Rename all the records with that machine and rename them
-                    val lDbRecord = DAORecord(context)
-                    val mDbProfil = DAOProfil(context)
-                    val lProfile = mDbProfil.getProfil(machineProfilIdArg)
-                    val listRecords = lDbRecord.getAllRecordByMachinesArray(lProfile, initialMachine.programName) // Recupere tous les records de la machine courante
-                    for (record in listRecords) {
-                        record.exercise = lMachineName // Change avec le nouveau nom (DEPRECATED)
-                        lDbRecord.updateRecord(record) // met a jour
-                    }
+                    mDbProgram.updateRecord(newProgram)
                     saveButton.visibility = View.GONE
                     toBeSaved = false
                     getExerciseFragment()!!.programSaved()
@@ -178,10 +144,8 @@ class ProgramDetailsPager : Fragment() {
                 }
             }
         } else {
-            // Si le nom n'a pas ete modifie.
-//            newMachine.favorite = favoriteButton.isFavorite()
-            if (newMachine != null) {
-                mDbProgram.updateRecord(newMachine)
+            if (newProgram != null) {
+                mDbProgram.updateRecord(newProgram)
             }
             saveButton.visibility = View.GONE
             toBeSaved = false
@@ -191,13 +155,11 @@ class ProgramDetailsPager : Fragment() {
         return result
     }
 
-    private fun deleteMachine() {
-        // afficher un message d'alerte
+    private fun deleteProgram() {
         val deleteDialogBuilder = AlertDialog.Builder(this.activity)
         deleteDialogBuilder.setTitle(resources.getText(R.string.global_confirm))
-        deleteDialogBuilder.setMessage(resources.getText(R.string.deleteMachine_confirm_text))
+        deleteDialogBuilder.setMessage(resources.getText(R.string.deleteProgram_confirm_text))
 
-        // Si oui, supprimer la base de donnee et refaire un Start.
         deleteDialogBuilder.setPositiveButton(resources.getString(R.string.global_yes)) { _: DialogInterface?, _: Int ->
             deleteRecordsAssociatedToProgram()
             val mDbProgram = DAOProgram(context)
@@ -215,12 +177,11 @@ class ProgramDetailsPager : Fragment() {
     private fun deleteRecordsAssociatedToProgram() {
         val mDbRecord = DAORecord(context)
         val mDbProfil = DAOProfil(context)
-        val lProfile = mDbProfil.getProfil(machineProfilIdArg)
-        //TODO
-//        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, program!!.programName)
-//        for (record in listRecords) {
-//            mDbRecord.deleteRecord(record.id)
-//        }
+        val lProfile = mDbProfil.getProfil(profilIdArg)
+        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, program!!.programName)
+        for (record in listRecords) {
+            mDbRecord.deleteRecord(record.id)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -257,13 +218,11 @@ class ProgramDetailsPager : Fragment() {
          * Create a new instance of DetailsFragment, initialized to
          * show the text at 'index'.
          */
-        fun newInstance(machineId: Long, machineProfile: Long): ProgramDetailsPager {
+        fun newInstance(id: Long, profile: Long): ProgramDetailsPager {
             val f = ProgramDetailsPager()
-
-            // Supply index input as an argument.
             val args = Bundle()
-            args.putLong("programID", machineId)
-            args.putLong("programProfile", machineProfile)
+            args.putLong("programID", id)
+            args.putLong("programProfile", profile)
             f.arguments = args
             return f
         }
