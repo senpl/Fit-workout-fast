@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -44,7 +43,6 @@ import com.easyfitness.utils.FileChooserDialog;
 import com.easyfitness.utils.ImageUtil;
 import com.easyfitness.utils.MusicController;
 import com.easyfitness.utils.UnitConverter;
-import com.facebook.stetho.Stetho;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.onurkaganaldemir.ktoastlib.KToast;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -199,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Stetho.initializeWithDefaults(this);
 
         if (ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE)
