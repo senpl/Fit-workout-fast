@@ -12,8 +12,6 @@ import com.heinrichreimersoftware.materialintro.slide.Slide;
 
 public class MainIntroActivity extends IntroActivity {
 
-    public static final String EXTRA_FULLSCREEN = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FULLSCREEN";
-    public static final String EXTRA_SCROLLABLE = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SCROLLABLE";
     public static final String EXTRA_CUSTOM_FRAGMENTS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_CUSTOM_FRAGMENTS";
     public static final String EXTRA_PERMISSIONS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_PERMISSIONS";
     public static final String EXTRA_SHOW_BACK = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SHOW_BACK";
@@ -72,14 +70,14 @@ public class MainIntroActivity extends IntroActivity {
             .scrollable(true)
             .build());
 
-        addSlide(new SimpleSlide.Builder()
-            .title(R.string.titleSlideOpenSource)
-            .description(R.string.textSlideOpenSource)
-            .image(R.drawable.group_hi_res_512)
-            .background(R.color.launcher_background)
-            .backgroundDark(R.color.launcher_background)
-            .scrollable(true)
-            .build());
+//        addSlide(new SimpleSlide.Builder()
+//            .title(R.string.titleSlideOpenSource)
+//            .description(R.string.textSlideOpenSource)
+//            .image(R.drawable.group_hi_res_512)
+//            .background(R.color.launcher_background)
+//            .backgroundDark(R.color.launcher_background)
+//            .scrollable(true)
+//            .build());
 
 /*
         final Slide permissionsSlide;

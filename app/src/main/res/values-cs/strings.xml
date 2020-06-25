@@ -206,11 +206,11 @@
     <string name="name_or_pseudo">Jméno / přezdívka</string>
     <string name="name_is_required">Jméno je vyžadováno</string>
     <string name="create_a_profile">Vytvořit profil</string>
-    <string name="introSlide1Text">Vítejte ve Fast N Fitness! Tato aplikace umožňuje rychle a jednoduše zaznamenávat vaše tréningy, sledovat váš postup a vývoj vašeho těla.</string>
-    <string name="introSlide2Text">Zapište jméno cviku a podrobnosti, pro vytvoření. Naleznete je pak v seznamu cviků.</string>
-    <string name="introSlide2Title">Rychle a jednoduše</string>
+    <string name="introSlide1Text">Vítejte na Fit cvičení rychle! Aplikace pro rychlé školení s automatickým odpočtem odpočtů.</string>
+    <string name="introSlide2Text">V tréninkovém programu můžete snadno změnit cvičení. Cvičení se může změnit i po definovaném odpočinku.</string>
+    <string name="introSlide2Title">Snadno měňte cvičení pomocí tlačítek nebo gest</string>
     <string name="titleSlideEssential">Věnujte se podstatnému</string>
-    <string name="textSlideEssential">Žádná cvičení nejsou před-vytvořena. Vytvořte vlastní cviky v závislosti na stojích, které máte k dispozici.</string>
+    <string name="textSlideEssential">Přidejte program nebo upravte existující. Poté přidejte cvičení do programu. Nyní v tréninku bude váš program spuštěn.</string>
     <string name="pressBackAgain">Stiskněte ZPĚT ještě jedou pro ukončení</string>
     <string name="titleSlideOpenSource">Toto je svobodná aplikace!</string>
     <string name="textSlideOpenSource">Připojte se ke komunitě a společně vytvořme nejlepší fitness aplikaci! Přejděte na https://github.com/brodeurlv/fastnfitness</string>
@@ -317,5 +317,6 @@
     <string name="sound_settings">Nastavení zvuku</string>
     <string name="deleteProgram_confirm_text">Chcete tento program smazat? Všechna související cvičení v tomto programu budou vymazána.</string>
     <string name="renameProgram_error_text2">CHYBA: Tento název programu již existuje. Není možné sloučit dva programy se stejným názvem.</string>
+    <string name="app_name">Přizpůsobte cvičení rychle</string>
 
 </resources>

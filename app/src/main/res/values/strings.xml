@@ -11,7 +11,7 @@
     <string name="removedid">Removed ID</string>
     <string name="failedtocreatefolder">Failed to create folder</string>
 
-    <string name="app_name" translatable="false">Fast N Fitness Next</string>
+    <string name="app_name">Fit workout fast</string>
     <string name="action_settings">Settings</string>
     <string name="DateLabel">Date</string>
 
@@ -224,14 +224,14 @@
     <string name="name_or_pseudo">Name / pseudonym</string>
     <string name="name_is_required">Name is required</string>
     <string name="create_a_profile">Create a profile</string>
-    <string name="introSlide1Text">Welcome to Fast N Fitness! This application is a quick and simple way to record your workout and follow your progression and the evolution of your body.</string>
-    <string name="introSlide2Text">Write the name of the exercise and the details, and it will be created automatically. You can find it back easily in the list.</string>
-    <string name="introSlide2Title">Quick and easy</string>
+    <string name="introSlide1Text">Welcome to Fit workout fast! App to training fast with automatic rest count.</string>
+    <string name="introSlide2Text">In training program you could easly change exercises. Exercise could also change after your defined rest.</string>
+    <string name="introSlide2Title">Easily change exercises with buttons or gestures</string>
     <string name="titleSlideEssential">Go to the essential</string>
-    <string name="textSlideEssential">No exercises are pre-created. You create your own exercises simply depending on the name of the machine you have in your fitness place / location.</string>
+    <string name="textSlideEssential">Add program or edit existing. Then add exercise to program. Now in workout your program will run.</string>
     <string name="pressBackAgain">Click BACK again to exit</string>
     <string name="titleSlideOpenSource">It\'s open-source!</string>
-    <string name="textSlideOpenSource">Join the community and let\'s build the best fitness app together! Visit us at https://github.com/brodeurlv/fastnfitness</string>
+    <string name="textSlideOpenSource">Propose improvements and solutions! Visit us at https://github.com/senpl/Fit-workout-fast</string>
     <string name="profileCreated">Profile created</string>
     <string name="missinginfo">Missing info</string>
     <string name="createExerciseFirst">You must create an exercise first</string>

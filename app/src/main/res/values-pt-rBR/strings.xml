@@ -207,14 +207,14 @@
     <string name="name_or_pseudo">Nome / pseudônimo</string>
     <string name="name_is_required">Nome é necessário</string>
     <string name="create_a_profile">Criar um perfil</string>
-    <string name="introSlide1Text">Bem-vindo ao Fast N Fitness! esse aplicativo é uma forma simples e rápida de registrar seu treino e monitorar seu progresso e evolução de seu corpo.</string>
-    <string name="introSlide2Text">Escreva o nome do exercício e os detalhes, e ele será criado automaticamente. Você pode encontrá-lo novamente com facilidade na lista.</string>
-    <string name="introSlide2Title">Rápido e fácil</string>
+    <string name="introSlide1Text">Bem-vindo ao Fit workout rápido! App para treinamento rápido com contagem de descanso automática.</string>
+    <string name="introSlide2Text">No programa de treinamento, você pode alterar facilmente os exercícios. O exercício também pode mudar após o descanso definido.</string>
+    <string name="introSlide2Title">Mude facilmente os exercícios com botões ou gestos</string>
     <string name="titleSlideEssential">Vá ao essencial</string>
-    <string name="textSlideEssential">Não há exercício predefinido. Você cria seus próprios exercícios simplesmente dependendo do nome da máquina que você tem na sua academia / local de treino.</string>
+    <string name="textSlideEssential">Adicionar programa ou editar existente. Em seguida, adicione exercício ao programa. Agora, nos exercícios, seu programa será executado.</string>
     <string name="pressBackAgain">Clique VOLTAR novamente para sair</string>
     <string name="titleSlideOpenSource">É código aberto!</string>
-    <string name="textSlideOpenSource">Junte-se à comunidade e vamos construir o melhor aplicativo fitness juntos! Visite-nos em https://github.com/brodeurlv/fastnfitness</string>
+    <string name="textSlideOpenSource">Propor melhorias e soluções! Visite-nos em https://github.com/senpl/Fit-workout-fast</string>
     <string name="profileCreated">Perfil criado</string>
     <string name="missinginfo">Faltando informações</string>
     <string name="createExerciseFirst">Você deve primeiro criar um exercício</string>
@@ -317,5 +317,6 @@
     <string name="sound_settings">Definições de som</string>
     <string name="deleteProgram_confirm_text">Deseja excluir este programa? Todos os exercícios associados nesse programa serão excluídos.</string>
     <string name="renameProgram_error_text2">ERRO: Este nome de programa já existe. Não é possível mesclar dois programas com o mesmo nome.</string>
+    <string name="app_name">Entrenamiento rápido</string>
 
 </resources>

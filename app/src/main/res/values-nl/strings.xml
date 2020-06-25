@@ -217,10 +217,10 @@
     <string name="name_or_pseudo">Naam / pseudoniem</string>
     <string name="name_is_required">Naam is vereist</string>
     <string name="create_a_profile">Maak een profel aan</string>
-    <string name="introSlide1Text">Welkom bij Fast n Fitness! Deze app is een snelle en simpele manier om je trainingen en vooruitgang bij te houden, evenals de vooruitgang van je lichaam.</string>
-    <string name="introSlide2Title">Snel en makkelijk</string>
+    <string name="introSlide1Text">Welkom bij Fit workout snel! App om snel te trainen met automatische rusttelling.</string>
+    <string name="introSlide2Title">Verander eenvoudig oefeningen met knoppen of gebaren</string>
     <string name="titleSlideEssential">ga naar de essentials</string>
-    <string name="textSlideEssential">Geen van de oefeningen zijn pre-created. Creeer je eigen oefeningen gebaseerd op de naam van de machine(s) die je gebruikt.</string>
+    <string name="textSlideEssential">Voeg programma toe of bewerk bestaande. Voeg vervolgens oefening toe aan het programma. Nu tijdens de training wordt uw programma uitgevoerd.</string>
     <string name="pressBackAgain">Klik nog een keer op nack om af te sluiten</string>
     <string name="titleSlideOpenSource">It\'s open-source!</string>
     <string name="textSlideOpenSource">Join the community! Laten we samen de beste fitness app maken! Bezoek ons op https://github.com/brodeurlv/fastnfitness</string>
@@ -283,7 +283,7 @@
     <string name="timeLabel">Tijd</string>
     <string name="missinginfo">Ontbrekende info</string>
     <string name="profileCreated">Profiel gemaakt</string>
-    <string name="introSlide2Text">Schrijf de naam van de oefening en de details en deze worden automatisch gemaakt. Je vindt het gemakkelijk terug in de lijst.</string>
+    <string name="introSlide2Text">In het trainingsprogramma kunt u gemakkelijk oefeningen wijzigen. Oefening kan ook veranderen na uw gedefinieerde rust.</string>
     <string name="daynightmode_settingtitle">Selecteer uw thema (opnieuw opstarten vereist)</string>
     <string name="author_label">Auteur:</string>
     <string name="delete_bodypart_confirm">Wilt u dit lichaamsdeel te schrappen? Alle bijbehorende maatregelen zullen worden verwijderd.</string>
@@ -327,6 +327,7 @@
     <string name="sound_settings">Geluidsinstellingen</string>
     <string name="deleteProgram_confirm_text">Wil je dit programma verwijderen? Alle bijbehorende oefeningen in dat programma worden verwijderd.</string>
     <string name="renameProgram_error_text2">FOUT: deze programmanaam bestaat al. Het is niet mogelijk om twee programma\'s met dezelfde naam samen te voegen.</string>
+    <string name="app_name">Fit training snel</string>
 
 </resources>
 
