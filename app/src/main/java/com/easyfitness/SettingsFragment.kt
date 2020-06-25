@@ -3,6 +3,8 @@ package com.easyfitness
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -14,8 +16,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onCreate(savedInstanceState)
         mActivity = activity as MainActivity?
 
-
-        //addPreferencesFromResource(R.xml.settings);
         val myPref = findPreference<Preference>("prefShowMP3")
         myPref!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
             if (newValue is Boolean) {
@@ -72,8 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle, param: String) {
-        //addPreferencesFromResource(R.xml.settings);
+    override fun onCreatePreferences(savedInstanceState: Bundle?, param: String?) {
         setPreferencesFromResource(R.xml.settings2, param)
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
         val myPref2 = findPreference<Preference>("defaultUnit") as ListPreference?
