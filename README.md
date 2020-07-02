@@ -3,13 +3,15 @@
 
 ## Run your training quickly and easily
 
-Now you can track your progress easily and quickly!
-You can create as many machines as you want with the name you want!
-It's your choice!
+Program your training with exercises reps and rests.
 
-Graphics will show your progress and your body evolution. 
+Your rest timer will count as you wish. It will play sound on end. And next exercise is shown.
 
-Don't leave the app to get your music; a music player is integrated into the app!
+Fast and intuitive gestures.
+
+Success or fail could be logged and be visible on exercise pager.
+
+Your streach time could be counted. Play sound on streach end.
 
 ## Development
 
