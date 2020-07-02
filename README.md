@@ -1,4 +1,4 @@
-![FastNFitness Logo](https://lh3.googleusercontent.com/KKJw0HA9fD2g9mZMhzzeretD4Tvkr7-wPVzl7WMTTXiiqO6ikS5SqR5X9E8i2HPrNQ=w300)
+![FastNFitness Logo](https://github.com/senpl/Fit-workout-fast/blob/masterRemote/app/src/main/res/drawable-xxxhdpi/baseline_fitness_center_blue_a700_24dp.png?raw=true)
 # Welcome to the Fit workout fast wiki!
 
 ## Run your training quickly and easily
@@ -12,6 +12,10 @@ Fast and intuitive gestures.
 Success or fail could be logged and be visible on exercise pager.
 
 Your streach time could be counted. Play sound on streach end.
+
+Application is open source and source code is on github.
+
+To suggest improvements or bug report use https://github.com/senpl/Fit-workout-fast/issues
 
 ## Development
 
