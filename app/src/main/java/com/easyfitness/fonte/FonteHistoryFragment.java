@@ -22,7 +22,7 @@ import com.easyfitness.DAO.DAORecord;
 import com.easyfitness.DAO.DAOUtils;
 import com.easyfitness.DAO.Machine;
 import com.easyfitness.DAO.Profile;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.onurkaganaldemir.ktoastlib.KToast;
 

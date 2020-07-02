@@ -26,6 +26,7 @@ import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure;
 import com.easyfitness.DAO.bodymeasures.DAOBodyPart;
 import com.easyfitness.bodymeasures.BodyPartDetailsFragment;
 import com.easyfitness.graph.MiniDateGraph;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.utils.DateConverter;
 import com.easyfitness.utils.EditableInputView.EditableInputView;
 import com.easyfitness.utils.EditableInputView.EditableInputViewWithDate;

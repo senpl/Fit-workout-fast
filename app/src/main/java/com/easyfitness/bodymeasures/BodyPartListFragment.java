@@ -22,7 +22,7 @@ import com.easyfitness.DAO.bodymeasures.BodyPart;
 import com.easyfitness.DAO.bodymeasures.BodyPartExtensions;
 import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure;
 import com.easyfitness.DAO.bodymeasures.DAOBodyPart;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.easyfitness.utils.Keyboard;
 

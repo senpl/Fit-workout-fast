@@ -13,8 +13,8 @@ import com.easyfitness.DAO.DAOProfil
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.DAORecord
 import com.easyfitness.DAO.Program
-import com.easyfitness.MainActivity
 import com.easyfitness.R
+import com.fitworkoutfast.MainActivity
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems

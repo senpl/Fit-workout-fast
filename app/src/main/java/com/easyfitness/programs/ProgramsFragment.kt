@@ -14,8 +14,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.Profile
-import com.easyfitness.MainActivity
 import com.easyfitness.R
+import com.fitworkoutfast.MainActivity
 import kotlinx.android.synthetic.main.tab_programs.*
 
 class ProgramsFragment : Fragment(R.layout.tab_programs) {

@@ -42,7 +42,7 @@ import android.widget.TextView;
 import com.easyfitness.DAO.DAOProfil;
 import com.easyfitness.DAO.Profile;
 import com.easyfitness.DatePickerDialogFragment;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.easyfitness.utils.DateConverter;
 import com.easyfitness.utils.Gender;

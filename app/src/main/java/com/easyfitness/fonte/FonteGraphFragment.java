@@ -25,7 +25,7 @@ import com.easyfitness.DAO.DAOStatic;
 import com.easyfitness.DAO.Machine;
 import com.easyfitness.DAO.Profile;
 import com.easyfitness.GraphData;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.easyfitness.graph.BarGraph;
 import com.easyfitness.graph.DateGraph;

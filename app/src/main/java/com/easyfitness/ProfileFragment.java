@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.easyfitness.DAO.DAOProfil;
 import com.easyfitness.DAO.Profile;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.utils.DateConverter;
 import com.easyfitness.utils.EditableInputView.EditableInputView;
 import com.easyfitness.utils.Gender;

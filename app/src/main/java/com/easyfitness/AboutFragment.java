@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.easyfitness.DAO.DatabaseHelper;
 import com.easyfitness.licenses.CustomLicense;
+import com.fitworkoutfast.MainActivity;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;

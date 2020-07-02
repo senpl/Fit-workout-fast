@@ -12,19 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.easyfitness.DAO.DAOFonte;
 import com.easyfitness.DAO.DAOMachine;
 import com.easyfitness.DAO.Profile;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;

@@ -52,7 +52,7 @@ import com.easyfitness.DAO.Profile;
 import com.easyfitness.DAO.StaticExercise;
 import com.easyfitness.DAO.Weight;
 import com.easyfitness.DatePickerDialogFragment;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.easyfitness.SettingsFragment;
 import com.easyfitness.TimePickerDialogFragment;

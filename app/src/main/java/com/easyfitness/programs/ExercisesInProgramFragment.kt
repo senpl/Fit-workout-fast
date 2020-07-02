@@ -27,6 +27,7 @@ import com.easyfitness.DAO.*
 import com.easyfitness.DAO.DAOMachine.*
 import com.easyfitness.machines.ExerciseDetailsPager
 import com.easyfitness.machines.MachineCursorAdapter
+import com.fitworkoutfast.MainActivity
 import com.easyfitness.utils.BtnOnPostiomClickListener
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil

@@ -1,14 +1,5 @@
 package com.easyfitness.fonte;
 
-import android.content.Context;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.easyfitness.MainActivity;
-import com.easyfitness.R;
-
 //public class FontesViewPagerAdapter extends FragmentPagerAdapter {
 //
 //    final int PAGE_COUNT = 3;

@@ -1,4 +1,4 @@
-package com.easyfitness;
+package com.fitworkoutfast;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -20,6 +20,10 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.easyfitness.AboutFragment;
+import com.easyfitness.BuildConfig;
+import com.easyfitness.ChronoDialogbox;
+import com.easyfitness.CustomDrawerAdapter;
 import com.easyfitness.DAO.CVSManager;
 import com.easyfitness.DAO.DAOCardio;
 import com.easyfitness.DAO.DAOFonte;
@@ -32,6 +36,11 @@ import com.easyfitness.DAO.Machine;
 import com.easyfitness.DAO.Profile;
 import com.easyfitness.DAO.cardio.DAOOldCardio;
 import com.easyfitness.DAO.cardio.OldCardio;
+import com.easyfitness.DrawerItem;
+import com.easyfitness.ProfileFragment;
+import com.easyfitness.R;
+import com.easyfitness.SettingsFragment;
+import com.easyfitness.WeightFragment;
 import com.easyfitness.bodymeasures.BodyPartListFragment;
 import com.easyfitness.fonte.FontesPagerFragment;
 import com.easyfitness.intro.MainIntroActivity;

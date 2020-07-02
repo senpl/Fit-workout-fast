@@ -23,7 +23,7 @@ import com.easyfitness.DAO.DAORecord;
 import com.easyfitness.DAO.IRecord;
 import com.easyfitness.DAO.Machine;
 import com.easyfitness.DAO.Profile;
-import com.easyfitness.MainActivity;
+import com.fitworkoutfast.MainActivity;
 import com.easyfitness.R;
 import com.easyfitness.fonte.FonteHistoryFragment;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
