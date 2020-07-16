@@ -52,6 +52,6 @@ class SwipeDetectorListener(private val programRunner: ProgramRunner) : OnTouchL
     }
 
     companion object {
-        const val MIN_DISTANCE = 190
+        const val MIN_DISTANCE = 290
     }
 }

@@ -69,6 +69,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             true
         }
+        val swipeGesturesSwitch = findPreference<Preference>("swipeGesturesSwitch")
+        swipeGesturesSwitch!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
+            if (newValue is Boolean) {
+                saveToPreference("swipeGesturesSwitch", newValue as Boolean?)
+            }
+            true
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, param: String?) {
@@ -81,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val boolVal3 = sharedPreferences.getString("defaultDistanceUnit", "0")
         updateSummary(myPref3, boolVal3, getString(R.string.pref_preferredUnitSummary))
         val dayNightModePref = findPreference<Preference>("dayNightAuto") as ListPreference?
-        val dayNightValue = sharedPreferences.getString("dayNightAuto", "2")
+        val dayNightValue = sharedPreferences.getString("dayNightAuto", "1")
         updateSummary(dayNightModePref, dayNightValue, "")
     }
 

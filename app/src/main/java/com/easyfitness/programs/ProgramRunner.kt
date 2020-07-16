@@ -173,9 +173,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             chooseExercise(it)
         }
 
-
-        recordList.setOnTouchListener(swipeDetectorListener) //this is different view so require seperate listener to work
-        tabProgramRunner.setOnTouchListener(swipeDetectorListener)
+        if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE).getBoolean("swipeGesturesSwitch", true)) {
+            recordList.setOnTouchListener(swipeDetectorListener) //this is different view so require separate listener to work
+            tabProgramRunner.setOnTouchListener(swipeDetectorListener)
+        }
     }
 
     private fun chooseExercise(selected: Int) {

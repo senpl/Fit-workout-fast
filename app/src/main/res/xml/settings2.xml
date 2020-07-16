@@ -20,11 +20,11 @@
 
     <PreferenceCategory android:title="@string/pref_ui_setting">
         <androidx.preference.ListPreference
-            android:defaultValue="2"
+            android:defaultValue="1"
             android:entries="@array/daynightauto"
             android:entryValues="@array/daynightauto_enum"
             android:key="dayNightAuto"
-            android:summary="Auto"
+            android:summary="Dark"
             android:title="@string/daynightmode_settingtitle" />
 
         <CheckBoxPreference
@@ -57,5 +57,10 @@
             android:summary="@string/nextExerciseSwitchDescription"
             android:title="@string/nextExerciseSwitch" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="swipeGesturesSwitch"
+            android:summary="@string/swipeGesturesDescription"
+            android:title="@string/swipeGesturesSwitch" />
     </PreferenceCategory>
 </PreferenceScreen>
