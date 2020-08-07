@@ -1,5 +1,7 @@
 [ ] podnieść code version
+[ ] wysłać zmiany do githuba.
 [ ] zbudować podspisaną wersję
+[ ] wgrać wersję do github releases
 [ ] obfuscated files from:
 <module- name>/build/outputs/mapping/<build-type>/
 do https://play.google.com/apps/publish/?account=7975913383041629435&noredirect#DeobfuscationMappingFilesPlace:p=com.fitworkoutfast&appid=4974997702853128267
