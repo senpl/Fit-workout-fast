@@ -231,12 +231,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String dayNightAuto = SP.getString("dayNightAuto", Integer.toString(getResources().getInteger(R.integer.autoui_mode_value)));
+        String dayNightAuto = SP.getString("dayNightAuto", Integer.toString(getResources().getInteger(R.integer.dark_mode_value)));
         int dayNightAutoValue;
         try {
             dayNightAutoValue = Integer.parseInt(dayNightAuto);
         }catch(NumberFormatException e) {
-            dayNightAutoValue = getResources().getInteger(R.integer.autoui_mode_value);
+            dayNightAutoValue = getResources().getInteger(R.integer.dark_mode_value);
         }
         if(dayNightAutoValue == getResources().getInteger(R.integer.dark_mode_value)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
