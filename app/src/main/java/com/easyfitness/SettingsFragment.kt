@@ -2,12 +2,19 @@ package com.easyfitness
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.fitworkoutfast.MainActivity
+import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
+import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
+import java.io.IOException
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private var mActivity: MainActivity? = null
@@ -90,6 +97,81 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val dayNightModePref = findPreference<Preference>("dayNightAuto") as ListPreference?
         val dayNightValue = sharedPreferences.getString("dayNightAuto", "1")
         updateSummary(dayNightModePref, dayNightValue, "")
+
+        val dialogPreference = preferenceScreen.findPreference("dialog_preference") as Preference?
+        if (dialogPreference != null) {
+            dialogPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener { // dialog code here
+                Toast.makeText(requireContext(),"Choose sound", Toast.LENGTH_LONG).show()
+
+                val settings=createStandardSettings()
+                RingtonePickerDialog.createEphemeralInstance(
+                        settings = settings,
+                        dialogTitle = "Dialog",
+                        listener = object : UltimateRingtonePicker.RingtonePickerListener {
+                            override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+                                handleResult(ringtones)
+                            }
+                        }
+                ).show(this.childFragmentManager, null)
+                true
+            }
+        }
+    }
+    private var currentSelectedRingTones = listOf<UltimateRingtonePicker.RingtoneEntry>()
+
+    private fun createStandardSettings(): UltimateRingtonePicker.Settings =
+        UltimateRingtonePicker.Settings(
+            preSelectUris = currentSelectedRingTones.map { it.uri },
+            systemRingtonePicker = UltimateRingtonePicker.SystemRingtonePicker(
+                customSection = UltimateRingtonePicker.SystemRingtonePicker.CustomSection(),
+                defaultSection = UltimateRingtonePicker.SystemRingtonePicker.DefaultSection(
+                    showSilent = true,
+                    defaultUri = UltimateRingtonePicker.createRawRingtoneUri(
+                        requireContext(),
+                        R.raw.chime
+                    ),
+                    defaultTitle = "Default Ringtone",
+                    additionalRingtones = listOf(
+                        UltimateRingtonePicker.RingtoneEntry(
+                            UltimateRingtonePicker.createRawRingtoneUri(requireContext(), R.raw.chime),
+                            "short bip"
+                        )
+                    )
+                ),
+                ringtoneTypes = listOf(
+                    RingtoneManager.TYPE_RINGTONE,
+                    RingtoneManager.TYPE_NOTIFICATION,
+                    RingtoneManager.TYPE_ALARM
+                )
+            ),
+            deviceRingtonePicker = UltimateRingtonePicker.DeviceRingtonePicker(
+                deviceRingtoneTypes = listOf(
+                    UltimateRingtonePicker.RingtoneCategoryType.All,
+                    UltimateRingtonePicker.RingtoneCategoryType.Artist,
+                    UltimateRingtonePicker.RingtoneCategoryType.Album,
+                    UltimateRingtonePicker.RingtoneCategoryType.Folder
+                )
+            )
+        )
+
+    private fun handleResult(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+        currentSelectedRingTones = ringtones
+//        ringtones.get(0).
+        val mediaPlayer = MediaPlayer()
+        try {
+            // mediaPlayer.setDataSource(String.valueOf(myUri));
+            val myUri: Uri = ringtones.get(0).uri
+            mediaPlayer.setDataSource(this.requireContext(), myUri)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        try {
+            mediaPlayer.prepare()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        mediaPlayer.start()
+        Toast.makeText(requireContext(),ringtones.joinToString(separator = "\n") { it.name },Toast.LENGTH_LONG).show()
     }
 
     private fun updateSummary(pref: ListPreference?, `val`: String?, prefix: String) {

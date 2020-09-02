@@ -5,7 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.media.MediaPlayer
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,21 +22,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.preference.PreferenceManager
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.easyfitness.*
+import com.easyfitness.BtnClickListener
 import com.easyfitness.DAO.*
 import com.easyfitness.DAO.DAOMachine.*
+import com.easyfitness.R
+import com.easyfitness.SettingsFragment
+import com.easyfitness.TimePickerDialogFragment
 import com.easyfitness.machines.ExerciseDetailsPager
 import com.easyfitness.machines.MachineCursorAdapter
-import com.fitworkoutfast.MainActivity
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.UnitConverter
+import com.fitworkoutfast.MainActivity
 import com.ikovac.timepickerwithseconds.MyTimePickerDialog
 import com.ikovac.timepickerwithseconds.TimePicker
 import com.onurkaganaldemir.ktoastlib.KToast
 import com.pacific.timer.Rx2Timer
 import kotlinx.android.synthetic.main.tab_program_runner.*
 import timber.log.Timber
+import java.io.IOException
 import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -138,7 +142,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         restTimeEdit.onFocusChangeListener = restTimeEditChange
-        restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
+//        restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
         restoreSharedParams()
         var weightUnit = UnitConverter.UNIT_KG
         try {
@@ -146,7 +150,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         } catch (e: NumberFormatException) {
             Timber.d("Not important")
         }
-        unitSpinner.setSelection(weightUnit)
+        unitShow.text="kg"
+        if(weightUnit==UnitConverter.UNIT_LBS)
+            unitShow.text="Lbs"
+//        unitSpinner.setSelection(weightUnit)
         val distanceUnit: Int
         distanceUnit = try {
             sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
@@ -245,7 +252,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             saveSharedParams()
         }
     }
-    private val restTimeCheckChange = CompoundButton.OnCheckedChangeListener { _: CompoundButton?, _: Boolean -> saveSharedParams() }
+//    private val restTimeCheckChange = CompoundButton.OnCheckedChangeListener { _: CompoundButton?, _: Boolean -> saveSharedParams() }
     private val itemClickDeleteRecord = BtnClickListener { idToDelete: Long -> showDeleteDialog(idToDelete) }
     private val itemClickCopyRecord = BtnClickListener { id: Long ->
         val r: IRecord? = daoRecord.getRecord(id)
@@ -261,7 +268,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     if (f.unit == UnitConverter.UNIT_LBS) {
                         poids = UnitConverter.KgtoLbs(poids)
                     }
-                    unitSpinner.setSelection(f.unit)
+                    unitShow.text = f.unit.toString()
+//                    unitSpinner.setSelection(f.unit)
                     poidsEdit.setText(numberFormat.format(poids))
                 }
                 TYPE_STATIC -> {
@@ -348,11 +356,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 }
                 var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
                 var unitPoids = UnitConverter.UNIT_KG // Kg
-                val mContext = requireContext()
-                if (unitSpinner.selectedItem.toString() == mContext.getString(R.string.LbsUnitLabel)) {
-                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
-                    unitPoids = UnitConverter.UNIT_LBS // LBS
-                }
+//                val mContext = requireContext()
+//                if (unitSpinner.selectedItem.toString() == mContext.getString(R.string.LbsUnitLabel)) {
+//                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
+//                    unitPoids = UnitConverter.UNIT_LBS // LBS
+//                }
                 strengthRecordsDao.addBodyBuildingRecord(date,
                     exerciseEdit.text.toString(),
                     seriesEdit.text.toString().toInt(),
@@ -377,10 +385,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 /* Weight conversion */
                 var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
                 var unitPoids = UnitConverter.UNIT_KG // Kg
-                if (unitSpinner.selectedItem.toString() == requireContext().getString(R.string.LbsUnitLabel)) {
-                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
-                    unitPoids = UnitConverter.UNIT_LBS // LBS
-                }
+//                if (unitSpinner.selectedItem.toString() == requireContext().getString(R.string.LbsUnitLabel)) {
+//                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
+//                    unitPoids = UnitConverter.UNIT_LBS // LBS
+//                }
                 try {
                     restTime = restTimeEdit.text.toString().toInt()
                 } catch (e: NumberFormatException) {
@@ -481,6 +489,20 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 if (requireContext().getSharedPreferences("playRestSound", Context.MODE_PRIVATE).getBoolean("playRestSound", true)) {
                     val mediaPlayer = MediaPlayer.create(context, R.raw.chime)
                     mediaPlayer.start()
+//                    val mediaPlayer = MediaPlayer()
+//                    try {
+//                        // mediaPlayer.setDataSource(String.valueOf(myUri));
+//                        val myUri: Uri = Uri.parse("")
+//                        mediaPlayer.setDataSource(this.requireContext(), myUri)
+//                    } catch (e: IOException) {
+//                        e.printStackTrace()
+//                    }
+//                    try {
+//                        mediaPlayer.prepare()
+//                    } catch (e: IOException) {
+//                        e.printStackTrace()
+//                    }
+//                    mediaPlayer.start()
                 }
             }
             .build()
@@ -492,7 +514,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         return total + total2 + total3
     }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     private val onClickMachineListWithIcons = OnClickListener { v ->
         val oldCursor: Cursor
         if (machineListDialog != null && machineListDialog!!.isShowing) {        // In case the dialog is already open
@@ -800,9 +821,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (lLastRecord != null) {
             if (lLastRecord.type == TYPE_FONTE) {
                 val lLastBodyBuildingRecord = lLastRecord as Fonte
+                if(lLastBodyBuildingRecord.serie>1){ //only show when more then one to keep interface clean
+                    serieCardView.visibility=VISIBLE
+                }
                 seriesEdit.setText(lLastBodyBuildingRecord.serie.toString())
                 repsPicker.progress = lLastBodyBuildingRecord.repetition
-                unitSpinner.setSelection(lLastBodyBuildingRecord.unit)
+                unitShow.text="kg"
+                if(lLastBodyBuildingRecord.unit==UnitConverter.UNIT_LBS)
+                    unitShow.text="Lbs"
                 val numberFormat = DecimalFormat("#.##")
                 if (lLastBodyBuildingRecord.unit == UnitConverter.UNIT_LBS) poidsEdit.setText(numberFormat.format(UnitConverter.KgtoLbs(lLastBodyBuildingRecord.poids).toDouble())) else poidsEdit.setText(numberFormat.format(lLastBodyBuildingRecord.poids.toDouble()))
             } else if (lLastRecord.type == TYPE_CARDIO) {
@@ -815,7 +841,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 val lLastStaticRecord = lLastRecord as StaticExercise
                 seriesEdit.setText(lLastStaticRecord.serie.toString())
                 secondsEdit.setText(lLastStaticRecord.second.toString())
-                unitSpinner.setSelection(lLastStaticRecord.unit)
+                unitShow.text="kg"
+                if(lLastStaticRecord.unit==UnitConverter.UNIT_LBS)
+                    unitShow.text="Lbs"
                 val numberFormat = DecimalFormat("#.##")
                 if (lLastStaticRecord.unit == UnitConverter.UNIT_LBS) poidsEdit.setText(numberFormat.format(UnitConverter.KgtoLbs(lLastStaticRecord.poids).toDouble())) else poidsEdit.setText(numberFormat.format(lLastStaticRecord.poids.toDouble()))
             }
@@ -877,7 +905,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 selectedType = TYPE_CARDIO
             }
             TYPE_STATIC -> {
-                serieCardView.visibility = VISIBLE
+                serieCardView.visibility = GONE
                 repetitionCardView.visibility = GONE
                 secondsCardView.visibility = VISIBLE
                 weightCardView.visibility = VISIBLE
@@ -891,7 +919,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 selectedType = TYPE_STATIC
             }
             TYPE_FONTE -> {
-                serieCardView.visibility = VISIBLE
+                serieCardView.visibility = GONE
                 repetitionCardView.visibility = VISIBLE
                 secondsCardView.visibility = GONE
                 weightCardView.visibility = VISIBLE
@@ -902,7 +930,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 selectedType = TYPE_FONTE
             }
             else -> {
-                serieCardView.visibility = VISIBLE
+                serieCardView.visibility = GONE
                 repetitionCardView.visibility = VISIBLE
                 secondsCardView.visibility = GONE
                 weightCardView.visibility = VISIBLE
@@ -919,7 +947,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val editor = sharedPref?.edit()
         editor?.putString("restTime", restTimeEdit.text.toString())
-        editor?.putBoolean("restCheck", restTimeCheck.isChecked)
+//        editor?.putBoolean("restCheck", restTimeCheck.isChecked)
         editor?.putBoolean("showDetails", restControlLayout.isShown)
         editor?.apply()
     }
@@ -927,7 +955,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private fun restoreSharedParams() {
         val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         restTimeEdit.setText(sharedPref?.getString("restTime", ""))
-        restTimeCheck.isChecked = sharedPref!!.getBoolean("restCheck", true)
+//        restTimeCheck.isChecked = sharedPref!!.getBoolean("restCheck", true)
     }
 
     private fun hideKeyboard() {

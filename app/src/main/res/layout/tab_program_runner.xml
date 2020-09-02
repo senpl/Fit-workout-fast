@@ -161,17 +161,17 @@
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
-                android:visibility="visible"
+                android:layout_weight="15"
+                android:visibility="gone"
                 >
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/SerieLabel" />
@@ -184,8 +184,8 @@
                         android:label="@string/SerieLabel"
                         android:gravity="center"
                         android:inputType="number"
-                        android:minEms="2"
-                        tools:text="2" />
+                        tools:text="2"
+                        />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -196,7 +196,7 @@
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
+                android:layout_weight="30"
                 android:visibility="visible"
                 >
 
@@ -231,7 +231,7 @@
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
+                android:layout_weight="30"
                 android:visibility="gone"
                 >
 
@@ -265,7 +265,7 @@
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
+                android:layout_weight="35"
                 android:visibility="visible"
                 >
 
@@ -298,12 +298,17 @@
                             android:label="@string/weightLabel"
                             android:autofillHints="false" />
 
-                        <Spinner
-                            android:id="@+id/unitSpinner"
+                        <TextView
+                            android:id="@+id/unitShow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:entries="@array/weight_units"
-                            android:minEms="3" />
+                            tools:text="kg"/>
+<!--                        <Spinner-->
+<!--                            android:id="@+id/unitSpinner"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:entries="@array/weight_units"-->
+<!--                            android:minEms="3" />-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -347,6 +352,41 @@
                             tools:text="80 kg" />
 
                     </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- REST -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/restCardView"
+                style="@style/CardViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:visibility="visible"
+                >
+                <LinearLayout
+                    android:id="@+id/restTimeLayout"
+                    android:layout_weight="10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">                    >
+                    <TextView
+                        android:id="@+id/restTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/restLabel" />
+
+                    <EditText
+                        android:id="@+id/restTimeEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="4"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="60" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -471,47 +511,47 @@
                     android:orientation="vertical"
                     >
 
-                    <LinearLayout
-                        android:id="@+id/restTimeLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/restTimeLayout"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="100"
-                            android:text="@string/activate_rest_time" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_weight="100"-->
+<!--                            android:text="@string/activate_rest_time" />-->
 
-                        <CheckBox
-                            android:id="@+id/restTimeCheck"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:checked="true"
-                            android:text="" />
+<!--                        <CheckBox-->
+<!--                            android:id="@+id/restTimeCheck"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:checked="true"-->
+<!--                            android:text="" />-->
 
-                        <TextView
-                            android:id="@+id/restTimeLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="100"
-                            android:text="@string/rest_time" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/restTimeLabel"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_weight="100"-->
+<!--                            android:text="@string/rest_time" />-->
 
-                        <EditText
-                            android:id="@+id/restTimeEdit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:ems="4"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="60" />
-                    </LinearLayout>
+<!--                        <EditText-->
+<!--                            android:id="@+id/restTimeEdit"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginEnd="8dp"-->
+<!--                            android:ems="4"-->
+<!--                            android:inputType="number"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="60" />-->
+<!--                    </LinearLayout>-->
 
                 </LinearLayout>
                 </RelativeLayout>
@@ -532,7 +572,7 @@
 
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/ButtonMain"
                     android:src="@drawable/ic_previous"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
@@ -548,7 +588,7 @@
 
                 <ImageButton
                     android:id="@+id/failButton"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/ButtonMain"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -563,7 +603,7 @@
 
                 <ImageButton
                     android:id="@+id/addButton"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/ButtonMain"
                     android:src="@drawable/done_check_green_800_24dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -577,7 +617,7 @@
 
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/ButtonMain"
                     android:src="@drawable/ic_next"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"

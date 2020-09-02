@@ -361,4 +361,6 @@
     <string name="nextExerciseSwitchDescription">When You click check done on exercises it will move to next exercise in program</string>
     <string name="swipeGesturesSwitch">Swipe gestures</string>
     <string name="swipeGesturesDescription">Allow fast change of exercises to next with swipe gesture.</string>
+    <string name="restLabel">Rest</string>
+    <string name="chooseRestSound">Choose rest fiinish sound</string>
 </resources>

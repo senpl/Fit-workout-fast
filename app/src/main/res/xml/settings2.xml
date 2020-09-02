@@ -42,7 +42,11 @@
         android:summary="@string/playRestSoundDescription"
         android:title="@string/playRestSound" />
 
-    <CheckBoxPreference
+
+        <Preference android:key="dialog_preference"
+            android:title="@string/chooseRestSound"/>
+
+        <CheckBoxPreference
         android:defaultValue="true"
         android:key="playStaticExerciseFinishSound"
         android:summary="@string/playStaticExerciseFinishSoundDescription"
