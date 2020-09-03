@@ -6,7 +6,8 @@
     android:name="tab_program_runner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:keepScreenOn="true">
 
     <LinearLayout
         android:id="@+id/layoutProgramRunner"
@@ -191,6 +192,7 @@
                             android:inputType="numberDecimal|numberSigned"
                             android:minEms="3"
                             tools:text="10"
+                            tools:labelFor="@id/weightCardView"
                             android:label="@string/weightLabel"
                             android:autofillHints="false" />
 
@@ -371,7 +373,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical">                    >
+                    android:orientation="vertical">
                     <TextView
                         android:id="@+id/restTimeLabel"
                         android:layout_width="wrap_content"
@@ -386,7 +388,8 @@
                         android:gravity="center"
                         android:inputType="number"
                         android:singleLine="true"
-                        android:text="60" />
+                        android:text="60"
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -510,49 +513,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/restTimeLayout"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:layout_marginStart="8dp"-->
-<!--                            android:layout_weight="100"-->
-<!--                            android:text="@string/activate_rest_time" />-->
-
-<!--                        <CheckBox-->
-<!--                            android:id="@+id/restTimeCheck"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:checked="true"-->
-<!--                            android:text="" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/restTimeLabel"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:layout_marginStart="8dp"-->
-<!--                            android:layout_weight="100"-->
-<!--                            android:text="@string/rest_time" />-->
-
-<!--                        <EditText-->
-<!--                            android:id="@+id/restTimeEdit"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginEnd="8dp"-->
-<!--                            android:ems="4"-->
-<!--                            android:inputType="number"-->
-<!--                            android:singleLine="true"-->
-<!--                            android:text="60" />-->
-<!--                    </LinearLayout>-->
-
                 </LinearLayout>
                 </RelativeLayout>
 
@@ -613,7 +573,8 @@
                     android:text="@string/DoneLabel"
                     app:layout_constraintEnd_toStartOf="@+id/nextExerciseArrow"
                     app:layout_constraintStart_toEndOf="@+id/failButton"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/DoneLabel" />
 
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
@@ -658,7 +619,8 @@
                     android:src="@drawable/reset_yellow_400_24dp"
                     android:layout_marginStart="@dimen/progress_circle_radius"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/reset" />
             </com.devzone.fillprogresslayout.FillProgressLayout>
             <!--            app:fpl_backgroundColor="@color/red_btn_bg_color"
                  app:fpl_progressDuration="150"

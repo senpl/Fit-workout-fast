@@ -35,27 +35,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/sound_settings">
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="playRestSound"
-        android:summary="@string/playRestSoundDescription"
-        android:title="@string/playRestSound" />
-
-
-        <Preference android:key="dialog_rest_sound"
-            android:title="@string/chooseRestSound"/>
-
-        <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="playStaticExerciseFinishSound"
-        android:summary="@string/playStaticExerciseFinishSoundDescription"
-        android:title="@string/playStaticExerciseFinishSound" />
-
-        <Preference android:key="dialog_static_sound"
-            android:title="@string/chooseRestSound"/>
-</PreferenceCategory>
-
     <PreferenceCategory android:title="@string/programs_settings">
         <CheckBoxPreference
             android:defaultValue="true"
@@ -68,5 +47,32 @@
             android:key="swipeGesturesSwitch"
             android:summary="@string/swipeGesturesDescription"
             android:title="@string/swipeGesturesSwitch" />
+
+        <EditTextPreference
+            android:defaultValue="5"
+            android:key="staticPreperSecs"
+            android:title="@string/static_prepare_seconds"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/sound_settings">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="playRestSound"
+            android:summary="@string/playRestSoundDescription"
+            android:title="@string/playRestSound" />
+
+
+        <Preference android:key="dialog_rest_sound"
+            android:title="@string/chooseRestSound"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="playStaticExerciseFinishSound"
+            android:summary="@string/playStaticExerciseFinishSoundDescription"
+            android:title="@string/playStaticExerciseFinishSound" />
+
+        <Preference android:key="dialog_static_sound"
+            android:title="@string/chooseRestSound"/>
     </PreferenceCategory>
 </PreferenceScreen>

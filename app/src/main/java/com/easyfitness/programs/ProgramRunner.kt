@@ -350,7 +350,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
                     return@OnClickListener
                 }
-                var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
+                val tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
                 val unitPoids = UnitConverter.UNIT_KG // Kg
                 strengthRecordsDao.addBodyBuildingRecord(date,
                     exerciseEdit.text.toString(),
@@ -374,7 +374,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     return@OnClickListener
                 }
                 /* Weight conversion */
-                var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
+                val tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
                 val unitPoids = UnitConverter.UNIT_KG // Kg
                 try {
                     restTime = restTimeEdit.text.toString().toInt()
@@ -659,10 +659,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
             TYPE_STATIC -> {
                 imageExerciseThumb.setImageResource(R.drawable.ic_static)
-                staticFillBackgroundProgress.setDuration((exercise.seconds * progressScaleFix).toLong())
+                val staticPrepareTime=5
+                staticFillBackgroundProgress.setDuration(((exercise.seconds+staticPrepareTime) * progressScaleFix).toLong())
                 staticTimer = Rx2Timer.builder()
                     .initialDelay(0)
-                    .take(exercise.seconds)
+                    .take(exercise.seconds+staticPrepareTime)
                     .onEmit { count ->
                         staticFillBackgroundProgress.setProgress(count.toInt() * progressScaleFix)
                         countDownStatic.text = getString(R.string.count_string, count)

@@ -61,6 +61,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentMachine = "";
     private boolean mIntro014Launched = false;
     private boolean mMigrationBD15done = false;
-    public boolean swapped = false;
 
     private PopupMenu.OnMenuItemClickListener onMenuItemClick = item -> {
         switch (item.getItemId()) {
@@ -222,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
             if (success) {
                 folder = new File(Environment.getExternalStorageDirectory() + "/FastnFitness/crashreport");
                 success = folder.mkdir();
+                if(!success){
+                    Toast.makeText(getBaseContext(),"Folder creation failed",Toast.LENGTH_LONG).show();
+                }
+
             }
 
             if (folder.exists()) {
@@ -269,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             if (mpFontesPagerFrag == null)
                 mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6);
-            if (mpFontesPagerFrag == null)
+            if (mpFontesOldPagerFrag == null)
                 mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER+"OLD", 6);
             if (mpWeightFrag == null) mpWeightFrag = WeightFragment.newInstance(WEIGHT, 5);
             if (mpProfileFrag == null) mpProfileFrag = ProfileFragment.newInstance(PROFILE, 10);
@@ -638,6 +642,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
+        input.setText(R.string.anonymous);
         newProfilBuilder.setView(input);
 
         newProfilBuilder.setPositiveButton(getActivity().getResources().getText(R.string.global_ok), (dialog, whichButton) -> {
@@ -699,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDrawerTitle(String pProfilName) {
-        mDrawerAdapter.getItem(0).setTitle(pProfilName);
+        Objects.requireNonNull(mDrawerAdapter.getItem(0)).setTitle(pProfilName);
         mDrawerAdapter.notifyDataSetChanged();
         mDrawerLayout.invalidate();
     }
@@ -992,7 +997,7 @@ public class MainActivity extends AppCompatActivity {
             String tag = backEntry.getName();
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
             super.onBackPressed();
-            getActivity().getSupportActionBar().show();
+            Objects.requireNonNull(getActivity().getSupportActionBar()).show();
         } else { // Si on est la racine, avec il faut cliquer deux fois
             if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();

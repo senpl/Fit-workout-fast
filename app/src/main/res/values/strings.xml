@@ -367,4 +367,5 @@
     <string name="Lbs">Lbs</string>
     <string name="single_exercise_and_results">Results</string>
     <string name="static_prepare_seconds">Static exercise prepare time always 5 sec.</string>
+    <string name="anonymous">Default</string>
 </resources>
