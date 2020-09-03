@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.media.MediaPlayer
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +17,6 @@ import android.view.View.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import androidx.annotation.RequiresApi
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -142,7 +142,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         restTimeEdit.onFocusChangeListener = restTimeEditChange
-//        restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
         restoreSharedParams()
         var weightUnit = UnitConverter.UNIT_KG
         try {
@@ -150,10 +149,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         } catch (e: NumberFormatException) {
             Timber.d("Not important")
         }
-        unitShow.text="kg"
+        unitShow.text=getString(R.string.kg)
         if(weightUnit==UnitConverter.UNIT_LBS)
-            unitShow.text="Lbs"
-//        unitSpinner.setSelection(weightUnit)
+            unitShow.text=getString(R.string.Lbs)
         val distanceUnit: Int
         distanceUnit = try {
             sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
@@ -252,7 +250,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             saveSharedParams()
         }
     }
-//    private val restTimeCheckChange = CompoundButton.OnCheckedChangeListener { _: CompoundButton?, _: Boolean -> saveSharedParams() }
     private val itemClickDeleteRecord = BtnClickListener { idToDelete: Long -> showDeleteDialog(idToDelete) }
     private val itemClickCopyRecord = BtnClickListener { id: Long ->
         val r: IRecord? = daoRecord.getRecord(id)
@@ -269,7 +266,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         poids = UnitConverter.KgtoLbs(poids)
                     }
                     unitShow.text = f.unit.toString()
-//                    unitSpinner.setSelection(f.unit)
                     poidsEdit.setText(numberFormat.format(poids))
                 }
                 TYPE_STATIC -> {
@@ -355,12 +351,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     return@OnClickListener
                 }
                 var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
-                var unitPoids = UnitConverter.UNIT_KG // Kg
-//                val mContext = requireContext()
-//                if (unitSpinner.selectedItem.toString() == mContext.getString(R.string.LbsUnitLabel)) {
-//                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
-//                    unitPoids = UnitConverter.UNIT_LBS // LBS
-//                }
+                val unitPoids = UnitConverter.UNIT_KG // Kg
                 strengthRecordsDao.addBodyBuildingRecord(date,
                     exerciseEdit.text.toString(),
                     seriesEdit.text.toString().toInt(),
@@ -384,11 +375,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 }
                 /* Weight conversion */
                 var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
-                var unitPoids = UnitConverter.UNIT_KG // Kg
-//                if (unitSpinner.selectedItem.toString() == requireContext().getString(R.string.LbsUnitLabel)) {
-//                    tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
-//                    unitPoids = UnitConverter.UNIT_LBS // LBS
-//                }
+                val unitPoids = UnitConverter.UNIT_KG // Kg
                 try {
                     restTime = restTimeEdit.text.toString().toInt()
                 } catch (e: NumberFormatException) {
@@ -434,7 +421,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 var unitDistance = UnitConverter.UNIT_KM
                 if (unitDistanceSpinner.selectedItem.toString()
                     == context?.getString(R.string.MilesUnitLabel)) {
-                    distance = UnitConverter.MilesToKm(distance) // Always convert to KG
+                    distance = UnitConverter.MilesToKm(distance) // Always convert to km
                     unitDistance = UnitConverter.UNIT_MILES
                 }
                 daoCardio.addCardioRecord(date,
@@ -487,22 +474,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 restFillBackgroundProgress.visibility = GONE
                 restTimerRunning = false
                 if (requireContext().getSharedPreferences("playRestSound", Context.MODE_PRIVATE).getBoolean("playRestSound", true)) {
-                    val mediaPlayer = MediaPlayer.create(context, R.raw.chime)
+                    val mediaPlayer = MediaPlayer()
+                    try {
+                        val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("restSound", Context.MODE_PRIVATE).getString("restSound", RingtoneManager.getDefaultUri(R.raw.chime).toString() ))
+                        mediaPlayer.setDataSource(this.requireContext(), myUri)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    try {
+                        mediaPlayer.prepare()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                     mediaPlayer.start()
-//                    val mediaPlayer = MediaPlayer()
-//                    try {
-//                        // mediaPlayer.setDataSource(String.valueOf(myUri));
-//                        val myUri: Uri = Uri.parse("")
-//                        mediaPlayer.setDataSource(this.requireContext(), myUri)
-//                    } catch (e: IOException) {
-//                        e.printStackTrace()
-//                    }
-//                    try {
-//                        mediaPlayer.prepare()
-//                    } catch (e: IOException) {
-//                        e.printStackTrace()
-//                    }
-//                    mediaPlayer.start()
                 }
             }
             .build()
@@ -688,7 +672,18 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         val staticFinishStr = getString(R.string.exercise_time) + " " + exercise.seconds.toString() + " " + getString(R.string.seconds)
                         countDownStatic.text = staticFinishStr
                         if (requireContext().getSharedPreferences("playStaticExerciseFinishSound", Context.MODE_PRIVATE).getBoolean("playStaticExerciseFinishSound", true)) {
-                            val mediaPlayer = MediaPlayer.create(context, R.raw.chime)
+                            val mediaPlayer = MediaPlayer()
+                            try {
+                                val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("staticSound", Context.MODE_PRIVATE).getString("staticSound", RingtoneManager.getDefaultUri(R.raw.chime).toString() ))
+                                mediaPlayer.setDataSource(this.requireContext(), myUri)
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
+                            try {
+                                mediaPlayer.prepare()
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
                             mediaPlayer.start()
                         }
                     }

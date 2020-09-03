@@ -43,7 +43,7 @@
         android:title="@string/playRestSound" />
 
 
-        <Preference android:key="dialog_preference"
+        <Preference android:key="dialog_rest_sound"
             android:title="@string/chooseRestSound"/>
 
         <CheckBoxPreference
@@ -52,6 +52,8 @@
         android:summary="@string/playStaticExerciseFinishSoundDescription"
         android:title="@string/playStaticExerciseFinishSound" />
 
+        <Preference android:key="dialog_static_sound"
+            android:title="@string/chooseRestSound"/>
 </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/programs_settings">

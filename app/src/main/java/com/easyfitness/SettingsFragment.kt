@@ -2,11 +2,9 @@ package com.easyfitness
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -14,7 +12,6 @@ import androidx.preference.PreferenceManager
 import com.fitworkoutfast.MainActivity
 import xyz.aprildown.ultimateringtonepicker.RingtonePickerDialog
 import xyz.aprildown.ultimateringtonepicker.UltimateRingtonePicker
-import java.io.IOException
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private var mActivity: MainActivity? = null
@@ -98,25 +95,41 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val dayNightValue = sharedPreferences.getString("dayNightAuto", "1")
         updateSummary(dayNightModePref, dayNightValue, "")
 
-        val dialogPreference = preferenceScreen.findPreference("dialog_preference") as Preference?
-        if (dialogPreference != null) {
-            dialogPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener { // dialog code here
-                Toast.makeText(requireContext(),"Choose sound", Toast.LENGTH_LONG).show()
-
+        val dialogRestSound = preferenceScreen.findPreference("dialog_rest_sound") as Preference?
+        if (dialogRestSound != null) {
+            dialogRestSound.onPreferenceClickListener = Preference.OnPreferenceClickListener { // dialog code here
                 val settings=createStandardSettings()
                 RingtonePickerDialog.createEphemeralInstance(
                         settings = settings,
-                        dialogTitle = "Dialog",
+                        dialogTitle = "Choose rest finished sound",
                         listener = object : UltimateRingtonePicker.RingtonePickerListener {
                             override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
-                                handleResult(ringtones)
+                                handleResult(ringtones,"restSound")
                             }
                         }
                 ).show(this.childFragmentManager, null)
                 true
             }
         }
+        val dialogStaticSound = preferenceScreen.findPreference("dialog_static_sound") as Preference?
+        if (dialogStaticSound != null) {
+            dialogStaticSound.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val settings=createStandardSettings()
+                RingtonePickerDialog.createEphemeralInstance(
+                    settings = settings,
+                    dialogTitle = "Choose static exercise finish sound",
+                    listener = object : UltimateRingtonePicker.RingtonePickerListener {
+                        override fun onRingtonePicked(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+                            handleResult(ringtones,"staticSound")
+                        }
+                    }
+                ).show(this.childFragmentManager, null)
+                true
+            }
+        }
     }
+
+
     private var currentSelectedRingTones = listOf<UltimateRingtonePicker.RingtoneEntry>()
 
     private fun createStandardSettings(): UltimateRingtonePicker.Settings =
@@ -130,16 +143,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         requireContext(),
                         R.raw.chime
                     ),
-                    defaultTitle = "Default Ringtone",
-                    additionalRingtones = listOf(
-                        UltimateRingtonePicker.RingtoneEntry(
-                            UltimateRingtonePicker.createRawRingtoneUri(requireContext(), R.raw.chime),
-                            "short bip"
-                        )
-                    )
+                    defaultTitle = "Default short sound"
                 ),
                 ringtoneTypes = listOf(
-                    RingtoneManager.TYPE_RINGTONE,
+//                    RingtoneManager.TYPE_RINGTONE,
                     RingtoneManager.TYPE_NOTIFICATION,
                     RingtoneManager.TYPE_ALARM
                 )
@@ -154,24 +161,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             )
         )
 
-    private fun handleResult(ringtones: List<UltimateRingtonePicker.RingtoneEntry>) {
+    private fun handleResult(ringtones: List<UltimateRingtonePicker.RingtoneEntry>, prefName: String) {
         currentSelectedRingTones = ringtones
-//        ringtones.get(0).
-        val mediaPlayer = MediaPlayer()
-        try {
-            // mediaPlayer.setDataSource(String.valueOf(myUri));
-            val myUri: Uri = ringtones.get(0).uri
-            mediaPlayer.setDataSource(this.requireContext(), myUri)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        try {
-            mediaPlayer.prepare()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        mediaPlayer.start()
-        Toast.makeText(requireContext(),ringtones.joinToString(separator = "\n") { it.name },Toast.LENGTH_LONG).show()
+        val myUri: Uri = ringtones[0].uri
+        saveToPreference(prefName, myUri.toString())
     }
 
     private fun updateSummary(pref: ListPreference?, `val`: String?, prefix: String) {
@@ -186,6 +179,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putBoolean(prefName, prefBoolToSet!!)
+        editor.apply()
+    }
+
+    private fun saveToPreference(prefName: String?, prefStringToSet: String) {
+        val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString(prefName, prefStringToSet)
         editor.apply()
     }
 

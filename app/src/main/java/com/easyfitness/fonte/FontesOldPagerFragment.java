@@ -5,10 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-
 import com.easyfitness.R;
 import com.easyfitness.programs.NonSwipeableViewPager;
 import com.easyfitness.programs.ProgramRunner;
@@ -16,7 +12,11 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-public class FontesPagerFragment extends Fragment {
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
+
+public class FontesOldPagerFragment extends Fragment {
     private FragmentPagerItemAdapter pagerAdapter = null;
     //    private String name;
 //    private int id;
@@ -28,8 +28,8 @@ public class FontesPagerFragment extends Fragment {
      * Create a new instance of DetailsFragment, initialized to
      * show the text at 'index'.
      */
-    public static FontesPagerFragment newInstance(String name, int id) {
-        FontesPagerFragment f = new FontesPagerFragment();
+    public static FontesOldPagerFragment newInstance(String name, int id) {
+        FontesOldPagerFragment f = new FontesOldPagerFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -44,10 +44,10 @@ public class FontesPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.programrunner_pager, container, false);
+        View view = inflater.inflate(R.layout.pager, container, false);
 
         // Locate the viewpager in activity_main.xml
-        NonSwipeableViewPager mViewPager = view.findViewById(R.id.programrunner_pager);
+        NonSwipeableViewPager mViewPager = view.findViewById(R.id.pager);
 
         if (mViewPager.getAdapter() == null) {
 
@@ -57,15 +57,15 @@ public class FontesPagerFragment extends Fragment {
 
             pagerAdapter = new FragmentPagerItemAdapter(
                 getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
-                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
-//                .add(R.string.ExerciceLabel, FontesFragment.class)
-//                .add(R.string.GraphLabel, FonteGraphFragment.class, args)
-//                .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
+//                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
+                .add(R.string.ExerciceLabel, FontesFragment.class)
+                .add(R.string.GraphLabel, FonteGraphFragment.class, args)
+                .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
                 .create());
 
             mViewPager.setAdapter(pagerAdapter);
 
-            SmartTabLayout viewPagerTab = view.findViewById(R.id.noviewpagertab);
+            SmartTabLayout viewPagerTab = view.findViewById(R.id.viewpagertab);
             viewPagerTab.setViewPager(mViewPager);
 
             viewPagerTab.setOnPageChangeListener(new OnPageChangeListener() {
@@ -118,7 +118,7 @@ public class FontesPagerFragment extends Fragment {
 //    }
 
     private FragmentPagerItemAdapter getViewPagerAdapter() {
-        return (FragmentPagerItemAdapter) ((ViewPager) (getView().findViewById(R.id.programrunner_pager))).getAdapter();
+        return (FragmentPagerItemAdapter) ((ViewPager) (getView().findViewById(R.id.pager))).getAdapter();
     }
 
     @Override

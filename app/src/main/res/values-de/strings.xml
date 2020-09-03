@@ -308,5 +308,6 @@
     <string name="deleteProgram_confirm_text">Möchten Sie dieses Programm löschen? Alle zugehörigen Übungen in diesem Programm werden gelöscht.</string>
     <string name="renameProgram_error_text2">FEHLER: Dieser Programmname existiert bereits. Es ist nicht möglich, zwei Programme mit demselben Namen zusammenzuführen.</string>
     <string name="app_name">Fites Training schnell</string>
+    <string name="swipeGesturesDescription">Ermöglichen Sie einen schnellen Wechsel der Übungen zum nächsten mit einer Wischgeste.</string>
 </resources>
 

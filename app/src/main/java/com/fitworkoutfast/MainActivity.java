@@ -42,6 +42,7 @@ import com.easyfitness.R;
 import com.easyfitness.SettingsFragment;
 import com.easyfitness.WeightFragment;
 import com.easyfitness.bodymeasures.BodyPartListFragment;
+import com.easyfitness.fonte.FontesOldPagerFragment;
 import com.easyfitness.fonte.FontesPagerFragment;
 import com.easyfitness.intro.MainIntroActivity;
 import com.easyfitness.machines.MachineFragment;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     CustomDrawerAdapter mDrawerAdapter;
     List<DrawerItem> dataList;
     private FontesPagerFragment mpFontesPagerFrag = null;
+    private FontesOldPagerFragment mpFontesOldPagerFrag = null;
     private ProgramsPagerFragment mpProgramPagerFrag = null;
     private WeightFragment mpWeightFrag = null;
     private ProfileFragment mpProfileFrag = null;
@@ -267,6 +269,8 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             if (mpFontesPagerFrag == null)
                 mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6);
+            if (mpFontesPagerFrag == null)
+                mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER+"OLD", 6);
             if (mpWeightFrag == null) mpWeightFrag = WeightFragment.newInstance(WEIGHT, 5);
             if (mpProfileFrag == null) mpProfileFrag = ProfileFragment.newInstance(PROFILE, 10);
             if (mpSettingFrag == null) mpSettingFrag = SettingsFragment.newInstance(SETTINGS, 8);
@@ -276,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
                 mpBodyPartListFrag = BodyPartListFragment.newInstance(BODYTRACKING, 9);
         } else {
             mpFontesPagerFrag = (FontesPagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, FONTESPAGER);
+            mpFontesOldPagerFrag = (FontesOldPagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, FONTESPAGER+"OLD");
             mpWeightFrag = (WeightFragment) getSupportFragmentManager().getFragment(savedInstanceState, WEIGHT);
             mpProfileFrag = (ProfileFragment) getSupportFragmentManager().getFragment(savedInstanceState, PROFILE);
             mpSettingFrag = (SettingsFragment) getSupportFragmentManager().getFragment(savedInstanceState, SETTINGS);
@@ -340,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
         dataList.add(new DrawerItem(this.getResources().getString(R.string.manu_programs), R.drawable.outline_assignment_white_24, true));
         //dataList.add(new DrawerItem(this.getResources().getString(R.string.CardioMenuLabel), R.drawable.ic_running, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.MachinesLabel), R.drawable.ic_gym_bench_50dp, true));
+        dataList.add(new DrawerItem(this.getResources().getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.weightMenuLabel), R.drawable.ic_bathroom_scale_white_50dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.bodytracking), R.drawable.ic_ruler_white_50dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.SettingLabel), R.drawable.ic_settings_white_24dp, true));
@@ -425,6 +431,8 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().putFragment(outState, FONTESPAGER, mpFontesPagerFrag);
         if (getProgramsFragment().isAdded())
             getSupportFragmentManager().putFragment(outState, PROGRAMS, mpProgramPagerFrag);
+        if (getFontesOldPagerFragment().isAdded())
+            getSupportFragmentManager().putFragment(outState, FONTESPAGER+"OLD", mpFontesOldPagerFrag);
         if (getWeightFragment().isAdded())
             getSupportFragmentManager().putFragment(outState, WEIGHT, mpWeightFrag);
         if (getProfileFragment().isAdded())
@@ -741,7 +749,11 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.fragment_container, getFontesPagerFragment(), FONTESPAGER);
         } else if (pFragmentName.equals(PROGRAMS)) {
             ft.replace(R.id.fragment_container, getProgramsFragment(), PROGRAMS);
-        } else if (pFragmentName.equals(WEIGHT)) {
+        }
+        else if (pFragmentName.equals(FONTESPAGER+"OLD")) {
+            ft.replace(R.id.fragment_container, getFontesOldPagerFragment(), FONTESPAGER+"OLD");
+        }
+        else if (pFragmentName.equals(WEIGHT)) {
             ft.replace(R.id.fragment_container, getWeightFragment(), WEIGHT);
         } else if (pFragmentName.equals(SETTINGS)) {
             ft.replace(R.id.fragment_container, getSettingsFragment(), SETTINGS);
@@ -872,6 +884,15 @@ public class MainActivity extends AppCompatActivity {
             mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6);
 
         return mpFontesPagerFrag;
+    }
+
+    private FontesOldPagerFragment getFontesOldPagerFragment() {
+        if (mpFontesOldPagerFrag == null)
+            mpFontesOldPagerFrag = (FontesOldPagerFragment) getSupportFragmentManager().findFragmentByTag(FONTESPAGER+"OLD");
+        if (mpFontesOldPagerFrag == null)
+            mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER+"OLD", 6);
+
+        return mpFontesOldPagerFrag;
     }
 
     private WeightFragment getWeightFragment() {
