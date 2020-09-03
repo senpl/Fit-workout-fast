@@ -362,8 +362,9 @@
     <string name="swipeGesturesSwitch">Swipe gestures</string>
     <string name="swipeGesturesDescription">Allow fast change of exercises to next with swipe gesture.</string>
     <string name="restLabel">Rest</string>
-    <string name="chooseRestSound">Choose rest fiinish sound</string>
+    <string name="chooseRestSound">Choose rest finish sound</string>
     <string name="kg">kg</string>
     <string name="Lbs">Lbs</string>
     <string name="single_exercise_and_results">Results</string>
+    <string name="static_prepare_seconds">Static exercise prepare time always 5 sec.</string>
 </resources>
