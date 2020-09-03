@@ -155,6 +155,103 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
+            <!-- WEIGHT -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/weightCardView"
+                style="@style/CardViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="35"
+                android:visibility="visible"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/poidsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/PoidsLabel" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/poidsEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:minEms="3"
+                            tools:text="10"
+                            android:label="@string/weightLabel"
+                            android:autofillHints="false" />
+
+                        <TextView
+                            android:id="@+id/unitShow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="kg"/>
+                        <!--                        <Spinner-->
+                        <!--                            android:id="@+id/unitSpinner"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:entries="@array/weight_units"-->
+                        <!--                            android:minEms="3" />-->
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/minMaxLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="10"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:text="@string/min" />
+
+                        <TextView
+                            android:id="@+id/minText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            tools:text="40 kg" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="5dp"
+                            android:text="@string/max" />
+
+                        <TextView
+                            android:id="@+id/maxText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            tools:text="80 kg" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <!-- SETS -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/serieCardView"
@@ -255,103 +352,6 @@
                         android:minEms="2"
                         android:textSize="18sp"
                         tools:text="10" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- WEIGHT -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/weightCardView"
-                style="@style/CardViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="35"
-                android:visibility="visible"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/poidsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/PoidsLabel" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/poidsEdit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:inputType="numberDecimal|numberSigned"
-                            android:minEms="3"
-                            tools:text="10"
-                            android:label="@string/weightLabel"
-                            android:autofillHints="false" />
-
-                        <TextView
-                            android:id="@+id/unitShow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="kg"/>
-<!--                        <Spinner-->
-<!--                            android:id="@+id/unitSpinner"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:entries="@array/weight_units"-->
-<!--                            android:minEms="3" />-->
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/minMaxLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="10"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:text="@string/min" />
-
-                        <TextView
-                            android:id="@+id/minText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            tools:text="40 kg" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="5dp"
-                            android:text="@string/max" />
-
-                        <TextView
-                            android:id="@+id/maxText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            tools:text="80 kg" />
-
-                    </LinearLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

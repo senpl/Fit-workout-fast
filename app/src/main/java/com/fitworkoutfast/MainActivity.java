@@ -345,10 +345,10 @@ public class MainActivity extends AppCompatActivity {
         dataList.add(new DrawerItem(this.getResources().getString(R.string.manu_programs), R.drawable.outline_assignment_white_24, true));
         //dataList.add(new DrawerItem(this.getResources().getString(R.string.CardioMenuLabel), R.drawable.ic_running, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.MachinesLabel), R.drawable.ic_gym_bench_50dp, true));
-        dataList.add(new DrawerItem(this.getResources().getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.weightMenuLabel), R.drawable.ic_bathroom_scale_white_50dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.bodytracking), R.drawable.ic_ruler_white_50dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.SettingLabel), R.drawable.ic_settings_white_24dp, true));
+        dataList.add(new DrawerItem(this.getResources().getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true));
         dataList.add(new DrawerItem(this.getResources().getString(R.string.AboutLabel), R.drawable.ic_info_outline_white_24dp, true));
 
         mDrawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
@@ -1065,6 +1065,10 @@ public class MainActivity extends AppCompatActivity {
                     setTitle(getResources().getText(R.string.SettingLabel));
                     break;
                 case 7:
+                    showFragment(FONTESPAGER+"OLD");
+                    setTitle(getResources().getText(R.string.revision_history_label));
+                    break;
+                 case 8:
                     showFragment(ABOUT);
                     setTitle(getResources().getText(R.string.AboutLabel));
                     break;
