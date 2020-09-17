@@ -23,7 +23,7 @@
         android:autofillHints="@string/program_hint" />
     <Button
         android:id="@+id/addProgramButton"
-        style="@style/Widget.AppCompat.Button.AddButton"
+        style="@style/ButtonMain"
         android:text="@string/AddLabel" />
 
     <AutoCompleteTextView

@@ -14,4 +14,7 @@
     <color name="add_button_background">#FFFFFF</color>
     <color name="dark_icon_background">#5E5E5E</color>
     <color name="hint_color">#bababa</color>
+    <color name="colorPrimary">@color/text_color</color>
+    <color name="colorSecondary">#FFFFFF</color>
+
 </resources>

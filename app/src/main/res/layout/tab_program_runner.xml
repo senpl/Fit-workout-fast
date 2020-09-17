@@ -532,7 +532,7 @@
 
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/AddImageButton"
                     android:src="@drawable/ic_previous"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
@@ -548,7 +548,7 @@
 
                 <ImageButton
                     android:id="@+id/failButton"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/AddImageButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -563,7 +563,7 @@
 
                 <ImageButton
                     android:id="@+id/addButton"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/AddImageButton"
                     android:src="@drawable/done_check_green_800_24dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -578,7 +578,7 @@
 
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
-                    style="@style/Widget.AppCompat.Button.AddButton"
+                    style="@style/AddImageButton"
                     android:src="@drawable/ic_next"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"

@@ -519,9 +519,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--            &lt;!&ndash;                android:background="@color/add_button_background"&ndash;&gt;-->
+<!--            android:foreground="@color/add_button_background"-->
+<!--            &lt;!&ndash;                android:shadowColor="@color/add_button_background"&ndash;&gt;-->
+<!--            android:text="@string/AddLabel" />-->
             <Button
                 android:id="@+id/addButton"
-                style="@style/Widget.AppCompat.Button.AddButton"
+                style="@style/ButtonMain"
                 android:text="@string/AddLabel" />
 
             <TextView
