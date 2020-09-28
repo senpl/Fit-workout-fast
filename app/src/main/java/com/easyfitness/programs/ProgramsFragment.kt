@@ -47,8 +47,8 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             Toast.makeText(context, "Enter not empty program name", Toast.LENGTH_LONG).show()
         } else {
             val lDAOProgram = DAOProgram(context)
-            val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
-            lDAOProgram.addRecord(programName, profileId)
+            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+            lDAOProgram.addRecord(programName, profileId!!)
             newProgramName!!.setText("")
             mTableAdapter!!.notifyDataSetChanged()
             refreshData()
@@ -59,7 +59,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         // Get Machine Name selected
         val textViewID = view.findViewById<TextView>(R.id.LIST_Program_ID)
         val programID = java.lang.Long.valueOf(textViewID.text.toString())
-        val programDetailsPager = ProgramDetailsPager.newInstance(programID, (activity as MainActivity?)!!.currentProfile.id)
+        val programDetailsPager = ProgramDetailsPager.newInstance(programID, (activity as MainActivity?)!!.currentProfile?.id)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, programDetailsPager, "ProgramDetails")
         transaction.addToBackStack(null)

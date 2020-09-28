@@ -82,7 +82,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs == null || programs.isEmpty()) {
-            val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
+            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
             requireActivity().supportFragmentManager.commit {
@@ -165,8 +165,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         imageExerciseThumb.setOnClickListener {
             val m = mDbMachine.getMachine(exerciseEdit.text.toString())
             if (m != null) {
-                val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
-                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId)
+                val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId!!)
                 requireActivity().supportFragmentManager.commit {
                     addToBackStack(null)
                     add(R.id.fragment_container, machineDetailsFragment)
