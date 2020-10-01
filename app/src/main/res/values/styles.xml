@@ -15,14 +15,18 @@
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
     </style>
 
-    <style name="ButtonMain" parent="Widget.MaterialComponents.Button">
+    <style name="ButtonMain" parent="@style/Widget.MaterialComponents.Button.TextButton">
+<!--    //parent="Widget.MaterialComponents.Button">-->
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">8dp</item>
         <item name="background">@color/add_button_background</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorAccent">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:backgroundTint">@color/add_button_background</item>
+
+
     </style>
 
     <style name="CardViewStyle" parent="CardView">
@@ -113,13 +117,13 @@
 <!--        <item name="android:background">@color/add_button_background</item>-->
     </style>
 
-    <style name="Widget.AppCompat.Button.AddButton">
+    <style name="Widget.AppCompat.Button.AddButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:backgroundTint">@color/add_button_background</item>
-        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
     <style name="machine_record_title">

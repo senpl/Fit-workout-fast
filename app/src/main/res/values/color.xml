@@ -16,5 +16,5 @@
     <color name="hint_color">#bababa</color>
     <color name="colorPrimary">@color/text_color</color>
     <color name="colorSecondary">#FFFFFF</color>
-
+    <color name="colorAccent">#FFFFFF</color>
 </resources>
