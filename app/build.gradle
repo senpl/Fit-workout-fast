@@ -8,8 +8,8 @@ android {
         applicationId "com.fitworkoutfast"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 51
-        versionName "0.23.01"
+        versionCode 52
+        versionName "0.23.02"
         vectorDrawables.useSupportLibrary = true
     }
 

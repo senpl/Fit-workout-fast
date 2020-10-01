@@ -1,5 +1,4 @@
-[ ] Podmienić na material design co trzeba wg. https://medium.com/androiddevelopers/migrating-to-material-components-for-android-ec6757795351
-[ ] podnieść code version
+[ ] podnieść code version w build.gradle
 [ ] wysłać zmiany do githuba.
 [ ] zbudować podspisaną wersję
 [ ] wgrać wersję do github releases
