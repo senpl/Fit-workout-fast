@@ -135,7 +135,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         exerciseEdit.onItemClickListener = onItemClickFilterList
         notesInExercise.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                updateNote()
+                if(exercisesFromProgram.isNotEmpty()){
+                    updateNote()
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -324,7 +326,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = OnClickListener {
-        if (exerciseEdit.text.toString().isEmpty()) {
+        if (exerciseEdit.text.toString().isEmpty() || exercisesFromProgram.isEmpty()) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
             return@OnClickListener
         }
@@ -450,7 +452,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private val clickFailButton = OnClickListener {
-        exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.red_button_background)
+        if(exercisesFromProgram.isNotEmpty()) {
+            exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.red_button_background)
+        }
     }
 
     private fun runRest(restTime: Int) {
