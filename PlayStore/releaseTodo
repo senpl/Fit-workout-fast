@@ -1,4 +1,5 @@
 [ ] podnieść code version w build.gradle
+[ ] podnieść values/about.xml versie i revision history string
 [ ] wysłać zmiany do githuba.
 [ ] zbudować podspisaną wersję
 [ ] wgrać wersję do github releases https://github.com/senpl/Fit-workout-fast/releases G:\1Proj\fastnfitness\app\release

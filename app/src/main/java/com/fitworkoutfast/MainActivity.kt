@@ -4,12 +4,12 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Environment
 import android.os.Environment.getExternalStorageDirectory
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     private var mpBodyPartListFrag: BodyPartListFragment? = null
     private var currentFragmentName = ""
     private var mDbProfils: DAOProfil? = null
-    lateinit var currentProfile: Profile
+    var currentProfile: Profile? = null
         private set
     private var mCurrentProfilID: Long = -1
     private var m_importCVSchosenDir = ""
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     private val onMenuItemClick = PopupMenu.OnMenuItemClickListener { item: MenuItem ->
         when (item.itemId) {
             R.id.create_newprofil -> {
-                activity.CreateNewProfil()
+                activity.createNewProfil()
                 return@OnMenuItemClickListener true
             }
             R.id.photo_profil -> {
@@ -164,13 +164,13 @@ class MainActivity : AppCompatActivity() {
             == PackageManager.PERMISSION_GRANTED) {
 
             /* creation de l'arborescence de l'application */
-            var folder = File(getExternalStorageDirectory().toString() + "/FastnFitness")
+            var folder = File(getExternalStorageDirectory().toString() + "/FitWorkoutFast")
             var success = true
             if (!folder.exists()) {
                 success = folder.mkdir()
             }
             if (success) {
-                folder = File(getExternalStorageDirectory().toString() + "/FastnFitness/crashreport")
+                folder = File(getExternalStorageDirectory().toString() + "/FitWorkoutFast/crashreport")
                 success = folder.mkdir()
                 if (!success) {
                     Toast.makeText(baseContext, "Folder creation failed", Toast.LENGTH_LONG).show()
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
             }
             if (folder.exists()) {
                 if (Thread.getDefaultUncaughtExceptionHandler() !is CustomExceptionHandler) {
-                    Thread.setDefaultUncaughtExceptionHandler(CustomExceptionHandler(getExternalStorageDirectory().toString() + "/FastnFitness/crashreport"))
+                    Thread.setDefaultUncaughtExceptionHandler(CustomExceptionHandler(getExternalStorageDirectory().toString() + "/FitWorkoutFast/crashreport"))
                 }
             }
         }
@@ -311,8 +311,8 @@ class MainActivity : AppCompatActivity() {
             initActivity()
             initDEBUGdata()
         }
-        val SP = PreferenceManager.getDefaultSharedPreferences(baseContext)
-        val bShowMP3 = SP.getBoolean("prefShowMP3", false)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        val bShowMP3 = sharedPreferences.getBoolean("prefShowMP3", false)
         showMP3Toolbar(bShowMP3)
     }
 
@@ -524,7 +524,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun CreateNewProfil(): Boolean {
+    fun createNewProfil(): Boolean {
         val newProfilBuilder = AlertDialog.Builder(this)
         newProfilBuilder.setTitle(activity.resources.getText(R.string.createProfilTitle))
         newProfilBuilder.setMessage(activity.resources.getText(R.string.createProfilQuestion))
@@ -536,7 +536,7 @@ class MainActivity : AppCompatActivity() {
         newProfilBuilder.setPositiveButton(activity.resources.getText(R.string.global_ok)) { _: DialogInterface?, _: Int ->
             val value = input.text.toString()
             if (value.isEmpty()) {
-                CreateNewProfil()
+                createNewProfil()
             } else {
                 // Create the new profil
                 mDbProfils!!.addProfil(value)
@@ -546,14 +546,14 @@ class MainActivity : AppCompatActivity() {
         }
         newProfilBuilder.setNegativeButton(activity.resources.getText(R.string.global_cancel)) { _: DialogInterface?, _: Int ->
             if (currentProfile == null) {
-                CreateNewProfil()
+                createNewProfil()
             }
         }
         newProfilBuilder.show()
         return true
     }
 
-    fun renameProfil(): Boolean {
+    private fun renameProfil(): Boolean {
         val newBuilder = AlertDialog.Builder(this)
         newBuilder.setTitle(activity.resources.getText(R.string.renameProfilTitle))
         newBuilder.setMessage(activity.resources.getText(R.string.renameProfilQuestion))
@@ -651,7 +651,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //@SuppressLint("RestrictedApi")
-    fun setCurrentProfil(newProfilName: String?) {
+    private fun setCurrentProfil(newProfilName: String?) {
         val newProfil = mDbProfils!!.getProfil(newProfilName)
         setCurrentProfil(newProfil)
     }
@@ -713,27 +713,29 @@ class MainActivity : AppCompatActivity() {
     private fun savePreferences() {
         // Restore preferences
         val settings = getSharedPreferences(PREFS_NAME, 0)
-        val editor = settings.edit()
-        if (currentProfile != null) editor.putLong("currentProfil", currentProfile!!.id)
+        val editor :SharedPreferences.Editor = settings.edit()
+        if (currentProfile != null) {
+            editor.putLong("currentProfil", currentProfile!!.id).apply()
+        }
         editor.putBoolean("intro014Launched", mIntro014Launched)
         editor.putBoolean("migrationBD15done", mMigrationBD15done)
         editor.apply()
     }
 
     private val fontesPagerFragment: FontesPagerFragment?
-        private get() {
+        get() {
             if (mpFontesPagerFrag == null) mpFontesPagerFrag = supportFragmentManager.findFragmentByTag(FONTESPAGER) as FontesPagerFragment?
             if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6)
             return mpFontesPagerFrag
         }
     private val fontesOldPagerFragment: FontesOldPagerFragment?
-        private get() {
+        get() {
             if (mpFontesOldPagerFrag == null) mpFontesOldPagerFrag = supportFragmentManager.findFragmentByTag(FONTESPAGER + "OLD") as FontesOldPagerFragment?
             if (mpFontesOldPagerFrag == null) mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER + "OLD", 6)
             return mpFontesOldPagerFrag
         }
     private val weightFragment: WeightFragment?
-        private get() {
+        get() {
             if (mpWeightFrag == null) mpWeightFrag = supportFragmentManager.findFragmentByTag(WEIGHT) as WeightFragment?
             if (mpWeightFrag == null) mpWeightFrag = WeightFragment.newInstance(WEIGHT, 5)
             return mpWeightFrag
@@ -745,31 +747,31 @@ class MainActivity : AppCompatActivity() {
             return mpProgramPagerFrag!!
         }
     private val profileFragment: ProfileFragment?
-        private get() {
+        get() {
             if (mpProfileFrag == null) mpProfileFrag = supportFragmentManager.findFragmentByTag(PROFILE) as ProfileFragment?
             if (mpProfileFrag == null) mpProfileFrag = ProfileFragment.newInstance(PROFILE, 10)
             return mpProfileFrag
         }
     private val machineFragment: MachineFragment?
-        private get() {
+        get() {
             if (mpMachineFrag == null) mpMachineFrag = supportFragmentManager.findFragmentByTag(MACHINES) as MachineFragment?
             if (mpMachineFrag == null) mpMachineFrag = MachineFragment.newInstance(MACHINES, 7)
             return mpMachineFrag
         }
     private val aboutFragment: AboutFragment?
-        private get() {
+        get() {
             if (mpAboutFrag == null) mpAboutFrag = supportFragmentManager.findFragmentByTag(ABOUT) as AboutFragment?
             if (mpAboutFrag == null) mpAboutFrag = AboutFragment.newInstance(ABOUT, 6)
             return mpAboutFrag
         }
     private val bodyPartFragment: BodyPartListFragment?
-        private get() {
+        get() {
             if (mpBodyPartListFrag == null) mpBodyPartListFrag = supportFragmentManager.findFragmentByTag(BODYTRACKING) as BodyPartListFragment?
             if (mpBodyPartListFrag == null) mpBodyPartListFrag = BodyPartListFragment.newInstance(BODYTRACKING, 9)
             return mpBodyPartListFrag
         }
     private val settingsFragment: SettingsFragment
-        private get() {
+        get() {
             if (mpSettingFrag == null) mpSettingFrag = supportFragmentManager.findFragmentByTag(SETTINGS) as SettingsFragment?
             if (mpSettingFrag == null) mpSettingFrag = SettingsFragment.newInstance(SETTINGS, 8)
             return mpSettingFrag!!
@@ -836,7 +838,7 @@ class MainActivity : AppCompatActivity() {
                 val lList = mDbProfils!!.allProfils
                 currentProfile = lList[0]
             } catch (e: IndexOutOfBoundsException) {
-                CreateNewProfil()
+                createNewProfil()
             }
         }
         if (currentProfile != null) setCurrentProfil(currentProfile!!.name)

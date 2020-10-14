@@ -56,7 +56,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs == null || programs!!.isEmpty()) {
-            val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
+            val profileId: Long = (requireActivity() as MainActivity).currentProfile!!.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
             requireActivity().supportFragmentManager.commit {
@@ -122,7 +122,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         exerciseImage.setOnClickListener {
             val m = mDbMachine.getMachine(exerciseEdit.text.toString())
             if (m != null) {
-                val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
+                val profileId: Long = (requireActivity() as MainActivity).currentProfile!!.id
                 val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId)
                 requireActivity().supportFragmentManager.commit {
                     addToBackStack(null)
@@ -238,7 +238,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     exerciseEdit.text.toString(),
                     TYPE_FONTE, seriesEdit.text.toString().toInt(), repetitionEdit.text.toString().toInt(),
                     tmpPoids,  // Always save in KG
-                    profil, unitPoids,  // Store Unit for future display
+                    profil!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
                     "", 0f, 0, 0, 0
                 )
@@ -273,7 +273,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     programId,
                     restTime,
                     exerciseEdit.text.toString(), TYPE_STATIC, seriesEdit.text.toString().toInt(),
-                    1, tmpPoids, profil, unitPoids,  // Store Unit for future display
+                    1, tmpPoids, profil!!, unitPoids,  // Store Unit for future display
                     "", "", 0F, 0, secondsEdit.text.toString().toInt(), 0
                 )
                 if (mDbMachine.getMachine(exerciseEdit.text.toString()) == null)
@@ -318,7 +318,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     TYPE_CARDIO,
                     1,
                     1, 0f,
-                    profil,
+                    profil!!,
                     1,
                     "",
                     "",
@@ -479,7 +479,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     val fragment: ExercisesInProgramFragment
         get() = this
 
-    private val profil: Profile
+    private val profil: Profile?
         get() = mainActivity.currentProfile
 
     val machine: String
