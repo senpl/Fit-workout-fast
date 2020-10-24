@@ -317,6 +317,6 @@
     <string name="sound_settings">Nastavení zvuku</string>
     <string name="deleteProgram_confirm_text">Chcete tento program smazat? Všechna související cvičení v tomto programu budou vymazána.</string>
     <string name="renameProgram_error_text2">CHYBA: Tento název programu již existuje. Není možné sloučit dva programy se stejným názvem.</string>
-    <string name="app_name">Přizpůsobte cvičení rychle</string>
+    <string name="app_name">Workouts\'N\'Rest</string>
 
 </resources>

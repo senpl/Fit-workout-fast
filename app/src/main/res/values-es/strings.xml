@@ -206,7 +206,7 @@
     <string name="name_or_pseudo">Nome / seudónimo</string>
     <string name="name_is_required">Nombre es requerido</string>
     <string name="create_a_profile">Crear un perfil</string>
-    <string name="introSlide1Text">Bienvenido a Fit entrenamiento rápido! Aplicación para entrenar rápido con conteo automático de descanso.</string>
+    <string name="introSlide1Text">Bienvenido a Workouts\'N\'Rest! Aplicación para entrenar rápido con conteo automático de descanso.</string>
     <string name="introSlide2Text">En el programa de entrenamiento puedes cambiar fácilmente los ejercicios. El ejercicio también podría cambiar después de tu descanso definido.</string>
     <string name="introSlide2Title">Cambia fácilmente los ejercicios con botones o gestos</string>
     <string name="titleSlideEssential">Vamos a los escencial</string>
@@ -317,7 +317,7 @@
     <string name="sound_settings">Ajustes de sonido</string>
     <string name="deleteProgram_confirm_text">¿Quieres eliminar este programa? Todo el ejercicio asociado en ese programa será eliminado.</string>
     <string name="renameProgram_error_text2">ERROR: este nombre de programa ya existe. No es posible fusionar dos programas con el mismo nombre.</string>
-    <string name="app_name">Entrenamiento rápido</string>
+    <string name="app_name">Workouts\'N\'Rest</string>
     <string name="swipeGesturesDescription">Permita un cambio rápido de ejercicios al siguiente con un gesto de deslizamiento.</string>
 
 </resources>

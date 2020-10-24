@@ -11,7 +11,7 @@
     <string name="removedid">Removed ID</string>
     <string name="failedtocreatefolder">Failed to create folder</string>
 
-    <string name="app_name">Fit workout fast</string>
+    <string name="app_name">Workouts\'N\'Rest</string>
     <string name="action_settings">Settings</string>
     <string name="DateLabel">Date</string>
 
@@ -224,7 +224,7 @@
     <string name="name_or_pseudo">Name / pseudonym</string>
     <string name="name_is_required">Name is required</string>
     <string name="create_a_profile">Create a profile</string>
-    <string name="introSlide1Text">Welcome to Fit workout fast! App to training fast with automatic rest count.</string>
+    <string name="introSlide1Text">Welcome to Workouts\'N\'Rest! App to training fast with automatic rest count.</string>
     <string name="introSlide2Text">In training program you could easly change exercises. Exercise could also change after your defined rest.</string>
     <string name="introSlide2Title">Easily change exercises with buttons or gestures</string>
     <string name="titleSlideEssential">Go to the essential</string>

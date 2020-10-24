@@ -217,7 +217,7 @@
     <string name="name_or_pseudo">Naam / pseudoniem</string>
     <string name="name_is_required">Naam is vereist</string>
     <string name="create_a_profile">Maak een profel aan</string>
-    <string name="introSlide1Text">Welkom bij Fit workout snel! App om snel te trainen met automatische rusttelling.</string>
+    <string name="introSlide1Text">Welkom bij Workouts\'N\'Rest! App om snel te trainen met automatische rusttelling.</string>
     <string name="introSlide2Title">Verander eenvoudig oefeningen met knoppen of gebaren</string>
     <string name="titleSlideEssential">ga naar de essentials</string>
     <string name="textSlideEssential">Voeg programma toe of bewerk bestaande. Voeg vervolgens oefening toe aan het programma. Nu tijdens de training wordt uw programma uitgevoerd.</string>
@@ -327,7 +327,7 @@
     <string name="sound_settings">Geluidsinstellingen</string>
     <string name="deleteProgram_confirm_text">Wil je dit programma verwijderen? Alle bijbehorende oefeningen in dat programma worden verwijderd.</string>
     <string name="renameProgram_error_text2">FOUT: deze programmanaam bestaat al. Het is niet mogelijk om twee programma\'s met dezelfde naam samen te voegen.</string>
-    <string name="app_name">Fit training snel</string>
+    <string name="app_name">Workouts\'N\'Rest</string>
 
 </resources>
 

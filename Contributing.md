@@ -1,8 +1,8 @@
-# Contributor's Guide for Fit workout fast.
+# Contributor's Guide for Workouts'N'Rest.
 
-This is the contributor's guide for Fit workout fast. In the event that this document was opened intentionally by you, it means you are keen on adding value to Fit workout fast, and that is extremely stunning!.
+This is the contributor's guide for Workouts'N'Rest. In the event that this document was opened intentionally by you, it means you are keen on adding value to Workouts'N'Rest, and that is extremely stunning!.
 
-Fit workout fast is a completely open sourced project. This means that our source code is available to anyone to use, modify, and redistribute within the confines of the [license](https://github.com/senpl/Fit-workout-fast/blob/master/LICENSE).
+Workouts'N'Rest is a completely open sourced project. This means that our source code is available to anyone to use, modify, and redistribute within the confines of the [license](https://github.com/senpl/Fit-workout-fast/blob/master/LICENSE).
 Furthermore, being an open source project means it is available for collaborative development, and we are more than excited to have you contribute towards the advancement of this project any way you can.
 
 We are always excited to receive contributions ranging from use-cases, documentation, code, patches, bug reports, feature requests & enhancements, etc. We do not restrict contributions to programmers, therefore, you do not need to be a programmer to share your ideas about the project. We consider every contribution valuable.
@@ -125,7 +125,7 @@ Here's a detailed content on how to [Create a pull request](https://help.github.
 
 Simply put, the way to create a Pull request is first;
 
-1. Fork the repository of the project which in this case is [Fit workout fast](https://github.com/senpl/Fit-workout-fast)
+1. Fork the repository of the project which in this case is [Workouts'N'Rest](https://github.com/senpl/Fit-workout-fast)
 2. Commit modifications and changes to your fork
 3. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to the original repository you forked your repository from in step 1
 
@@ -136,4 +136,4 @@ For further inquiries, you can contact the developer by opening an [issue](https
 
 You can also check out the developer's profile [here](https://github.com/brodeurlv).
 
-Thank you for your interest in contributing to Fit workout fast. I appreciate all the help with finding and fixing bugs, making performance improvements, and other tasks. Every contribution is helpful and I thank you for your effort.
+Thank you for your interest in contributing to Workouts'N'Rest. I appreciate all the help with finding and fixing bugs, making performance improvements, and other tasks. Every contribution is helpful and I thank you for your effort.
