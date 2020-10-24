@@ -108,6 +108,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             programId = program.id
                             currentExerciseOrder = 0
                             exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(programId)
+                            if(exercisesFromProgram.isEmpty()){
+                                Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
+                                requireActivity().supportFragmentManager.commit {
+                                    addToBackStack(null)
+                                    val profileId: Int = (requireActivity() as MainActivity).currentProfile?.id?.toInt()!!
+                                    val programsFragment = ExercisesInProgramFragment.newInstance("", profileId)
+                                    add(R.id.fragment_container, programsFragment)
+                                }
+                            }
                             exerciseIndicator.initDots(exercisesFromProgram.size)
                             exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
                             exerciseIndicator.setDotSelection(currentExerciseOrder)
@@ -125,6 +134,20 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
         swipeDetectorListener = SwipeDetectorListener(this)
+        mDbMachine = DAOMachine(context)
+        selectedType = TYPE_FONTE
+        imageExerciseThumb.setOnClickListener {
+            val m = mDbMachine.getMachine(exerciseEdit.text.toString())
+            if (m != null) {
+                val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId!!)
+                requireActivity().supportFragmentManager.commit {
+                    addToBackStack(null)
+                    add(R.id.fragment_container, machineDetailsFragment)
+                }
+            }
+        }
+
         nextExerciseArrow.setOnClickListener(clickArrows)
         previousExerciseArrow.setOnClickListener(clickArrows)
         addButton.setOnClickListener(clickAddButton)
@@ -133,16 +156,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         durationEdit.setOnClickListener(clickDateEdit)
         exerciseEdit.setOnKeyListener(checkExerciseExists)
         exerciseEdit.onItemClickListener = onItemClickFilterList
-        notesInExercise.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                if(exercisesFromProgram.isNotEmpty()){
-                    updateNote()
-                }
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
         restTimeEdit.onFocusChangeListener = restTimeEditChange
         restoreSharedParams()
         var weightUnit = UnitConverter.UNIT_KG
@@ -162,17 +176,53 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
         unitDistanceSpinner.setSelection(distanceUnit)
 
-        mDbMachine = DAOMachine(context)
-        selectedType = TYPE_FONTE
-        imageExerciseThumb.setOnClickListener {
-            val m = mDbMachine.getMachine(exerciseEdit.text.toString())
-            if (m != null) {
-                val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
-                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId!!)
-                requireActivity().supportFragmentManager.commit {
-                    addToBackStack(null)
-                    add(R.id.fragment_container, machineDetailsFragment)
+        val poidsEditChange = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
+            if (!hasFocus) {
+                saveWeight.visibility = VISIBLE
+            }
+        }
+        poidsEdit.onFocusChangeListener=poidsEditChange
+        saveWeight.setOnClickListener {
+            try{
+                val weightToUpdate = poidsEdit.text.toString()
+                val weightTStore = weightToUpdate.toFloat()
+                if(exercisesFromProgram.isNotEmpty()){
+                    daoExerciseInProgram.updateString(exercisesFromProgram[currentExerciseOrder], DAOExerciseInProgram.WEIGHT, weightTStore.toString())
+                    Toast.makeText(context, getString(R.string.saved_into_program) + " " +weightTStore, Toast.LENGTH_SHORT).show()
+                    saveWeight.visibility = GONE
                 }
+            } catch (e: NumberFormatException) {
+                Timber.d("Not saved")
+            }
+        }
+
+        notesInExercise.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if(exercisesFromProgram.isNotEmpty()){
+                    updateNote()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        val repsEditChange = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
+            if (!hasFocus) {
+                saveReps.visibility = VISIBLE
+            }
+        }
+        repsPicker.onFocusChangeListener=repsEditChange
+        saveReps.setOnClickListener {
+            try{
+                val repsToUpdate = repsPicker.progress.toString()
+                if(exercisesFromProgram.isNotEmpty()){
+                    daoExerciseInProgram.updateString(exercisesFromProgram[currentExerciseOrder], DAOExerciseInProgram.REPETITION, repsToUpdate)
+                    Toast.makeText(context, getString(R.string.saved_into_program) + " " +repsToUpdate, Toast.LENGTH_SHORT).show()
+                    saveReps.visibility = GONE
+                }
+            } catch (e: NumberFormatException) {
+                Timber.d("Not saved")
             }
         }
 

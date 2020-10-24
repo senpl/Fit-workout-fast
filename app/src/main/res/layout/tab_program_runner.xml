@@ -184,29 +184,41 @@
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal">
 
+
                         <EditText
                             android:id="@+id/poidsEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:autofillHints="false"
                             android:gravity="center"
                             android:inputType="numberDecimal|numberSigned"
-                            android:minEms="3"
-                            tools:text="10"
-                            tools:labelFor="@id/weightCardView"
                             android:label="@string/weightLabel"
-                            android:autofillHints="false" />
+                            android:minEms="3"
+                            tools:labelFor="@id/weightCardView"
+                            tools:text="10" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="vertical">
+                        <ImageButton
+                            android:id="@+id/saveWeight"
+                            android:visibility="gone"
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:contentDescription="@string/SaveWeightLabel"
+                            android:src="@drawable/baseline_save_yellow_a200_24dp"
+                            android:text="@string/SaveWeightLabel"
+                             />
 
                         <TextView
                             android:id="@+id/unitShow"
+                            android:gravity="bottom"
+                            android:layout_gravity="bottom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="kg"/>
-                        <!--                        <Spinner-->
-                        <!--                            android:id="@+id/unitSpinner"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:entries="@array/weight_units"-->
-                        <!--                            android:minEms="3" />-->
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -320,6 +332,15 @@
                         app:picker_orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/saveReps"
+                        android:visibility="gone"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:contentDescription="@string/SaveRepsLabel"
+                        android:src="@drawable/baseline_save_yellow_a200_24dp"
+                        android:text="@string/SaveRepsLabel"
+                        />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

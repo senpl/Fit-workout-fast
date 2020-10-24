@@ -369,4 +369,7 @@
     <string name="single_exercise_and_results">Results</string>
     <string name="static_prepare_seconds">Static exercise prepare time always 5 sec.</string>
     <string name="anonymous">Default</string>
+    <string name="SaveWeightLabel">save weight into program</string>
+    <string name="saved_into_program">Saved into program</string>
+    <string name="SaveRepsLabel">Save reps into program</string>
 </resources>
