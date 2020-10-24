@@ -372,4 +372,5 @@
     <string name="SaveWeightLabel">save weight into program</string>
     <string name="saved_into_program">Saved into program</string>
     <string name="SaveRepsLabel">Save reps into program</string>
+    <string name="add_exercise_to_program_first">Add exercise to program first</string>
 </resources>

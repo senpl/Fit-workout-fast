@@ -108,13 +108,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             programId = program.id
                             currentExerciseOrder = 0
                             exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(programId)
-                            if(exercisesFromProgram.isEmpty()){
-                                Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
-                                val transaction= requireActivity().supportFragmentManager.beginTransaction()
+                            if (exercisesFromProgram.isEmpty()) {
+                                val transaction = requireActivity().supportFragmentManager.beginTransaction()
                                 val profileId: Int = (requireActivity() as MainActivity).currentProfile?.id?.toInt()!!
-                                val programsFragment = ExercisesInProgramFragment.newInstance("", profileId)
-                                transaction.replace(R.id.fragment_container,programsFragment)
+                                val programsFragment = ProgramsPagerFragment.newInstance("", profileId)
+                                transaction.replace(R.id.fragment_container, programsFragment)
                                 transaction.commit()
+                                Toast.makeText(context, R.string.add_exercise_to_program_first, Toast.LENGTH_LONG).show()
                             }
                             exerciseIndicator.initDots(exercisesFromProgram.size)
                             exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
@@ -163,9 +163,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         } catch (e: NumberFormatException) {
             Timber.d("Not important")
         }
-        unitShow.text=getString(R.string.kg)
-        if(weightUnit==UnitConverter.UNIT_LBS)
-            unitShow.text=getString(R.string.Lbs)
+        unitShow.text = getString(R.string.kg)
+        if (weightUnit == UnitConverter.UNIT_LBS)
+            unitShow.text = getString(R.string.Lbs)
         val distanceUnit: Int
         distanceUnit = try {
             sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
@@ -179,14 +179,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 saveWeight.visibility = VISIBLE
             }
         }
-        poidsEdit.onFocusChangeListener=poidsEditChange
+        poidsEdit.onFocusChangeListener = poidsEditChange
         saveWeight.setOnClickListener {
-            try{
+            try {
                 val weightToUpdate = poidsEdit.text.toString()
                 val weightTStore = weightToUpdate.toFloat()
-                if(exercisesFromProgram.isNotEmpty()){
+                if (exercisesFromProgram.isNotEmpty()) {
                     daoExerciseInProgram.updateString(exercisesFromProgram[currentExerciseOrder], DAOExerciseInProgram.WEIGHT, weightTStore.toString())
-                    Toast.makeText(context, getString(R.string.saved_into_program) + " " +weightTStore, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.saved_into_program) + " " + weightTStore, Toast.LENGTH_SHORT).show()
                     saveWeight.visibility = GONE
                 }
             } catch (e: NumberFormatException) {
@@ -196,7 +196,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
         notesInExercise.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(exercisesFromProgram.isNotEmpty()){
+                if (exercisesFromProgram.isNotEmpty()) {
                     updateNote()
                 }
             }
@@ -210,13 +210,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 saveReps.visibility = VISIBLE
             }
         }
-        repsPicker.onFocusChangeListener=repsEditChange
+        repsPicker.onFocusChangeListener = repsEditChange
         saveReps.setOnClickListener {
-            try{
+            try {
                 val repsToUpdate = repsPicker.progress.toString()
-                if(exercisesFromProgram.isNotEmpty()){
+                if (exercisesFromProgram.isNotEmpty()) {
                     daoExerciseInProgram.updateString(exercisesFromProgram[currentExerciseOrder], DAOExerciseInProgram.REPETITION, repsToUpdate)
-                    Toast.makeText(context, getString(R.string.saved_into_program) + " " +repsToUpdate, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.saved_into_program) + " " + repsToUpdate, Toast.LENGTH_SHORT).show()
                     saveReps.visibility = GONE
                 }
             } catch (e: NumberFormatException) {
@@ -500,7 +500,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private val clickFailButton = OnClickListener {
-        if(exercisesFromProgram.isNotEmpty()) {
+        if (exercisesFromProgram.isNotEmpty()) {
             exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.red_button_background)
         }
     }
@@ -528,7 +528,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 if (requireContext().getSharedPreferences("playRestSound", Context.MODE_PRIVATE).getBoolean("playRestSound", true)) {
                     val mediaPlayer = MediaPlayer()
                     try {
-                        val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("restSound", Context.MODE_PRIVATE).getString("restSound", RingtoneManager.getDefaultUri(R.raw.chime).toString() ))
+                        val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("restSound", Context.MODE_PRIVATE).getString("restSound", RingtoneManager.getDefaultUri(R.raw.chime).toString()))
                         mediaPlayer.setDataSource(this.requireContext(), myUri)
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -711,11 +711,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
             TYPE_STATIC -> {
                 imageExerciseThumb.setImageResource(R.drawable.ic_static)
-                val staticPrepareTime=5
-                staticFillBackgroundProgress.setDuration(((exercise.seconds+staticPrepareTime) * progressScaleFix).toLong())
+                val staticPrepareTime = 5
+                staticFillBackgroundProgress.setDuration(((exercise.seconds + staticPrepareTime) * progressScaleFix).toLong())
                 staticTimer = Rx2Timer.builder()
                     .initialDelay(0)
-                    .take(exercise.seconds+staticPrepareTime)
+                    .take(exercise.seconds + staticPrepareTime)
                     .onEmit { count ->
                         staticFillBackgroundProgress.setProgress(count.toInt() * progressScaleFix)
                         countDownStatic.text = getString(R.string.count_string, count)
@@ -727,7 +727,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         if (requireContext().getSharedPreferences("playStaticExerciseFinishSound", Context.MODE_PRIVATE).getBoolean("playStaticExerciseFinishSound", true)) {
                             val mediaPlayer = MediaPlayer()
                             try {
-                                val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("staticSound", Context.MODE_PRIVATE).getString("staticSound", RingtoneManager.getDefaultUri(R.raw.chime).toString() ))
+                                val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("staticSound", Context.MODE_PRIVATE).getString("staticSound", RingtoneManager.getDefaultUri(R.raw.chime).toString()))
                                 mediaPlayer.setDataSource(this.requireContext(), myUri)
                             } catch (e: IOException) {
                                 e.printStackTrace()
@@ -869,14 +869,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (lLastRecord != null) {
             if (lLastRecord.type == TYPE_FONTE) {
                 val lLastBodyBuildingRecord = lLastRecord as Fonte
-                if(lLastBodyBuildingRecord.serie>1){ //only show when more then one to keep interface clean
-                    serieCardView.visibility=VISIBLE
+                if (lLastBodyBuildingRecord.serie > 1) { //only show when more then one to keep interface clean
+                    serieCardView.visibility = VISIBLE
                 }
                 seriesEdit.setText(lLastBodyBuildingRecord.serie.toString())
                 repsPicker.progress = lLastBodyBuildingRecord.repetition
-                unitShow.text="kg"
-                if(lLastBodyBuildingRecord.unit==UnitConverter.UNIT_LBS)
-                    unitShow.text="Lbs"
+                unitShow.text = "kg"
+                if (lLastBodyBuildingRecord.unit == UnitConverter.UNIT_LBS)
+                    unitShow.text = "Lbs"
                 val numberFormat = DecimalFormat("#.##")
                 if (lLastBodyBuildingRecord.unit == UnitConverter.UNIT_LBS) poidsEdit.setText(numberFormat.format(UnitConverter.KgtoLbs(lLastBodyBuildingRecord.poids).toDouble())) else poidsEdit.setText(numberFormat.format(lLastBodyBuildingRecord.poids.toDouble()))
             } else if (lLastRecord.type == TYPE_CARDIO) {
@@ -889,9 +889,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 val lLastStaticRecord = lLastRecord as StaticExercise
                 seriesEdit.setText(lLastStaticRecord.serie.toString())
                 secondsEdit.setText(lLastStaticRecord.second.toString())
-                unitShow.text="kg"
-                if(lLastStaticRecord.unit==UnitConverter.UNIT_LBS)
-                    unitShow.text="Lbs"
+                unitShow.text = "kg"
+                if (lLastStaticRecord.unit == UnitConverter.UNIT_LBS)
+                    unitShow.text = "Lbs"
                 val numberFormat = DecimalFormat("#.##")
                 if (lLastStaticRecord.unit == UnitConverter.UNIT_LBS) poidsEdit.setText(numberFormat.format(UnitConverter.KgtoLbs(lLastStaticRecord.poids).toDouble())) else poidsEdit.setText(numberFormat.format(lLastStaticRecord.poids.toDouble()))
             }
