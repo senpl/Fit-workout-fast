@@ -110,12 +110,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(programId)
                             if(exercisesFromProgram.isEmpty()){
                                 Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
-                                requireActivity().supportFragmentManager.commit {
-                                    addToBackStack(null)
-                                    val profileId: Int = (requireActivity() as MainActivity).currentProfile?.id?.toInt()!!
-                                    val programsFragment = ExercisesInProgramFragment.newInstance("", profileId)
-                                    add(R.id.fragment_container, programsFragment)
-                                }
+                                val transaction= requireActivity().supportFragmentManager.beginTransaction()
+                                val profileId: Int = (requireActivity() as MainActivity).currentProfile?.id?.toInt()!!
+                                val programsFragment = ExercisesInProgramFragment.newInstance("", profileId)
+                                transaction.replace(R.id.fragment_container,programsFragment)
+                                transaction.commit()
                             }
                             exerciseIndicator.initDots(exercisesFromProgram.size)
                             exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
@@ -147,7 +146,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 }
             }
         }
-
         nextExerciseArrow.setOnClickListener(clickArrows)
         previousExerciseArrow.setOnClickListener(clickArrows)
         addButton.setOnClickListener(clickAddButton)
@@ -943,6 +941,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun changeExerciseTypeUI(pType: Int) {
+        saveWeight.visibility = GONE
+        saveReps.visibility = GONE
         when (pType) {
             TYPE_CARDIO -> {
                 serieCardView.visibility = GONE

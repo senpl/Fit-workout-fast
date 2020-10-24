@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import java.text.DecimalFormat
+import kotlin.math.abs
 
 /*
 * The Android chronometer widget revised so as to count milliseconds
@@ -59,10 +60,10 @@ import java.text.DecimalFormat
         updateRunning()
     }
 
-    fun setStarted(started: Boolean) {
-        mStarted = started
-        updateRunning()
-    }
+//    fun setStarted(started: Boolean) {
+//        mStarted = started
+//        updateRunning()
+//    }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
@@ -83,19 +84,19 @@ import java.text.DecimalFormat
         val hours = (timeElapsed / (3600 * 1000)).toInt()
         var remaining = (timeElapsed % (3600 * 1000)).toInt()
         val minutes = remaining / (60 * 1000)
-        remaining = remaining % (60 * 1000)
+        remaining %= (60 * 1000)
         val seconds = remaining / 1000
-        remaining = remaining % 1000
+//        remaining = remaining % 1000
         var milliseconds = 0
         if (mPreciseClock) {
             milliseconds = timeElapsed.toInt() % 1000 / 100
         }
         var text: String? = ""
         if (hours > 0) {
-            text += df.format(Math.abs(hours).toLong()) + ":"
+            text += df.format(abs(hours).toLong()) + ":"
         }
-        text += df.format(Math.abs(minutes).toLong()) + ":"
-        text += df.format(Math.abs(seconds).toLong())
+        text += df.format(abs(minutes).toLong()) + ":"
+        text += df.format(abs(seconds).toLong())
         if (mPreciseClock) text += ":$milliseconds"
         setText(text)
     }
@@ -131,7 +132,7 @@ import java.text.DecimalFormat
     }
 
     companion object {
-        private const val TAG = "Chronometer"
+//        private const val TAG = "Chronometer"
         private const val TICK_WHAT = 2
     }
 

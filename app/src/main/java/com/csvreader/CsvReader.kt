@@ -896,7 +896,6 @@ class CsvReader {
         }
         values[columnCount] = currentValue
         isQualified!![columnCount] = startedWithQualifier
-        currentValue = ""
         columnCount++
     }
 
