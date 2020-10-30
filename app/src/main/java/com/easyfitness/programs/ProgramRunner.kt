@@ -108,14 +108,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             programId = program.id
                             currentExerciseOrder = 0
                             exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(programId)
-                            if (exercisesFromProgram.isEmpty()) {
-                                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                                val profileId: Int = (requireActivity() as MainActivity).currentProfile?.id?.toInt()!!
-                                val programsFragment = ProgramsPagerFragment.newInstance("", profileId)
-                                transaction.replace(R.id.fragment_container, programsFragment)
-                                transaction.commit()
-                                Toast.makeText(context, R.string.add_exercise_to_program_first, Toast.LENGTH_LONG).show()
-                            }
                             exerciseIndicator.initDots(exercisesFromProgram.size)
                             exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
                             exerciseIndicator.setDotSelection(currentExerciseOrder)
@@ -374,7 +366,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = OnClickListener {
-        if (exerciseEdit.text.toString().isEmpty() || exercisesFromProgram.isEmpty()) {
+        if ( exercisesFromProgram.isEmpty()) {
+            KToast.warningToast(requireActivity(), resources.getText(R.string.emptyExercisesInProgram).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
+            return@OnClickListener
+        }
+        if (exerciseEdit.text.toString().isEmpty()) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
             return@OnClickListener
         }
