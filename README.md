@@ -5,7 +5,7 @@
 
 Program your training with exercises reps and rests.
 
-![main pic](https://github.com/senpl/Fit-workout-fast/blob/masterRemote/fastlane/metadata/android/en-US/images/phoneScreenshots/main.png)
+![main pic](https://github.com/senpl/Fit-workout-fast/blob/masterRemote/PlayStore/images/default.png)
 
 Your rest timer will count as you wish. It will play sound on end. And next exercise is shown.
 
