@@ -342,8 +342,8 @@
 
     <string name="strength_category">Strength</string>
     <string name="rest_counter">Rest %1$d s</string>
-    <string name="rest_counter_minutes">Rest %01$d:%02$2d s</string>
-    <string name="static_counter_minutes">%01$d:%02$2d s</string>
+    <string name="rest_counter_minutes">Rest %d:%02d s</string>
+    <string name="static_counter_minutes">%d:%02d s</string>
     <string name="click_to_start">Click to start</string>
     <string name="exercise_time" >Exercise time</string>
     <string name="rest_finished" >Rest finished</string>
