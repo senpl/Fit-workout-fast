@@ -386,9 +386,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val date = Date()
         val timeStr = DateConverter.currentTime()
 
-        var iTotalWeightSession = 0F
-        var iTotalWeight = 0F
-        var iNbSeries = 1
+//        var iTotalWeightSession = 0F
+//        var iTotalWeight = 0F
+//        var iNbSeries = 1
         when (exerciseType) {
             TYPE_FONTE -> {
                 if (seriesEdit.text.toString().isEmpty() ||
@@ -405,12 +405,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     tmpPoids, // Always save in KG
                     getProfilFromMain(),
                     unitPoids, // Store Unit for future display
-                    "", //Notes
+                    notesInExercise.text.toString(), //Notes
                     timeStr
                 )
-                iTotalWeightSession = strengthRecordsDao.getTotalWeightSession(date)
-                iTotalWeight = strengthRecordsDao.getTotalWeightMachine(date, exerciseEdit.text.toString())
-                iNbSeries = strengthRecordsDao.getNbSeries(date, exerciseEdit.text.toString())
+//                iTotalWeightSession = strengthRecordsDao.getTotalWeightSession(date)
+//                iTotalWeight = strengthRecordsDao.getTotalWeightMachine(date, exerciseEdit.text.toString())
+//                iNbSeries = strengthRecordsDao.getNbSeries(date, exerciseEdit.text.toString())
             }
             TYPE_STATIC -> {
                 if (seriesEdit.text.toString().isEmpty() ||
@@ -435,11 +435,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     tmpPoids,
                     getProfilFromMain(),
                     unitPoids, // Store Unit for future display
-                    "", //Notes
+                    notesInExercise.text.toString(), //Notes
                     timeStr)
-                iTotalWeightSession = daoStatic.getTotalWeightSession(date)
-                iTotalWeight = daoStatic.getTotalWeightMachine(date, exerciseEdit.text.toString())
-                iNbSeries = daoStatic.getNbSeries(date, exerciseEdit.text.toString())
+//                iTotalWeightSession = daoStatic.getTotalWeightSession(date)
+//                iTotalWeight = daoStatic.getTotalWeightMachine(date, exerciseEdit.text.toString())
+//                iNbSeries = daoStatic.getNbSeries(date, exerciseEdit.text.toString())
             }
             TYPE_CARDIO -> {
                 if (durationEdit.text.toString().isEmpty() &&  // Only one is mandatory
@@ -477,22 +477,22 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     duration,
                     getProfilFromMain(),
                     unitDistance)
-                // No Countdown for Cardio
             }
         }
         requireActivity().findViewById<View>(R.id.drawer_layout)?.requestFocus()
         hideKeyboard()
         lTableColor = (lTableColor + 1) % 2 // Change the color each time you add data
         refreshData()
-        /* Reinitialisation des machines */
         val adapter = ArrayAdapter(requireView().context,
             android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profil))
         exerciseEdit.setAdapter(adapter)
-        // Launch Countdown
-        restFillBackgroundProgress.visibility = VISIBLE
+        // Launch Rest Countdown
+        if(restTime!=0){
+            restFillBackgroundProgress.visibility = VISIBLE
+        }
         exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.green_button_background)
         runRest(restTime)
-        showTotalWorkload(iTotalWeightSession, iTotalWeight, iNbSeries)
+        // showTotalWorkload(iTotalWeightSession, iTotalWeight, iNbSeries)
     }
 
     private val clickFailButton = OnClickListener {
@@ -542,9 +542,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         restFillBackgroundProgress.setOnClickListener(restClickTimer)
     }
 
-    private fun showTotalWorkload(total: Float, total2: Float, total3: Int): Float {
-        return total + total2 + total3
-    }
+//    private fun showTotalWorkload(total: Float, total2: Float, total3: Int): Float {
+//        return total + total2 + total3
+//    }
 
     private val onClickMachineListWithIcons = OnClickListener { v ->
         val oldCursor: Cursor
@@ -718,7 +718,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     }
                     .onError { countDownStatic.text = getString(R.string.error) }
                     .onComplete {
-                        val staticFinishStr = getString(R.string.exercise_time) + " " + exercise.seconds.toString() + " " + getString(R.string.seconds)
+                        val staticFinishStr = getString(R.string.End) + " " + exercise.seconds.toString() + " " + getString(R.string.SecondsLabel_short)
                         countDownStatic.text = staticFinishStr
                         if (requireContext().getSharedPreferences("playStaticExerciseFinishSound", Context.MODE_PRIVATE).getBoolean("playStaticExerciseFinishSound", true)) {
                             val mediaPlayer = MediaPlayer()

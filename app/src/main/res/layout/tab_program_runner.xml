@@ -25,6 +25,12 @@
         android:paddingBottom="0dp"
         android:scrollbars="vertical">
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:background="@color/sweet_dialog_bg_color_dark">
         <TextView
             android:text="@string/program_selection"
             android:layout_height="wrap_content"
@@ -37,7 +43,7 @@
             android:minHeight="@dimen/mi_baseline"
             android:padding="2dp"
             style="@style/TextAppearance.AppCompat.Large" />
-
+    </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             style="@style/CardViewStyle"
@@ -295,7 +301,7 @@
                         android:label="@string/SerieLabel"
                         android:gravity="center"
                         android:inputType="number"
-                        tools:text="2"
+                        tools:text="1"
                         />
 
                 </LinearLayout>
@@ -520,7 +526,8 @@
                     android:layout_gravity="bottom"
                     android:gravity="top"
                     android:ems="10"
-                    android:minHeight="40dp"
+                    android:minHeight="18dp"
+                    android:paddingVertical="20dp"
                     />
 
                 <RelativeLayout
@@ -555,7 +562,9 @@
                     android:id="@+id/previousExerciseArrow"
                     style="@style/AddImageButton"
                     android:src="@drawable/ic_previous"
+                    android:layout_marginStart="8dp"
                     android:layout_width="64dp"
+                    android:minHeight="68dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_gravity="start|center"
@@ -563,56 +572,65 @@
                     android:contentDescription="@string/arrowPreviousAsText"
                     android:cropToPadding="false"
                     android:text="@string/arrowPreviousAsText"
+                    android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/failButton"
                     style="@style/AddImageButton"
                     android:layout_width="0dp"
+                    android:minHeight="68dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_toStartOf="@+id/addButton"
                     android:layout_toEndOf="@+id/previousExerciseArrow"
                     android:contentDescription="@string/failedToDoReps"
                     android:src="@drawable/fail_clear_red_600_24dp"
                     android:text="@string/FailLabel"
+                    android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/previousExerciseArrow" />
+                    app:layout_constraintStart_toEndOf="@+id/previousExerciseArrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/addButton"
                     style="@style/AddImageButton"
-                    android:src="@drawable/done_check_green_800_24dp"
                     android:layout_width="0dp"
+                    android:minHeight="68dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="8dp"
                     android:layout_toStartOf="@+id/nextExerciseArrow"
+                    android:contentDescription="@string/DoneLabel"
+                    android:src="@drawable/done_check_green_800_24dp"
                     android:text="@string/DoneLabel"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/nextExerciseArrow"
                     app:layout_constraintStart_toEndOf="@+id/failButton"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/DoneLabel" />
+                    android:focusable="true" />
 
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
                     style="@style/AddImageButton"
                     android:src="@drawable/ic_next"
                     android:layout_width="64dp"
+                    android:minHeight="68dp"
+                    android:layout_marginEnd="8dp"
                     android:baselineAlignBottom="false"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center|end"
                     android:contentDescription="@string/arrowNextAsText"
                     android:text="@string/arrowNextAsText"
+                    android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.devzone.fillprogresslayout.FillProgressLayout
@@ -633,6 +651,7 @@
                     android:id="@+id/countDownStatic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/click_to_start"
                     android:textSize="@dimen/mi_button_cta_height" />
                 <ImageButton
@@ -641,7 +660,10 @@
                     android:layout_marginStart="@dimen/progress_circle_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/reset" />
+                    android:contentDescription="@string/reset"
+                    android:focusable="true"
+                    android:clickable="true"
+                    />
             </com.devzone.fillprogresslayout.FillProgressLayout>
 
             <com.devzone.fillprogresslayout.FillProgressLayout
