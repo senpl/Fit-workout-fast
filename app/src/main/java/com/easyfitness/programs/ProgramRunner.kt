@@ -45,6 +45,7 @@ import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.text.*
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -366,7 +367,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = OnClickListener {
-        if ( exercisesFromProgram.isEmpty()) {
+        if (exercisesFromProgram.isEmpty()) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.emptyExercisesInProgram).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
             return@OnClickListener
         }
@@ -386,9 +387,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val date = Date()
         val timeStr = DateConverter.currentTime()
 
-//        var iTotalWeightSession = 0F
-//        var iTotalWeight = 0F
-//        var iNbSeries = 1
         when (exerciseType) {
             TYPE_FONTE -> {
                 if (seriesEdit.text.toString().isEmpty() ||
@@ -408,9 +406,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     notesInExercise.text.toString(), //Notes
                     timeStr
                 )
-//                iTotalWeightSession = strengthRecordsDao.getTotalWeightSession(date)
-//                iTotalWeight = strengthRecordsDao.getTotalWeightMachine(date, exerciseEdit.text.toString())
-//                iNbSeries = strengthRecordsDao.getNbSeries(date, exerciseEdit.text.toString())
             }
             TYPE_STATIC -> {
                 if (seriesEdit.text.toString().isEmpty() ||
@@ -437,9 +432,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     unitPoids, // Store Unit for future display
                     notesInExercise.text.toString(), //Notes
                     timeStr)
-//                iTotalWeightSession = daoStatic.getTotalWeightSession(date)
-//                iTotalWeight = daoStatic.getTotalWeightMachine(date, exerciseEdit.text.toString())
-//                iNbSeries = daoStatic.getNbSeries(date, exerciseEdit.text.toString())
             }
             TYPE_CARDIO -> {
                 if (durationEdit.text.toString().isEmpty() &&  // Only one is mandatory
@@ -487,12 +479,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profil))
         exerciseEdit.setAdapter(adapter)
         // Launch Rest Countdown
-        if(restTime!=0){
+        if (restTime != 0) {
             restFillBackgroundProgress.visibility = VISIBLE
         }
         exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.green_button_background)
         runRest(restTime)
-        // showTotalWorkload(iTotalWeightSession, iTotalWeight, iNbSeries)
     }
 
     private val clickFailButton = OnClickListener {
@@ -502,49 +493,53 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun runRest(restTime: Int) {
-        restFillBackgroundProgress.visibility = VISIBLE
-        restTimerRunning = true
         if (requireContext().getSharedPreferences("nextExerciseSwitch", Context.MODE_PRIVATE).getBoolean("nextExerciseSwitch", true)) {
             nextExercise()
         }
-        restFillBackgroundProgress.setDuration(restTime.toLong() * progressScaleFix)
-        restTimer?.stop()
-        restTimer = Rx2Timer.builder()
-            .initialDelay(0)
-            .take(restTime)
-            .onEmit { count ->
-                restFillBackgroundProgress.setProgress(count.toInt() * progressScaleFix)
-                countDown.text = getString(R.string.rest_counter, count)
-            }
-            .onError { countDown.text = getString(R.string.error) }
-            .onComplete {
-                countDown.text = getString(R.string.rest_finished)
-                restFillBackgroundProgress.visibility = GONE
-                restTimerRunning = false
-                if (requireContext().getSharedPreferences("playRestSound", Context.MODE_PRIVATE).getBoolean("playRestSound", true)) {
-                    val mediaPlayer = MediaPlayer()
-                    try {
-                        val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("restSound", Context.MODE_PRIVATE).getString("restSound", RingtoneManager.getDefaultUri(R.raw.chime).toString()))
-                        mediaPlayer.setDataSource(this.requireContext(), myUri)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+        if(restTime!=0) {
+            restFillBackgroundProgress.visibility = VISIBLE
+            restTimerRunning = true
+            restFillBackgroundProgress.setDuration(restTime.toLong() * progressScaleFix)
+            restTimer?.stop()
+            restTimer = Rx2Timer.builder()
+                .initialDelay(0)
+                .take(restTime)
+                .onEmit { count ->
+                    restFillBackgroundProgress.setProgress(count.toInt() * progressScaleFix)
+                    if (count < 60) {
+                        countDown.text = getString(R.string.rest_counter, count)
+                    } else {
+                        val minutes: Int = ((count % 3600) / 60).toInt();
+                        val seconds: Int = (count % 60).toInt()
+                        countDown.text = getString(R.string.rest_counter_minutes, minutes, seconds)
                     }
-                    try {
-                        mediaPlayer.prepare()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                    mediaPlayer.start()
                 }
-            }
-            .build()
-        restTimer?.start()
-        restFillBackgroundProgress.setOnClickListener(restClickTimer)
+                .onError { countDown.text = getString(R.string.error) }
+                .onComplete {
+                    countDown.text = getString(R.string.rest_finished)
+                    restFillBackgroundProgress.visibility = GONE
+                    restTimerRunning = false
+                    if (requireContext().getSharedPreferences("playRestSound", Context.MODE_PRIVATE).getBoolean("playRestSound", true)) {
+                        val mediaPlayer = MediaPlayer()
+                        try {
+                            val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("restSound", Context.MODE_PRIVATE).getString("restSound", RingtoneManager.getDefaultUri(R.raw.chime).toString()))
+                            mediaPlayer.setDataSource(this.requireContext(), myUri)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                        try {
+                            mediaPlayer.prepare()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                        mediaPlayer.start()
+                    }
+                }
+                .build()
+            restTimer?.start()
+            restFillBackgroundProgress.setOnClickListener(restClickTimer)
+        }
     }
-
-//    private fun showTotalWorkload(total: Float, total2: Float, total3: Int): Float {
-//        return total + total2 + total3
-//    }
 
     private val onClickMachineListWithIcons = OnClickListener { v ->
         val oldCursor: Cursor
@@ -714,7 +709,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     .take(exercise.seconds + staticPrepareTime)
                     .onEmit { count ->
                         staticFillBackgroundProgress.setProgress(count.toInt() * progressScaleFix)
-                        countDownStatic.text = getString(R.string.count_string, count)
+                        if (count < 60) {
+                            countDownStatic.text = getString(R.string.count_string, count)
+                        } else {
+                            val minutes: Int = ((count % 3600) / 60).toInt();
+                            val seconds: Int = (count % 60).toInt()
+                            countDownStatic.text = getString(R.string.static_counter_minutes, minutes, seconds)
+                        }
                     }
                     .onError { countDownStatic.text = getString(R.string.error) }
                     .onComplete {
