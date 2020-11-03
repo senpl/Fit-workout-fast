@@ -319,5 +319,5 @@
     <string name="renameProgram_error_text2">ERROR: este nombre de programa ya existe. No es posible fusionar dos programas con el mismo nombre.</string>
     <string name="app_name">Workouts\'N\'Rest</string>
     <string name="swipeGesturesDescription">Permita un cambio rápido de ejercicios al siguiente con un gesto de deslizamiento.</string>
-
+    <string name="emptyExercisesInProgram"><![CDATA[[Ir al menú lateral (botón de hamburguesa), presione "Programa" en el menú lateral-> agregar ejercicio al programa primero]]></string>
 </resources>

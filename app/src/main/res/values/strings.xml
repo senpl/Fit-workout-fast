@@ -376,5 +376,5 @@
     <string name="saved_into_program">Saved into program</string>
     <string name="SaveRepsLabel">Save reps into program</string>
     <string name="add_exercise_to_program_first">Add exercise to program first. No program without exercises allowed.</string>
-    <string name="emptyExercisesInProgram"><![CDATA[Go to Side Menu(Toggle button), press "Program" -> add exercise to program first]]></string>
+    <string name="emptyExercisesInProgram"><![CDATA[Go to Side Menu(hamburger button), press "Program" from Side menu-> add exercise to program first]]></string>
 </resources>

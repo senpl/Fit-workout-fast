@@ -309,5 +309,6 @@
     <string name="renameProgram_error_text2">FEHLER: Dieser Programmname existiert bereits. Es ist nicht möglich, zwei Programme mit demselben Namen zusammenzuführen.</string>
     <string name="app_name">Fites Training schnell</string>
     <string name="swipeGesturesDescription">Ermöglichen Sie einen schnellen Wechsel der Übungen zum nächsten mit einer Wischgeste.</string>
+    <string name="emptyExercisesInProgram"><![CDATA[Gehen Sie zum Seitenmenü (Hamburger-Taste) und drücken Sie "Programm" im Seitenmenü-> Übung zuerst zum Programm hinzufügen]]></string>
 </resources>
 
