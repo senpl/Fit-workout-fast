@@ -13,5 +13,14 @@
     <color name="add_button_background">#7C7C7C</color>
     <color name="dark_icon_background">#C0C0C0</color>
     <color name="colorSecondary">#FFFFFF</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#60bf04</color>
+    <color name="redWarn">#D50000</color>
+    <array name="gradientColors">
+        <item>#5E5E5E</item>
+        <item>#388E3C</item>
+    </array>
+    <array name="gradientColorsBlue">
+        <item>#3c40c6</item>
+        <item>#5E5E5E</item>
+    </array>
 </resources>

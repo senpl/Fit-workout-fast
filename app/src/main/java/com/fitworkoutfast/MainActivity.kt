@@ -238,9 +238,8 @@ class MainActivity : AppCompatActivity() {
                 val mDbCardio = DAOCardio(this)
                 val mList = mDbOldCardio.allRecords
                 for (record in mList) {
-                    var exerciseName = ""
                     val m = lDAOMachine.getMachine(record.exercice)
-                    exerciseName = record.exercice
+                    var exerciseName = record.exercice
                     if (m != null) { // if a machine exists
                         if (m.type == DAOMachine.TYPE_FONTE) { // if it is not a Cardio type
                             exerciseName = "$exerciseName-Cardio" // add a suffix to
@@ -741,7 +740,7 @@ class MainActivity : AppCompatActivity() {
             return mpWeightFrag
         }
     private val programsFragment: ProgramsPagerFragment
-        private get() {
+        get() {
             if (mpProgramPagerFrag == null) mpProgramPagerFrag = supportFragmentManager.findFragmentByTag(PROGRAMS) as ProgramsPagerFragment?
             if (mpProgramPagerFrag == null) mpProgramPagerFrag = newInstance(PROGRAMS, Integer.valueOf(11))
             return mpProgramPagerFrag!!

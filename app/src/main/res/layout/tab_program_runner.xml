@@ -135,7 +135,6 @@
                         android:inputType="none"
                         android:imeOptions="actionNext"
                         android:singleLine="true" />
-                    <!--                        android:inputType="text|textCapWords|textAutoComplete|textNoSuggestions|textVisiblePassword"-->
 
                     <ImageButton
                         android:id="@+id/exercisesListButton"
@@ -561,7 +560,7 @@
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
                     style="@style/AddImageButton"
-                    android:src="@drawable/ic_previous"
+                    android:src="@drawable/round_arrow_back_white_36dp"
                     android:layout_marginStart="8dp"
                     android:layout_width="64dp"
                     android:minHeight="68dp"
@@ -581,13 +580,14 @@
                 <ImageButton
                     android:id="@+id/failButton"
                     style="@style/AddImageButton"
+                    android:backgroundTint="@color/redWarn"
                     android:layout_width="0dp"
                     android:minHeight="68dp"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/addButton"
                     android:layout_toEndOf="@+id/previousExerciseArrow"
                     android:contentDescription="@string/failedToDoReps"
-                    android:src="@drawable/fail_clear_red_600_24dp"
+                    android:src="@drawable/round_cancel_white_36dp"
                     android:text="@string/FailLabel"
                     android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -598,13 +598,14 @@
                 <ImageButton
                     android:id="@+id/addButton"
                     style="@style/AddImageButton"
+                    android:backgroundTint="@color/main_green_color"
                     android:layout_width="0dp"
                     android:minHeight="68dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toStartOf="@+id/nextExerciseArrow"
                     android:contentDescription="@string/DoneLabel"
-                    android:src="@drawable/done_check_green_800_24dp"
+                    android:src="@drawable/round_check_white_48dp"
                     android:text="@string/DoneLabel"
                     android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -616,7 +617,7 @@
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
                     style="@style/AddImageButton"
-                    android:src="@drawable/ic_next"
+                    android:src="@drawable/round_arrow_forward_white_36dp"
                     android:layout_width="64dp"
                     android:minHeight="68dp"
                     android:layout_marginEnd="8dp"
@@ -642,7 +643,7 @@
                 app:fpl_progressDirection="top_to_bottom"
                 app:fpl_shouldRestart="false"
                 app:fpl_gradientDirection="bottom_to_top"
-                app:fpl_gradientColors="@color/cardview_shadow_end_color"
+                app:fpl_gradientColors="@array/gradientColorsBlue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">
@@ -675,7 +676,7 @@
                 app:fpl_progressDirection="top_to_bottom"
                 app:fpl_shouldRestart="false"
                 app:fpl_gradientDirection="bottom_to_top"
-                app:fpl_gradientColors="@color/cardview_shadow_end_color"
+                app:fpl_gradientColors="@array/gradientColors"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">
