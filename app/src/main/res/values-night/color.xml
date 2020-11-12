@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="toolbar_background">#004F6F</color>
-    <color name="record_background_odd">#153F49</color>
+    <color name="toolbar_background">#2D41AE</color>
+    <color name="record_background_odd">#273DB8</color>
     <color name="record_background_even">#475B61</color>
     <color name="background">#1B1B1B</color>
     <color name="tableheader_background">#7A7A7A</color>
@@ -14,10 +14,11 @@
     <color name="dark_icon_background">#C0C0C0</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorAccent">#60bf04</color>
+    <color name="color_green_button">#589121</color>
     <color name="redWarn">#D50000</color>
     <array name="gradientColors">
         <item>#5E5E5E</item>
-        <item>#388E3C</item>
+        <item>#5E5E5E</item>
     </array>
     <array name="gradientColorsBlue">
         <item>#3c40c6</item>

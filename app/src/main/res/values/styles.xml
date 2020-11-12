@@ -25,8 +25,6 @@
         <item name="android:colorAccent">@color/colorSecondary</item>
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:backgroundTint">@color/add_button_background</item>
-
-
     </style>
 
     <style name="CardViewStyle" parent="CardView">
@@ -110,7 +108,7 @@
     <style name="AddImageButton">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">6dp</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:minHeight">50dp</item>
         <item name="android:minWidth">70dp</item>
 <!--        <item name="android:centerMedium"></item>-->

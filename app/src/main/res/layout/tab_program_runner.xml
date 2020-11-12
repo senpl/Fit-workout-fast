@@ -560,45 +560,44 @@
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
                     style="@style/AddImageButton"
-                    android:src="@drawable/round_arrow_back_white_36dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="64dp"
-                    android:minHeight="68dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_gravity="start|center"
-                    android:baselineAlignBottom="false"
-                    android:contentDescription="@string/arrowPreviousAsText"
-                    android:cropToPadding="false"
-                    android:text="@string/arrowPreviousAsText"
+                    android:layout_marginStart="8dp"
                     android:clickable="true"
+                    android:contentDescription="@string/arrowPreviousAsText"
+                    android:focusable="true"
+                    android:minHeight="68dp"
+                    android:src="@drawable/round_arrow_back_white_36dp"
+                    android:text="@string/arrowPreviousAsText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
+                    app:layout_constraintWidth_percent="0.2" />
 
                 <ImageButton
                     android:id="@+id/failButton"
                     style="@style/AddImageButton"
-                    android:backgroundTint="@color/redWarn"
                     android:layout_width="0dp"
-                    android:minHeight="68dp"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/addButton"
                     android:layout_toEndOf="@+id/previousExerciseArrow"
+                    android:backgroundTint="@color/redWarn"
+                    android:clickable="true"
                     android:contentDescription="@string/failedToDoReps"
+                    android:focusable="true"
+                    android:minHeight="68dp"
                     android:src="@drawable/round_cancel_white_36dp"
                     android:text="@string/FailLabel"
-                    android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/previousExerciseArrow"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
+                    app:layout_constraintWidth_percent="0.25" />
 
                 <ImageButton
                     android:id="@+id/addButton"
                     style="@style/AddImageButton"
-                    android:backgroundTint="@color/main_green_color"
+                    android:backgroundTint="@color/color_green_button"
                     android:layout_width="0dp"
                     android:minHeight="68dp"
                     android:layout_height="wrap_content"
@@ -618,7 +617,9 @@
                     android:id="@+id/nextExerciseArrow"
                     style="@style/AddImageButton"
                     android:src="@drawable/round_arrow_forward_white_36dp"
-                    android:layout_width="64dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.2"
+                    android:minWidth = "64dp"
                     android:minHeight="68dp"
                     android:layout_marginEnd="8dp"
                     android:baselineAlignBottom="false"
@@ -698,12 +699,11 @@
                     </LinearLayout>
 
 
-                    <com.easyfitness.utils.ExpandedListView
-                        android:id="@+id/recordList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:listitem="@layout/row_fonte"
-                        />
+        <com.easyfitness.utils.ExpandedListView
+            android:id="@+id/recordList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/row_fonte" />
     </LinearLayout>
 
 

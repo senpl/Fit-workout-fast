@@ -33,7 +33,7 @@
             android:theme="@style/Theme.Intro" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:theme="@style/Theme.MaterialComponents" />
 
 <!--        <meta-data-->
 <!--            android:name="firebase_crash_collection_enabled"-->

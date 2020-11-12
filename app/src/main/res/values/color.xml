@@ -17,6 +17,7 @@
     <color name="colorPrimary">@color/text_color</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorAccent">#FFFFFF</color>
+    <color name="color_green_button">#589121</color>
     <color name="redWarn">#D50000</color>
     <array name="gradientColors">
         <item>#5E5E5E</item>
