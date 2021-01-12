@@ -1,0 +1,23 @@
+Program your training with exercises reps and rests(rest time). Any fitness program / plan / schedule could be run.
+
+Your rest timer will count as you wish. It will play sound on end. And next exercise is shown.
+
+Fast and intuitive gestures. Your workout as fast as possible.
+
+Success or fail could be logged and be visible on exercise pager. Gym log and results.
+
+Finish program faster. Your notes to exercise could be added.
+
+Your stretch time could be counted. Play sound on stretch end.
+
+Your workout program could be anything, just add names, reps, rest and rest focus on exercises, not on progam / plan. Use it as log, diary o journal. You could even store your body measures.
+
+App is free, no ads, open source and source code is on github.
+
+To suggest improvements or bug report use https://github.com/senpl/Fit-workout-fast/issues
+
+Called WorkoutsNRest or WorkoutNRest. Based on Fast'N'Fitness.
+
+Red delta project grind style calisthenics could be practiced. Also "All gains, no pains" by Bill Hartman could be run.
+
+Use it as workout planner or calisthenics progression. App is free to use at gym, at home,  or outdoor offline( calisthenics ). Your exercises program, your results. All in one app with log, with notes and history.
