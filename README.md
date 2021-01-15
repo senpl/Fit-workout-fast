@@ -1,6 +1,9 @@
 <img src="https://github.com/senpl/Fit-workout-fast/blob/masterRemote/app/src/main/res/drawable-xxxhdpi/iconman.png" height="80"> [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.fitworkoutfast)
+     [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.fitworkoutfast)
 ## Run your training quickly and easily
 
 Program your training with exercises reps and rests.
