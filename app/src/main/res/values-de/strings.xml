@@ -285,4 +285,5 @@
     <string name="static_prepare_seconds">Statische Übung Vorbereitungszeit immer 5 Sek.</string>
     <string name="swipeGesturesSwitch">Wischgesten</string>
     <string name="End">Ende</string>
+    <string name="single_exercise_and_results">Suchergebnisse</string>
 </resources>
