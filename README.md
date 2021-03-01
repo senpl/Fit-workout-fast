@@ -39,7 +39,7 @@ See [CHANGELOG.md](/CHANGELOG.md/)
 See [Contributing.md](/Contributing.md/)
 
 ## Libs used
-
+ Translations with use of https://hosted.weblate.org/ 
  NumberSlidingPicker
  'com.github.thepacific:rx2timer:0.0.3'
  'com.github.JDevZone:FillProgressLayout:0.0.5'
