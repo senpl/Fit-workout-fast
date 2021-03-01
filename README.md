@@ -1,4 +1,5 @@
-<img src="https://github.com/senpl/Fit-workout-fast/blob/masterRemote/app/src/main/res/drawable-xxxhdpi/iconman.png" height="80"> [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+
+<img src="https://github.com/senpl/Fit-workout-fast/blob/masterRemote/app/src/main/res/drawable-xxxhdpi/iconman.png" height="80"> [![weblate](https://hosted.weblate.org/widgets/httpsgithubcomsenplfit-workout-fast/-/translate/svg-badge.svg)][<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.fitworkoutfast)
      [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
