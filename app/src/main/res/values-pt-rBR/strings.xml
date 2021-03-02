@@ -32,7 +32,7 @@
     <string name="ShareText">Compartilhar</string>
     <string name="ShareTitle">Compartilhar desempenho</string>
     <string name="ShareInstruction">Edite seu texto antes de enviar:</string>
-    <string name="ShareTextDefault">Eu levantei __WEIGHT__ kg em __MACHINE__ !</string>
+    <string name="ShareTextDefault">Eu levantei __WEIGHT__ kg em __MACHINE__!</string>
     <!-- Cardio Fragment -->
     <string name="CardioLabel">Cardio</string>
     <string name="DistanceLabel">Distância</string>
@@ -229,11 +229,11 @@
     <string name="FFMI_formula">IMLG [kg/m2] = peso [kg] × (1 − (gordura corporal [%] / 100)) / (altura [m])²</string>
     <string name="no_fat_available">nenhuma gordura disponível</string>
     <string name="indexLabel">Índice</string>
-    <string name="what_type_of_exercise">Que tipo de exercício ?</string>
+    <string name="what_type_of_exercise">Que tipo de exercício\?</string>
     <string name="exercise_type">Tipo de exercício:</string>
     <string name="staticExercise">Isométrico</string>
     <string name="SecondsLabel_short">Segs</string>
-    <string name="imported_successfully"> importado com sucesso</string>
+    <string name="imported_successfully">importado</string>
     <string name="import_failed"> importação falhou</string>
     <string name="author_label">Author:</string>
     <string name="import_new_exercise_first">(importe novos exercícios primeiro)</string>
