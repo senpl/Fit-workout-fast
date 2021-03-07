@@ -7,14 +7,11 @@
     <string name="global_ok">OK</string>
     <string name="global_yes">Sim</string>
     <string name="global_no">Não</string>
-
     <string name="removedid">ID removido</string>
     <string name="failedtocreatefolder">Falha ao criar pasta</string>
-
     <string name="action_settings">Configurações</string>
     <string name="DateLabel">Data</string>
-
-    <string name="FunctionLabel">Display</string>
+    <string name="FunctionLabel">Tela</string>
     <string name="HistoryLabel">Histórico</string>
     <string name="GraphLabel">Gráficos</string>
     <string name="AddLabel">Adicionar</string>
@@ -22,29 +19,25 @@
     <string name="ShareLabel">Compartilhar</string>
     <string name="EditLabel">Editar</string>
     <string name="DeleteRecordDialog">Remover esse registro?</string>
-
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Musculação</string>
     <string name="RecordLabel">Registros</string>
     <string name="SerieLabel">Séries</string>
-    <string name="RepetitionLabel_short">Reps</string>
+    <string name="RepetitionLabel_short">Repetições</string>
     <string name="MachineLabel">Exercício</string>
     <string name="PoidsLabel">Peso</string>
     <string name="NotesLabel">Notas</string>
     <string name="TopTenLabel">Registros recentes:</string>
-
     <!-- Share text -->
     <string name="ShareText">Compartilhar</string>
     <string name="ShareTitle">Compartilhar desempenho</string>
     <string name="ShareInstruction">Edite seu texto antes de enviar:</string>
-    <string name="ShareTextDefault">Eu levantei __WEIGHT__ kg em __MACHINE__ !</string>
-
+    <string name="ShareTextDefault">Eu levantei __WEIGHT__ kg em __MACHINE__!</string>
     <!-- Cardio Fragment -->
     <string name="CardioLabel">Cardio</string>
     <string name="DistanceLabel">Distância</string>
     <string name="DurationLabel">Duração</string>
     <string name="ExerciceLabel">Exercícios</string>
-
     <!-- Profile Fragment -->
     <string name="weightMenuLabel">Monitoramento de peso</string>
     <string name="weightLabel">Peso(kg)</string>
@@ -60,7 +53,6 @@
     <string name="userChanged">Usuário alterado</string>
     <string name="renameProfilTitle">Renomear perfil</string>
     <string name="renameProfilQuestion">Renomear este perfil?</string>
-
     <!-- Pour le menu settings -->
     <string name="SettingLabel">Configurações</string>
     <string name="export_database">Exportar registros</string>
@@ -68,7 +60,6 @@
     <string name="export_success">Banco de dados exportado</string>
     <string name="export_failed">Falha ao exportar o banco de dados</string>
     <string name="import_database">Importar registros</string>
-
     <string name="deleteDB_warning">
         Esta ação vai redefinir todo o aplicativo.
         Todos os dados serão perdidos.
@@ -76,51 +67,41 @@
         Isso vai fechar o aplicativo.
     </string>
     <string name="ResetAppLabel">Redefinir aplicativo</string>
-
     <!-- Machine Fragment -->
     <string name="MachinesLabel">Exercícios</string>
-
     <!-- Preferences -->
     <string name="pref_ui_setting">Configurações da UI</string>
     <string name="pref_show_mp3_player">Mostrar tocador de MP3</string>
     <string name="pref_show_mp3_player_summary">Mostra/oculta a barra de ferramentas do tocador de MP3</string>
-
     <string name="pref_preferredUnitSummary">Unidade preferida:</string>
     <string name="pref_preferredUnitTitle">Selecione sua unidade de peso preferida</string>
     <string name="pref_preferredDistanceUnitTitle">Selecione sua unidade de distância preferida</string>
-
     <string name="profil_create_new">Criar novo perfil</string>
     <string name="profil_change">Alterar perfil</string>
     <string name="profil_select_profil">Selecione um perfil</string>
     <string name="profil_delete">Excluir um perfil</string>
     <string name="profil_select_profil_to_delete">Selecione um perfil para excluir</string>
-
     <!-- About Fragment  -->
     <string name="AboutLabel">Sobre</string>
-
     <!-- Navigation Drawer -->
-    <string name="drawer_open">Abrir a gaveta de navegação</string>
-    <string name="drawer_close">Fechar a gaveta de navegação</string>
-
+    <string name="drawer_open">Abrir menu de navegação</string>
+    <string name="drawer_close">Fechar menu de navegação</string>
     <string-array name="weight_units">
         <item>@string/KgUnitLabel</item>
         <item>@string/LbsUnitLabel</item>
     </string-array>
-
     <string-array name="fonte_unitsEnum">
         <item>0</item>
         <item>1</item>
     </string-array>
-
-    <string name="maxRep1">Máximo (Reps >= 1)</string>
-    <string name="maxRep5d">Máximo (Reps >= 5)</string>
+    <string name="maxRep1">Máximo (Repetições &gt;= 1)</string>
+    <string name="maxRep5d">Máximo (Repetições &gt;= 5)</string>
     <string name="sum">Soma</string>
     <string-array name="graph_functions">
         <item>@string/maxRep1</item>
         <item>@string/maxRep5d</item>
         <item>@string/sum</item>
     </string-array>
-
     <string name="sumDistance">Distância</string>
     <string name="sumDuration">Duração</string>
     <string name="speed">Velocidade</string>
@@ -129,34 +110,26 @@
         <item>@string/sumDuration</item>
         <item>@string/speed</item>
     </string-array>
-
-
-    <string name="maxWeightPerDuration">"Máx. peso por duração"</string>
-    <string name="nbSeriesPerDate">"Núm. séries por data"</string>
+    <string name="maxWeightPerDuration">Máx. Peso por Duração</string>
+    <string name="nbSeriesPerDate">Núm. Séries por Data</string>
     <string-array name="graph_static_functions">
         <item>@string/maxWeightPerDuration</item>
         <item>@string/nbSeriesPerDate</item>
     </string-array>
-
     <string name="all">Tudo</string>
-
-    <string name="bodytracking">Monitor corporal</string>
-    <string name="selectMuscles">Selecionar músculos</string>
-
+    <string name="bodytracking">Monitor Corporal</string>
+    <string name="selectMuscles">Selecionar Músculos</string>
     <!-- Muscles -->
     <string name="biceps">Bíceps</string>
     <string name="triceps">Tríceps</string>
     <string name="pectoraux">Peitoral</string>
     <string name="deltoids">Deltoides</string>
-
     <string name="dorseaux">Costas</string>
     <string name="abdominaux">Abdominais</string>
-
     <string name="quadriceps">Quadríceps</string>
     <string name="ischio_jambiers">Isquiotibiais</string>
     <string name="adducteurs">Coxas</string>
     <string name="mollets">Panturrilhas</string>
-
     <!-- Body Parts -->
     <string name="left_arm">Bíceps esquerdo</string>
     <string name="right_arm">Bíceps direito</string>
@@ -168,36 +141,30 @@
     <string name="waist">Cintura</string>
     <string name="behind">Quadris</string>
     <string name="MesureHint">Insira o tamanho aqui</string>
-
     <string name="backDialog_confirm_text">Deseja salvar antes de sair?</string>
     <string name="deleteMachine_confirm_text">Deseja excluir este exercício? Todos os registros associados serão excluídos.</string>
     <string name="renameMachine_warning_text">AVISO: Este nome de exercício já existe. Os registros serão mesclados com o outro exercício.</string>
-
-
     <!-- Photo -->
     <string name="camera">Câmera</string>
     <string name="gallery">Galeria</string>
-
     <!-- DateGraph -->
     <string name="graph_all">Todos</string>
-    <string name="graph_lastyear">Último ano</string>
-    <string name="graph_lastmonth">Mês passado</string>
-    <string name="graph_lastweek">Semana passada</string>
-
+    <string name="graph_lastyear">Último Ano</string>
+    <string name="graph_lastmonth">Mês Passado</string>
+    <string name="graph_lastweek">Semana Passada</string>
     <!-- Chronometer -->
     <string name="ChronometerLabel">Cronômetro</string>
     <string name="CountdownLabel">Tempo de descanso</string>
-    <string name="activate_rest_time">Ativar contagem regressiva de repouso</string>
+    <string name="activate_rest_time">Ativar contagem regressiva de descanso</string>
     <string name="rest_time">Tempo de descanso (seg)</string>
     <string name="lastRecordLabel">Último registro</string>
     <string name="FilterHint">Filtrar por nome de exercício</string>
     <string name="total_weight">Peso total</string>
     <string name="total_session">Total durante a seção</string>
     <string name="total_machine">Total em exercícios</string>
-    <string name="nb_serie">Núm. da série</string>
+    <string name="nb_serie">Núm. da Série</string>
     <string name="exit">Sair</string>
     <string name="selectMachineDialogLabel">Selecionar um exercício existente</string>
-
     <!-- Intro slides -->
     <string name="fillNameField">Por favor, insira seu nome, pelo menos</string>
     <string name="introSlide1Title">Olá</string>
@@ -213,7 +180,7 @@
     <string name="titleSlideEssential">Vá ao essencial</string>
     <string name="textSlideEssential">Adicionar programa ou editar existente. Em seguida, adicione exercício ao programa. Agora, nos exercícios, seu programa será executado.</string>
     <string name="pressBackAgain">Clique VOLTAR novamente para sair</string>
-    <string name="titleSlideOpenSource">É código aberto!</string>
+    <string name="titleSlideOpenSource">É de código aberto!</string>
     <string name="textSlideOpenSource">Propor melhorias e soluções! Visite-nos em https://github.com/senpl/Fit-workout-fast</string>
     <string name="profileCreated">Perfil criado</string>
     <string name="missinginfo">Faltando informações</string>
@@ -262,11 +229,11 @@
     <string name="FFMI_formula">IMLG [kg/m2] = peso [kg] × (1 − (gordura corporal [%] / 100)) / (altura [m])²</string>
     <string name="no_fat_available">nenhuma gordura disponível</string>
     <string name="indexLabel">Índice</string>
-    <string name="what_type_of_exercise">Que tipo de exercício ?</string>
+    <string name="what_type_of_exercise">Que tipo de exercício\?</string>
     <string name="exercise_type">Tipo de exercício:</string>
     <string name="staticExercise">Isométrico</string>
     <string name="SecondsLabel_short">Segs</string>
-    <string name="imported_successfully"> importado com sucesso</string>
+    <string name="imported_successfully">importado</string>
     <string name="import_failed"> importação falhou</string>
     <string name="author_label">Author:</string>
     <string name="import_new_exercise_first">(importe novos exercícios primeiro)</string>
@@ -318,5 +285,22 @@
     <string name="deleteProgram_confirm_text">Deseja excluir este programa? Todos os exercícios associados nesse programa serão excluídos.</string>
     <string name="renameProgram_error_text2">ERRO: Este nome de programa já existe. Não é possível mesclar dois programas com o mesmo nome.</string>
     <string name="app_name">Workouts\'N\'Rest</string>
-
+    <string name="emptyExercisesInProgram">Vá para o Menu Lateral (botão de hambúrguer), pressione Programa do Menu Lateral-&gt; adicionar exercício ao programa primeiro</string>
+    <string name="add_exercise_to_program_first">Adicione um exercício ao programa primeiro. Nenhum programa sem exercícios é permitido.</string>
+    <string name="SaveRepsLabel">Salvar repetições no programa</string>
+    <string name="saved_into_program">Salvo no programa</string>
+    <string name="SaveWeightLabel">Salvar peso no programa</string>
+    <string name="anonymous">Padrão</string>
+    <string name="static_prepare_seconds">Tempo de preparação do exercício estático sempre 5 seg.</string>
+    <string name="single_exercise_and_results">Resultados</string>
+    <string name="Lbs">Lbs</string>
+    <string name="kg">kg</string>
+    <string name="chooseStaticSound">Escolha o som final do temporizador estático</string>
+    <string name="chooseRestSound">Escolha o som do fim do descanso</string>
+    <string name="restLabel">Descanso</string>
+    <string name="swipeGesturesDescription">Permita a mudança rápida dos exercícios para o próximo com um gesto de deslizamento.</string>
+    <string name="swipeGesturesSwitch">Gestos de deslizamento</string>
+    <string name="End">Fim</string>
+    <string name="static_counter_minutes">%d:%02d s</string>
+    <string name="rest_counter_minutes">Descanso %d:%02d s</string>
 </resources>
