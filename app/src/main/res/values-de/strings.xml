@@ -3,7 +3,7 @@
     <string name="global_confirm">Bestätigen</string>
     <string name="global_warning">Warnung</string>
     <string name="global_cancel">Abbrechen</string>
-    <string name="global_ok">Ok</string>
+    <string name="global_ok">OK</string>
     <string name="global_yes">Ja</string>
     <string name="global_no">Nein</string>
     <string name="removedid">ID entfernen</string>
@@ -16,8 +16,8 @@
     <string name="AddLabel">Hinzufügen</string>
     <string name="DeleteLabel">Löschen</string>
     <string name="ShareLabel">Teilen</string>
-    <string name="EditLabel">Editieren</string>
-    <string name="DeleteRecordDialog">Aufzeichnung löschen ?</string>
+    <string name="EditLabel">Bearbeiten</string>
+    <string name="DeleteRecordDialog">Aufzeichnung löschen\?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Body Building</string>
     <string name="SerieLabel">Sätze</string>
@@ -29,8 +29,8 @@
     <!-- Share text -->
     <string name="ShareText">Teilen</string>
     <string name="ShareTitle">Teile deinen Erfolg</string>
-    <string name="ShareInstruction">Editiere deinen Text vor dem senden:</string>
-    <string name="ShareTextDefault">Ich habe __WEIGHT__ Kg an __MACHINE__ gehoben!</string>
+    <string name="ShareInstruction">Bearbeite deinen Text vor dem Senden:</string>
+    <string name="ShareTextDefault">Ich habe __WEIGHT__ kg an __MACHINE__ gehoben!</string>
     <!-- Cardio Fragment -->
     <string name="CardioLabel">Cardio</string>
     <string name="DistanceLabel">Entfernung</string>
@@ -72,8 +72,8 @@
     <!-- About Fragment  -->
     <string name="AboutLabel">Über</string>
     <!-- Navigation Drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Navigationsmenü öffnen</string>
+    <string name="drawer_close">Navigationsmenü schließen</string>
     <string-array name="weight_units">
         <item>@string/KgUnitLabel</item>
         <item>@string/LbsUnitLabel</item>
@@ -91,17 +91,17 @@
         <item>@string/sum</item>
     </string-array>
     <string name="all">Alle</string>
-    <string name="bodytracking">Body Track</string>
+    <string name="bodytracking">Körperüberwachung</string>
     <string name="selectMuscles">Wähle Muskeln</string>
     <!-- Muscles -->
-    <string name="biceps">Biceps</string>
-    <string name="triceps">Triceps</string>
+    <string name="biceps">Bizeps</string>
+    <string name="triceps">Trizeps</string>
     <string name="pectoraux">Brust</string>
     <string name="deltoids">Schulter</string>
     <string name="dorseaux">Rücken</string>
     <string name="abdominaux">Bauchmuskeln</string>
-    <string name="quadriceps">Quadriceps</string>
-    <string name="ischio_jambiers">Hamstrings</string>
+    <string name="quadriceps">Quadrizeps</string>
+    <string name="ischio_jambiers">Kniebeuger</string>
     <string name="adducteurs">Oberschenkel</string>
     <string name="mollets">Waden</string>
     <!-- Body Parts -->
@@ -140,7 +140,7 @@
     <string name="exit">Beenden</string>
     <string name="selectMachineDialogLabel">Wähle ein Gerät aus</string>
     <!-- Intro slides -->
-    <string name="fillNameField">Bitte geben Sie mindestens Ihren Namen oder Nicknamen</string>
+    <string name="fillNameField">Bitte geben Sie mindestens Ihren Namen ein</string>
     <string name="introSlide1Title">Hallo</string>
     <string name="size_cm_optional">Größe in cm (optional)</string>
     <string name="create">Erstellen</string>
@@ -148,13 +148,13 @@
     <string name="name_or_pseudo">Name oder Pseudonym</string>
     <string name="name_is_required">Name wird benötigt</string>
     <string name="create_a_profile">Profil erstellen</string>
-    <string name="introSlide1Text">Willkommen bei Workouts\'N\'Rest! App zum schnellen Training mit automatischer Ruhezählung.</string>
+    <string name="introSlide1Text">Willkommen bei Workouts\'N\'Rest! Eine Anwendung zum schnellen Training mit automatischer Ruhezählung.</string>
     <string name="introSlide2Text">Im Trainingsprogramm können Sie die Übungen leicht ändern. Die Übung kann sich auch nach Ihrer definierten Pause ändern.</string>
-    <string name="introSlide2Title">Ändern Sie die Übungen einfach mit Tasten oder Gesten</string>
+    <string name="introSlide2Title">Ändere die Übungen einfach mit Tasten oder Gesten</string>
     <string name="titleSlideEssential">Kein unnötiger Kontent</string>
     <string name="textSlideEssential">Programm hinzufügen oder vorhanden bearbeiten. Fügen Sie dann dem Programm eine Übung hinzu. Jetzt im Training läuft Ihr Programm.</string>
     <string name="pressBackAgain">Klicke nochmal ZURÜCK zum beenden</string>
-    <string name="titleSlideOpenSource">Es ist Open Source !</string>
+    <string name="titleSlideOpenSource">Es ist quelloffen!</string>
     <string name="textSlideOpenSource">Schlagen Sie Verbesserungen und Lösungen vor! Besuchen Sie uns unter https://github.com/senpl/Fit-workout-fast</string>
     <string name="profileCreated">Profil erstellt</string>
     <string name="missinginfo">Fehlende Informationen</string>
@@ -169,12 +169,12 @@
     <string name="profileEnterYourBirthday">Ihre Geburstag</string>
     <string name="ProfileLabel">Profil</string>
     <string name="profile_page">Profilseite</string>
-    <string name="start">Start</string>
-    <string name="reset">Reset</string>
+    <string name="start">Starten</string>
+    <string name="reset">Zurücksetzen</string>
     <string name="muscles">Muskeln</string>
     <string name="description">Beschreibung</string>
     <string name="edit_soon_available">in Kürze verfügbar</string>
-    <string name="edit_value">Neue Wert</string>
+    <string name="edit_value">Wert bearbeiten</string>
     <string name="sumDistance">Entfernung</string>
     <string name="sumDuration">Dauer</string>
     <string name="speed">Geschwindigkeit</string>
@@ -196,8 +196,8 @@
     <string name="enter_gender_here">Wähle dein Geschlecht</string>
     <string name="rfmLabel">RFM</string>
     <string name="imcLabel">KMI</string>
-    <string name="RFM_female_formula">Frauen: RFM = 76 – (20 x (Körpergröße/Bauchumfang))</string>
-    <string name="RFM_male_formula">Männer: RFM = 64 – (20 x (Körpergröße/Bauchumfang))</string>
+    <string name="RFM_female_formula">Frauen: RFM = 76 – (20 × (Körpergröße/Bauchumfang))</string>
+    <string name="RFM_male_formula">Männer: RFM = 64 – (20 × (Körpergröße/Bauchumfang))</string>
     <string name="no_size_available">Größe nicht verfügbar</string>
     <string name="no_weight_available">Gewicht nicht verfügbar</string>
     <string name="BMI_dialog_title">Body-Mass-Index (BMI)</string>
@@ -207,15 +207,15 @@
     <string name="another_time_maybe">Später vielleicht :)</string>
     <string name="new_folder">Neuer Ordner</string>
     <string name="ffmiLabel">FFMI</string>
-    <string name="FFMI_dialog_title">Fat-free mass index (FFMI)</string>
+    <string name="FFMI_dialog_title">Fettfreier Massenindex (FFMI)</string>
     <string name="no_fat_available">Fett nicht verfügbar</string>
     <string name="indexLabel">Index</string>
-    <string name="SecondsLabel_short">Secs</string>
+    <string name="SecondsLabel_short">Sek</string>
     <string name="staticExercise">Isometrische</string>
-    <string name="what_type_of_exercise">Welche Art von Training ?</string>
+    <string name="what_type_of_exercise">Welche Art von Übung\?</string>
     <string name="exercise_type">Art von Training:</string>
     <string name="global_confirm_question">Sind sie sicher?</string>
-    <string name="imported_successfully">import gelungen</string>
+    <string name="imported_successfully">importiert</string>
     <string name="import_failed">import ist fehlgeschlagen</string>
     <string name="maxWeightPerDuration">Max Gewicht pro Dauer</string>
     <string name="nbSeriesPerDate">Nb Serien nach Datum</string>
@@ -262,9 +262,9 @@
     <string name="FailLabel">Scheitern</string>
     <string name="nextExerciseSwitch">Nächste Übung nach dem vorherigen Ende</string>
     <string name="nextExerciseSwitchDescription">Wenn Sie auf \"Auf Übungen überprüfen\" klicken, wird zur nächsten Übung im Programm übergegangen</string>
-    <string name="playRestSound">Spielen Sie den Rest-Finish-Sound</string>
+    <string name="playRestSound">Ton des Pausenendes spielen</string>
     <string name="playRestSoundDescription">Nach Ablauf der Ruhezeiten wird ein Ton ausgegeben</string>
-    <string name="playStaticExerciseFinishSound">Spielen Sie den statischen Übungsende-Sound</string>
+    <string name="playStaticExerciseFinishSound">Statischen Übungsendeton spielen</string>
     <string name="playStaticExerciseFinishSoundDescription">Geben Sie nach Beendigung der statischen Trainingszeit einen Ton aus</string>
     <string name="programs_settings">Programmeinstellungen</string>
     <string name="sound_settings">Toneinstellungen</string>
@@ -281,9 +281,12 @@
     <string name="SaveRepsLabel">Wiederholungen im Programm speichern</string>
     <string name="saved_into_program">Im Programm gespeichert</string>
     <string name="SaveWeightLabel">Gewicht im Programm sparen</string>
-    <string name="anonymous">der Default</string>
+    <string name="anonymous">Standard</string>
     <string name="static_prepare_seconds">Statische Übung Vorbereitungszeit immer 5 Sek.</string>
     <string name="swipeGesturesSwitch">Wischgesten</string>
     <string name="End">Ende</string>
     <string name="single_exercise_and_results">Suchergebnisse</string>
+    <string name="chooseRestSound">Wählen Sie den Pausenendeton</string>
+    <string name="restLabel">Pause</string>
+    <string name="rest_counter_minutes">Entspannen Sie %d:%02d s</string>
 </resources>
