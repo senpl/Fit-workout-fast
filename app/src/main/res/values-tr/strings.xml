@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="nextExerciseSwitch">Bir sonraki egzersiz</string>
-    <string name="nextExerciseSwitchDescription">Egzersizlerdeki onay kutusuna tıkladığınızda programdaki bir sonraki egzersize geçer</string>
+    <string name="nextExerciseSwitchDescription">Egzersiz menüsündeki tik işaretine tıkladığında programdaki bir sonraki egzersize geçer</string>
     <string name="failedToDoReps">Tekrarları yaparken hata oluştu</string>
     <string name="timeLabel">Zaman</string>
     <string name="shoulders">Omuzlar</string>
     <string name="obliques">Oblikler</string>
     <string name="trapezius">Trapezler</string>
-    <string name="import_new_exercise_first">(Önce yeni egzersizleri içe aktardığınızdan emin olun)</string>
+    <string name="import_new_exercise_first">(Önce yeni egzersizleri içe aktardığından emin ol)</string>
     <string name="import_failed">İçe aktarılamadı</string>
     <string name="imported_successfully">İçe aktarıldı</string>
     <string name="SecondsLabel_short">Sn</string>
@@ -20,7 +20,7 @@
     <string name="FFMI_dialog_title">Yağsız Vücut Kütlesi (YVK)</string>
     <string name="ffmiLabel">YVK</string>
     <string name="rfmLabel">GYKİ</string>
-    <string name="new_folder">Yeni dosya</string>
+    <string name="new_folder">Yeni klasör</string>
     <string name="another_time_maybe">Belki başka zaman :)</string>
     <string name="access_granted">Erişim izni verildi</string>
     <string name="RFM_male_formula">Erkekler: GYKİ = 64 – (20 x (boy/bel çevresi))</string>
@@ -28,7 +28,7 @@
     <string name="RFM_dialog_title">Göreceli Yağ Kitle İndeksi (GYKİ)</string>
     <string name="BMI_dialog_title">Vücut Kitle İndeksi (VKİ)</string>
     <string name="no_weight_available">Ağırlık mevcut değil</string>
-    <string name="enter_size_cm">Boy girin (cm)</string>
+    <string name="enter_size_cm">Boy gir (cm)</string>
     <string name="BMI_formula">VKİ = ağırlık(kg) / boy(m)²</string>
     <string name="no_size_available">Boy mevcut değil</string>
     <string name="menu_Workout">Antrenman</string>
@@ -41,15 +41,15 @@
     <string name="start">Başlat</string>
     <string name="muscles">Kaslar</string>
     <string name="edit_soon_available">Düzenleme yakında gelecek</string>
-    <string name="textSlideEssential">Önce bir program ekleyin veya mevcut olanı düzenleyin. Ardından programa egzersiz ekleyin. Artık antrenman sekmesinde programınız aktif hâle gelecek.</string>
+    <string name="textSlideEssential">Önce bir program oluştur veya mevcut bir programı düzenle. Ardından bu programa egzersizler ekle. Artık antrenman sekmesinden programını başlatabilirsin!</string>
     <string name="strength_category">Güç</string>
     <string name="enter_bodypart_name">Kas grubu adı gir</string>
-    <string name="delete_bodypart_confirm">Bu kas grubunu silmek istiyor musunuz\? İlgili tüm ölçüler silinecek.</string>
+    <string name="delete_bodypart_confirm">Bu kas grubunu silmek istiyor musun\? İlgili tüm ölçümler silinecek.</string>
     <string name="add_program_first">Önce program ekle</string>
     <string name="titleSlideEssential">Gereksiz içerik yok</string>
-    <string name="introSlide2Title">Düğmeler veya el hareketleriyle egzersizleri kolayca değiştirin</string>
+    <string name="introSlide2Title">Düğmeler veya el hareketleriyle egzersizleri kolayca değiştir</string>
     <string name="introSlide2Text">Antrenman programındaki egzersizleri kolayca değiştirebilirsin. Ayrıca egzersizleri molalardan sonra da değiştirebilirsin.</string>
-    <string name="introSlide1Text">\"Workouts\'N\'Rest\"e hoş geldin! WNR, otomatik dinlenme sayacı ile zaman kaybetmeden spor yapabileceğin bir egzersiz uygulamasıdır.</string>
+    <string name="introSlide1Text">\"Workouts\'N\'Rest\"e hoş geldin! WNR, otomatik dinlenme sayacı sayesinde zaman kaybetmeden spor yapabileceğin bir egzersiz uygulamasıdır.</string>
     <string name="removedid">Kayıt silindi</string>
     <string name="nbSeriesPerDate">Tarihe göre set sayısı</string>
     <string name="selectMachineDialogLabel">Kayıtlı bir egzersiz seç</string>
@@ -57,7 +57,7 @@
     <string name="nb_serie">Set Sayısı</string>
     <string name="total_machine">Toplam egzersiz</string>
     <string name="total_session">Oturum süresince toplam</string>
-    <string name="ShareTextDefault">__MACHINE__ ile__WEIGHT__ kg kaldırdım!</string>
+    <string name="ShareTextDefault">__MACHINE__ ile __WEIGHT__ kg kaldırdım!</string>
     <string name="FonteLabel">Vücut geliştirme</string>
     <string name="right_thigh">Sağ uyluk</string>
     <string name="left_thigh">Sol uyluk</string>
@@ -81,8 +81,8 @@
     <string name="selectMuscles">Kasları seç</string>
     <string name="bodytracking">Vücut Takibi</string>
     <string name="all">Hepsi</string>
-    <string name="deleteProgram_confirm_text">Bu programı silmek istiyor musun\? Programda yer alan tüm egzersizler silinecektir.</string>
-    <string name="deleteMachine_confirm_text">Bu egzersizi silmek istiyor musun\? İlgili tüm kayıtlar silinecektir.</string>
+    <string name="deleteProgram_confirm_text">Bu programı silmek istiyor musun\? Programda yer alan tüm egzersizler silinecek.</string>
+    <string name="deleteMachine_confirm_text">Bu egzersizi silmek istiyor musun\? İlgili tüm kayıtlar silinecek.</string>
     <string name="backDialog_confirm_text">Çıkmadan önce kaydedilsin mi\?</string>
     <string name="MesureHint">Buraya ölçü girin</string>
     <string name="lastRecordLabel">Son kayıt</string>
@@ -91,11 +91,11 @@
     <string name="CountdownLabel">Dinlenme süresi</string>
     <string name="total_weight">Toplam ağırlık</string>
     <string name="titleSlideOpenSource">Bu açık kaynaklı bir uygulamadır!</string>
-    <string name="pressBackAgain">Çıkmak için tekrar GERİ tuşuna basın</string>
-    <string name="textSlideOpenSource">İyileştirmeler ve çözümler önerin! Bize Github üzerinden ulaşabilirsin: https://github.com/senpl/Fit-workout-fast</string>
+    <string name="pressBackAgain">Çıkmak için tekrar GERİ tuşuna bas</string>
+    <string name="textSlideOpenSource">İyileştirmeler ve çözümler önermekten çekinme! Bize Github üzerinden ulaşabilirsin: https://github.com/senpl/Fit-workout-fast</string>
     <string name="missinginfo">Eksik bilgi</string>
     <string name="profileCreated">Profil oluşturuldu</string>
-    <string name="size_cm_optional">Cm cinsinden boy (isteğe bağlı)</string>
+    <string name="size_cm_optional">Boy (isteğe bağlı)</string>
     <string name="introSlide1Title">Merhaba</string>
     <string name="profileDeleted">Profil silindi</string>
     <string name="impossibleToDeleteProfile">Mevcut profil silinemez</string>
@@ -105,11 +105,11 @@
     <string name="expandad_aditional_details_arrow">genişletilmiş ek detaylar oku</string>
     <string name="chooseStaticSound">Statik zamanlayıcının bitiş sesini seç</string>
     <string name="End">Son</string>
-    <string name="swipeGesturesDescription">Kaydırma hareketiyle egzersizlerin hızlı bir şekilde değiştirilmesine izin verin.</string>
+    <string name="swipeGesturesDescription">Kaydırma hareketiyle egzersizlerin hızlı bir şekilde değiştirilmesine izin ver.</string>
     <string name="swipeGesturesSwitch">Kaydırma hareketleri</string>
     <string name="FailLabel">Başarısız</string>
-    <string name="playRestSound">Dinlenme bitiş sesi çal</string>
-    <string name="playStaticExerciseFinishSound">Statik egzersiz bitiş sesi çal</string>
+    <string name="playRestSound">Dinlenme bitiş sesini çal</string>
+    <string name="playStaticExerciseFinishSound">Statik egzersiz bitiş sesini çal</string>
     <string name="playStaticExerciseFinishSoundDescription">Statik egzersiz süresi bittikten sonra ses çıkar</string>
     <string name="playRestSoundDescription">Dinlenme süresi bittikten sonra ses çıkar</string>
     <string name="rest_counter_minutes">Dinlenme %d:%02d s</string>
@@ -131,11 +131,11 @@
     <string name="machine_name">Egzersiz adı</string>
     <string name="ProgramsLabel">Programlar</string>
     <string name="ProgramRunnerLabel">Programı başlat</string>
-    <string name="NewProgramHint">Antrenman programınızın adı</string>
+    <string name="NewProgramHint">Antrenman programının adı</string>
     <string name="FromProgramLabel">Programlar</string>
     <string name="manu_programs">Programlar</string>
     <string name="fitness_programs">Programlar</string>
-    <string name="daynightmode_settingtitle">Temanızı seçin (yeniden başlatma gerekli)</string>
+    <string name="daynightmode_settingtitle">Tema seç (yeniden başlatma gerekli)</string>
     <string name="seconds">Saniye</string>
     <string name="chooseRestSound">Dinlenme bitiş sesini seç</string>
     <string name="programs_settings">Program Ayarları</string>
@@ -143,7 +143,7 @@
     <string name="kg">kg</string>
     <string name="Lbs">Lbs</string>
     <string name="static_prepare_seconds">Statik egzersiz hazırlık süresi her zaman 5 saniyedir.</string>
-    <string name="maxWeightPerDuration">Süre başına maksimum Ağırlık</string>
+    <string name="maxWeightPerDuration">Süre başına maksimum ağırlık</string>
     <string name="sum">Toplam</string>
     <string name="maxRep1">Maksimum (Tekrar &gt;= 1)</string>
     <string name="maxRep5d">Maksimum (Tekrar &gt;= 5)</string>
@@ -188,14 +188,14 @@
     <string name="sound_settings">Ses Ayarları</string>
     <string name="rest_finished">Dinlenme bitti</string>
     <string name="exercise_time">Egzersiz süresi</string>
-    <string name="click_to_start">Başlamak için tıklayın</string>
-    <string name="enter_birthday">Doğum tarihi girin</string>
-    <string name="enter_profile_name">Profil ismi girin</string>
-    <string name="new_measure">Yeni ölçü</string>
+    <string name="click_to_start">Başlamak için dokun</string>
+    <string name="enter_birthday">Doğum tarihi gir</string>
+    <string name="enter_profile_name">Profil ismi gir</string>
+    <string name="new_measure">Yeni ölçüm</string>
     <string name="error">Hata</string>
     <string name="app_name">Workouts\'N\'Rest</string>
     <string name="failedtocreatefolder">Klasör oluşturulamadı</string>
-    <string name="enter_gender_here">Cinsiyet girin</string>
+    <string name="enter_gender_here">Cinsiyet gir</string>
     <string name="otherGender">Diğer</string>
     <string name="femaleGender">Kadın</string>
     <string name="maleGender">Erkek</string>
