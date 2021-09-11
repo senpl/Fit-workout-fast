@@ -41,7 +41,7 @@
     <string name="start">Başlat</string>
     <string name="muscles">Kaslar</string>
     <string name="edit_soon_available">Düzenleme yakında gelecek</string>
-    <string name="textSlideEssential">Önce bir program oluştur veya mevcut bir programı düzenle. Ardından bu programa egzersizler ekle. Artık antrenman sekmesinden programını başlatabilirsin!</string>
+    <string name="textSlideEssential">Önce bir program oluştur veya mevcut bir programı düzenle. Ardından bu programa egzersizleri ekle. Artık antrenman sekmesinden programını başlatabilirsin!</string>
     <string name="strength_category">Güç</string>
     <string name="enter_bodypart_name">Kas grubu adı gir</string>
     <string name="delete_bodypart_confirm">Bu kas grubunu silmek istiyor musun\? İlgili tüm ölçümler silinecek.</string>
