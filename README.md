@@ -5,7 +5,9 @@
      [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.fitworkoutfast)<a href="https://hosted.weblate.org/engage/httpsgithubcomsenplfit-workout-fast/">
-<img src="https://hosted.weblate.org/widgets/httpsgithubcomsenplfit-workout-fast/-/translate/svg-badge.svg" alt="Stan tłumaczenia" />
+<a href="https://hosted.weblate.org/engage/httpsgithubcomsenplfit-workout-fast/">
+<img src="https://hosted.weblate.org/widgets/httpsgithubcomsenplfit-workout-fast/-/translate/multi-auto.svg" alt="Stan tłumaczenia" />
+</a>
 </a>
 ## Run your training quickly and easily
 
