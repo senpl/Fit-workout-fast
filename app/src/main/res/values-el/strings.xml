@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Προπονήσεις\'K\'Ξεκούραση</string>
+    <string name="FunctionLabel">Εμφάνιση</string>
+    <string name="DateLabel">Ημερομηνία</string>
+    <string name="action_settings">Ρυθμίσεις</string>
+    <string name="failedtocreatefolder">Αποτυχία δημιουργίας φακέλου</string>
+    <string name="removedid">Αφαίρεση αναγνωριστικού</string>
+    <string name="global_no">Όχι</string>
+    <string name="global_yes">Μάλιστα</string>
+    <string name="global_ok">Εντάξει</string>
+    <string name="global_cancel">Ματαίωση</string>
+    <string name="global_warning">Προειδοποίηση</string>
+    <string name="global_confirm_question">Είστε σίγουρος;</string>
+    <string name="global_confirm">Επιβεβαίωση</string>
+</resources>
