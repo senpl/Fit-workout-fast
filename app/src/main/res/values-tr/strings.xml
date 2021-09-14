@@ -49,7 +49,7 @@
     <string name="titleSlideEssential">Gereksiz içerik yok</string>
     <string name="introSlide2Title">Düğmeler veya el hareketleriyle egzersizleri kolayca değiştir</string>
     <string name="introSlide2Text">Antrenman programındaki egzersizleri kolayca değiştirebilirsin. Ayrıca egzersizleri molalardan sonra da değiştirebilirsin.</string>
-    <string name="introSlide1Text">\"Workouts\'N\'Rest\"e hoş geldin! WNR, otomatik dinlenme sayacı sayesinde zaman kaybetmeden spor yapabileceğin bir egzersiz uygulamasıdır.</string>
+    <string name="introSlide1Text">\"Workouts\'N\'Rest\"e hoş geldin! WNR, otomatik dinlenme sayacı sayesinde vakit kaybetmeden egzersizlerini yapabileceğin bir uygulamadır.</string>
     <string name="removedid">Kayıt silindi</string>
     <string name="nbSeriesPerDate">Tarihe göre set sayısı</string>
     <string name="selectMachineDialogLabel">Kayıtlı bir egzersiz seç</string>
