@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.fitworkoutfast"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 58
-        versionName "0.24.05"
+        targetSdkVersion 31
+        versionCode 61
+        versionName "0.24.07"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -65,7 +65,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_14.toString()
     }
 
     lintOptions {
@@ -79,8 +79,8 @@ dependencies {
 
 // Support
     implementation 'androidx.annotation:annotation:1.2.0'
-    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
-    implementation 'androidx.appcompat:appcompat:1.4.0-alpha03'
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
+    implementation 'androidx.appcompat:appcompat:1.4.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
