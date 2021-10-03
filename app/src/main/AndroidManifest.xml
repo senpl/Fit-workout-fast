@@ -33,10 +33,10 @@
             android:name=".intro.MainIntroActivity"
             android:theme="@style/Theme.Intro"
             android:exported="false"/>
-<!--        <activity-->
-<!--            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"-->
-<!--            android:theme="@style/Theme.MaterialComponents"-->
-<!--            android:exported="false"/>-->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Theme.MaterialComponents"
+            android:exported="false"/>
 
 <!--        <meta-data-->
 <!--            android:name="firebase_crash_collection_enabled"-->
