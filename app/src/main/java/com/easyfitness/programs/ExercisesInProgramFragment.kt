@@ -6,9 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.view.Gravity
-import android.view.KeyEvent
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
@@ -25,6 +23,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.easyfitness.*
 import com.easyfitness.DAO.*
 import com.easyfitness.DAO.DAOMachine.*
+import com.easyfitness.databinding.TabProgramWithExercisesBinding
 import com.easyfitness.machines.ExerciseDetailsPager
 import com.easyfitness.machines.MachineCursorAdapter
 import com.fitworkoutfast.MainActivity
@@ -35,7 +34,6 @@ import com.easyfitness.utils.UnitConverter
 import com.ikovac.timepickerwithseconds.MyTimePickerDialog
 import com.ikovac.timepickerwithseconds.TimePicker
 import com.onurkaganaldemir.ktoastlib.KToast
-import kotlinx.android.synthetic.main.tab_program_with_exercises.*
 import timber.log.Timber
 import java.util.*
 
@@ -49,6 +47,21 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     var programs: MutableList<String>? = null
     private var exercisesList: MutableList<ExerciseInProgram> = ArrayList<ExerciseInProgram>().toMutableList()
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private var _binding: TabProgramWithExercisesBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = TabProgramWithExercisesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,12 +79,12 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         } else {
             programId = daoProgram.getRecord(programs!![0])!!.id
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs!!)
-            programSelect.adapter = adapter
+            binding.programSelect.adapter = adapter
             exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
-            exercisesRecycler.adapter = ExerciseInProgramAdapter(requireContext(), exercisesList, itemClickDeleteRecord, null)
-            exercisesRecycler.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            binding.exercisesRecycler.adapter = ExerciseInProgramAdapter(requireContext(), exercisesList, itemClickDeleteRecord, null)
+            binding.exercisesRecycler.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
-            programSelect.onItemSelectedListener = object :
+            binding.programSelect.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>,
                                             view: View?, position: Int, id: Long) {
@@ -83,23 +96,23 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
         }
-        detailsLayout.visibility = View.VISIBLE
-        addButton.setOnClickListener(clickAddButton)
-        machineListButton.setOnClickListener(onClickMachineListWithIcons) //onClickMachineList
-        seriesEdit.onFocusChangeListener = touchRazEdit
-        repetitionEdit.onFocusChangeListener = touchRazEdit
-        poidsEdit.onFocusChangeListener = touchRazEdit
-        distanceEdit.onFocusChangeListener = touchRazEdit
-        durationEdit.setOnClickListener(clickDateEdit)
-        secondsEdit.onFocusChangeListener = touchRazEdit
-        exerciseEdit.setOnKeyListener(checkExerciseExists)
-        exerciseEdit.onFocusChangeListener = touchRazEdit
-        exerciseEdit.onItemClickListener = onItemClickFilterList
-        restTimeEdit.onFocusChangeListener = restTimeEditChange
-        restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
-        bodybuildingSelector.setOnClickListener(clickExerciseTypeSelector)
-        cardioSelector.setOnClickListener(clickExerciseTypeSelector)
-        staticExerciseSelector.setOnClickListener(clickExerciseTypeSelector)
+        binding.detailsLayout.visibility = View.VISIBLE
+        binding.addButton.setOnClickListener(clickAddButton)
+        binding.machineListButton.setOnClickListener(onClickMachineListWithIcons) //onClickMachineList
+        binding.seriesEdit.onFocusChangeListener = touchRazEdit
+        binding.repetitionEdit.onFocusChangeListener = touchRazEdit
+        binding.poidsEdit.onFocusChangeListener = touchRazEdit
+        binding.distanceEdit.onFocusChangeListener = touchRazEdit
+        binding.durationEdit.setOnClickListener(clickDateEdit)
+        binding.secondsEdit.onFocusChangeListener = touchRazEdit
+        binding.exerciseEdit.setOnKeyListener(checkExerciseExists)
+        binding.exerciseEdit.onFocusChangeListener = touchRazEdit
+        binding.exerciseEdit.onItemClickListener = onItemClickFilterList
+        binding.restTimeEdit.onFocusChangeListener = restTimeEditChange
+        binding.restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
+        binding.bodybuildingSelector.setOnClickListener(clickExerciseTypeSelector)
+        binding.cardioSelector.setOnClickListener(clickExerciseTypeSelector)
+        binding.staticExerciseSelector.setOnClickListener(clickExerciseTypeSelector)
         restoreSharedParams()
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
         var weightUnit = UnitConverter.UNIT_KG
@@ -108,19 +121,18 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         } catch (e: NumberFormatException) {
             Timber.d("Conversion Not important")
         }
-        unitSpinner.setSelection(weightUnit)
-        val distanceUnit: Int
-        distanceUnit = try {
+        binding.unitSpinner.setSelection(weightUnit)
+        val distanceUnit: Int = try {
             sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
         } catch (e: NumberFormatException) {
             UnitConverter.UNIT_KM
         }
-        unitDistanceSpinner.setSelection(distanceUnit)
+        binding.unitDistanceSpinner.setSelection(distanceUnit)
         // Initialization of the database
         mDbMachine = DAOMachine(context)
         selectedType = TYPE_FONTE
-        exerciseImage.setOnClickListener {
-            val m = mDbMachine.getMachine(exerciseEdit.text.toString())
+        binding.exerciseImage.setOnClickListener {
+            val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
             if (m != null) {
                 val profileId: Long = (requireActivity() as MainActivity).currentProfile!!.id
                 val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId)
@@ -157,15 +169,15 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                         daoExerciseInProgram.updateString(listOfExercises[i - 1], DAOExerciseInProgram.ORDER_EXECUTION, order1.toString())
                     }
                 }
-                exercisesRecycler.adapter!!.notifyItemMoved(fromPosition, toPosition)
+                binding.exercisesRecycler.adapter!!.notifyItemMoved(fromPosition, toPosition)
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
         })
-        touchHelper.attachToRecyclerView(exercisesRecycler)
+        touchHelper.attachToRecyclerView(binding.exercisesRecycler)
         linearLayoutManager = LinearLayoutManager(requireContext())
-        exercisesRecycler.layoutManager = linearLayoutManager
+        binding.exercisesRecycler.layoutManager = linearLayoutManager
     }
 
     private val durationSet = MyTimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int, second: Int ->
@@ -173,7 +185,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         val strHour: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
         val strSecond: String = if (second < 10) "0$second" else second.toString()
         val date = "$strHour:$strMinute:$strSecond"
-        durationEdit.text = date
+        binding.durationEdit.text = date
         hideKeyboard()
     }
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
@@ -187,7 +199,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         }
     }
     private val checkExerciseExists = View.OnKeyListener { _: View?, _: Int, _: KeyEvent? ->
-        val lMach = mDbMachine.getMachine(exerciseEdit.text.toString())
+        val lMach = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
         if (lMach == null) {
             showExerciseTypeSelector(true)
         } else {
@@ -205,86 +217,86 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = View.OnClickListener {
-        if (exerciseEdit.text.toString().isEmpty()) {
+        if (binding.exerciseEdit.text.toString().isEmpty()) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
             return@OnClickListener
         }
         val exerciseType: Int = selectedType
         var restTime = 60
         try {
-            restTime = restTimeEdit.text.toString().toInt()
+            restTime = binding.restTimeEdit.text.toString().toInt()
         } catch (e: NumberFormatException) {
-            restTimeEdit.setText("60")
+            binding.restTimeEdit.setText("60")
         }
         val currentTimeAsOrder: Long = System.currentTimeMillis()
         when (exerciseType) {
             TYPE_FONTE -> {
-                if (seriesEdit.text.toString().isEmpty() ||
-                    repetitionEdit.text.toString().isEmpty() ||
-                    poidsEdit.text.toString().isEmpty()) {
+                if (binding.seriesEdit.text.toString().isEmpty() ||
+                    binding.repetitionEdit.text.toString().isEmpty() ||
+                    binding.poidsEdit.text.toString().isEmpty()) {
                     KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
                     return@OnClickListener
                 }
-                var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
+                var tmpPoids = binding.poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()  /* Weight conversion */
                 var unitPoids = UnitConverter.UNIT_KG // Kg
                 val mContext = requireContext()
-                if (unitSpinner.selectedItem.toString() == mContext.getString(R.string.LbsUnitLabel)) {
+                if (binding.unitSpinner.selectedItem.toString() == mContext.getString(R.string.LbsUnitLabel)) {
                     tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
                     unitPoids = UnitConverter.UNIT_LBS // LBS
                 }
                 daoExerciseInProgram.addRecord(
                     currentTimeAsOrder,
                     programId, restTime,
-                    exerciseEdit.text.toString(),
-                    TYPE_FONTE, seriesEdit.text.toString().toInt(), repetitionEdit.text.toString().toInt(),
+                    binding.exerciseEdit.text.toString(),
+                    TYPE_FONTE, binding.seriesEdit.text.toString().toInt(), binding.repetitionEdit.text.toString().toInt(),
                     tmpPoids,  // Always save in KG
                     profil!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
                     "", 0f, 0, 0, 0
                 )
-                if (mDbMachine.getMachine(exerciseEdit.text.toString()) == null)
-                    mDbMachine.addMachine(exerciseEdit.text.toString(), "", TYPE_FONTE, "", false, null)
+                if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
+                    mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_FONTE, "", false, null)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId)
                 val exercise = exercisesList[exercisesList.size - 1]
-                (exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
+                (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
             }
             TYPE_STATIC -> {
-                if (seriesEdit.text.toString().isEmpty() ||
-                    secondsEdit.text.toString().isEmpty() ||
-                    poidsEdit.text.toString().isEmpty()) {
+                if (binding.seriesEdit.text.toString().isEmpty() ||
+                    binding.secondsEdit.text.toString().isEmpty() ||
+                    binding.poidsEdit.text.toString().isEmpty()) {
                     KToast.warningToast(requireActivity(), resources.getText(R.string.missinginfo).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
                     return@OnClickListener
                 }
                 /* Weight conversion */
-                var tmpPoids = poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
+                var tmpPoids = binding.poidsEdit.text.toString().replace(",".toRegex(), ".").toFloat()
                 var unitPoids = UnitConverter.UNIT_KG // Kg
-                if (unitSpinner.selectedItem.toString() == requireContext().getString(R.string.LbsUnitLabel)) {
+                if (binding.unitSpinner.selectedItem.toString() == requireContext().getString(R.string.LbsUnitLabel)) {
                     tmpPoids = UnitConverter.LbstoKg(tmpPoids) // Always convert to KG
                     unitPoids = UnitConverter.UNIT_LBS // LBS
                 }
                 try {
-                    restTime = restTimeEdit.text.toString().toInt()
+                    restTime = binding.restTimeEdit.text.toString().toInt()
                 } catch (e: NumberFormatException) {
                     restTime = 0
-                    restTimeEdit.setText("0")
+                    binding.restTimeEdit.setText("0")
                 }
                 daoExerciseInProgram.addRecord(
                     currentTimeAsOrder,
                     programId,
                     restTime,
-                    exerciseEdit.text.toString(), TYPE_STATIC, seriesEdit.text.toString().toInt(),
+                    binding.exerciseEdit.text.toString(), TYPE_STATIC, binding.seriesEdit.text.toString().toInt(),
                     1, tmpPoids, profil!!, unitPoids,  // Store Unit for future display
-                    "", "", 0F, 0, secondsEdit.text.toString().toInt(), 0
+                    "", "", 0F, 0, binding.secondsEdit.text.toString().toInt(), 0
                 )
-                if (mDbMachine.getMachine(exerciseEdit.text.toString()) == null)
-                    mDbMachine.addMachine(exerciseEdit.text.toString(), "", TYPE_STATIC, "", false, null)
+                if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
+                    mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_STATIC, "", false, null)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId)
                 val exercise = exercisesList[exercisesList.size - 1]
-                (exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
+                (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
             }
             TYPE_CARDIO -> {
-                if (durationEdit.text.toString().isEmpty() &&  // Only one is mandatory
-                    distanceEdit.text.toString().isEmpty()) {
+                if (binding.durationEdit.text.toString().isEmpty() &&  // Only one is mandatory
+                    binding.distanceEdit.text.toString().isEmpty()) {
                     KToast.warningToast(requireActivity(),
                         resources.getText(R.string.missinginfo).toString() + " Distance missing",
                         Gravity.BOTTOM, KToast.LENGTH_SHORT)
@@ -292,21 +304,21 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 }
                 var duration = 0L
                 try {
-                    if (durationEdit.text.toString().isNotEmpty()) {
-                        duration = DateConverter.durationStringToLong(durationEdit.text.toString())
+                    if (binding.durationEdit.text.toString().isNotEmpty()) {
+                        duration = DateConverter.durationStringToLong(binding.durationEdit.text.toString())
                     }
                 } catch (e: NumberFormatException) {
                     e.printStackTrace()
                     duration = 0
                 }
                 var distance: Float
-                distance = if (distanceEdit.text.toString().isEmpty()) {
+                distance = if (binding.distanceEdit.text.toString().isEmpty()) {
                     0f
                 } else {
-                    distanceEdit.text.toString().replace(",".toRegex(), ".").toFloat()
+                    binding.distanceEdit.text.toString().replace(",".toRegex(), ".").toFloat()
                 }
                 var unitDistance = UnitConverter.UNIT_KM
-                if (unitDistanceSpinner.selectedItem.toString()
+                if (binding.unitDistanceSpinner.selectedItem.toString()
                     == requireContext().getString(R.string.MilesUnitLabel)) {
                     distance = UnitConverter.MilesToKm(distance) // Always convert to KG
                     unitDistance = UnitConverter.UNIT_MILES
@@ -314,7 +326,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 daoExerciseInProgram.addRecord(
                     currentTimeAsOrder,
                     programId, restTime,
-                    exerciseEdit.text.toString(),
+                    binding.exerciseEdit.text.toString(),
                     TYPE_CARDIO,
                     1,
                     1, 0f,
@@ -326,11 +338,11 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     duration,
                     0,
                     unitDistance)
-                if (mDbMachine.getMachine(exerciseEdit.text.toString()) == null)
-                    mDbMachine.addMachine(exerciseEdit.text.toString(), "", TYPE_CARDIO, "", false, null)
+                if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
+                    mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_CARDIO, "", false, null)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId)
                 val exercise = exercisesList[exercisesList.size - 1]
-                (exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
+                (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
             }
         }
         requireActivity().findViewById<View>(R.id.drawer_layout)?.requestFocus()
@@ -340,8 +352,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         /* Reinitialisation des machines */
         val adapter = ArrayAdapter(requireContext(),
             android.R.layout.simple_dropdown_item_1line, daoExerciseInProgram.getAllExerciseInProgramAsList(programId))
-        exerciseEdit.setAdapter(adapter)
-        addButton.setText(R.string.AddLabel)
+        binding.exerciseEdit.setAdapter(adapter)
+        binding.addButton.setText(R.string.AddLabel)
     }
     private val onClickMachineListWithIcons = View.OnClickListener { v ->
         val oldCursor: Cursor
@@ -381,26 +393,26 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             machineListDialog!!.show()
         }
     }
-    private val onItemClickFilterList = OnItemClickListener { _: AdapterView<*>?, _: View?, _: Int, _: Long -> setCurrentExercise(exerciseEdit.text.toString()) }
+    private val onItemClickFilterList = OnItemClickListener { _: AdapterView<*>?, _: View?, _: Int, _: Long -> setCurrentExercise(binding.exerciseEdit.text.toString()) }
 
     //Required for cardio/duration
     private val clickDateEdit = View.OnClickListener { v: View ->
         when (v.id) {
-            R.id.durationEdit -> showTimePicker(durationEdit)
+            R.id.durationEdit -> showTimePicker(binding.durationEdit)
         }
     }
     private val touchRazEdit = OnFocusChangeListener { v: View, hasFocus: Boolean ->
         if (hasFocus) {
             when (v.id) {
-                R.id.seriesEdit -> seriesEdit.setText("")
-                R.id.repetitionEdit -> repetitionEdit.setText("")
-                R.id.secondsEdit -> secondsEdit.setText("")
-                R.id.poidsEdit -> poidsEdit.setText("")
-                R.id.durationEdit -> showTimePicker(durationEdit)
-                R.id.distanceEdit -> distanceEdit.setText("")
+                R.id.seriesEdit -> binding.seriesEdit.setText("")
+                R.id.repetitionEdit -> binding.repetitionEdit.setText("")
+                R.id.secondsEdit -> binding.secondsEdit.setText("")
+                R.id.poidsEdit -> binding.poidsEdit.setText("")
+                R.id.durationEdit -> showTimePicker(binding.durationEdit)
+                R.id.distanceEdit -> binding.distanceEdit.setText("")
                 R.id.exerciseEdit -> {
-                    exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp)
-                    minMaxLayout.visibility = GONE
+                    binding.exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp)
+                    binding.minMaxLayout.visibility = GONE
                     showExerciseTypeSelector(true)
                 }
             }
@@ -410,7 +422,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             }
         } else {
             if (v.id == R.id.exerciseEdit) { // If a creation of a new machine is not ongoing.
-                if (exerciseTypeSelectorLayout.visibility == GONE) setCurrentExercise(exerciseEdit.text.toString())
+                if (binding.exerciseTypeSelectorLayout.visibility == GONE) setCurrentExercise(binding.exerciseEdit.text.toString())
             }
         }
     }
@@ -424,7 +436,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             .showCancelButton(true)
             .setConfirmClickListener { sDialog: SweetAlertDialog ->
                 daoExerciseInProgram.deleteRecord(idToDelete)
-                (exercisesRecycler.adapter!! as ExerciseInProgramAdapter).removeAt(position)
+                (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).removeAt(position)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
                 KToast.infoToast(requireActivity(), resources.getText(R.string.removedid).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
                 sDialog.dismissWithAnimation()
@@ -451,20 +463,17 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     @SuppressLint("CommitTransaction")
     private fun showTimePicker(timeTextView: TextView?) {
         val tx = timeTextView?.text.toString()
-        val hour: Int
-        hour = try {
+        val hour: Int = try {
             tx.substring(0, 2).toInt()
         } catch (e: Exception) {
             0
         }
-        val min: Int
-        min = try {
+        val min: Int = try {
             tx.substring(3, 5).toInt()
         } catch (e: Exception) {
             0
         }
-        val sec: Int
-        sec = try {
+        val sec: Int = try {
             tx.substring(6).toInt()
         } catch (e: Exception) {
             0
@@ -483,27 +492,27 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         get() = mainActivity.currentProfile
 
     val machine: String
-        get() = exerciseEdit.text.toString()
+        get() = binding.exerciseEdit.text.toString()
 
     private fun setCurrentExercise(machineStr: String) {
         if (machineStr.isEmpty()) {
-            exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
+            binding.exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
             showExerciseTypeSelector(true)
-            minMaxLayout.visibility = GONE
+            binding.minMaxLayout.visibility = GONE
             return
         }
         val lMachine = mDbMachine.getMachine(machineStr)
         if (lMachine == null) {
-            exerciseEdit.setText("")
-            exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
+            binding.exerciseEdit.setText("")
+            binding.exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
             changeExerciseTypeUI(TYPE_FONTE, true)
             return
         }
-        exerciseEdit.setText(lMachine.name)
+        binding.exerciseEdit.setText(lMachine.name)
         // Update exercise Image
-        exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
+        binding.exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
         val imgUtil = ImageUtil()
-        ImageUtil.setThumb(exerciseImage, imgUtil.getThumbPath(lMachine.picture)) // Overwrite image is there is one
+        ImageUtil.setThumb(binding.exerciseImage, imgUtil.getThumbPath(lMachine.picture)) // Overwrite image is there is one
         changeExerciseTypeUI(lMachine.type, false)
     }
 
@@ -513,8 +522,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             programs = daoProgram.allProgramsNames //update programs
             programId = daoProgram.getRecord(programs!![0])!!.id
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs!!)
-            programSelect.adapter = adapter
-            programSelect.onItemSelectedListener = object :
+            binding.programSelect.adapter = adapter
+            binding.programSelect.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>,
                                             view: View?, position: Int, id: Long) {
@@ -527,66 +536,66 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
         daoExerciseInProgram.setProfile(profil)
         exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
-        exercisesRecycler.adapter = ExerciseInProgramAdapter(requireContext(), exercisesList, itemClickDeleteRecord, null)
+        binding.exercisesRecycler.adapter = ExerciseInProgramAdapter(requireContext(), exercisesList, itemClickDeleteRecord, null)
     }
 
     private fun showExerciseTypeSelector(displaySelector: Boolean) {
-        if (displaySelector) exerciseTypeSelectorLayout.visibility = View.VISIBLE else exerciseTypeSelectorLayout.visibility = GONE
+        if (displaySelector) binding.exerciseTypeSelectorLayout.visibility = View.VISIBLE else binding.exerciseTypeSelectorLayout.visibility = GONE
     }
 
     private fun changeExerciseTypeUI(pType: Int, displaySelector: Boolean) {
         showExerciseTypeSelector(displaySelector)
         when (pType) {
             TYPE_CARDIO -> {
-                cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
-                bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                serieCardView.visibility = GONE
-                repetitionCardView.visibility = GONE
-                weightCardView.visibility = GONE
-                secondsCardView.visibility = GONE
-                restTimeLayout.visibility = GONE
-                distanceCardView.visibility = View.VISIBLE
-                durationCardView.visibility = View.VISIBLE
+                binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
+                binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.serieCardView.visibility = GONE
+                binding.repetitionCardView.visibility = GONE
+                binding.weightCardView.visibility = GONE
+                binding.secondsCardView.visibility = GONE
+                binding.restTimeLayout.visibility = GONE
+                binding.distanceCardView.visibility = View.VISIBLE
+                binding.durationCardView.visibility = View.VISIBLE
                 selectedType = TYPE_CARDIO
             }
             TYPE_STATIC -> {
-                cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
-                serieCardView.visibility = View.VISIBLE
-                repetitionCardView.visibility = GONE
-                secondsCardView.visibility = View.VISIBLE
-                weightCardView.visibility = View.VISIBLE
-                restTimeLayout.visibility = View.VISIBLE
-                distanceCardView.visibility = GONE
-                durationCardView.visibility = GONE
+                binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
+                binding.serieCardView.visibility = View.VISIBLE
+                binding.repetitionCardView.visibility = GONE
+                binding.secondsCardView.visibility = View.VISIBLE
+                binding.weightCardView.visibility = View.VISIBLE
+                binding.restTimeLayout.visibility = View.VISIBLE
+                binding.distanceCardView.visibility = GONE
+                binding.durationCardView.visibility = GONE
                 selectedType = TYPE_STATIC
             }
             TYPE_FONTE -> {
-                cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
-                staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                serieCardView.visibility = View.VISIBLE
-                repetitionCardView.visibility = View.VISIBLE
-                secondsCardView.visibility = GONE
-                weightCardView.visibility = View.VISIBLE
-                restTimeLayout.visibility = View.VISIBLE
-                distanceCardView.visibility = GONE
-                durationCardView.visibility = GONE
+                binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
+                binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.serieCardView.visibility = View.VISIBLE
+                binding.repetitionCardView.visibility = View.VISIBLE
+                binding.secondsCardView.visibility = GONE
+                binding.weightCardView.visibility = View.VISIBLE
+                binding.restTimeLayout.visibility = View.VISIBLE
+                binding.distanceCardView.visibility = GONE
+                binding.durationCardView.visibility = GONE
                 selectedType = TYPE_FONTE
             }
             else -> {
-                cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
-                staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
-                serieCardView.visibility = View.VISIBLE
-                repetitionCardView.visibility = View.VISIBLE
-                secondsCardView.visibility = GONE
-                weightCardView.visibility = View.VISIBLE
-                restTimeLayout.visibility = View.VISIBLE
-                distanceCardView.visibility = GONE
-                durationCardView.visibility = GONE
+                binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
+                binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
+                binding.serieCardView.visibility = View.VISIBLE
+                binding.repetitionCardView.visibility = View.VISIBLE
+                binding.secondsCardView.visibility = GONE
+                binding.weightCardView.visibility = View.VISIBLE
+                binding.restTimeLayout.visibility = View.VISIBLE
+                binding.distanceCardView.visibility = GONE
+                binding.durationCardView.visibility = GONE
                 selectedType = TYPE_FONTE
             }
         }
@@ -595,16 +604,16 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     private fun saveSharedParams() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val editor = sharedPref?.edit()
-        editor?.putString("restTime", restTimeEdit.text.toString())
-        editor?.putBoolean("restCheck", restTimeCheck.isChecked)
-        editor?.putBoolean("showDetails", detailsLayout.isShown)
+        editor?.putString("restTime", binding.restTimeEdit.text.toString())
+        editor?.putBoolean("restCheck", binding.restTimeCheck.isChecked)
+        editor?.putBoolean("showDetails", binding.detailsLayout.isShown)
         editor?.apply()
     }
 
     private fun restoreSharedParams() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        restTimeEdit.setText(sharedPref?.getString("restTime", ""))
-        restTimeCheck.isChecked = sharedPref!!.getBoolean("restCheck", true)
+        binding.restTimeEdit.setText(sharedPref?.getString("restTime", ""))
+        binding.restTimeCheck.isChecked = sharedPref!!.getBoolean("restCheck", true)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -614,6 +623,11 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     private fun hideKeyboard() {
         val inputMethodManager = Objects.requireNonNull(requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

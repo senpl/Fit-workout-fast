@@ -14,20 +14,26 @@ import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.DAORecord
 import com.easyfitness.DAO.Program
 import com.easyfitness.R
+import com.easyfitness.databinding.ProgramPagerBinding
 import com.fitworkoutfast.MainActivity
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import com.onurkaganaldemir.ktoastlib.KToast
-import kotlinx.android.synthetic.main.program_pager.*
 
 class ProgramDetailsPager : Fragment() {
+    private var _binding: ProgramPagerBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
     private var programIdArg: Long = 0
     private var profilIdArg: Long = 0
     private var pagerAdapter: FragmentPagerItemAdapter? = null
     private lateinit var programSave: ImageButton
     private var program: Program? = null
     private var toBeSaved = false
+
+
     private val onClickToolbarItem = View.OnClickListener { v: View ->
         when (v.id) {
             R.id.saveButton -> {
@@ -40,9 +46,9 @@ class ProgramDetailsPager : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.program_pager, container, false)
-
+                              savedInstanceState: Bundle?): View {
+        _binding = ProgramPagerBinding.inflate(inflater, container, false)
+        val view = binding.root
         // Locate the viewpager in activity_main.xml
         val mViewPager: ViewPager = view.findViewById(R.id.program_pager)
         if (mViewPager.adapter == null) {
@@ -81,7 +87,7 @@ class ProgramDetailsPager : Fragment() {
         return view
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        actionToolbarProgram.visibility=View.VISIBLE
+        binding.actionToolbarProgram.visibility=View.VISIBLE
     }
     fun requestForSave() {
         toBeSaved = true // setting state
@@ -128,7 +134,7 @@ class ProgramDetailsPager : Fragment() {
                     dialog.show()
                 } else {
                     mDbProgram.updateRecord(newProgram)
-                    saveButton.visibility = View.GONE
+                    binding.saveButton.visibility = View.GONE
                     toBeSaved = false
                     getExerciseFragment()!!.programSaved()
                     result = true
@@ -138,7 +144,7 @@ class ProgramDetailsPager : Fragment() {
             if (newProgram != null) {
                 mDbProgram.updateRecord(newProgram)
             }
-            saveButton.visibility = View.GONE
+            binding.saveButton.visibility = View.GONE
             toBeSaved = false
             getExerciseFragment()!!.programSaved()
             result = true
@@ -185,7 +191,7 @@ class ProgramDetailsPager : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun getExerciseFragment(): ProgramDetailsFragment? {
+    private fun getExerciseFragment(): ProgramDetailsFragment {
         return pagerAdapter!!.getPage(0) as ProgramDetailsFragment
     }
 

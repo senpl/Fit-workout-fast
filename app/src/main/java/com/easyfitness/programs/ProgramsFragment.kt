@@ -4,8 +4,10 @@ import android.database.Cursor
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.FilterQueryProvider
@@ -15,19 +17,23 @@ import androidx.fragment.app.Fragment
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.Profile
 import com.easyfitness.R
+import com.easyfitness.databinding.TabProgramsBinding
 import com.fitworkoutfast.MainActivity
-import kotlinx.android.synthetic.main.tab_programs.*
 
 class ProgramsFragment : Fragment(R.layout.tab_programs) {
     private var mTableAdapter: ProgramCursorAdapter? = null
+    private var _binding: TabProgramsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private val onTextChangeListener: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             if (charSequence.isEmpty()) {
                 mTableAdapter!!.notifyDataSetChanged()
-                if(programsList!=null && programsList!!.adapter!=null) {
-                    mTableAdapter = programsList!!.adapter as ProgramCursorAdapter
+                if(binding.programsList.adapter!=null) {
+                    mTableAdapter = binding.programsList.adapter as ProgramCursorAdapter
                     refreshData()
                 }
             } else {
@@ -42,14 +48,14 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
     }
 
     private val clickAddButton = View.OnClickListener {
-        val programName = newProgramName!!.text.toString()
+        val programName = binding.newProgramName.text.toString()
         if (programName.isEmpty()) {
             Toast.makeText(context, "Enter not empty program name", Toast.LENGTH_LONG).show()
         } else {
             val lDAOProgram = DAOProgram(context)
             val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             lDAOProgram.addRecord(programName, profileId!!)
-            newProgramName!!.setText("")
+            binding.newProgramName.setText("")
             mTableAdapter!!.notifyDataSetChanged()
             refreshData()
             Toast.makeText(context, "Added to program list", Toast.LENGTH_LONG).show()
@@ -66,11 +72,21 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         transaction.commit()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = TabProgramsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addProgramButton.setOnClickListener(clickAddButton)
-        searchField.addTextChangedListener(onTextChangeListener)
-        programsList.onItemClickListener = onClickListItem
+        binding.addProgramButton.setOnClickListener(clickAddButton)
+        binding.searchField.addTextChangedListener(onTextChangeListener)
+        binding.programsList.onItemClickListener = onClickListItem
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -98,13 +114,13 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
                 val daoProgram = DAOProgram(context)
                 c = daoProgram.allPrograms
                 if (c == null || c.count <= 0) {
-                    programsList!!.adapter = null
+                    binding.programsList.adapter = null
                 } else {
-                    if (programsList!!.adapter == null) {
+                    if (binding.programsList.adapter == null) {
                         mTableAdapter = ProgramCursorAdapter(requireContext(), c, 0, daoProgram)
-                        programsList!!.adapter = mTableAdapter
+                        binding.programsList.adapter = mTableAdapter
                     } else {
-                        mTableAdapter = programsList!!.adapter as ProgramCursorAdapter
+                        mTableAdapter = binding.programsList.adapter as ProgramCursorAdapter
                         oldCursor = mTableAdapter!!.swapCursor(c)
                         oldCursor?.close()
                     }
@@ -120,6 +136,11 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
 
     private val profil: Profile?
         get() = (requireActivity() as MainActivity).currentProfile
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     companion object {
         fun newInstance(name: String?, id: Long?): ProgramsFragment {
