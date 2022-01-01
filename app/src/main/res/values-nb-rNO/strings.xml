@@ -29,8 +29,8 @@
     <string name="pref_show_mp3_player_summary">Skjul/vis MP3-spiller-verktøylinje</string>
     <string name="profileSelected">Profil valgt</string>
     <string name="musclesLabel">Muskler (%)</string>
-    <string name="waterLabel">Vann (%s)</string>
-    <string name="bonesLabel">Beinmasse (%s)</string>
+    <string name="waterLabel">Vann (%)</string>
+    <string name="bonesLabel">Beinmasse (%)</string>
     <string name="fatLabel">Fett (%)</string>
     <string name="weightLabel">Vekt (kg)</string>
     <string name="ShareInstruction">Rediger teksten din før forsendelse:</string>
@@ -79,9 +79,9 @@
     <string name="introSlide1Title">Hei</string>
     <string name="exit">Avslutt</string>
     <string name="CountdownLabel">Hviletid</string>
-    <string name="graph_lastweek"></string>
-    <string name="graph_lastmonth"></string>
-    <string name="graph_lastyear"></string>
+    <string name="graph_lastweek"/>
+    <string name="graph_lastmonth"/>
+    <string name="graph_lastyear"/>
     <string name="graph_all">Alle</string>
     <string name="gallery">Galleri</string>
     <string name="camera">Kamera</string>
