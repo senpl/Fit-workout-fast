@@ -144,8 +144,8 @@
     <string name="enter_birthday">பிறந்தநாளை உள்ளிடவும்</string>
     <string name="enter_bodypart_name">உடல் பகுதி பெயரை உள்ளிடவும்</string>
     <string name="strength_category">வலிமை</string>
-    <string name="rest_counter">ஓய்வு %1 $ டி கள்</string>
-    <string name="rest_counter_minutes">REST %D: %02d s</string>
+    <string name="rest_counter">ஓய்வு %1$d கள்</string>
+    <string name="rest_counter_minutes">REST %d: %02d s</string>
     <string name="static_counter_minutes">%d:%02d s</string>
     <string name="click_to_start">தொடங்க சொடுக்கு செய்க</string>
     <string name="exercise_time">உடற்பயிற்சி நேரம்</string>
