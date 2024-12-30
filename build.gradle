@@ -5,7 +5,7 @@ buildscript {
     repositories {
         google()
         maven { url "https://jitpack.io" }
-        jcenter()
+//        jcenter()
         mavenCentral()
         //maven { url "https://repo.boundlessgeo.com/main/" } //javacsv
         //maven { url "https://maven.fabric.io/public" }
@@ -25,7 +25,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+//        jcenter()
         maven { url "https://jitpack.io" }
         mavenCentral()
         //maven { url "https://repo.boundlessgeo.com/main/" } //javacsv
