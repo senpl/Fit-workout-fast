@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         0 ->                             //dispatchTakePictureIntent(mF);
                             // start picker to get image for cropping and then use the image in cropping activity
-//TODO add something to set guidelines on on
+                            //NO LONGER SUPPORTED, PROBABLY TO REMOVE add something to set guidelines on on
                             CropImageView.Guidelines.ON
                             //                            BottomSheetDialogFragment.instantiate(,"")
 //                            CropImage.

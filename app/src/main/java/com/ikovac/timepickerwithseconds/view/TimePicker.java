@@ -31,6 +31,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.Formatter;
+
+import com.easyfitness.R;
+
 /**
  * A view for selecting the time of day, in either 24 hour or AM/PM mode.
  *
@@ -64,8 +67,7 @@ public class TimePicker extends FrameLayout {
 
 			@Override
 			public String format(int value) {
-			// TODO Auto-generated method stub
-			return String.format("%02d", value);
+			    return String.format("%02d", value);
 		}
 	};
 
@@ -80,7 +82,7 @@ public class TimePicker extends FrameLayout {
     private final NumberPicker mHourPicker;
     private final NumberPicker mMinutePicker;
     private final NumberPicker mSecondPicker;
-    private final Button mAmPmButton = null;
+    private Button mAmPmButton = null;
     private final String mAmText;
     private final String mPmText;
 
@@ -120,14 +122,11 @@ public class TimePicker extends FrameLayout {
             true);
 
         // hour
-        //TODO fix
-        mHourPicker= new NumberPicker(context);
-//        mHourPicker = (NumberPicker) findViewById(R.id.hour);
+        mHourPicker = findViewById(R.id.hour);
         mHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
 			@Override
 			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-				// TODO Auto-generated method stub
 				mCurrentHour = newVal;
                 if (!mIs24HourView) {
                     // adjust from [1-12] to [0-11] internally, with the times
@@ -145,9 +144,7 @@ public class TimePicker extends FrameLayout {
 		});
 
         // digits of minute
-        //TODO
-//        mMinutePicker = (NumberPicker) findViewById(R.id.minute);
-        mMinutePicker =new NumberPicker(context);
+        mMinutePicker = findViewById(R.id.minute);
         mMinutePicker.setMinValue(0);
         mMinutePicker.setMaxValue(59);
         mMinutePicker.setFormatter(TWO_DIGIT_FORMATTER);
@@ -159,10 +156,8 @@ public class TimePicker extends FrameLayout {
             }
         });
 
-     // digits of seconds
-//        TODO fix
-//        mSecondPicker = (NumberPicker) findViewById(R.id.seconds);
-        mSecondPicker=new NumberPicker(context);
+        // digits of seconds
+        mSecondPicker = findViewById(R.id.seconds);
         mSecondPicker.setMinValue(0);
         mSecondPicker.setMaxValue(59);
         mSecondPicker.setFormatter( TWO_DIGIT_FORMATTER);
@@ -177,8 +172,7 @@ public class TimePicker extends FrameLayout {
 		});
 
         // am/pm
-        //TODO
-//        mAmPmButton = (Button) findViewById(R.id.amPm);
+        mAmPmButton = findViewById(R.id.amPm);
 
         // now that the hour/minute picker objects have been initialized, set
         // the hour range properly based on the 12/24 hour display mode.
