@@ -33,8 +33,9 @@ import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.UnitConverter
 import com.fitworkoutfast.MainActivity
-import com.ikovac.timepickerwithseconds.MyTimePickerDialog
-import com.ikovac.timepickerwithseconds.TimePicker
+import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
+//import com.ikovac.timepickerwithseconds.MyTimePickerDialog
+//import com.ikovac.timepickerwithseconds.TimePicker
 import com.onurkaganaldemir.ktoastlib.KToast
 import com.pacific.timer.Rx2Timer
 import timber.log.Timber
@@ -92,7 +93,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         daoCardio = DAOCardio(context)
         daoStatic = DAOStatic(context)
         mDbMachine = DAOMachine(context)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        val sharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
         val programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs == null || programs.isEmpty()) {
@@ -179,7 +180,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         restoreSharedParams()
         var weightUnit = UnitConverter.UNIT_KG
         try {
-            weightUnit = sharedPreferences.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0")?.toInt()!!
+            weightUnit = sharedPreferences?.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0")?.toInt()!!
         } catch (e: NumberFormatException) {
             Timber.d("Not important")
         }
@@ -187,8 +188,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (weightUnit == UnitConverter.UNIT_LBS)
             binding.unitShow.text = getString(R.string.Lbs)
         val distanceUnit: Int = try {
-            sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
-        } catch (e: NumberFormatException) {
+            sharedPreferences?.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
+        } catch (e: Exception) {
             UnitConverter.UNIT_KM
         }
         binding.unitDistanceSpinner.setSelection(distanceUnit)
@@ -215,7 +216,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
         binding.notesInExercise.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (exercisesFromProgram.isNotEmpty()) {
+                if (::exercisesFromProgram.isInitialized)
+                    if (exercisesFromProgram.isNotEmpty()) {
                     updateNote()
                 }
             }
@@ -292,7 +294,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         editor.apply()
     }
 
-    private val durationSet = MyTimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int, second: Int ->
+    private val durationSet = MyTimePickerDialog.OnTimeSetListener { _, hourOfDay: Int, minute: Int, second: Int ->
         val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
         val strHour: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
         val strSecond: String = if (second < 10) "0$second" else second.toString()
@@ -508,13 +510,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (restTime != 0) {
             binding.restFillBackgroundProgress.visibility = VISIBLE
         }
-        binding.exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.green_button_background)
+        binding.exerciseIndicator[currentExerciseOrder].setBackgroundResource(cn.pedant.SweetAlert.R.drawable.green_button_background)
         runRest(restTime)
     }
 
     private val clickFailButton = OnClickListener {
         if (exercisesFromProgram.isNotEmpty()) {
-            binding.exerciseIndicator[currentExerciseOrder].setBackgroundResource(R.drawable.red_button_background)
+            binding.exerciseIndicator[currentExerciseOrder].setBackgroundResource(cn.pedant.SweetAlert.R.drawable.red_button_background)
         }
     }
 

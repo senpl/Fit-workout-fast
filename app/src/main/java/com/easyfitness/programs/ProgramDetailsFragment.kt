@@ -18,7 +18,7 @@ class ProgramDetailsFragment : Fragment() {
 
     private var nameArg: String = ""
     private var idArg: Long = 0
-    private var profilIdArg: Long = 0
+    private var profileIdArg: Long = 0
 
     private var pager: ProgramDetailsPager? = null
     private var daoProgram: DAOProgram? = null
@@ -46,17 +46,16 @@ class ProgramDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.program_details, container, false)
         fragmentView = view
 
-        // Initialisation de l'historique
         daoProgram = DAOProgram(requireContext())
         mDbRecord = DAORecord(context)
         programName = view.findViewById(R.id.programName)
         val args = this.arguments
         idArg = args!!.getLong("programID")
-        profilIdArg = args.getLong("programProfile")
+        profileIdArg = args.getLong("programProfile")
         program1 = daoProgram!!.getRecord(idArg)
-        if(program1!=null)
-        nameArg = program1!!.programName!!
-
+        if(program1!=null) {
+            nameArg = program1!!.programName!!
+        }
         if (nameArg == "") {
             requestForSave()
         }

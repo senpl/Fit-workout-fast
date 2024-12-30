@@ -11,14 +11,21 @@ import android.widget.TextView
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.R
 
-class ProgramCursorAdapter(context: Context, c: Cursor?, flags: Int, pDbMachine: DAOProgram?) : CursorAdapter(context, c, flags), Filterable {
-    var mDbMachine: DAOProgram? = null
+class ProgramCursorAdapter(context: Context, c: Cursor?, flags: Int, pDbMachine: DAOProgram?) :
+    CursorAdapter(context, c, flags), Filterable {
+    private var mDbMachine: DAOProgram? = null
     private val mInflater: LayoutInflater
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val t0 = view.findViewById<TextView>(R.id.LIST_Program_ID)
-        t0.text = cursor.getString(cursor.getColumnIndex(DAOProgram.KEY))
+        val cursorDaoProgram = cursor.getColumnIndex(DAOProgram.KEY)
+        if (cursorDaoProgram > 0) {
+            t0.text = cursor.getString(cursorDaoProgram)
+        }
         val t1 = view.findViewById<TextView>(R.id.LIST_Program_name)
-        t1.text = cursor.getString(cursor.getColumnIndex(DAOProgram.PROGRAM_NAME))
+        val cursorDaoProgramName = cursor.getColumnIndex(DAOProgram.PROGRAM_NAME)
+        if (cursorDaoProgramName > 0) {
+            t1.text = cursor.getString(cursorDaoProgramName)
+        }
     }
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {

@@ -20,10 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.easyfitness.BuildConfig;
+//import com.easyfitness.BuildConfig;
 import com.easyfitness.R;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
+import com.mikhaellopez.circularimageview.BuildConfig;
+//import com.theartofdev.edmodo.cropper.CropImage;
+//import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -236,9 +237,9 @@ public class ImageUtil {
                     break;
                 // Camera
                 case 0:
-                    CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(mF.getContext(), mF);
+//                    CropImage.activity()
+//                        .setGuidelines(CropImageView.Guidelines.ON)
+//                        .start(mF.getContext(), mF);
                     break;
                 case 2: // Delete picture
                     if (mDeleteImageListener != null)
@@ -268,7 +269,7 @@ public class ImageUtil {
             }
             // Continue only if the File was successfully created
             Uri photoURI = FileProvider.getUriForFile(mF.getActivity(),
-                BuildConfig.APPLICATION_ID + ".provider",
+                BuildConfig.LIBRARY_PACKAGE_NAME + ".provider",
                 photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             mF.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

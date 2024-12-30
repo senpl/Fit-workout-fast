@@ -15,7 +15,6 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,8 +30,7 @@ import com.easyfitness.utils.BtnOnPostiomClickListener
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.UnitConverter
-import com.ikovac.timepickerwithseconds.MyTimePickerDialog
-import com.ikovac.timepickerwithseconds.TimePicker
+import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 import com.onurkaganaldemir.ktoastlib.KToast
 import timber.log.Timber
 import java.util.*
@@ -114,17 +112,18 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         binding.cardioSelector.setOnClickListener(clickExerciseTypeSelector)
         binding.staticExerciseSelector.setOnClickListener(clickExerciseTypeSelector)
         restoreSharedParams()
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        var weightUnit = UnitConverter.UNIT_KG
+        val sharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)
+        var weightUnit: Int
         try {
-            weightUnit = sharedPreferences.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0")?.toInt()!!
-        } catch (e: NumberFormatException) {
+            weightUnit = sharedPreferences?.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0")?.toInt()!!
+        } catch (e: Exception) {
             Timber.d("Conversion Not important")
+            weightUnit = UnitConverter.UNIT_KG
         }
         binding.unitSpinner.setSelection(weightUnit)
         val distanceUnit: Int = try {
-            sharedPreferences.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
-        } catch (e: NumberFormatException) {
+             sharedPreferences?.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
+        } catch (e: Exception) {
             UnitConverter.UNIT_KM
         }
         binding.unitDistanceSpinner.setSelection(distanceUnit)
@@ -180,7 +179,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         binding.exercisesRecycler.layoutManager = linearLayoutManager
     }
 
-    private val durationSet = MyTimePickerDialog.OnTimeSetListener { _: TimePicker?, hourOfDay: Int, minute: Int, second: Int ->
+
+    private val durationSet = MyTimePickerDialog.OnTimeSetListener { _ , hourOfDay: Int, minute: Int, second: Int ->
         val strMinute: String = if (minute < 10) "0$minute" else minute.toString()
         val strHour: String = if (hourOfDay < 10) "0$hourOfDay" else hourOfDay.toString()
         val strSecond: String = if (second < 10) "0$second" else second.toString()
@@ -250,7 +250,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     binding.exerciseEdit.text.toString(),
                     TYPE_FONTE, binding.seriesEdit.text.toString().toInt(), binding.repetitionEdit.text.toString().toInt(),
                     tmpPoids,  // Always save in KG
-                    profil!!, unitPoids,  // Store Unit for future display
+                    profile!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
                     "", 0f, 0, 0, 0
                 )
@@ -285,7 +285,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     programId,
                     restTime,
                     binding.exerciseEdit.text.toString(), TYPE_STATIC, binding.seriesEdit.text.toString().toInt(),
-                    1, tmpPoids, profil!!, unitPoids,  // Store Unit for future display
+                    1, tmpPoids, profile!!, unitPoids,  // Store Unit for future display
                     "", "", 0F, 0, binding.secondsEdit.text.toString().toInt(), 0
                 )
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
@@ -330,7 +330,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     TYPE_CARDIO,
                     1,
                     1, 0f,
-                    profil!!,
+                    profile!!,
                     1,
                     "",
                     "",
@@ -488,7 +488,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     val fragment: ExercisesInProgramFragment
         get() = this
 
-    private val profil: Profile?
+    private val profile: Profile?
         get() = mainActivity.currentProfile
 
     val machine: String
@@ -534,7 +534,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             }
         }
 
-        daoExerciseInProgram.setProfile(profil)
+        daoExerciseInProgram.setProfile(profile)
         exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
         binding.exercisesRecycler.adapter = ExerciseInProgramAdapter(requireContext(), exercisesList, itemClickDeleteRecord, null)
     }

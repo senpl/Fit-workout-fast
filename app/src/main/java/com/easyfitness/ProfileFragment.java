@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.canhub.cropper.CropImage;
 import com.easyfitness.DAO.DAOProfil;
 import com.easyfitness.DAO.Profile;
 import com.fitworkoutfast.MainActivity;
@@ -27,7 +28,7 @@ import com.easyfitness.utils.RealPathUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.onurkaganaldemir.ktoastlib.KToast;
-import com.theartofdev.edmodo.cropper.CropImage;
+//import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -321,50 +322,50 @@ public class ProfileFragment extends Fragment {
                     requestForSave(roundProfile);
                 }
                 break;
-            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri resultUri = result.getUri();
-                    String realPath;
-                    realPath = RealPathUtil.getRealPath(this.getContext(), resultUri);
-
-                    // Le fichier est crée dans le cache.
-                    // Déplacer le fichier dans le repertoire de FastNFitness
-                    File SourceFile = new File(realPath);
-
-                    File storageDir = null;
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
-                    String state = Environment.getExternalStorageState();
-                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                        return;
-                    } else {
-                        //We use the FastNFitness directory for saving our .csv file.
-                        storageDir = Environment.getExternalStoragePublicDirectory("/FastnFitness/Camera/");
-                        if (!storageDir.exists()) {
-                            storageDir.mkdirs();
-                        }
-                    }
-                    new File(storageDir.getPath() + imageFileName);
-                    File DestinationFile;
-
-                    try {
-                        DestinationFile = imgUtil.moveFile(SourceFile, storageDir);
-                        Log.v("Moving", "Moving file successful.");
-                        realPath = DestinationFile.getPath();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.v("Moving", "Moving file failed.");
-                    }
-
-                    ImageUtil.setPic(roundProfile, realPath);
-                    ImageUtil.saveThumb(realPath);
-                    mCurrentPhotoPath = realPath;
-                    requestForSave(roundProfile);
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError();
-                }
-                break;
+//            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+//                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Uri resultUri = result.getUri();
+//                    String realPath;
+//                    realPath = RealPathUtil.getRealPath(this.getContext(), resultUri);
+//
+//                    // Le fichier est crée dans le cache.
+//                    // Déplacer le fichier dans le repertoire de FastNFitness
+//                    File SourceFile = new File(realPath);
+//
+//                    File storageDir = null;
+//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
+//                    String state = Environment.getExternalStorageState();
+//                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
+//                        return;
+//                    } else {
+//                        //We use the FastNFitness directory for saving our .csv file.
+//                        storageDir = Environment.getExternalStoragePublicDirectory("/FastnFitness/Camera/");
+//                        if (!storageDir.exists()) {
+//                            storageDir.mkdirs();
+//                        }
+//                    }
+//                    new File(storageDir.getPath() + imageFileName);
+//                    File DestinationFile;
+//
+//                    try {
+//                        DestinationFile = imgUtil.moveFile(SourceFile, storageDir);
+//                        Log.v("Moving", "Moving file successful.");
+//                        realPath = DestinationFile.getPath();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        Log.v("Moving", "Moving file failed.");
+//                    }
+//
+//                    ImageUtil.setPic(roundProfile, realPath);
+//                    ImageUtil.saveThumb(realPath);
+//                    mCurrentPhotoPath = realPath;
+//                    requestForSave(roundProfile);
+//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                    Exception error = result.getError();
+//                }
+//                break;
         }
     }
 }

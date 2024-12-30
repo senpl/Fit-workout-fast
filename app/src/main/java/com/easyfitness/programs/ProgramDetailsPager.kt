@@ -27,7 +27,7 @@ class ProgramDetailsPager : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private var programIdArg: Long = 0
-    private var profilIdArg: Long = 0
+    private var profileIdArg: Long = 0
     private var pagerAdapter: FragmentPagerItemAdapter? = null
     private lateinit var programSave: ImageButton
     private var program: Program? = null
@@ -54,7 +54,7 @@ class ProgramDetailsPager : Fragment() {
         if (mViewPager.adapter == null) {
             val args = this.arguments
             programIdArg = args!!.getLong("programID")
-            profilIdArg = args.getLong("programProfile")
+            profileIdArg = args.getLong("programProfile")
             pagerAdapter = FragmentPagerItemAdapter(
                 childFragmentManager, FragmentPagerItems.with(context)
 //                .add(R.string.ExercisesInProgramLabel, ExercisesInProgramFragment::class.java)
@@ -95,28 +95,28 @@ class ProgramDetailsPager : Fragment() {
     }
 
     private fun saveProgramDialog() {
-        if (getExerciseFragment()!!.toBeSaved || toBeSaved) {
+        if (getExerciseFragment().toBeSaved || toBeSaved) {
             val backDialogBuilder = AlertDialog.Builder(activity)
             backDialogBuilder.setTitle(resources.getText(R.string.global_confirm))
             backDialogBuilder.setMessage(resources.getText(R.string.backDialog_confirm_text))
 
             backDialogBuilder.setPositiveButton(resources.getString(R.string.global_yes)) { _: DialogInterface?, _: Int ->
                 if (saveProgram()) {
-                    requireActivity().onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
-            backDialogBuilder.setNegativeButton(resources.getString(R.string.global_no)) { _: DialogInterface?, _: Int -> requireActivity().onBackPressed() }
+            backDialogBuilder.setNegativeButton(resources.getString(R.string.global_no)) { _: DialogInterface?, _: Int -> requireActivity().onBackPressedDispatcher.onBackPressed() }
             val backDialog = backDialogBuilder.create()
             backDialog.show()
         } else {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
     private fun saveProgram(): Boolean {
         var result = false
         val initialProgram: Program = program!!
-        val newProgram = getExerciseFragment()!!.program
+        val newProgram = getExerciseFragment().program
         val programName = newProgram?.programName
         val mDbProgram = DAOProgram(context)
 
@@ -136,7 +136,7 @@ class ProgramDetailsPager : Fragment() {
                     mDbProgram.updateRecord(newProgram)
                     binding.saveButton.visibility = View.GONE
                     toBeSaved = false
-                    getExerciseFragment()!!.programSaved()
+                    getExerciseFragment().programSaved()
                     result = true
                 }
             }
@@ -146,7 +146,7 @@ class ProgramDetailsPager : Fragment() {
             }
             binding.saveButton.visibility = View.GONE
             toBeSaved = false
-            getExerciseFragment()!!.programSaved()
+            getExerciseFragment().programSaved()
             result = true
         }
         return result
@@ -161,7 +161,7 @@ class ProgramDetailsPager : Fragment() {
             deleteRecordsAssociatedToProgram()
             val mDbProgram = DAOProgram(context)
             mDbProgram.delete(program)
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         deleteDialogBuilder.setNegativeButton(resources.getString(R.string.global_no)) { dialog: DialogInterface, _: Int ->
             // Do nothing
@@ -173,8 +173,8 @@ class ProgramDetailsPager : Fragment() {
 
     private fun deleteRecordsAssociatedToProgram() {
         val mDbRecord = DAORecord(context)
-        val mDbProfil = DAOProfil(context)
-        val lProfile = mDbProfil.getProfil(profilIdArg)
+        val mDbProfile = DAOProfil(context)
+        val lProfile = mDbProfile.getProfil(profileIdArg)
         val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, program!!.programName)
         for (record in listRecords) {
             mDbRecord.deleteRecord(record.id)

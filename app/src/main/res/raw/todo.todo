@@ -1,0 +1,27 @@
+Przenieść co się da do nowego projektu
+    W ten sposób tworząc core nowego?
+    Z minimalnym zbiorem zależności
+    Prościej będzie w drugą stronę
+    Choć w  którymś momencie trzeba to finalnie ustawić
+Dodać zapis do bazy początek i koniec filmu
+    Poszeczyć dao
+    Dodać do edycji przy exercise in program
+Jeśli przy ćwiczeniu jest video, to je wyświetlaj, nie obrazek
+Dla każdego ćwiczenia w programie
+Dodać prezentację ćwiczenia na program runnerze
+Sprawdzić opis działania, co po koleji napisać jak robić
+Dodać przykładowe ćwiczenia
+    Na ból pleców
+    Na rehabilitację kostki
+check po co to było - FragmentAutoClearedValueBinding
+    I jak nie potrzebne to bezpiecznie usunąć
+
+TODO maybe
+Przyciski do szybszej nawigacji nie chowane
+    Dla większych rozdzielczości
+Info pytajnik na górze co jak działa
+    żeby userzy wiedzieli
+Wywalić zmianę profilu jako zbędny badziew
+Wywalić body track i weight track?
+Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
+Check if crop images works

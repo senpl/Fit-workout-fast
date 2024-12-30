@@ -3,9 +3,8 @@ package com.easyfitness;
 import android.app.Dialog;
 import android.os.Bundle;
 
-import com.ikovac.timepickerwithseconds.MyTimePickerDialog;
-
 import androidx.fragment.app.DialogFragment;
+import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog;
 
 //@SuppressLint("ValidFragment")
 public class TimePickerDialogFragment extends DialogFragment {

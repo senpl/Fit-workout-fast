@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.canhub.cropper.CropImageView
 import com.easyfitness.*
 import com.easyfitness.DAO.*
 import com.easyfitness.DAO.cardio.DAOOldCardio
@@ -35,10 +36,12 @@ import com.easyfitness.machines.MachineFragment
 import com.easyfitness.programs.ProgramsPagerFragment
 import com.easyfitness.programs.ProgramsPagerFragment.Companion.newInstance
 import com.easyfitness.utils.*
+//import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mikhaellopez.circularimageview.BuildConfig
 import com.mikhaellopez.circularimageview.CircularImageView
 import com.onurkaganaldemir.ktoastlib.KToast
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+//import com.theartofdev.edmodo.cropper.CropImage
+//import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
 import java.util.*
 
@@ -102,9 +105,12 @@ class MainActivity : AppCompatActivity() {
                         }
                         0 ->                             //dispatchTakePictureIntent(mF);
                             // start picker to get image for cropping and then use the image in cropping activity
-                            CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .start(activity)
+//TODO add something to set guidelines on on
+                            CropImageView.Guidelines.ON
+                            //                            BottomSheetDialogFragment.instantiate(,"")
+//                            CropImage.
+//                                .setGuidelines(CropImageView.Guidelines.ON)
+//                                .start(activity)
                         2 -> {
                         }
                         else -> {
@@ -299,8 +305,9 @@ class MainActivity : AppCompatActivity() {
         // Lance l'intro
         // Tester si l'intro a déjà été lancé
         if (!mIntro014Launched) {
-            val intent = Intent(this, MainIntroActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_INTRO)
+            createNewProfil()
+//            val intent = Intent(this, MainIntroActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_INTRO)
         }
     }
 
@@ -362,7 +369,6 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.main_activity_actions, menu)
 
         // restore the profile picture in case it was overwritten during the menu inflate
-        if (currentProfile != null) setPhotoProfile(currentProfile!!.photo)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -524,31 +530,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNewProfil(): Boolean {
-        val newProfilBuilder = AlertDialog.Builder(this)
-        newProfilBuilder.setTitle(activity.resources.getText(R.string.createProfilTitle))
-        newProfilBuilder.setMessage(activity.resources.getText(R.string.createProfilQuestion))
+//        val newProfilBuilder = AlertDialog.Builder(this)
+//        newProfilBuilder.setTitle(activity.resources.getText(R.string.createProfilTitle))
+//        newProfilBuilder.setMessage(activity.resources.getText(R.string.createProfilQuestion))
 
         // Set an EditText view to get user input
-        val input = EditText(this)
-        input.setText(R.string.anonymous)
-        newProfilBuilder.setView(input)
-        newProfilBuilder.setPositiveButton(activity.resources.getText(R.string.global_ok)) { _: DialogInterface?, _: Int ->
-            val value = input.text.toString()
-            if (value.isEmpty()) {
-                createNewProfil()
-            } else {
+//        val input = EditText(this)
+//        input.setText(R.string.anonymous)
+//        newProfilBuilder.setView(input)
+//        newProfilBuilder.setPositiveButton(activity.resources.getText(R.string.global_ok)) { _: DialogInterface?, _: Int ->
+//            val value = input.text.toString()
+//            if (value.isEmpty()) {
+//                createNewProfil()
+//            } else {
+                val value= "user"
+        mDbProfils=DAOProfil(baseContext)
+                //val profile=new Profile(value,1,date,1)
                 // Create the new profil
+
                 mDbProfils!!.addProfil(value)
                 // Make it the current.
                 setCurrentProfil(value)
-            }
-        }
-        newProfilBuilder.setNegativeButton(activity.resources.getText(R.string.global_cancel)) { _: DialogInterface?, _: Int ->
-            if (currentProfile == null) {
-                createNewProfil()
-            }
-        }
-        newProfilBuilder.show()
+//            }
+//        }
+//        newProfilBuilder.setNegativeButton(activity.resources.getText(R.string.global_cancel)) { _: DialogInterface?, _: Int ->
+//            if (currentProfile == null) {
+//                createNewProfil()
+//            }
+//        }
+//        newProfilBuilder.show()
         return true
     }
 
@@ -668,10 +678,10 @@ class MainActivity : AppCompatActivity() {
             // Moyen de rafraichir tous les fragments. Attention, les View des fragments peuvent avoir ete detruit.
             // Il faut donc que cela soit pris en compte dans le refresh des fragments.
             for (i in fragmentManager.fragments.indices) {
-                if (fragmentManager.fragments[i] != null) fragmentManager.fragments[i].onHiddenChanged(false)
+                if (fragmentManager.fragments[i] != null) fragmentManager.fragments[i].onHiddenChanged(true)
             }
             setDrawerTitle(currentProfile!!.name)
-            setPhotoProfile(currentProfile!!.photo)
+//            setPhotoProfile(currentProfile!!.photo)
             savePreferences()
         }
     }
@@ -831,7 +841,8 @@ class MainActivity : AppCompatActivity() {
         /*if (mDbProfils.getCount() == 0 || mCurrentProfilID == -1) {
             // Ouvre la fenetre de creation de profil
             this.CreateNewProfil();
-        } else {*/currentProfile = mDbProfils!!.getProfil(mCurrentProfilID)
+        } else {*/
+        currentProfile = mDbProfils!!.getProfil(mCurrentProfilID)
         if (currentProfile == null) { // au cas ou il y aurait un probleme de synchro
             try {
                 val lList = mDbProfils!!.allProfils

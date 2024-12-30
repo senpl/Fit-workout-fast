@@ -147,8 +147,9 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             val f = ProgramsFragment()
             // Supply index input as an argument.
             val args = Bundle()
-            args.putString("name", name)
-            args.putLong("profilId", id!!)
+            args.putString("name", "User")
+            args.putLong("profilId",1)
+//            args.putLong("profilId", id!!)
             f.arguments = args
             return f
         }

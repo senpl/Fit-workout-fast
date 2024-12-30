@@ -84,7 +84,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, param: String?) {
         setPreferencesFromResource(R.xml.settings2, param)
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val myPref2 = findPreference<Preference>("defaultUnit") as ListPreference?
         val boolVal = sharedPreferences.getString("defaultUnit", "0")
         updateSummary(myPref2, boolVal, getString(R.string.pref_preferredUnitSummary))

@@ -63,7 +63,7 @@ import com.easyfitness.utils.DateConverter;
 import com.easyfitness.utils.ExpandedListView;
 import com.easyfitness.utils.ImageUtil;
 import com.easyfitness.utils.UnitConverter;
-import com.ikovac.timepickerwithseconds.MyTimePickerDialog;
+import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.onurkaganaldemir.ktoastlib.KToast;
 
@@ -176,15 +176,16 @@ public class FontesFragment extends Fragment {
         detailsExpandArrow.setImageResource(detailsLayout.isShown() ? R.drawable.ic_expand_less_black_24dp : R.drawable.ic_expand_more_black_24dp);
         saveSharedParams();
     };
-    private OnClickListener clickExerciseTypeSelector = v -> {
+    private final OnClickListener clickExerciseTypeSelector = v -> {
+        int staticSelection = R.id.staticSelection;
         switch (v.getId()) {
-            case R.id.staticSelection:
-                changeExerciseTypeUI(DAOMachine.TYPE_STATIC, true);
-                break;
-            case R.id.cardioSelection:
-                changeExerciseTypeUI(DAOMachine.TYPE_CARDIO, true);
-                break;
-            case R.id.bodyBuildingSelection:
+//            case staticSelection:
+//                changeExerciseTypeUI(DAOMachine.TYPE_STATIC, true);
+//                break;
+//            case R.id.cardioSelection:
+//                changeExerciseTypeUI(DAOMachine.TYPE_CARDIO, true);
+//                break;
+//            case R.id.bodyBuildingSelection:
             default:
                 changeExerciseTypeUI(DAOMachine.TYPE_FONTE, true);
                 break;
@@ -504,73 +505,73 @@ public class FontesFragment extends Fragment {
     };
     private OnClickListener clickDateEdit = v -> {
         switch (v.getId()) {
-            case R.id.editDate:
-                showDatePickerFragment();
-                break;
-            case R.id.editTime:
-                showTimePicker(timeEdit);
-                break;
-            case R.id.editDuration:
-                showTimePicker(durationEdit);
-                break;
-            case R.id.editMachine:
-                //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                //imm.showSoftInput(machineEdit, InputMethodManager.SHOW_IMPLICIT);
-                //machineEdit.setText("");
-                //machineEdit.set.setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                break;
+//            case R.id.editDate:
+//                showDatePickerFragment();
+//                break;
+//            case R.id.editTime:
+//                showTimePicker(timeEdit);
+//                break;
+//            case R.id.editDuration:
+//                showTimePicker(durationEdit);
+//                break;
+//            case R.id.editMachine:
+//                //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                //imm.showSoftInput(machineEdit, InputMethodManager.SHOW_IMPLICIT);
+//                //machineEdit.setText("");
+//                //machineEdit.set.setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+//                break;
         }
     };
     private OnFocusChangeListener touchRazEdit = (v, hasFocus) -> {
         if (hasFocus) {
-            switch (v.getId()) {
-                case R.id.editSerie:
-                    serieEdit.setText("");
-                    break;
-                case R.id.editRepetition:
-                    repetitionEdit.setText("");
-                    break;
-                case R.id.editSeconds:
-                    secondsEdit.setText("");
-                    break;
-                case R.id.editPoids:
-                    poidsEdit.setText("");
-                    break;
-                case R.id.editDuration:
-                    showTimePicker(durationEdit);
-                    break;
-                case R.id.editDistance:
-                    distanceEdit.setText("");
-                    break;
-                case R.id.editMachine:
-                    machineEdit.setText("");
-                    switch (selectedType) {
-                        case DAOMachine.TYPE_CARDIO:
-                            machineImage.setImageResource(R.drawable.ic_training_white_50dp);
-                            break;
-                        case DAOMachine.TYPE_STATIC:
-                            machineImage.setImageResource(R.drawable.ic_static);
-                            break;
-                        default:
-                            machineImage.setImageResource(R.drawable.ic_gym_bench_50dp);
-                    }
+//            switch (v.getId()) {
+//                case R.id.editSerie:
+//                    serieEdit.setText("");
+//                    break;
+//                case R.id.editRepetition:
+//                    repetitionEdit.setText("");
+//                    break;
+//                case R.id.editSeconds:
+//                    secondsEdit.setText("");
+//                    break;
+//                case R.id.editPoids:
+//                    poidsEdit.setText("");
+//                    break;
+//                case R.id.editDuration:
+//                    showTimePicker(durationEdit);
+//                    break;
+//                case R.id.editDistance:
+//                    distanceEdit.setText("");
+//                    break;
+//                case R.id.editMachine:
+//                    machineEdit.setText("");
+//                    switch (selectedType) {
+//                        case DAOMachine.TYPE_CARDIO:
+//                            machineImage.setImageResource(R.drawable.ic_training_white_50dp);
+//                            break;
+//                        case DAOMachine.TYPE_STATIC:
+//                            machineImage.setImageResource(R.drawable.ic_static);
+//                            break;
+//                        default:
+//                            machineImage.setImageResource(R.drawable.ic_gym_bench_50dp);
+//                    }
 
-                    minMaxLayout.setVisibility(View.GONE);
-                    showExerciseTypeSelector(true);
-                    break;
-            }
+//                    minMaxLayout.setVisibility(View.GONE);
+//                    showExerciseTypeSelector(true);
+//                    break;
+//            }
             v.post(() -> {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
             });
         } else {
-            switch (v.getId()) {
-                case R.id.editMachine:
-                    // If a creation of a new machine is not ongoing.
-                    if (exerciseTypeSelectorLayout.getVisibility() == View.GONE)
-                        setCurrentMachine(machineEdit.getText().toString());
-                    break;
-            }
+//            switch (v.getId()) {
+//                case R.id.editMachine:
+//                    // If a creation of a new machine is not ongoing.
+//                    if (exerciseTypeSelectorLayout.getVisibility() == View.GONE)
+//                        setCurrentMachine(machineEdit.getText().toString());
+//                    break;
+//            }
         }
     };
 
@@ -849,36 +850,36 @@ public class FontesFragment extends Fragment {
         }
 
         switch(timeTextView.getId()) {
-            case R.id.editTime:
-                if (mTimeFrag == null) {
-                    mTimeFrag = TimePickerDialogFragment.newInstance(timeSet, hour, min, sec);
-                    mTimeFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
-                } else {
-                    if (!mTimeFrag.isVisible()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("HOUR", hour);
-                        bundle.putInt("MINUTE", min);
-                        bundle.putInt("SECOND", sec);
-                        mTimeFrag.setArguments(bundle);
-                        mTimeFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
-                    }
-                }
-                break;
-            case R.id.editDuration:
-                if (mDurationFrag == null) {
-                    mDurationFrag = TimePickerDialogFragment.newInstance(durationSet, hour, min, sec);
-                    mDurationFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
-                } else {
-                    if (!mDurationFrag.isVisible()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("HOUR", hour);
-                        bundle.putInt("MINUTE", min);
-                        bundle.putInt("SECOND", sec);
-                        mDurationFrag.setArguments(bundle);
-                        mDurationFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
-                    }
-                }
-                break;
+//            case R.id.editTime:
+//                if (mTimeFrag == null) {
+////                    mTimeFrag = TimePickerDialogFragment.newInstance(timeSet, hour, min, sec);
+//                    mTimeFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
+//                } else {
+//                    if (!mTimeFrag.isVisible()) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putInt("HOUR", hour);
+//                        bundle.putInt("MINUTE", min);
+//                        bundle.putInt("SECOND", sec);
+//                        mTimeFrag.setArguments(bundle);
+//                        mTimeFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
+//                    }
+//                }
+//                break;
+//            case R.id.editDuration:
+//                if (mDurationFrag == null) {
+////                    mDurationFrag = TimePickerDialogFragment.newInstance(durationSet, hour, min, sec);
+//                    mDurationFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
+//                } else {
+//                    if (!mDurationFrag.isVisible()) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putInt("HOUR", hour);
+//                        bundle.putInt("MINUTE", min);
+//                        bundle.putInt("SECOND", sec);
+//                        mDurationFrag.setArguments(bundle);
+//                        mDurationFrag.show(getActivity().getSupportFragmentManager().beginTransaction(), "dialog_time");
+//                    }
+//                }
+//                break;
         }
     }
 

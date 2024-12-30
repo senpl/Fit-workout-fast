@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
 import com.easyfitness.DAO.DAOMachine.*
 import com.easyfitness.DAO.ExerciseInProgram
@@ -26,7 +25,7 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
     private var mItemLongClickHandler: IOnRecyclerItemLongClick? = null
     private val mRetrievalHandler = Handler()
     var mContext: Context
-    private fun reload(@Nullable callback: ReloadDoneCallback?) {
+    private fun reload(callback: ReloadDoneCallback?) {
         mRetrievalHandler.post {
             notifyDataSetChanged()
             callback?.onReloadDone()
@@ -63,8 +62,8 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
         fun setExercise(exercise: ExerciseInProgram) {
             val exerciseName = exercise.exerciseName
             mTitleTextView.text = exerciseName
-            val tSerie = itemView.findViewById<TextView>(R.id.SERIE_CELL)
-            val tSerieLabel = itemView.findViewById<TextView>(R.id.SERIE_LABEL)
+            val tSeries = itemView.findViewById<TextView>(R.id.SERIE_CELL)
+            val tSeriesLabel = itemView.findViewById<TextView>(R.id.SERIE_LABEL)
             val tReps = itemView.findViewById<TextView>(R.id.REPETITION_CELL)
             val tRepsLabel = itemView.findViewById<TextView>(R.id.REP_LABEL)
             val tWeight = itemView.findViewById<TextView>(R.id.POIDS_CELL)
@@ -74,12 +73,12 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
             when (exercise.type) {
                 TYPE_FONTE -> {
                     // UI
-                    tSerieLabel.text = mContext.getString(R.string.SerieLabel)
+                    tSeriesLabel.text = mContext.getString(R.string.SerieLabel)
                     tWeightLabel.text = mContext.getString(R.string.PoidsLabel)
                     tRepsLabel.text = mContext.getString(R.string.RepetitionLabel_short)
                     tRepsLayout.visibility = View.VISIBLE
                     // Data
-                    tSerie.text = exercise.serie.toString()
+                    tSeries.text = exercise.serie.toString()
                     tReps.text = exercise.repetition.toString()
                     val unit = mContext.getString(R.string.KgUnitLabel)
                     val poids = exercise.poids
@@ -88,12 +87,12 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
                 }
                 TYPE_STATIC -> {
                     // UI
-                    tSerieLabel.text = mContext.getString(R.string.SerieLabel)
+                    tSeriesLabel.text = mContext.getString(R.string.SerieLabel)
                     tWeightLabel.text = mContext.getString(R.string.PoidsLabel)
                     tRepsLabel.text = mContext.getString(R.string.SecondsLabel_short)
                     tRepsLayout.visibility = View.VISIBLE
                     // Data
-                    tSerie.text = exercise.serie.toString()
+                    tSeries.text = exercise.serie.toString()
                     tReps.text = exercise.seconds.toString()
                     val unit = mContext.getString(R.string.KgUnitLabel)
                     val poids = exercise.poids
@@ -101,13 +100,13 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
                     tWeight.text = numberFormat.format(poids.toDouble()) + unit
                 }
                 TYPE_CARDIO -> {
-                    tSerieLabel.text = mContext.getString(R.string.DistanceLabel)
+                    tSeriesLabel.text = mContext.getString(R.string.DistanceLabel)
                     tWeightLabel.text = mContext.getString(R.string.DurationLabel)
                     tRepsLayout.visibility = View.GONE
                     val distance = exercise.distance
                     val unit = mContext.getString(R.string.KmUnitLabel)
                     val numberFormat = DecimalFormat("#.##")
-                    tSerie.text = numberFormat.format(distance.toDouble()) + unit
+                    tSeries.text = numberFormat.format(distance.toDouble()) + unit
                     tWeight.text = DateConverter.durationToHoursMinutesSecondsStr(exercise.duration)
                 }
             }

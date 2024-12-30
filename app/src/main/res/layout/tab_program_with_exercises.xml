@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tab_program_with_exercises"
     android:name="tab_program_with_exercises"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:fillViewport="true">
-
-    <LinearLayout
+ <LinearLayout
         android:id="@+id/programSelectorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +20,8 @@
         android:paddingTop="0dp"
         android:paddingRight="0dp"
         android:paddingBottom="0dp"
-        android:scrollbars="vertical">
-
+        >
+        <!--        android:scrollbars="vertical"-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -65,7 +64,6 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical|center"
                         android:src="@drawable/ic_gym_bench_50dp"
-                        app:civ_background_color="@color/record_background_even"
                         app:civ_border_width="0dp"
                         app:civ_shadow="false" />
 
@@ -93,8 +91,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:src="@drawable/ic_baseline_list_alt_24px"
-                        android:contentDescription="List of Exercise" />
-
+                        android:contentDescription="@string/list_of_exercises" />
                 </RelativeLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -270,7 +267,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Seconds" />
+                        android:text="@string/seconds" />
 
                     <EditText
                         android:id="@+id/secondsEdit"

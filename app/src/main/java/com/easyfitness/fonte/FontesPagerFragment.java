@@ -16,6 +16,8 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.util.Objects;
+
 public class FontesPagerFragment extends Fragment {
     private FragmentPagerItemAdapter pagerAdapter = null;
     //    private String name;
@@ -118,7 +120,7 @@ public class FontesPagerFragment extends Fragment {
 //    }
 
     private FragmentPagerItemAdapter getViewPagerAdapter() {
-        return (FragmentPagerItemAdapter) ((ViewPager) (getView().findViewById(R.id.programrunner_pager))).getAdapter();
+        return (FragmentPagerItemAdapter) ((ViewPager) (requireView().findViewById(R.id.programrunner_pager))).getAdapter();
     }
 
     @Override
