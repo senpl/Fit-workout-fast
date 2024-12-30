@@ -181,6 +181,10 @@ class ProgramDetailsPager : Fragment() {
         }
     }
 
+    /**
+     * @Deprecated by used methods that are deprecacated
+     */
+    @Deprecated
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
 

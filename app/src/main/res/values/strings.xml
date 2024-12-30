@@ -383,4 +383,5 @@
     <string name="add_image">Add image</string>
     <string name="list_of_exercises">List of exercise</string>
     <string name="user">user</string>
+    <string name="cardioExerciceIndicatorImage">cardio exercice indicator image</string>
 </resources>

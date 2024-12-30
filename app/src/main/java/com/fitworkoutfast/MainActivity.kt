@@ -543,14 +543,14 @@ class MainActivity : AppCompatActivity() {
 //            if (value.isEmpty()) {
 //                createNewProfil()
 //            } else {
-                val value= "user"
+        val value= "user"
         mDbProfils=DAOProfil(baseContext)
                 //val profile=new Profile(value,1,date,1)
                 // Create the new profil
 
-                mDbProfils!!.addProfil(value)
+        mDbProfils!!.addProfil(value)
                 // Make it the current.
-                setCurrentProfil(value)
+        setCurrentProfil(value)
 //            }
 //        }
 //        newProfilBuilder.setNegativeButton(activity.resources.getText(R.string.global_cancel)) { _: DialogInterface?, _: Int ->
