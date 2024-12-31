@@ -36,7 +36,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
      * @return id of the added record, -1 if error
      */
     fun addRecord(order: Long, programId: Long, restSeconds: Int, pMachine: String, pType: Int, pSerie: Int, pRepetition: Int, pPoids: Float, pProfile: Profile, pUnit: Int, pNote: String?,
-                  pTime: String?, pDistance: Float, pDuration: Long, pSeconds: Int, distance_unit: Int): Long {
+                  pTime: String?, pDistance: Float, pDuration: Long, pSeconds: Int, distanceUnit: Int, youtubeUrlStart: String, videoSeconds: Int): Long {
         val value = ContentValues()
         var newId: Long = -1
         val machineKey: Long = -1
@@ -58,7 +58,9 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         value.put(DURATION, pDuration)
         value.put(TYPE, pType)
         value.put(SECONDS, pSeconds)
-        value.put(DISTANCE_UNIT, distance_unit)
+        value.put(DISTANCE_UNIT, distanceUnit)
+        value.put(YOUTUBE_URL_START,youtubeUrlStart)
+        value.put(VIDEO_SECONDS,videoSeconds)
         value.put(ORDER_EXECUTION, order)
         val db = open()
         newId = db.insert(TABLE_NAME, null, value)
@@ -75,14 +77,15 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         val db = this.readableDatabase
         cursor = null
         cursor = db.query(TABLE_NAME, arrayOf(EXERCISE), "$EXERCISE=?", arrayOf(pName), null, null, null, null)
-        if (cursor != null) cursor!!.moveToFirst()
+        cursor!!.moveToFirst()
         if (0 <= cursor!!.count) {
             close()
             cursor!!.close()
             return null
         }
+        val restSeconds=cursor!!.getColumnIndex(REST_SECONDS)
         val value = ExerciseInProgram(
-            cursor!!.getInt(cursor!!.getColumnIndex(REST_SECONDS)),
+            cursor!!.getInt(restSeconds),
             cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
             cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
             cursor!!.getInt(cursor!!.getColumnIndex(REPETITION)),
@@ -93,6 +96,8 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
             cursor!!.getInt(cursor!!.getColumnIndex(MACHINE_KEY)).toLong(),
             cursor!!.getString(cursor!!.getColumnIndex(TIME)),
             cursor!!.getInt(cursor!!.getColumnIndex(TYPE)),
+            cursor!!.getString(cursor!!.getColumnIndex(YOUTUBE_URL_START)),
+            cursor!!.getInt(cursor!!.getColumnIndex(VIDEO_SECONDS)),
             mContext
         )
         value.setId(cursor!!.getLong(0))
@@ -108,19 +113,19 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         db.close()
     }
 
-    // Getting All Records
-    private fun getRecordsListCursor(pRequest: String): Cursor {
-        val db = this.readableDatabase
-        return db.rawQuery(pRequest, null)
-    }
+//    // Getting All Records
+//    private fun getRecordsListCursor(pRequest: String): Cursor {
+//        val db = this.readableDatabase
+//        return db.rawQuery(pRequest, null)
+//    }
 
-    fun getAllExerciseInProgramToRecord(programId: Long): Cursor? {
-        val selectQuery = ("SELECT * FROM " + TABLE_NAME
-            + " WHERE " + PROGRAM_ID + "=" + programId
-            + " AND " + KEY + " IN (SELECT DISTINCT " + KEY + " FROM " + TABLE_NAME + " WHERE " + PROGRAM_ID + "=" + programId + " ORDER BY " + ORDER_EXECUTION + " ASC)"
-            + " ORDER BY " + KEY + " ASC")
-        return getRecordsListCursor(selectQuery)
-    }
+//    fun getAllExerciseInProgramToRecord(programId: Long): Cursor {
+//        val selectQuery = ("SELECT * FROM " + TABLE_NAME
+//            + " WHERE " + PROGRAM_ID + "=" + programId
+//            + " AND " + KEY + " IN (SELECT DISTINCT " + KEY + " FROM " + TABLE_NAME + " WHERE " + PROGRAM_ID + "=" + programId + " ORDER BY " + ORDER_EXECUTION + " ASC)"
+//            + " ORDER BY " + KEY + " ASC")
+//        return getRecordsListCursor(selectQuery)
+//    }
 
     fun getAllExerciseInProgramAsList(programId: Long): ArrayList<ARecord> {
         val selectQuery = ("SELECT * FROM " + TABLE_NAME + " WHERE " + PROGRAM_ID + " = " + programId
@@ -147,11 +152,15 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         // looping through all rows and adding to list
         if (cursor!!.moveToFirst()) {
             do {
+                val restSeconds = cursor!!.getColumnIndex(REST_SECONDS)
+                val distanceUnit = cursor!!.getColumnIndex(DISTANCE_UNIT)
+                val youtubeUrlStart = cursor!!.getColumnIndex(YOUTUBE_URL_START)
+                val videoSeconds = cursor!!.getColumnIndex(VIDEO_SECONDS)
                 val value = ExerciseInProgram( //int secRest, String pMachine, int pSerie, int pRepetition, float pPoids,
                     //                             Profile pProfile, int pUnit, String pNote, long pMachineKey, String pTime,
                     //                             int type, int distance, String duration, int seconds, int distanceUnit,
                     //                             long order
-                    cursor!!.getInt(cursor!!.getColumnIndex(REST_SECONDS)),
+                    cursor!!.getInt(restSeconds),
                     cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
                     cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
                     cursor!!.getInt(cursor!!.getColumnIndex(REPETITION)),
@@ -165,7 +174,9 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                     cursor!!.getInt(cursor!!.getColumnIndex(DISTANCE)),
                     cursor!!.getLong(cursor!!.getColumnIndex(DURATION)),
                     cursor!!.getInt(cursor!!.getColumnIndex(SECONDS)),
-                    cursor!!.getInt(cursor!!.getColumnIndex(DISTANCE_UNIT)),
+                    cursor!!.getInt(distanceUnit),
+                    cursor!!.getString(youtubeUrlStart),
+                    cursor!!.getInt(videoSeconds),
                     cursor!!.getLong(cursor!!.getColumnIndex(ORDER_EXECUTION))
                 )
                 value.setId(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
@@ -202,6 +213,8 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                     cursor!!.getInt(cursor!!.getColumnIndex(MACHINE_KEY)).toLong(),
                     cursor!!.getString(cursor!!.getColumnIndex(TIME)),
                     cursor!!.getInt(cursor!!.getColumnIndex(TYPE)),
+                    cursor!!.getString(cursor!!.getColumnIndex(YOUTUBE_URL_START)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(VIDEO_SECONDS)),
                     mContext
                 )
                 value.setId(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
@@ -248,6 +261,9 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
 
         //rest between exercises
         private const val REST_SECONDS = "rest_seconds"
+        private const val YOUTUBE_URL_START = "youtube_url_start"
+        private const val VIDEO_SECONDS = "youtube_url_end"
+
         private const val PROGRAM_ID = "program_id"
         const val ORDER_EXECUTION = "order_in_program"
         const val TABLE_CREATE = ("CREATE TABLE " + TABLE_NAME
@@ -257,7 +273,6 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
             + " INTEGER, " + UNIT + " INTEGER, " + NOTES + " TEXT, " + MACHINE_KEY
             + " INTEGER," + TIME + " TEXT," + DISTANCE + " REAL, " + DURATION + " TEXT, "
             + TYPE + " INTEGER, " + SECONDS + " INTEGER, " + DISTANCE_UNIT + " INTEGER, "
-            + PROGRAM_ID + " INTEGER, " + ORDER_EXECUTION + " INTEGER);")
+            + PROGRAM_ID + " INTEGER, " + YOUTUBE_URL_START + " TEXT, " + VIDEO_SECONDS + " INTEGER, " + ORDER_EXECUTION + " INTEGER);")
     }
-
 }

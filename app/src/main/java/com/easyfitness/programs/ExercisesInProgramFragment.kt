@@ -33,6 +33,7 @@ import com.easyfitness.utils.UnitConverter
 import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 import com.onurkaganaldemir.ktoastlib.KToast
 import timber.log.Timber
+import java.lang.Integer.parseInt
 import java.util.*
 
 class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises) {
@@ -107,6 +108,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         binding.exerciseEdit.onFocusChangeListener = touchRazEdit
         binding.exerciseEdit.onItemClickListener = onItemClickFilterList
         binding.restTimeEdit.onFocusChangeListener = restTimeEditChange
+        binding.youtubeStartUrl.onFocusChangeListener = urlEditChange
+        binding.youtubeEndUrl.onFocusChangeListener = urlEditChange
         binding.restTimeCheck.setOnCheckedChangeListener(restTimeCheckChange)
         binding.bodybuildingSelector.setOnClickListener(clickExerciseTypeSelector)
         binding.cardioSelector.setOnClickListener(clickExerciseTypeSelector)
@@ -212,6 +215,11 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             saveSharedParams()
         }
     }
+    private val urlEditChange = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
+        if (!hasFocus) {
+            saveSharedVideo()
+        }
+    }
     private val restTimeCheckChange = CompoundButton.OnCheckedChangeListener { _: CompoundButton?, _: Boolean -> saveSharedParams() }
     private val itemClickDeleteRecord = BtnOnPostiomClickListener { idToDelete: Long, positionOnList: Int -> showDeleteDialog(idToDelete, positionOnList) }
 
@@ -227,6 +235,20 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             restTime = binding.restTimeEdit.text.toString().toInt()
         } catch (e: NumberFormatException) {
             binding.restTimeEdit.setText("60")
+        }
+        val videoUrl=binding.youtubeStartUrl.text.toString()
+        var videoSeconds = 50
+        if(binding.youtubeEndUrl.text.toString().contains("&s=")){
+            try {
+                var url = binding.youtubeEndUrl.text.toString()
+                url = url.substring(url.indexOf("&s=") + "&s=".length)
+                if (url.contains("&")) {
+                    url = url.substring(0, url.indexOf("&"))
+                }
+                val secondsToEnd = parseInt(url)
+                videoSeconds = secondsToEnd
+            } catch (_: Exception) {
+            }
         }
         val currentTimeAsOrder: Long = System.currentTimeMillis()
         when (exerciseType) {
@@ -252,7 +274,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     tmpPoids,  // Always save in KG
                     profile!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
-                    "", 0f, 0, 0, 0
+                    "", 0f, 0, 0, 0,
+                    videoUrl, videoSeconds
                 )
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
                     mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_FONTE, "", false, null)
@@ -286,7 +309,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     restTime,
                     binding.exerciseEdit.text.toString(), TYPE_STATIC, binding.seriesEdit.text.toString().toInt(),
                     1, tmpPoids, profile!!, unitPoids,  // Store Unit for future display
-                    "", "", 0F, 0, binding.secondsEdit.text.toString().toInt(), 0
+                    "", "", 0F, 0, binding.secondsEdit.text.toString().toInt(), 0,
+                    videoUrl,videoSeconds
                 )
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
                     mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_STATIC, "", false, null)
@@ -337,7 +361,9 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     distance,
                     duration,
                     0,
-                    unitDistance)
+                    unitDistance,
+                    videoUrl,
+                    videoSeconds)
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
                     mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_CARDIO, "", false, null)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId)
@@ -607,6 +633,27 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         editor?.putString("restTime", binding.restTimeEdit.text.toString())
         editor?.putBoolean("restCheck", binding.restTimeCheck.isChecked)
         editor?.putBoolean("showDetails", binding.detailsLayout.isShown)
+        editor?.apply()
+    }
+
+    private fun saveSharedVideo() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val editor = sharedPref?.edit()
+        editor?.putString("youtubeStartUrl", binding.youtubeStartUrl.text.toString())
+        if(binding.youtubeEndUrl.text.toString().contains("&s=")){
+            var url = binding.youtubeEndUrl.text.toString()
+            url = url.substring(url.indexOf("&s=")+"&s=".length)
+            if(url.contains("&")){
+                url = url.substring(0, url.indexOf("&"))
+            }
+            try {
+                val secondsToEnd = parseInt(url)
+                editor?.putInt("videoSeconds", secondsToEnd)
+            }catch(ex: Exception){
+                editor?.putInt("videoSeconds", 50)
+            }
+        }
+//        editor?.putString("youtubeEndUrl", binding.youtubeEndUrl.text.toString())
         editor?.apply()
     }
 

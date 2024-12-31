@@ -1,8 +1,6 @@
 package com.easyfitness.DAO
 
-import android.content.ContentProvider
 import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
 
 /* DataBase Object */
 class ExerciseInProgram : ARecord {
@@ -17,11 +15,14 @@ class ExerciseInProgram : ARecord {
     var duration: Long = 0
     var seconds = 0
     var distanceUnit = 0
+    var urlVideoStart :String
+    var videoSeconds :Int = 0
     var order: Long = 0
 
     constructor(secRest: Int, exerciseName: String, pSerie: Int, pRepetition: Int, pPoids: Float,
                 pProfile: Profile?, pUnit: Int, pNote: String, pMachineKey: Long, pTime: String?,
                 exerciseType: Int, distance: Int, duration: Long, seconds: Int, distanceUnit: Int,
+                urlVideoStart: String, videoSeconds: Int,
                 order: Long) : super() {
         this.secRest = secRest
         this.exerciseName = exerciseName
@@ -38,11 +39,14 @@ class ExerciseInProgram : ARecord {
         this.duration = duration
         this.seconds = seconds
         this.distanceUnit = distanceUnit
+        this.urlVideoStart=urlVideoStart
+        this.videoSeconds=videoSeconds
         this.order = order
     }
 
     constructor(secRest: Int, exerciseName: String, pSerie: Int, pRepetition: Int, pPoids: Float,
-                pProfile: Long, pUnit: Int, pNote: String, pMachineKey: Long, pTime: String?, exerciseType: Int, ctx: Context) : super() {
+                pProfile: Long, pUnit: Int, pNote: String, pMachineKey: Long, pTime: String?, exerciseType: Int,
+                youtubeStartUrl: String, videoSeconds: Int, ctx: Context) : super() {
         this.secRest = secRest
         this.exerciseName = exerciseName
         serie = pSerie
@@ -54,6 +58,8 @@ class ExerciseInProgram : ARecord {
         mProfile = lDAOProfil.getProfil(pProfile)
         mExerciseId = pMachineKey
         mTime = pTime
+        this.urlVideoStart = youtubeStartUrl
+        this.videoSeconds = videoSeconds
         this.mType = exerciseType
     }
 }

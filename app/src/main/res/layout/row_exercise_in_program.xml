@@ -137,7 +137,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1"
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="2"
@@ -163,10 +162,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:text="3Lbs"
+                    android:text="3Kg"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -186,8 +184,10 @@
 
             <ImageView
                 android:id="@+id/deleteButton"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:contentDescription="@string/DeleteLabel"
+                android:layout_width="48dp"
+                android:minHeight="48dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"

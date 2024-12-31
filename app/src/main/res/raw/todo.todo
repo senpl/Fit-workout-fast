@@ -1,11 +1,16 @@
+Dodać zapis do bazy początek i koniec filmu
+    Dodać do edycji przy exercise in program
+    Dodać tą część również na exercise in program fragment
+    Ustawić videoSeconds poprawny zapis, bo na tą chwilę nie działa
+    Dodać przykłądowe ćwiczenie w aplikacji
+    Dodać tę część w Exercise runnerze
+    Sprawdzić, czy i jak całość działa
 Przenieść co się da do nowego projektu
     W ten sposób tworząc core nowego?
     Z minimalnym zbiorem zależności
     Prościej będzie w drugą stronę
     Choć w  którymś momencie trzeba to finalnie ustawić
-Dodać zapis do bazy początek i koniec filmu
-    Poszeczyć dao
-    Dodać do edycji przy exercise in program
+
 Jeśli przy ćwiczeniu jest video, to je wyświetlaj, nie obrazek
 Dla każdego ćwiczenia w programie
 Dodać prezentację ćwiczenia na program runnerze
@@ -15,13 +20,17 @@ Dodać przykładowe ćwiczenia
     Na rehabilitację kostki
 check po co to było - FragmentAutoClearedValueBinding
     I jak nie potrzebne to bezpiecznie usunąć
+publish
 
 someday/maybe
+Zmniejszyć ilość warningów,
+    np. przez dodanie content descriptions tam gdzie to praktyczne
 Przyciski do szybszej nawigacji nie chowane
     Dla większych rozdzielczości
 Info pytajnik na górze co jak działa
     żeby userzy wiedzieli
 Wywalić zmianę profilu jako zbędny badziew
 Wywalić body track i weight track?
+default weight unit in preferences, and set it for all new added exercises
 Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
 Check if crop images works

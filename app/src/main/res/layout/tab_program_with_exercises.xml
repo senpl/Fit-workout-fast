@@ -35,8 +35,9 @@
             android:id="@+id/programSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/mi_baseline"
-            android:padding="2dp"
+            android:minWidth="48dp"
+            android:minHeight="@dimen/lb_control_button_secondary_height"
+            android:padding="0dp"
             style="@style/TextAppearance.AppCompat.Large" />
     </LinearLayout>
 
@@ -71,6 +72,7 @@
                         android:id="@+id/exerciseEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="48dp"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_toStartOf="@+id/machineListButton"
@@ -84,12 +86,17 @@
                         android:id="@+id/machineListButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
+                        android:scaleX="2"
+                        android:scaleY="2"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:adjustViewBounds="true"
                         android:background="@android:color/transparent"
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
+                        android:layout_margin="@dimen/lb_basic_card_content_text_size"
                         android:src="@drawable/ic_baseline_list_alt_24px"
                         android:contentDescription="@string/list_of_exercises" />
                 </RelativeLayout>
@@ -126,7 +133,6 @@
                     android:id="@+id/bodybuildingSelector"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/record_background_odd"
                     android:gravity="center"
                     android:text="@string/FonteLabel"
                     app:autoSizeMaxTextSize="14sp"
@@ -204,11 +210,15 @@
                         android:id="@+id/seriesEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:inputType="number"
                         android:minEms="2"
-                        tools:text="2" />
+                        tools:text="1"
+                        android:autofillHints="1"
+                        />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -238,6 +248,8 @@
                         android:id="@+id/repetitionEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:minWidth="48dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:inputType="number"
@@ -315,6 +327,7 @@
                             android:id="@+id/poidsEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minHeight="48dp"
                             android:gravity="center"
                             android:inputType="numberDecimal|numberSigned"
                             android:minEms="3"
@@ -324,6 +337,8 @@
                             android:id="@+id/unitSpinner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="@dimen/lb_control_button_secondary_height"
+                            android:minHeight="@dimen/lb_control_button_secondary_height"
                             android:entries="@array/weight_units"
                             android:minEms="3" />
                     </LinearLayout>
@@ -505,17 +520,64 @@
                             android:id="@+id/restTimeEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minHeight="48dp"
                             android:layout_marginEnd="8dp"
                             android:ems="4"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:text="60" />
+                            android:text="0" />
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        >
+            <TextView
+                android:id="@+id/videoUrlLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_weight="40"
+                android:text="@string/filmUrl" />
+
+            <EditText
+                android:id="@+id/youtubeStartUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginEnd="8dp"
+                android:ems="4"
+                android:inputType="textUri"
+                android:text="@string/YTURL"
+                android:autoLink="web"
+                android:autofillHints="when start film in show"
+                />
+
+            <TextView
+                android:id="@+id/youtubeEndUrlLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_weight="100"
+                android:text="@string/urlOfVideoEnd" />
+
+            <EditText
+                android:id="@+id/youtubeEndUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginEnd="8dp"
+                android:ems="4"
+                android:inputType="textUri"
+                android:text="@string/YTURLEND"
+                android:autoLink="web" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
