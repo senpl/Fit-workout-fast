@@ -1,10 +1,16 @@
 Dodać zapis do bazy początek i koniec filmu
-    Dodać do edycji przy exercise in program
-    Dodać tą część również na exercise in program fragment
-    Ustawić videoSeconds poprawny zapis, bo na tą chwilę nie działa
-    Dodać przykłądowe ćwiczenie w aplikacji
     Dodać tę część w Exercise runnerze
+        Dodać część z logiką, która chowa film, gdy url jest pusty
+    Pobrać adres filmu z ćwiczenia
+    sprawdzić jak to zadziała.
+    Oprogramować chowanie tego okna gdy film jest pusty
+Ustawić warunkowe wyświetlanie filmu, gdy mamy zapisany do ćwiczenia
+    Dodać przykłądowe ćwiczenie w aplikacji
     Sprawdzić, czy i jak całość działa
+Wysłać zmiany
+Uruchomić w tym projekcie
+    Przerobić na startowanie w tym projekcie
+    Dodać warunek, gdy startUrl nie pusty to się włącza
 Przenieść co się da do nowego projektu
     W ten sposób tworząc core nowego?
     Z minimalnym zbiorem zależności
@@ -23,6 +29,17 @@ check po co to było - FragmentAutoClearedValueBinding
 publish
 
 someday/maybe
+Przycisk do przełączania autoplay na wszystkich ćwiczeniach
+    Bo w sumie najczęściej ich nie chcemy.
+    To chyba powinien być widok detali.
+    Ale to by wymagało nowych widoków
+        Exercise detail i tam opis oraz film i ew. zdjęcia
+    Finalnie można to tak zrobić
+Przerobić budowanie na najnowszego Kotlina
+    Żeby na przyszłość być wolnym od potencjalnych problemów
+Locale wyświetlać w różnych językach, bo teraz tylko angielskie cyfry
+    A przynajmniej dla niemców i innych nacji to mogłyby być w ich języku znaki
+Przerobić do najnowszego Kotlina, bo jednak teraz to dalej stara wersja, a pewnie lepiej mieć nową
 Zmniejszyć ilość warningów,
     np. przez dodanie content descriptions tam gdzie to praktyczne
 Przyciski do szybszej nawigacji nie chowane

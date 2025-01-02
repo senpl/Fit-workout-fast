@@ -10,19 +10,55 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
-import android.view.View.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.GONE
+import android.view.View.OnClickListener
+import android.view.View.OnFocusChangeListener
+import android.view.View.OnKeyListener
+import android.view.View.OnLongClickListener
+import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.preference.PreferenceManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.easyfitness.BtnClickListener
-import com.easyfitness.DAO.*
-import com.easyfitness.DAO.DAOMachine.*
+import com.easyfitness.DAO.Cardio
+import com.easyfitness.DAO.DAOCardio
+import com.easyfitness.DAO.DAOExerciseInProgram
+import com.easyfitness.DAO.DAOFonte
+import com.easyfitness.DAO.DAOMachine
+import com.easyfitness.DAO.DAOMachine.TYPE_CARDIO
+import com.easyfitness.DAO.DAOMachine.TYPE_FONTE
+import com.easyfitness.DAO.DAOMachine.TYPE_STATIC
+import com.easyfitness.DAO.DAOProgram
+import com.easyfitness.DAO.DAORecord
+import com.easyfitness.DAO.DAOStatic
+import com.easyfitness.DAO.ExerciseInProgram
+import com.easyfitness.DAO.Fonte
+import com.easyfitness.DAO.IRecord
+import com.easyfitness.DAO.Machine
+import com.easyfitness.DAO.Profile
+import com.easyfitness.DAO.Program
+import com.easyfitness.DAO.StaticExercise
+import com.easyfitness.DAO.Weight
 import com.easyfitness.R
 import com.easyfitness.SettingsFragment
 import com.easyfitness.TimePickerDialogFragment
@@ -34,17 +70,22 @@ import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.UnitConverter
 import com.fitworkoutfast.MainActivity
 import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
-//import com.ikovac.timepickerwithseconds.MyTimePickerDialog
-//import com.ikovac.timepickerwithseconds.TimePicker
 import com.onurkaganaldemir.ktoastlib.KToast
 import com.pacific.timer.Rx2Timer
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
 import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.text.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -82,7 +123,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         return binding.root
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,7 +136,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val sharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
         val programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
-        if (programs == null || programs.isEmpty()) {
+        if (programs.isNullOrEmpty()) {
             val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
@@ -126,7 +166,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             if(exercisesFromProgram.isNotEmpty()) {
                                 binding.exerciseIndicator.initDots(exercisesFromProgram.size)
                                 binding.exerciseInProgramNumber.text =
-                                    exercisesFromProgram.size.toString()
+                                    String.format(Locale.ENGLISH,"%d", exercisesFromProgram.size.toString())
                                 binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
                                 binding.currentExerciseNumber.text = "1"
                                 saveToPreference("currentProgram", programId)
@@ -253,19 +293,65 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             binding.recordList.setOnTouchListener(swipeDetectorListener) //this is different view so require separate listener to work
             binding.tabProgramRunner.setOnTouchListener(swipeDetectorListener)
         }
+
+        binding.composeView.setContent {
+            PlayVideo()
+        }
+    }
+
+    @SuppressLint("CoroutineCreationDuringComposition")
+    @Composable
+    private fun PlayVideo(){
+        val coroutineScope = rememberCoroutineScope()
+        val hostState = remember { YouTubePlayerHostState() }
+
+        when(hostState.currentState) {
+            is YouTubePlayerState.Error -> {
+//                Text(text = "Error: ${state.message}")
+            }
+            YouTubePlayerState.Idle -> {
+                // Do nothing, waiting for initialization
+            }
+            is YouTubePlayerState.Playing -> {
+                // Update UI button states
+            }
+
+            YouTubePlayerState.Ready -> coroutineScope.launch {
+                hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
+            }
+        }
+        ShowVideo(hostState)
+    }
+
+    @Composable
+    private fun ShowVideo(hostState: YouTubePlayerHostState){
+        YouTubePlayer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+//                .gesturesDisabled(),
+            hostState = hostState,
+            options = SimpleYouTubePlayerOptionsBuilder.builder {
+                autoplay(false)
+                controls(false)
+                rel(false)
+                ivLoadPolicy(false)
+                ccLoadPolicy(false)
+                fullscreen = true
+            },
+        )
     }
 
     private fun chooseExercise(selected: Int) {
         currentExerciseOrder = selected
-        binding.currentExerciseNumber.text = (selected + 1).toString()
+        binding.currentExerciseNumber.text = String.format(Locale.ENGLISH,"%d", (selected + 1).toString())
         refreshData()
     }
-
 
     fun nextExercise() {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder < exercisesFromProgram.size - 1) {
             currentExerciseOrder++
-            binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
+            binding.currentExerciseNumber.text = String.format(Locale.ENGLISH,"%d", (currentExerciseOrder + 1).toString())
             binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
             refreshData()
         }
@@ -274,7 +360,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     fun previousExercise() {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder > 0) {
             currentExerciseOrder--
-            binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
+            binding.currentExerciseNumber.text = String.format(Locale.ENGLISH,"%d", (currentExerciseOrder + 1).toString())
             binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
             refreshData()
         }
@@ -330,19 +416,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 TYPE_FONTE -> {
                     val f = r as Fonte
                     binding.repsPicker.progress = f.repetition
-                    binding.seriesEdit.setText(String.format("%d", f.serie))
+                    binding.seriesEdit.setText(String.format(Locale.ENGLISH,"%d", f.serie))
                     val numberFormat = DecimalFormat("#.##")
                     var poids = f.poids
                     if (f.unit == UnitConverter.UNIT_LBS) {
                         poids = UnitConverter.KgtoLbs(poids)
                     }
-                    binding.unitShow.text = f.unit.toString()
+                    binding.unitShow.text = String.format(Locale.ENGLISH,"%d", f.unit.toString())
                     binding.poidsEdit.setText(numberFormat.format(poids))
                 }
                 TYPE_STATIC -> {
                     val f = r as StaticExercise
-                    binding.secondsEdit.setText(String.format("%d", f.second))
-                    binding.seriesEdit.setText(String.format("%d", f.serie))
+                    binding.secondsEdit.setText(String.format(Locale.ENGLISH,"%d", f.second))
+                    binding.seriesEdit.setText(String.format(Locale.ENGLISH,"%d", f.serie))
                     val numberFormat = DecimalFormat("#.##")
                     binding.poidsEdit.setText(numberFormat.format(f.poids.toDouble()))
                 }

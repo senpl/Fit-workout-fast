@@ -390,4 +390,5 @@
     <string name="YTURL">YT URL</string>
     <string name="YTURLEND">YT URL END</string>
     <string name="urlOfVideoEnd">URL on which video should end</string>
+    <string name="pagerForExercisesChange">pager for exercies change</string>
 </resources>
