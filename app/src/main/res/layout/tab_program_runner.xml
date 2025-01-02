@@ -208,11 +208,7 @@
                             android:minEms="3"
                             tools:labelFor="@id/weightCardView"
                             tools:text="10" />
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="vertical">
+
                         <ImageButton
                             android:id="@+id/saveWeight"
                             android:visibility="gone"
@@ -221,16 +217,13 @@
                             android:contentDescription="@string/SaveWeightLabel"
                             android:src="@drawable/baseline_save_yellow_a200_24dp"
                             android:text="@string/SaveWeightLabel"
-                             />
-
-                        <TextView
+                            /><TextView
                             android:id="@+id/unitShow"
-                            android:gravity="bottom"
-                            android:layout_gravity="bottom"
+                            android:gravity="center"
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="kg"/>
-                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout

@@ -30,6 +30,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -76,7 +77,6 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerO
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
-import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
@@ -156,6 +156,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 }
                 binding.programSelect.onItemSelectedListener = object :
                     AdapterView.OnItemSelectedListener {
+                    @SuppressLint("SetTextI18n")
                     override fun onItemSelected(parent: AdapterView<*>,
                                                 view: View?, position: Int, id: Long) {
                         val program: Program? = daoProgram.getRecord(programs[position])
@@ -165,8 +166,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(programId)
                             if(exercisesFromProgram.isNotEmpty()) {
                                 binding.exerciseIndicator.initDots(exercisesFromProgram.size)
-                                binding.exerciseInProgramNumber.text =
-                                    String.format(Locale.ENGLISH,"%d", exercisesFromProgram.size.toString())
+                                binding.exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
                                 binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
                                 binding.currentExerciseNumber.text = "1"
                                 saveToPreference("currentProgram", programId)
@@ -305,9 +305,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val coroutineScope = rememberCoroutineScope()
         val hostState = remember { YouTubePlayerHostState() }
 
-        when(hostState.currentState) {
+        when(val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
-//                Text(text = "Error: ${state.message}")
+                Text(text = "Error: ${state.message}")
             }
             YouTubePlayerState.Idle -> {
                 // Do nothing, waiting for initialization
@@ -317,7 +317,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             YouTubePlayerState.Ready -> coroutineScope.launch {
-                hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
+//                hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
             }
         }
         ShowVideo(hostState)

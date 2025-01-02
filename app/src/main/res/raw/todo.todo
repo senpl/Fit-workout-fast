@@ -1,7 +1,14 @@
 Dodać zapis do bazy początek i koniec filmu
+    Pobrać adres filmu z ćwiczenia
+        Bo to może być problematyczne
     Dodać tę część w Exercise runnerze
         Dodać część z logiką, która chowa film, gdy url jest pusty
-    Pobrać adres filmu z ćwiczenia
+        Gdy w url jest youtube otwórz film
+        gdy w urlu jest tylko zdjęcie pokaż zdjęcie
+            Przygotować takie ćwicznie z obrazkiem
+    Dodać ćwiczenie bez url filmu, żeby wiedzieć jak się program zachowuje gdy nie ma filmu
+    Dodać przycisk który włącza wyłącza film
+    mute, unmute
     sprawdzić jak to zadziała.
     Oprogramować chowanie tego okna gdy film jest pusty
 Ustawić warunkowe wyświetlanie filmu, gdy mamy zapisany do ćwiczenia
@@ -16,19 +23,26 @@ Przenieść co się da do nowego projektu
     Z minimalnym zbiorem zależności
     Prościej będzie w drugą stronę
     Choć w  którymś momencie trzeba to finalnie ustawić
-
 Jeśli przy ćwiczeniu jest video, to je wyświetlaj, nie obrazek
 Dla każdego ćwiczenia w programie
-Dodać prezentację ćwiczenia na program runnerze
 Sprawdzić opis działania, co po koleji napisać jak robić
 Dodać przykładowe ćwiczenia
     Na ból pleców
     Na rehabilitację kostki
 check po co to było - FragmentAutoClearedValueBinding
     I jak nie potrzebne to bezpiecznie usunąć
+cleanup
 publish
 
 someday/maybe
+Sprawdzić, czy ustawianie LBS w ogóle działa, czy na sztywno lecą kilogramy
+I po prostu wyświetlać LBS bez przeliczania
+Remove old java parts(bo w sumie to już mi nie potrzebne).
+Przerobić na nowego kotlina
+Poszukać opcji zapętlania tego filmu( bo to mogłoby być fajną opcją)
+Zastanowić się, czy warto ikonkę przy nazwie ćwiczenia przywracać do dawnej
+    Bo pewnie można by stworzyć nowe
+    Na tą chwilę trochę to dziwnie wygląda
 Przycisk do przełączania autoplay na wszystkich ćwiczeniach
     Bo w sumie najczęściej ich nie chcemy.
     To chyba powinien być widok detali.
@@ -47,6 +61,8 @@ Przyciski do szybszej nawigacji nie chowane
 Info pytajnik na górze co jak działa
     żeby userzy wiedzieli
 Wywalić zmianę profilu jako zbędny badziew
+Przerobić preferences na nowe, bo podobno lepsze i bezpieczniejsze.
+Przerobić bazę danych na nową
 Wywalić body track i weight track?
 default weight unit in preferences, and set it for all new added exercises
 Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
