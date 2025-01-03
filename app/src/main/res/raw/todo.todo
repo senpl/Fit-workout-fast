@@ -1,5 +1,12 @@
 Dodać zapis do bazy początek i koniec filmu
     Pobrać adres filmu z ćwiczenia
+
+    I wysłać do otworzenia?
+    W osobnym widoku composable
+    Bo tak na tą chwilę wystarczy
+    Po naciśnięciu przycisku wywołać, bo to będzie good enough
+    https://youtu.be/o8qeINcLOUM?si=ankulGEYfkjh7RDt&t=1082
+    https://youtu.be/o8qeINcLOUM?si=75jdCwKOsS9kZSaw&t=1189
         Bo to może być problematyczne
     Dodać tę część w Exercise runnerze
         Dodać część z logiką, która chowa film, gdy url jest pusty

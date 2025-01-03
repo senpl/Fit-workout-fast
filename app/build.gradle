@@ -51,6 +51,7 @@ android {
             }
         }
         debug {
+            minifyEnabled false
             resValue("bool", "FIREBASE_CRASH_ENABLED", "false")
             if (rootProject.file('debug.properties').exists()) {
                 signingConfig signingConfigs.debug
@@ -97,6 +98,7 @@ dependencies {
     implementation("io.github.ilyapavlovskii:youtubeplayer-compose:2024.02.25")
     implementation("androidx.compose.material:material:1.7.6")
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+
     implementation(libs.androidx.activity.compose)
 
 

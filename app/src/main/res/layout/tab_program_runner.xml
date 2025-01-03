@@ -150,8 +150,8 @@
                         android:background="@android:color/transparent"
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
-                        android:scaleX="2.5"
-                        android:scaleY="2.5"
+                        android:scaleX="2"
+                        android:scaleY="2"
                         android:src="@drawable/ic_baseline_list_alt_24px"
                         android:contentDescription="@string/MachinesLabel" />
 
@@ -699,7 +699,11 @@
                     android:id="@+id/compose_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
+                <Button
+                    android:id="@+id/playVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SHOW VIDEO"></Button>
             </LinearLayout>
                         <TextView
                             android:layout_width="fill_parent"
