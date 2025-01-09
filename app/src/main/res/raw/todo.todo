@@ -1,3 +1,7 @@
+Podnieść bibliioteki, bo to podniesie stabilność aplikacji
+    A jednak trochę warto mieć dobre podzespoły
+Spróbować podnieść rxjava2 może nawet do 3 wersji
+    Pewnie będzie wymagało to jakiegoś reworku
 Przenieść co się da do nowego projektu
     W ten sposób tworząc core nowego?
     Z minimalnym zbiorem zależności

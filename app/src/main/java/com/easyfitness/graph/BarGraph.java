@@ -103,14 +103,14 @@ public class BarGraph {
         BarData data = new BarData(set1);
 
         data.setValueTextSize(12);
-        data.setValueFormatter(new IValueFormatter() {
-            private DecimalFormat mFormat = new DecimalFormat("#.## kg");
-
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return mFormat.format(value);
-            }
-        });
+//        data.setValueFormatter(new IValueFormatter() {
+//            private DecimalFormat mFormat = new DecimalFormat("#.## kg");
+//
+//            @Override
+//            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+//                return mFormat.format(value);
+//            }
+//        });
 
         // Set data
         mChart.setData(data);

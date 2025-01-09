@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minWidth="48dp"
-            android:minHeight="@dimen/lb_control_button_secondary_height"
+            android:minHeight="48dp"
             android:padding="0dp"
             style="@style/TextAppearance.AppCompat.Large" />
     </LinearLayout>
@@ -96,7 +96,7 @@
                         android:background="@android:color/transparent"
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
-                        android:layout_margin="@dimen/lb_basic_card_content_text_size"
+                        android:layout_margin="5dp"
                         android:src="@drawable/ic_baseline_list_alt_24px"
                         android:contentDescription="@string/list_of_exercises" />
                 </RelativeLayout>
@@ -337,8 +337,8 @@
                             android:id="@+id/unitSpinner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:minWidth="@dimen/lb_control_button_secondary_height"
-                            android:minHeight="@dimen/lb_control_button_secondary_height"
+                            android:minWidth="48dp"
+                            android:minHeight="48dp"
                             android:entries="@array/weight_units"
                             android:minEms="3" />
                     </LinearLayout>

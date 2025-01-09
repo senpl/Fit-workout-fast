@@ -60,18 +60,18 @@ public class DateGraph {
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
         xAxis.setGranularity(1); // 1 jour
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-
-            private SimpleDateFormat mFormat = new SimpleDateFormat("dd-MMM"); // HH:mm:ss
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                //long millis = TimeUnit.HOURS.toMillis((long) value);
-                mFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                Date tmpDate = new Date((long) DateConverter.nbMilliseconds(value)); // Convert days in milliseconds
-                return mFormat.format(tmpDate);
-            }
-        });
+//        xAxis.setValueFormatter(new IAxisValueFormatter() {
+//
+//            private SimpleDateFormat mFormat = new SimpleDateFormat("dd-MMM"); // HH:mm:ss
+//
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                //long millis = TimeUnit.HOURS.toMillis((long) value);
+//                mFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+//                Date tmpDate = new Date((long) DateConverter.nbMilliseconds(value)); // Convert days in milliseconds
+//                return mFormat.format(tmpDate);
+//            }
+//        });
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
@@ -112,14 +112,14 @@ public class DateGraph {
         // Create a data object with the datasets
         LineData data = new LineData(set1);
 
-        data.setValueFormatter(new IValueFormatter() {
-            private DecimalFormat mFormat = new DecimalFormat("#.##");
-
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return mFormat.format(value);
-            }
-        });
+//        data.setValueFormatter(new IValueFormatter() {
+//            private DecimalFormat mFormat = new DecimalFormat("#.##");
+//
+//            @Override
+//            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+//                return mFormat.format(value);
+//            }
+//        });
 
         // Set data
         mChart.setData(data);
