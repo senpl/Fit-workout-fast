@@ -1,5 +1,3 @@
-Podnieść bibliioteki, bo to podniesie stabilność aplikacji
-    A jednak trochę warto mieć dobre podzespoły
 Spróbować podnieść rxjava2 może nawet do 3 wersji
     Pewnie będzie wymagało to jakiegoś reworku
 Przenieść co się da do nowego projektu
@@ -9,6 +7,8 @@ Przenieść co się da do nowego projektu
     Choć w  którymś momencie trzeba to finalnie ustawić
 check po co to było - FragmentAutoClearedValueBinding
     I jak nie potrzebne to bezpiecznie usunąć
+Przerobić kpt na to, żeby budowało się sprawdniej
+    Bo to na tą chwilę nie jest pewnie optymalny build
 cleanup
 Wysłać zmiany
 publish
