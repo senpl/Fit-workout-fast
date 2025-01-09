@@ -29,13 +29,9 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -87,7 +83,9 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import pl.senpl.fitnesswithdemonstration.pl.senpl.fitnesswithdemonstration.SimpleButton
 import timber.log.Timber
 import java.io.IOException
 import java.lang.Integer.parseInt
@@ -97,6 +95,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.time.Duration.Companion.seconds
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -119,11 +118,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var staticTimer: Rx2Timer
     private var staticTimerRunning: Boolean = false
     private var restTimerRunning: Boolean = false
-    private val showDialog = mutableStateOf(false)
-    private val showDialog2 = mutableStateOf(false)
-//    val openDialog = remember { mutableStateOf(true) }
-    val dialogWidth = 250.dp
-    val dialogHeight = 250.dp
+    private val showVideoDialog = mutableStateOf(false)
     private var _binding: TabProgramRunnerBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -301,7 +296,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
 
         binding.exerciseIndicator.onSelectListener = {
-            chooseExercise(it)
+            seekExerciseTimeInVideo(it)
         }
 
         if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE).getBoolean("swipeGesturesSwitch", true)) {
@@ -309,43 +304,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             binding.tabProgramRunner.setOnTouchListener(swipeDetectorListener)
         }
 
-
-//        binding.playVideo.setOnClickListener(clickPlayVideo)
-
-
-
-
         binding.composeView.setContent {
-//            if(showDialog.value) {
-//                alert()
-//            }
-            if(showDialog2.value) {
-                alert2()
-            }
-            if(::exercisesFromProgram.isInitialized) {
-                if (exercisesFromProgram.isNotEmpty()) {
-                val videoUrl= exercisesFromProgram[currentExerciseOrder].urlVideoStart
-
-                }
+            if(showVideoDialog.value) {
+                ShowVideoDialog()
             }
             @Composable
             fun SimpleButton() {
                 Button(onClick = {
-
-                    showDialog.value = true
-                    showDialog2.value = true
+                    showVideoDialog.value = true
                 }) {
                     Text(text = "Show Video")
                 }
             }
             SimpleButton()
-//            Button(Modifier.clickable(
-//                onClick = {
-//                    showDialog.value = true
-//                }
-//            ),{
-//                Text(text = "Simple Button")
-//            })
         }
     }
 
@@ -353,20 +324,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private fun PlayTube(videoUrl: String){
         if(videoUrl.isNotEmpty()){
             if(videoUrl.contains("youtu")){
-//                KToast.infoToast(requireActivity(), videoUrl, Gravity.BOTTOM, KToast.LENGTH_LONG)
-
-                //var videoHash = videoUrl
+                var videoHash = videoUrl
                 if(videoUrl.contains("?v=")){
-                    val finalVideoHash = videoUrl.substring(videoUrl.indexOf("?v="))
-                    KToast.infoToast(requireActivity(), "1 ver "+finalVideoHash, Gravity.BOTTOM, KToast.LENGTH_LONG)
+                    videoHash = videoUrl.substring(videoUrl.indexOf("?v="))
                 }
                 if(videoUrl.contains("https://youtu.be/")){
-                    val finalVideoHash = videoUrl.substring(videoUrl.indexOf("youtu.be")+"youtu.be".length+1,videoUrl.indexOf("?"))
-                    KToast.infoToast(requireActivity(), "2 vers "+finalVideoHash, Gravity.BOTTOM, KToast.LENGTH_LONG)
+                    videoHash = videoUrl.substring(videoUrl.indexOf("youtu.be")+"youtu.be".length+1,videoUrl.indexOf("?"))
                 }
                 if(videoUrl.contains("https://youtube.com/")){
-                    val finalVideoHash = videoUrl.substring(videoUrl.indexOf("https://youtube.com/"),videoUrl.indexOf("?"))
-                    KToast.infoToast(requireActivity(), "3 vers "+finalVideoHash, Gravity.BOTTOM, KToast.LENGTH_LONG)
+                    videoHash = videoUrl.substring(videoUrl.indexOf("youtube.be")+"youtube.be".length+1,videoUrl.indexOf("?"))
                 }
 
                 var startTime = 0
@@ -375,10 +341,16 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     if(timeString.contains('s')){
                         timeString=timeString.substring(0,timeString.lastIndexOf('s'))
                     }
-//                    KToast.infoToast(requireActivity(), timeString, Gravity.BOTTOM, KToast.LENGTH_LONG)
-                    startTime = parseInt(timeString)
+                    try{
+                        val re = Regex("[^0-9 ]")
+                        val onlySeconds = re.replace(timeString, "")
+                        startTime = parseInt(onlySeconds)
+                    } catch (ex: NumberFormatException){
+                        KToast.infoToast(requireActivity(),
+                            "Faild to convert string to number:$timeString Ex: $ex", Gravity.BOTTOM, KToast.LENGTH_LONG)
+                    }
                 }
-//                PlayVideo(videoHash,startTime)
+                PlayVideo(videoHash,startTime)
             }
         }
     }
@@ -401,19 +373,18 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             YouTubePlayerState.Ready -> coroutineScope.launch {
-                hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
+                hostState.loadVideo(YouTubeVideoId(youtubeUrl))
             }
         }
-        ShowVideo(hostState)
+        ShowVideo(hostState,coroutineScope,startTime)
     }
 
     @Composable
-    private fun ShowVideo(hostState: YouTubePlayerHostState){
+    private fun ShowVideo(hostState: YouTubePlayerHostState, coroutineScope: CoroutineScope, startSeconds: Int) {
         YouTubePlayer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp),
-//                .gesturesDisabled(),
             hostState = hostState,
             options = SimpleYouTubePlayerOptionsBuilder.builder {
                 autoplay(false)
@@ -424,11 +395,28 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 fullscreen = true
             },
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+        ) {
+            SimpleButton(text = "Show exercise") {
+                seekExerciseTimeInVideo(hostState,coroutineScope,startSeconds)
+            }
+            SimpleButton(text = "Pause") {
+                coroutineScope.launch { hostState.pause() }
+            }
+        }
+    }
+    private fun seekExerciseTimeInVideo(hostState: YouTubePlayerHostState, coroutineScope: CoroutineScope, secondsOfStart: Int) {
+        coroutineScope.launch { hostState.seekBy(secondsOfStart.seconds) }
     }
 
-    private fun chooseExercise(selected: Int) {
+
+    @SuppressLint("SetTextI18n")
+    private fun seekExerciseTimeInVideo(selected: Int) {
         currentExerciseOrder = selected
-        binding.currentExerciseNumber.text = String.format(Locale.ENGLISH,"%d", (selected + 1).toString())
+        binding.currentExerciseNumber.text =  (selected + 1).toString()
         refreshData()
     }
 
@@ -566,49 +554,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         true
     }
 
-//    @SuppressLint("SetTextI18n")
-//    private val clickPlayVideo = OnClickListener {
-//        if(::exercisesFromProgram.isInitialized) {
-//            if (exercisesFromProgram.isNotEmpty()) {
-//                val videoUrl= exercisesFromProgram[currentExerciseOrder].urlVideoStart
-//                val showDialog = mutableStateOf(PlayVideo(videoUrl))
-//            }
-//        }
-//    }
-
     @Composable
-    fun alert2() {
-        if (showDialog2. value) {
-            Dialog(onDismissRequest = { showDialog2.value = false }
-
+    fun ShowVideoDialog() {
+        if (showVideoDialog. value) {
+            Dialog(onDismissRequest = { showVideoDialog.value = false }
             ) {
-            // Draw a rectangle shape with rounded corners inside the dialog
-//            Box(Modifier.size(dialogWidth, dialogHeight).background(androidx.compose.ui.graphics.Color.Blue))
             PlayTube(exercisesFromProgram[currentExerciseOrder].urlVideoStart)
             }
         }
         }
-
-    @Composable
-    fun alert() {
-        AlertDialog(
-            title = {
-                Text(text = "Test")
-            },
-            text = {
-                Text("Test")
-            },
-            onDismissRequest = {
-
-            },
-            buttons = {
-                Button(onClick = { showDialog.value = false }) {
-                    Text("test")
-                }
-            }
-
-        )
-    }
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = OnClickListener {

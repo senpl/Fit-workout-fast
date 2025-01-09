@@ -653,7 +653,6 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 editor?.putInt("videoSeconds", 50)
             }
         }
-//        editor?.putString("youtubeEndUrl", binding.youtubeEndUrl.text.toString())
         editor?.apply()
     }
 

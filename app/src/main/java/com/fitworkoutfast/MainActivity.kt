@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED) {
 
-            /* creation de l'arborescence de l'application */
+            /* create folder tree for app */
             var folder = File(getExternalStorageDirectory().toString() + "/FitWorkoutFast")
             var success = true
             if (!folder.exists()) {

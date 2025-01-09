@@ -553,7 +553,6 @@
                 android:layout_marginEnd="8dp"
                 android:ems="4"
                 android:inputType="textUri"
-                android:text="@string/YTURL"
                 android:autoLink="web"
                 android:autofillHints="when start film in show"
                 />
@@ -575,7 +574,6 @@
                 android:layout_marginEnd="8dp"
                 android:ems="4"
                 android:inputType="textUri"
-                android:text="@string/YTURLEND"
                 android:autoLink="web" />
         </LinearLayout>
         <LinearLayout
