@@ -29,7 +29,10 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
@@ -38,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -316,7 +320,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     Text(text = "Show Video")
                 }
             }
-            SimpleButton()
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                 SimpleButton()
+            }
+
         }
     }
 
@@ -395,6 +406,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 fullscreen = true
             },
         )
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+        ){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -405,6 +419,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
             SimpleButton(text = "Pause") {
                 coroutineScope.launch { hostState.pause() }
+            }
+            SimpleButton(text = "Play") {
+                coroutineScope.launch { hostState.play() }
+            }
+            SimpleButton(text = "Mute") {
+                coroutineScope.launch { hostState.mute() } }
+            SimpleButton(text = "Unmute") {
+                coroutineScope.launch { hostState.unMute() }
+            }
             }
         }
     }

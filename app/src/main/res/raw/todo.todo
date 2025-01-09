@@ -1,41 +1,33 @@
-Posprzątać kod po ostatnich zmianach
-    Bo to jednak trochę testów było
 
-    Przekazać czas startu z programu, bo tylko tego już chyba brakuje
-    Po naciśnięciu przycisku wywołać, bo to będzie good enough
-    https://youtu.be/o8qeINcLOUM?si=ankulGEYfkjh7RDt&t=1082
-    https://youtu.be/o8qeINcLOUM?si=75jdCwKOsS9kZSaw&t=1189
-        Bo to może być problematyczne
-
-    Dodać ćwiczenie bez url filmu, żeby wiedzieć jak się program zachowuje gdy nie ma filmu
-    Dodać przycisk który włącza wyłącza film
-    mute, unmute
-    sprawdzić jak to zadziała.
-    Oprogramować chowanie tego okna gdy film jest pusty
-Ustawić warunkowe wyświetlanie filmu, gdy mamy zapisany do ćwiczenia
-    Dodać przykłądowe ćwiczenie w aplikacji
-    Sprawdzić, czy i jak całość działa
-Wysłać zmiany
-Uruchomić w tym projekcie
-    Przerobić na startowanie w tym projekcie
-    Dodać warunek, gdy startUrl nie pusty to się włącza
 Przenieść co się da do nowego projektu
     W ten sposób tworząc core nowego?
     Z minimalnym zbiorem zależności
     Prościej będzie w drugą stronę
     Choć w  którymś momencie trzeba to finalnie ustawić
-Jeśli przy ćwiczeniu jest video, to je wyświetlaj, nie obrazek
-Dla każdego ćwiczenia w programie
-Sprawdzić opis działania, co po koleji napisać jak robić
-Dodać przykładowe ćwiczenia
-    Na ból pleców
-    Na rehabilitację kostki
 check po co to było - FragmentAutoClearedValueBinding
     I jak nie potrzebne to bezpiecznie usunąć
 cleanup
+Wysłać zmiany
 publish
+    Na githubie wystarczy zbudować
+    Na play store wymaga zmiany nazwy
+        i autoryzacji dokumentu
+        i pewnie wielu innych kroków
 
 someday/maybe
+Dodać przykładowe ćwiczenia
+    Na ból pleców
+    Na rehabilitację kostki
+    Dla każdego ćwiczenia w programie
+    Sprawdzić opis działania, co po koleji napisać jak robić
+Chować przycisk video gdy url jest pusty ???
+        Bo w sumie jest nie potrzebny
+    Przywrócić poprzednie ładniejsze przyciski?
+        Bo te nie są już tak kolorystycznie żywe jak poprzednie
+        A to tylko jakiś problem z importem był
+    Ustawić warunkowe wyświetlanie filmu, gdy mamy zapisany do ćwiczenia
+        Dodać przykłądowe ćwiczenie w aplikacji
+        Sprawdzić, czy i jak całość działa
     Dodać wyświetlanie zdjęcia
         gdy w urlu jest tylko zdjęcie pokaż zdjęcie
             Przygotować takie ćwicznie z obrazkiem
