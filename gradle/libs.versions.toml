@@ -32,6 +32,7 @@ pagerslidingtabstrip = "1.0.1"
 preferenceKtx = "1.2.1"
 recyclerview = "1.3.2"
 rx2Timer = "1.0.0"
+rxjava = "3.0.6"
 ultimateringtonepicker = "3.3.0"
 viewpager = "1.1.0"
 youtubeplayerCompose = "2024.02.25"
@@ -67,7 +68,8 @@ materialfavoritebutton = { module = "com.github.ivbaranov:materialfavoritebutton
 mpandroidchart = { module = "com.github.hannesa2:MPAndroidChart", version.ref = "mpandroidchart" }
 numberslidingpicker = { module = "com.github.senpl:NumberSlidingPicker", version.ref = "numberslidingpicker" }
 pagerslidingtabstrip = { module = "com.astuetz:pagerslidingtabstrip", version.ref = "pagerslidingtabstrip" }
-rx2-timer = { module = "com.github.thepacific:rx2-timer", version.ref = "rx2Timer" }
+rx2-timer = { module = "com.github.thepacific:rx3-timer", version.ref = "rx2Timer" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 smarttablayout-library = { module = "com.ogaclejapan.smarttablayout:library", version.ref = "libraryVersion" }
 ultimateringtonepicker = { module = "com.github.DeweyReed:UltimateRingtonePicker", version.ref = "ultimateringtonepicker" }
 utils-v4 = { module = "com.ogaclejapan.smarttablayout:utils-v4", version.ref = "libraryVersion" }

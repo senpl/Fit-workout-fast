@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
  * Copyright (C) 2013 Ivan Kovac navratnanos@gmail.com
+ * updated by senpl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,19 +58,11 @@ public class TimePicker extends FrameLayout {
      * A no-op callback used in the constructor to avoid null checks
      * later in the code.
      */
-    private static final OnTimeChangedListener NO_OP_CHANGE_LISTENER = new OnTimeChangedListener() {
-        public void onTimeChanged(TimePicker view, int hourOfDay, int minute, int seconds) {
-        }
+    private static final OnTimeChangedListener NO_OP_CHANGE_LISTENER = (view, hourOfDay, minute, seconds) -> {
     };
 
     public static final Formatter TWO_DIGIT_FORMATTER =
-    		new Formatter() {
-
-			@Override
-			public String format(int value) {
-			    return String.format("%02d", value);
-		}
-	};
+        value -> String.format("%02d", value);
 
     // state
     private int mCurrentHour = 0; // 0-23
@@ -123,53 +116,42 @@ public class TimePicker extends FrameLayout {
 
         // hour
         mHourPicker = findViewById(R.id.hour);
-        mHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-
-			@Override
-			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-				mCurrentHour = newVal;
-                if (!mIs24HourView) {
-                    // adjust from [1-12] to [0-11] internally, with the times
-                    // written "12:xx" being the start of the half-day
-                    if (mCurrentHour == 12) {
-                        mCurrentHour = 0;
-                    }
-                    if (!mIsAm) {
-                        // PM means 12 hours later than nominal
-                        mCurrentHour += 12;
-                    }
-                }
-                onTimeChanged();
-			}
-		});
+        mHourPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            mCurrentHour = newVal;
+if (!mIs24HourView) {
+// adjust from [1-12] to [0-11] internally, with the times
+// written "12:xx" being the start of the half-day
+if (mCurrentHour == 12) {
+mCurrentHour = 0;
+}
+if (!mIsAm) {
+// PM means 12 hours later than nominal
+mCurrentHour += 12;
+}
+}
+onTimeChanged();
+        });
 
         // digits of minute
         mMinutePicker = findViewById(R.id.minute);
         mMinutePicker.setMinValue(0);
         mMinutePicker.setMaxValue(59);
         mMinutePicker.setFormatter(TWO_DIGIT_FORMATTER);
-        mMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-        	@Override
-			public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
-                mCurrentMinute = newVal;
-                onTimeChanged();
-            }
-        });
+        mMinutePicker.setOnValueChangedListener((spinner, oldVal, newVal) -> {
+mCurrentMinute = newVal;
+onTimeChanged();
+});
 
         // digits of seconds
         mSecondPicker = findViewById(R.id.seconds);
         mSecondPicker.setMinValue(0);
         mSecondPicker.setMaxValue(59);
         mSecondPicker.setFormatter( TWO_DIGIT_FORMATTER);
-        mSecondPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mSecondPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+             mCurrentSeconds = newVal;
+onTimeChanged();
 
-			@Override
-			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-				 mCurrentSeconds = newVal;
-	                onTimeChanged();
-
-			}
-		});
+        });
 
         // am/pm
         mAmPmButton = findViewById(R.id.amPm);
@@ -195,26 +177,24 @@ public class TimePicker extends FrameLayout {
         mAmText = dfsAmPm[Calendar.AM];
         mPmText = dfsAmPm[Calendar.PM];
         mAmPmButton.setText(mIsAm ? mAmText : mPmText);
-        mAmPmButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                requestFocus();
-                if (mIsAm) {
+        mAmPmButton.setOnClickListener(v -> {
+            requestFocus();
+            if (mIsAm) {
 
-                    // Currently AM switching to PM
-                    if (mCurrentHour < 12) {
-                        mCurrentHour += 12;
-                    }
-                } else {
-
-                    // Currently PM switching to AM
-                    if (mCurrentHour >= 12) {
-                        mCurrentHour -= 12;
-                    }
+                // Currently AM switching to PM
+                if (mCurrentHour < 12) {
+                    mCurrentHour += 12;
                 }
-                mIsAm = !mIsAm;
-                mAmPmButton.setText(mIsAm ? mAmText : mPmText);
-                onTimeChanged();
+            } else {
+
+                // Currently PM switching to AM
+                if (mCurrentHour >= 12) {
+                    mCurrentHour -= 12;
+                }
             }
+            mIsAm = !mIsAm;
+            mAmPmButton.setText(mIsAm ? mAmText : mPmText);
+            onTimeChanged();
         });
 
         if (!isEnabled()) {
@@ -266,7 +246,7 @@ public class TimePicker extends FrameLayout {
         }
 
         public static final Creator<SavedState> CREATOR
-                = new Creator<SavedState>() {
+                = new Creator<>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }

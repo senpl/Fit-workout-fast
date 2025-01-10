@@ -1,5 +1,3 @@
-
-cleanup
 Wysłać zmiany
 publish
     Na githubie wystarczy zbudować
@@ -8,6 +6,9 @@ publish
         i pewnie wielu innych kroków
 
 someday/maybe
+cleanup
+   Oczyścić build.gradle ze starego śmiecia
+   Bo w razie czego jest w repo
 Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
 Uaktualnić build do wersji kotlinowej
 Dodać przykładowe ćwiczenia
@@ -59,9 +60,8 @@ Wywalić body track i weight track?
 default weight unit in preferences, and set it for all new added exercises
 Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
 Check if crop images works
-Spróbować podnieść rxjava2 może nawet do 3 wersji
-    Pewnie będzie wymagało to jakiegoś reworku
-    Najpierw do wersji 2 najnowszej
+Spróbować zamienić Rx3Timer na Kotlin flow, żeby poznać co to daje
+    Ale to pewnie niewielki zysk, a potencjał na nowe błędy, więc pewnie nie warto
 Automatyczne sprzątanie przez delegację fragmentów
     Pewnie to już nie potrzebne
     https://medium.com/@rahmicemreunal/auto-inflated-cleared-view-binding-in-fragments-using-delegation-2ada0b43a8e4

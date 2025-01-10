@@ -81,7 +81,8 @@ import com.fitworkoutfast.MainActivity
 import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 import com.onurkaganaldemir.ktoastlib.KToast
 //import com.pacific.timer.Rx2Timer
-import com.pacific.timer.rx2.Rx2Timer
+//import com.pacific.timer.rx2.Rx2Timer
+import com.pacific.timer.rx3.Rx3Timer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
@@ -119,8 +120,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
     private lateinit var mDbMachine: DAOMachine
     private lateinit var swipeDetectorListener: SwipeDetectorListener
-    private var restTimer: Rx2Timer? = null
-    private lateinit var staticTimer: Rx2Timer
+    private var restTimer: Rx3Timer? = null
+    private lateinit var staticTimer: Rx3Timer
     private var staticTimerRunning: Boolean = false
     private var restTimerRunning: Boolean = false
     private val showVideoDialog = mutableStateOf(false)
@@ -724,7 +725,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             restTimerRunning = true
             binding.restFillBackgroundProgress.setDuration(restTime.toLong() * progressScaleFix)
             restTimer?.stop()
-            restTimer = Rx2Timer.builder()
+            restTimer = Rx3Timer.builder()
                 .initialDelay(0)
                 .take(restTime)
                 .onEmit { count ->
@@ -924,7 +925,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.imageExerciseThumb.setImageResource(R.drawable.ic_static)
                 val staticPrepareTime = 5
                 binding.staticFillBackgroundProgress.setDuration(((exercise.seconds + staticPrepareTime) * progressScaleFix).toLong())
-                staticTimer = Rx2Timer.builder()
+                staticTimer = Rx3Timer.builder()
                     .initialDelay(0)
                     .take(exercise.seconds + staticPrepareTime)
                     .onEmit { count ->

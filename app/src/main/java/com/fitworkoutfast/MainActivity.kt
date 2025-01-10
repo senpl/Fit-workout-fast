@@ -31,7 +31,6 @@ import com.easyfitness.DAO.cardio.DAOOldCardio
 import com.easyfitness.bodymeasures.BodyPartListFragment
 import com.easyfitness.fonte.FontesOldPagerFragment
 import com.easyfitness.fonte.FontesPagerFragment
-import com.easyfitness.intro.MainIntroActivity
 import com.easyfitness.machines.MachineFragment
 import com.easyfitness.programs.ProgramsPagerFragment
 import com.easyfitness.programs.ProgramsPagerFragment.Companion.newInstance
@@ -48,8 +47,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_INTRO = 111
     private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1001
-    var mDrawerAdapter: CustomDrawerAdapter? = null
-    lateinit var dataList: MutableList<DrawerItem>//? = null
+    private var mDrawerAdapter: CustomDrawerAdapter? = null
+    private lateinit var dataList: MutableList<DrawerItem>//? = null
     private var mpFontesPagerFrag: FontesPagerFragment? = null
     private var mpFontesOldPagerFrag: FontesOldPagerFragment? = null
     private var mpProgramPagerFrag: ProgramsPagerFragment? = null
@@ -188,10 +187,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val SP = PreferenceManager.getDefaultSharedPreferences(baseContext) //getSharedPreferences(baseContext, MODE_PRIVATE)//???
-        val dayNightAuto = SP.getString("dayNightAuto", resources.getInteger(R.integer.dark_mode_value).toString())
-        val dayNightAutoValue: Int
-        dayNightAutoValue = try {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext) //getSharedPreferences(baseContext, MODE_PRIVATE)//???
+        val dayNightAuto = sharedPreferences.getString("dayNightAuto", resources.getInteger(R.integer.dark_mode_value).toString())
+        val dayNightAutoValue: Int = try {
             dayNightAuto!!.toInt()
         } catch (e: NumberFormatException) {
             resources.getInteger(R.integer.dark_mode_value)
@@ -529,7 +527,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun createNewProfil(): Boolean {
+    private fun createNewProfil(): Boolean {
 //        val newProfilBuilder = AlertDialog.Builder(this)
 //        newProfilBuilder.setTitle(activity.resources.getText(R.string.createProfilTitle))
 //        newProfilBuilder.setMessage(activity.resources.getText(R.string.createProfilQuestion))
@@ -573,7 +571,7 @@ class MainActivity : AppCompatActivity() {
         newBuilder.setView(input)
         newBuilder.setPositiveButton(activity.resources.getText(R.string.global_ok)) { _: DialogInterface?, _: Int ->
             val value = input.text.toString()
-            if (!value.isEmpty()) {
+            if (value.isNotEmpty()) {
                 // Get current profil
                 val temp = currentProfile
                 // Rename it
@@ -653,10 +651,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         savePreferences()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     //@SuppressLint("RestrictedApi")
@@ -786,10 +780,6 @@ class MainActivity : AppCompatActivity() {
             return mpSettingFrag!!
         }
 
-    fun restoreToolbar() {
-        if (activityToolbar != null) setSupportActionBar(activityToolbar)
-    }
-
     fun showMP3Toolbar(show: Boolean) {
         val mp3toolbar = findViewById<Toolbar>(R.id.musicToolbar)
         if (!show) {
@@ -814,6 +804,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated(message = "because use deprecacted onBackPressed")
     override fun onBackPressed() {
         val index = activity.supportFragmentManager.backStackEntryCount - 1
         if (index >= 0) { // Si on est dans une sous activité
@@ -833,7 +824,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initActivity() {
+    private fun initActivity() {
         // Initialisation des objets DB
         mDbProfils = DAOProfil(this.applicationContext)
 
