@@ -1,5 +1,6 @@
-Spróbować podnieść rxjava2 może nawet do 3 wersji
-    Pewnie będzie wymagało to jakiegoś reworku
+Nie działa zakończenie dziwięku. wcześniech chyba działało
+   Sprawdzić, czemu tak może być.
+
 Przenieść co się da do nowego projektu
     W ten sposób tworząc core nowego?
     Z minimalnym zbiorem zależności
@@ -7,8 +8,6 @@ Przenieść co się da do nowego projektu
     Choć w  którymś momencie trzeba to finalnie ustawić
 check po co to było - FragmentAutoClearedValueBinding
     I jak nie potrzebne to bezpiecznie usunąć
-Przerobić kpt na to, żeby budowało się sprawdniej
-    Bo to na tą chwilę nie jest pewnie optymalny build
 cleanup
 Wysłać zmiany
 publish
@@ -18,6 +17,7 @@ publish
         i pewnie wielu innych kroków
 
 someday/maybe
+Uaktualnić build do wersji kotlinowej
 Dodać przykładowe ćwiczenia
     Na ból pleców
     Na rehabilitację kostki
@@ -67,3 +67,6 @@ Wywalić body track i weight track?
 default weight unit in preferences, and set it for all new added exercises
 Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
 Check if crop images works
+Spróbować podnieść rxjava2 może nawet do 3 wersji
+    Pewnie będzie wymagało to jakiegoś reworku
+    Najpierw do wersji 2 najnowszej

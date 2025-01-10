@@ -685,20 +685,17 @@
                     android:id="@+id/countDown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:textSize="@dimen/mi_button_cta_height"
                     />
             </com.devzone.fillprogresslayout.FillProgressLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 >
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/compose_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     />
             </LinearLayout>
                         <TextView

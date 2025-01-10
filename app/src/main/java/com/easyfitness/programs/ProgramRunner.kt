@@ -32,7 +32,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
@@ -953,6 +952,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             } catch (e: IOException) {
                                 e.printStackTrace()
                             }
+                            mediaPlayer.isLooping = false
                             mediaPlayer.start()
                         }
                     }

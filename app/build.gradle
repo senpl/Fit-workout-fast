@@ -1,9 +1,11 @@
 plugins {
     id 'com.android.application'
+//    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 //    id 'kotlin-android'
-    id 'kotlin-kapt'
+//    id 'kotlin-kapt'
+
 }
 
 android {
@@ -73,10 +75,10 @@ android {
         viewBinding true
         dataBinding true
     }
-
-    lintOptions {
+    lint {
         disable 'GoogleAppIndexingWarning'
     }
+
 }
 
 dependencies {
@@ -84,21 +86,20 @@ dependencies {
     //implementation 'net.sourceforge.javacsv:javacsv:2.1'
 
 // Support
-    implementation 'androidx.annotation:annotation:1.9.1'
-    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
-    implementation 'androidx.exifinterface:exifinterface:1.3.7'
-    implementation 'androidx.fragment:fragment-ktx:1.8.5'
-    implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.viewpager:viewpager:1.1.0'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation("io.github.ilyapavlovskii:youtubeplayer-compose:2024.02.25")
-    implementation("androidx.compose.material:material:1.7.6")
-    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
-
+    implementation libs.androidx.annotation
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.cardview
+    implementation libs.androidx.coordinatorlayout
+    implementation libs.androidx.drawerlayout
+    implementation libs.androidx.exifinterface
+    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.preference.ktx
+    implementation libs.androidx.viewpager
+    implementation libs.material
+    implementation libs.youtubeplayer.compose
+    implementation libs.androidx.material
+    implementation libs.library
     implementation(libs.androidx.activity.compose)
 
 
@@ -108,28 +109,28 @@ dependencies {
 // Other
 // https://mvnrepository.com/artifact/com.kovachcode/timepickerwithseconds
 //    implementation("com.kovachcode:timepickerwithseconds:1.0.1")
-    implementation 'de.psdev.licensesdialog:licensesdialog:2.2.0' //2.0.0
-    implementation 'com.github.hannesa2:MPAndroidChart:3.1.0'
-    implementation 'com.astuetz:pagerslidingtabstrip:1.0.1' //DEPRECATED
-    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
-    implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
-    implementation 'com.github.lzyzsd:circleprogress:1.2.4'
-    implementation 'com.heinrichreimersoftware:material-intro:1.6' //1.6.2
-    implementation 'com.mikhaellopez:circularimageview:4.3.1' //3.2.0
-    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
-    implementation 'com.github.onurkagan:ktoast:1.0.3'
-    implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
+    implementation libs.licensesdialog //2.0.0
+    implementation libs.mpandroidchart
+    implementation libs.pagerslidingtabstrip //DEPRECATED
+    implementation libs.smarttablayout.library
+    implementation libs.utils.v4
+    implementation libs.circleprogress
+    implementation libs.material.intro //1.6.2
+    implementation libs.circularimageview //3.2.0
+//    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+    implementation libs.ktoast
+    implementation libs.materialfavoritebutton
     //implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar', {
     //    transitive = true
     //})
-    implementation "androidx.core:core-ktx:1.15.0"
-    implementation 'com.github.senpl:NumberSlidingPicker:2cd87266c8e7d7656df9eef964bf062da95833a3' //from https://github.com/senpl/NumberSlidingPicker/commit/2cd87266c8e7d7656df9eef964bf062da95833a3
-    implementation 'com.github.thepacific:rx2timer:0.0.3'
-    implementation 'com.github.JDevZone:FillProgressLayout:0.0.9'
-    implementation 'com.github.mazenrashed:DotsIndicatorWithoutViewpager:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'com.github.DeweyReed:UltimateRingtonePicker:3.3.0'
-    implementation("com.vanniktech:android-image-cropper:4.6.0")
+    //implementation "androidx.core:core-ktx:1.15.0"
+    implementation libs.numberslidingpicker //from https://github.com/senpl/NumberSlidingPicker/commit/2cd87266c8e7d7656df9eef964bf062da95833a3
+    implementation libs.rx2.timer
+    implementation libs.fillprogresslayout
+    implementation libs.dotsindicatorwithoutviewpager
+    implementation libs.androidx.recyclerview
+    implementation libs.ultimateringtonepicker
+    implementation(libs.android.image.cropper)
 }
 
 //apply plugin: 'com.google.gms.google-services'
