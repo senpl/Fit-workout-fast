@@ -80,12 +80,14 @@ import com.easyfitness.utils.UnitConverter
 import com.fitworkoutfast.MainActivity
 import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 import com.onurkaganaldemir.ktoastlib.KToast
-import com.pacific.timer.Rx2Timer
+//import com.pacific.timer.Rx2Timer
+import com.pacific.timer.rx2.Rx2Timer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
+//import io.reactivex.rxjava3.internal.util.HalfSerializer.onComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pl.senpl.fitnesswithdemonstration.pl.senpl.fitnesswithdemonstration.SimpleButton
@@ -932,29 +934,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         } else {
                             val minutes: Int = ((count % 3600) / 60).toInt()
                             val seconds: Int = (count % 60).toInt()
-                            binding.countDownStatic.text = getString(R.string.static_counter_minutes, minutes, seconds)
+                            binding.countDownStatic.text =
+                                getString(R.string.static_counter_minutes, minutes, seconds)
                         }
                     }
                     .onError { binding.countDownStatic.text = getString(R.string.error) }
-                    .onComplete {
-                        val staticFinishStr = getString(R.string.End) + " " + exercise.seconds.toString() + " " + getString(R.string.SecondsLabel_short)
-                        binding.countDownStatic.text = staticFinishStr
-                        if (requireContext().getSharedPreferences("playStaticExerciseFinishSound", Context.MODE_PRIVATE).getBoolean("playStaticExerciseFinishSound", true)) {
-                            val mediaPlayer = MediaPlayer()
-                            try {
-                                val myUri: Uri = Uri.parse(requireContext().getSharedPreferences("staticSound", Context.MODE_PRIVATE).getString("staticSound", RingtoneManager.getDefaultUri(R.raw.chime).toString()))
-                                mediaPlayer.setDataSource(this.requireContext(), myUri)
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            }
-                            try {
-                                mediaPlayer.prepare()
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            }
-                            mediaPlayer.isLooping = false
-                            mediaPlayer.start()
-                        }
+                    .onComplete{
+                        finishStaticTimer(exercise)
                     }
                     .build()
             }
@@ -988,6 +974,40 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.poidsEdit.setText(exercise.poids.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
             }
+        }
+    }
+
+    private fun finishStaticTimer(exercise: ExerciseInProgram) {
+        val staticFinishStr =
+            getString(R.string.End) + " " + exercise.seconds.toString() + " " + getString(R.string.SecondsLabel_short)
+        binding.countDownStatic.text = staticFinishStr
+        if (requireContext().getSharedPreferences(
+                "playStaticExerciseFinishSound",
+                Context.MODE_PRIVATE
+            ).getBoolean("playStaticExerciseFinishSound", true)
+        ) {
+            val mediaPlayer = MediaPlayer()
+            try {
+                val myUri: Uri = Uri.parse(
+                    requireContext().getSharedPreferences(
+                        "staticSound",
+                        Context.MODE_PRIVATE
+                    ).getString(
+                        "staticSound",
+                        RingtoneManager.getDefaultUri(R.raw.chime).toString()
+                    )
+                )
+                mediaPlayer.setDataSource(this.requireContext(), myUri)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            try {
+                mediaPlayer.prepare()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            mediaPlayer.isLooping = false
+            mediaPlayer.start()
         }
     }
 

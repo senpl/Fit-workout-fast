@@ -1,12 +1,4 @@
-Przywrócić wyświtlanie rest w static exercises
 
-Przenieść co się da do nowego projektu
-    W ten sposób tworząc core nowego?
-    Z minimalnym zbiorem zależności
-    Prościej będzie w drugą stronę
-    Choć w  którymś momencie trzeba to finalnie ustawić
-check po co to było - FragmentAutoClearedValueBinding
-    I jak nie potrzebne to bezpiecznie usunąć
 cleanup
 Wysłać zmiany
 publish
@@ -16,6 +8,7 @@ publish
         i pewnie wielu innych kroków
 
 someday/maybe
+Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
 Uaktualnić build do wersji kotlinowej
 Dodać przykładowe ćwiczenia
     Na ból pleców
@@ -69,3 +62,6 @@ Check if crop images works
 Spróbować podnieść rxjava2 może nawet do 3 wersji
     Pewnie będzie wymagało to jakiegoś reworku
     Najpierw do wersji 2 najnowszej
+Automatyczne sprzątanie przez delegację fragmentów
+    Pewnie to już nie potrzebne
+    https://medium.com/@rahmicemreunal/auto-inflated-cleared-view-binding-in-fragments-using-delegation-2ada0b43a8e4
