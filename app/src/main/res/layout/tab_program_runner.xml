@@ -646,7 +646,7 @@
                 app:fpl_gradientDirection="bottom_to_top"
                 app:fpl_gradientColors="@array/gradientColorsBlue"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone">
 
                 <TextView
@@ -679,7 +679,7 @@
                 app:fpl_gradientDirection="bottom_to_top"
                 app:fpl_gradientColors="@array/gradientColors"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone">
                 <TextView
                     android:id="@+id/countDown"
@@ -690,7 +690,7 @@
             </com.devzone.fillprogresslayout.FillProgressLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 >
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/compose_view"
