@@ -7,13 +7,10 @@
     <string name="global_ok">OK</string>
     <string name="global_yes">Ano</string>
     <string name="global_no">Ne</string>
-
     <string name="removedid">ID odstraněno</string>
     <string name="failedtocreatefolder">Chyba při vytváření složky</string>
-
     <string name="action_settings">Nastavení</string>
     <string name="DateLabel">Datum</string>
-
     <string name="FunctionLabel">Zobrazení</string>
     <string name="HistoryLabel">Historie</string>
     <string name="GraphLabel">Grafy</string>
@@ -22,7 +19,6 @@
     <string name="ShareLabel">Sdílet</string>
     <string name="EditLabel">Editovat</string>
     <string name="DeleteRecordDialog">Odstranit tento záznam?</string>
-
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Kulturistika</string>
     <string name="RecordLabel">Záznamy</string>
@@ -32,19 +28,16 @@
     <string name="PoidsLabel">Hmotnost</string>
     <string name="NotesLabel">Poznámka</string>
     <string name="TopTenLabel">Poslední záznamy:</string>
-
     <!-- Share text -->
     <string name="ShareText">Sdílet</string>
     <string name="ShareTitle">Sdílet váš výkon</string>
     <string name="ShareInstruction">Editujte text před odesláním:</string>
-    <string name="ShareTextDefault">Zvedl jsem __WEIGHT__ kg na __MACHINE__ !</string>
-
+    <string name="ShareTextDefault">Zvedl jsem __WEIGHT__ kg na __MACHINE__!</string>
     <!-- Cardio Fragment -->
     <string name="CardioLabel">Kardio</string>
     <string name="DistanceLabel">Vzdálenost</string>
     <string name="DurationLabel">Trvání</string>
     <string name="ExerciceLabel">Cvik</string>
-
     <!-- Profile Fragment -->
     <string name="weightMenuLabel">Sledování Hmotnosti</string>
     <string name="weightLabel">Hmotnost(kg)</string>
@@ -60,7 +53,6 @@
     <string name="userChanged">Profil změněn na</string>
     <string name="renameProfilTitle">Přejmenovat profil</string>
     <string name="renameProfilQuestion">Přejmenovat tento profil?</string>
-
     <!-- Pour le menu settings -->
     <string name="SettingLabel">Nastavení</string>
     <string name="export_database">Exportovat Záznamy</string>
@@ -68,7 +60,6 @@
     <string name="export_success">Databáze exportována</string>
     <string name="export_failed">Chyba exportu databáze</string>
     <string name="import_database">Importovat Záznamy</string>
-
     <string name="deleteDB_warning">
         Tato akce vyresetuje celou aplikaci.
         Veškerá data budou ztracena.
@@ -76,36 +67,28 @@
         Aplikace bude ukončena.
     </string>
     <string name="ResetAppLabel">Resetovat aplikaci</string>
-
     <!-- Machine Fragment -->
     <string name="MachinesLabel">Cvičení</string>
-
     <!-- Preferences -->
     <string name="pref_ui_setting">Nastavení prostředí</string>
     <string name="pref_show_mp3_player">Zobrazit MP3 Přehrávač</string>
     <string name="pref_show_mp3_player_summary">Zobrazit/skrýt řádek s MP3 přehrávačem</string>
-
     <string name="pref_preferredUnitSummary">Preferovaná jednotka:</string>
     <string name="pref_preferredUnitTitle">Zvolte preferovanou jednotku hmotnosti</string>
-
     <string name="profil_create_new">Vytvořit nový profil</string>
     <string name="profil_change">Změnit profil</string>
     <string name="profil_select_profil">Zvolit profil</string>
     <string name="profil_delete">Smazat profil</string>
     <string name="profil_select_profil_to_delete">Zvolit profil k vymazání</string>
-
     <!-- About Fragment  -->
     <string name="AboutLabel">O aplikaci</string>
-
     <!-- Navigation Drawer -->
     <string name="drawer_open">Otevřít panel navigace</string>
     <string name="drawer_close">Zavřít panel navigace</string>
-
     <string-array name="weight_units">
         <item>@string/KgUnitLabel</item>
         <item>@string/LbsUnitLabel</item>
     </string-array>
-
     <string-array name="fonte_unitsEnum">
         <item>0</item>
         <item>1</item>
@@ -119,7 +102,6 @@
         <item>@string/maxRep5d</item>
         <item>@string/sum</item>
     </string-array>
-
     <string name="sumDistance">Vzdálenost</string>
     <string name="sumDuration">Trvání</string>
     <string name="speed">Rychlost</string>
@@ -128,34 +110,26 @@
         <item>@string/sumDuration</item>
         <item>@string/speed</item>
     </string-array>
-
-
     <string name="maxWeightPerDuration">"Maximální Váha za Období"</string>
     <string name="nbSeriesPerDate">Počet Sérii za Období</string>
     <string-array name="graph_static_functions">
         <item>@string/maxWeightPerDuration</item>
         <item>@string/nbSeriesPerDate</item>
     </string-array>
-
     <string name="all">Vše</string>
-
     <string name="bodytracking">Sledování svalů</string>
     <string name="selectMuscles">Zvolte Svaly</string>
-
     <!-- Muscles -->
     <string name="biceps">Bicepsy</string>
     <string name="triceps">Tricepsy</string>
     <string name="pectoraux">Prsa</string>
     <string name="deltoids">Deltoidy</string>
-
     <string name="dorseaux">Záda</string>
     <string name="abdominaux">Břicho</string>
-
     <string name="quadriceps">Quadricepsy</string>
     <string name="ischio_jambiers">Hamstringy</string>
     <string name="adducteurs">Stehna</string>
     <string name="mollets">Lýtka</string>
-
     <!-- Body Parts -->
     <string name="left_arm">Levý biceps</string>
     <string name="right_arm">Pravý biceps</string>
@@ -167,22 +141,17 @@
     <string name="waist">Pás</string>
     <string name="behind">Zadek</string>
     <string name="MesureHint">Zde zapiště výšku</string>
-
     <string name="backDialog_confirm_text">Uložit před odejitím?</string>
     <string name="deleteMachine_confirm_text">Opravdu vymazat toto cvičení? Všechny připojené záznamy budou smazány.</string>
     <string name="renameMachine_warning_text">VAROVÁNÍ: Tto cvičení již existuje. Záznamy budou spojeny s existujícím cvičením.</string>
-
-
     <!-- Photo -->
     <string name="camera">Kamera</string>
     <string name="gallery">Galerie</string>
-
     <!-- DateGraph -->
     <string name="graph_all">Vše</string>
     <string name="graph_lastyear">Minulý Rok</string>
     <string name="graph_lastmonth">Minulý Měsíc</string>
     <string name="graph_lastweek">Minulý Týden</string>
-
     <!-- Chronometer -->
     <string name="ChronometerLabel">Stopky</string>
     <string name="CountdownLabel">Doba odpočinku</string>
@@ -196,7 +165,6 @@
     <string name="nb_serie">Počet sérií</string>
     <string name="exit">Odejít</string>
     <string name="selectMachineDialogLabel">Zvolte existující cvik</string>
-
     <!-- Intro slides -->
     <string name="fillNameField">Vyplňte alespoň vaše jméno</string>
     <string name="introSlide1Title">Dobrý den</string>
@@ -265,7 +233,7 @@
     <string name="exercise_type">Druh cvičení:</string>
     <string name="staticExercise">Isometrické</string>
     <string name="SecondsLabel_short">Sekundy</string>
-    <string name="imported_successfully"> úspěšně importováno</string>
+    <string name="imported_successfully">Importováno</string>
     <string name="import_failed"> chyba importu</string>
     <string name="import_new_exercise_first">(Nejprve naimportujte nová cvičení)</string>
     <string name="FilterHint">Filtrujte podle názvu cvičení</string>
@@ -318,6 +286,9 @@
     <string name="deleteProgram_confirm_text">Chcete tento program smazat? Všechna související cvičení v tomto programu budou vymazána.</string>
     <string name="renameProgram_error_text2">CHYBA: Tento název programu již existuje. Není možné sloučit dva programy se stejným názvem.</string>
     <string name="app_name">Workouts\'N\'Rest</string>
+    <string name="End">Konec</string>
+    <string name="rest_counter_minutes">Odpočinek %d:%02d s</string>
+    <string name="static_counter_minutes">%d:%02d s</string>
     <string name="filmUrl">Začátek URL filmu (Youtube)</string>
     <string name="youtubeExerciseStartMoment">Odkaz na YouTube k okamžiku, kdy začíná popis cvičení</string>
     <string name="show_exercise">Ukaž cvičení</string>

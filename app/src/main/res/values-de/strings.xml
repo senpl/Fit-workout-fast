@@ -40,7 +40,7 @@
     <string name="weightMenuLabel">Gewicht</string>
     <string name="weightLabel">Gewicht(kg)</string>
     <string name="measureLabel">Messen</string>
-    <string name="sizeTableLabel">Messergebnisse : </string>
+    <string name="sizeTableLabel">Messergebnisse :</string>
     <string name="createProfilTitle">Neues Profil erstellen</string>
     <string name="profileSelected">Profil ausgewählt</string>
     <string name="createProfilQuestion">Wähle deinen Profilnamen ?</string>
@@ -78,21 +78,26 @@
         <item>@string/KgUnitLabel</item>
         <item>@string/LbsUnitLabel</item>
     </string-array>
+
     <string-array name="fonte_unitsEnum">
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="maxRep1">Maximum (Wied. &gt;= 1)</string>
-    <string name="maxRep5d">Maximum (Wied. &gt;= 5)</string>
+
+
+    <string name="maxRep1">Maximum (Wied. >= 1)</string>
+    <string name="maxRep5d">Maximum (Wied. >= 5)</string>
     <string name="sum">Summe</string>
     <string-array name="graph_functions">
         <item>@string/maxRep1</item>
         <item>@string/maxRep5d</item>
         <item>@string/sum</item>
     </string-array>
+
     <string name="all">Alle</string>
     <string name="bodytracking">Körperüberwachung</string>
     <string name="selectMuscles">Wähle Muskeln</string>
+
     <!-- Muscles -->
     <string name="biceps">Bizeps</string>
     <string name="triceps">Trizeps</string>
@@ -270,9 +275,25 @@
     <string name="sound_settings">Toneinstellungen</string>
     <string name="deleteProgram_confirm_text">Möchten Sie dieses Programm löschen? Alle zugehörigen Übungen in diesem Programm werden gelöscht.</string>
     <string name="renameProgram_error_text2">FEHLER: Dieser Programmname existiert bereits. Es ist nicht möglich, zwei Programme mit demselben Namen zusammenzuführen.</string>
-    <string name="app_name">Fites Training schnell</string>
+    <string name="app_name">Workouts\'N\'Rest</string>
     <string name="swipeGesturesDescription">Ermöglichen Sie einen schnellen Wechsel der Übungen zum nächsten mit einer Wischgeste.</string>
     <string name="emptyExercisesInProgram"><![CDATA[Gehen Sie zum Seitenmenü (Hamburger-Taste) und drücken Sie "Programm" im Seitenmenü-> Übung zuerst zum Programm hinzufügen]]></string>
+    <string name="Lbs">Lbs</string>
+    <string name="kg">kg</string>
+    <string name="chooseStaticSound">Wählen Sie den statischen Timer-Endklang</string>
+    <string name="static_counter_minutes">%d:%02d s</string>
+    <string name="add_exercise_to_program_first">Fügen Sie zuerst dem Programm eine Übung hinzu. Kein Programm ohne Übungen erlaubt.</string>
+    <string name="SaveRepsLabel">Wiederholungen im Programm speichern</string>
+    <string name="saved_into_program">Im Programm gespeichert</string>
+    <string name="SaveWeightLabel">Gewicht im Programm sparen</string>
+    <string name="anonymous">Standard</string>
+    <string name="static_prepare_seconds">Statische Übung Vorbereitungszeit immer 5 Sek.</string>
+    <string name="swipeGesturesSwitch">Wischgesten</string>
+    <string name="End">Ende</string>
+    <string name="single_exercise_and_results">Suchergebnisse</string>
+    <string name="chooseRestSound">Wählen Sie den Pausenendeton</string>
+    <string name="restLabel">Pause</string>
+    <string name="rest_counter_minutes">Entspannen Sie %d:%02d s</string>
     <string name="Lbs">Lbs</string>
     <string name="kg">kg</string>
     <string name="chooseStaticSound">Wählen Sie den statischen Timer-Endklang</string>

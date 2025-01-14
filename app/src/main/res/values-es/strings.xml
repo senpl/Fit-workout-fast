@@ -7,13 +7,10 @@
     <string name="global_ok">Aceptar</string>
     <string name="global_yes">Sí</string>
     <string name="global_no">No</string>
-
     <string name="removedid">ID removido</string>
     <string name="failedtocreatefolder">Error al crear carpeta</string>
-
     <string name="action_settings">Ajustes</string>
     <string name="DateLabel">Fechas</string>
-
     <string name="FunctionLabel">Visualización</string>
     <string name="HistoryLabel">Historial</string>
     <string name="GraphLabel">Gráficos</string>
@@ -22,29 +19,25 @@
     <string name="ShareLabel">Compartir</string>
     <string name="EditLabel">Editar</string>
     <string name="DeleteRecordDialog">¿Quitar este registro?</string>
-
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Culturismo</string>
     <string name="RecordLabel">Registros</string>
     <string name="SerieLabel">Series</string>
-    <string name="RepetitionLabel_short">Reps</string>
+    <string name="RepetitionLabel_short">Copia</string>
     <string name="MachineLabel">Ejercicio</string>
     <string name="PoidsLabel">Peso</string>
     <string name="NotesLabel">Notas</string>
     <string name="TopTenLabel">Registros recentes:</string>
-
     <!-- Share text -->
     <string name="ShareText">Compartir</string>
     <string name="ShareTitle">Comparta su desempeño</string>
     <string name="ShareInstruction">Edite su texto antes de enviar:</string>
-    <string name="ShareTextDefault">He adelgazado __WEIGHT__ kg en __MACHINE__ !</string>
-
+    <string name="ShareTextDefault">¡He levantado __PESO__ kg en __MÁQUINA__!</string>
     <!-- Cardio Fragment -->
-    <string name="CardioLabel">Cardio</string>
+    <string name="CardioLabel">Cardiovascular</string>
     <string name="DistanceLabel">Distancia</string>
     <string name="DurationLabel">Duración</string>
     <string name="ExerciceLabel">Ejercicios</string>
-
     <!-- Profile Fragment -->
     <string name="weightMenuLabel">Monitoreo de peso</string>
     <string name="weightLabel">Peso(kg)</string>
@@ -60,7 +53,6 @@
     <string name="userChanged">Usuario modificado</string>
     <string name="renameProfilTitle">Renombrar perfil</string>
     <string name="renameProfilQuestion">¿Renombrar este perfil?</string>
-
     <!-- Pour le menu settings -->
     <string name="SettingLabel">Ajustes</string>
     <string name="export_database">Exportar registros</string>
@@ -68,7 +60,6 @@
     <string name="export_success">Base de dados exportada</string>
     <string name="export_failed">Error al exportar la base de datos</string>
     <string name="import_database">Importar registros</string>
-
     <string name="deleteDB_warning">
         Esta acción reestablecerá toda la aplicación.
         Toda información será borrada.
@@ -76,36 +67,28 @@
         Esto saldrá la aplicación.
     </string>
     <string name="ResetAppLabel">Reestablecer aplicación</string>
-
     <!-- Machine Fragment -->
     <string name="MachinesLabel">Ejercicios</string>
-
     <!-- Preferences -->
     <string name="pref_ui_setting">Ajustes de UI</string>
     <string name="pref_show_mp3_player">Mostrar reproductor MP3</string>
     <string name="pref_show_mp3_player_summary">Muestra/oculta la barra de herramientass del reproductor MP3</string>
-
     <string name="pref_preferredUnitSummary">Unidad de preferencia:</string>
     <string name="pref_preferredUnitTitle">Selecione su unidadad de peso preferida</string>
-
     <string name="profil_create_new">Crear novo perfil</string>
     <string name="profil_change">Modificar perfil</string>
     <string name="profil_select_profil">Seleccione un perfil</string>
     <string name="profil_delete">Borrar perfil</string>
     <string name="profil_select_profil_to_delete">Selecione un perfil para borrar</string>
-
     <!-- About Fragment  -->
     <string name="AboutLabel">Acerca de</string>
-
     <!-- Navigation Drawer -->
     <string name="drawer_open">Abrir menú de navegación</string>
     <string name="drawer_close">Cerrar menú de navegación</string>
-
     <string-array name="weight_units">
         <item>@string/KgUnitLabel</item>
         <item>@string/LbsUnitLabel</item>
     </string-array>
-
     <string-array name="fonte_unitsEnum">
         <item>0</item>
         <item>1</item>
@@ -119,7 +102,6 @@
         <item>@string/maxRep5d</item>
         <item>@string/sum</item>
     </string-array>
-
     <string name="sumDistance">Distancia</string>
     <string name="sumDuration">Duración</string>
     <string name="speed">Velocidad</string>
@@ -128,34 +110,26 @@
         <item>@string/sumDuration</item>
         <item>@string/speed</item>
     </string-array>
-
-
     <string name="maxWeightPerDuration">"Máx. peso por duración"</string>
     <string name="nbSeriesPerDate">"Núm. de series por fecha"</string>
     <string-array name="graph_static_functions">
         <item>@string/maxWeightPerDuration</item>
         <item>@string/nbSeriesPerDate</item>
     </string-array>
-
     <string name="all">Todo</string>
-
     <string name="bodytracking">Monitor corporal</string>
     <string name="selectMuscles">Selecionar músculos</string>
-
     <!-- Muscles -->
     <string name="biceps">Bíceps</string>
     <string name="triceps">Tríceps</string>
     <string name="pectoraux">Pectorales</string>
     <string name="deltoids">Deltoides</string>
-
     <string name="dorseaux">Espalda</string>
     <string name="abdominaux">Abdominales</string>
-
     <string name="quadriceps">Quadríceps</string>
     <string name="ischio_jambiers">Isquiotibiales</string>
     <string name="adducteurs">Muslos</string>
     <string name="mollets">Pantorrillas</string>
-
     <!-- Body Parts -->
     <string name="left_arm">Bíceps izquierdo</string>
     <string name="right_arm">Bíceps derecho</string>
@@ -167,22 +141,17 @@
     <string name="waist">Cintura</string>
     <string name="behind">Caderas</string>
     <string name="MesureHint">Inserte el tamaño aquí</string>
-
     <string name="backDialog_confirm_text">¿Desea guardar antes de salir?</string>
     <string name="deleteMachine_confirm_text">¿Desea quitar este ejercicio? Todos los registros asociados serán borrados.</string>
     <string name="renameMachine_warning_text">AVISO: Este nombre de ejercicio ya existe. Los registros serán fusionados con el otro ejercicio.</string>
-
-
     <!-- Photo -->
     <string name="camera">Cámara</string>
     <string name="gallery">Galería</string>
-
     <!-- DateGraph -->
     <string name="graph_all">Todos</string>
     <string name="graph_lastyear">Último año</string>
     <string name="graph_lastmonth">Mes anterior</string>
     <string name="graph_lastweek">Semana anterior</string>
-
     <!-- Chronometer -->
     <string name="ChronometerLabel">Cronómetro</string>
     <string name="CountdownLabel">Tiempo de descanso</string>
@@ -196,7 +165,6 @@
     <string name="nb_serie">Núm. de serie</string>
     <string name="exit">Salir</string>
     <string name="selectMachineDialogLabel">Seleccionar un ejercicio existente</string>
-
     <!-- Intro slides -->
     <string name="fillNameField">Por favor, ingrese su nombre, por lo menos</string>
     <string name="introSlide1Title">Hola</string>
@@ -261,16 +229,16 @@
     <string name="FFMI_formula">IMLG [kg/m2] = peso [kg] × (1 − (grasa corporal [%] / 100)) / (altura [m])²</string>
     <string name="no_fat_available">sin grasa disponible</string>
     <string name="indexLabel">Índice</string>
-    <string name="what_type_of_exercise">¿Qué tipo de ejercicio?</string>
+    <string name="what_type_of_exercise">¿Qué tipo de ejercicios\?</string>
     <string name="exercise_type">Tipo de ejercicio:</string>
     <string name="staticExercise">Isométrico</string>
     <string name="SecondsLabel_short">Segs</string>
-    <string name="imported_successfully"> importado con éxito</string>
+    <string name="imported_successfully">importado</string>
     <string name="import_failed"> importación fallida</string>
     <string name="author_label">Autor:</string>
     <string name="import_new_exercise_first">(importa nuevos ejercicios primero)</string>
     <string name="MachineHint">Nombre de tu ejercicio</string>
-    <string name="trapezius">Trapezius</string>
+    <string name="trapezius">Trapecio</string>
     <string name="shoulders">Espalda</string>
     <string name="obliques">Oblicuos</string>
     <string name="pref_preferredDistanceUnitTitle">Seleccione su unidad de distancia preferida</string>
@@ -317,9 +285,25 @@
     <string name="sound_settings">Ajustes de sonido</string>
     <string name="deleteProgram_confirm_text">¿Quieres eliminar este programa? Todo el ejercicio asociado en ese programa será eliminado.</string>
     <string name="renameProgram_error_text2">ERROR: este nombre de programa ya existe. No es posible fusionar dos programas con el mismo nombre.</string>
-    <string name="app_name">Workouts\'N\'Rest</string>
+    <string name="app_name">Entrenamientos y Descansos</string>
     <string name="swipeGesturesDescription">Permita un cambio rápido de ejercicios al siguiente con un gesto de deslizamiento.</string>
     <string name="emptyExercisesInProgram"><![CDATA[[Ir al menú lateral (botón de hamburguesa), presione "Programa" en el menú lateral-> agregar ejercicio al programa primero]]></string>
+    <string name="rest_counter_minutes">Resto %d:%02d s</string>
+    <string name="static_counter_minutes">%d:%02d s</string>
+    <string name="End">Fin</string>
+    <string name="swipeGesturesSwitch">Gestos de deslizamiento</string>
+    <string name="restLabel">Descansar</string>
+    <string name="chooseStaticSound">Elige el sonido de la finalizacion del temporizador estático</string>
+    <string name="Lbs">Libras (lbs)</string>
+    <string name="kg">Kilogramo (kg)</string>
+    <string name="single_exercise_and_results">Resultados</string>
+    <string name="static_prepare_seconds">Ejercicio estático tiempo de preparación siempre 5 seg.</string>
+    <string name="anonymous">Por defecto</string>
+    <string name="SaveWeightLabel">guardar el peso en el programa</string>
+    <string name="saved_into_program">Guardado en el programa</string>
+    <string name="SaveRepsLabel">Guardar las repeticiones en el programa</string>
+    <string name="add_exercise_to_program_first">Añada primero el ejercicio al programa. No se permite ningún programa sin ejercicios.</string>
+    <string name="chooseRestSound">Elija el sonido para finalizar el descanso</string>
     <string name="filmUrl">URL de inicio de la película (Youtube)</string>
     <string name="youtubeExerciseStartMoment">Enlace de Youtube al momento en el que comienza la descripción de los ejercicios.</string>
     <string name="show_exercise">Mostrar ejercicio</string>
