@@ -53,7 +53,7 @@
     <string name="waterLabel">Water(%)</string>
     <string name="musclesLabel">Muscles(%)</string>
     <string name="measureLabel">Measure</string>
-    <string name="sizeTableLabel">Measures history:</string>
+    <string name="sizeTableLabel">Measurement history:</string>
     <string name="createProfilTitle">Create new profile</string>
     <string name="profileSelected">Profile selected</string>
     <string name="createProfilQuestion">Choose your profile name?</string>
