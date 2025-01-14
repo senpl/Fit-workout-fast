@@ -40,7 +40,7 @@
     <string name="weightMenuLabel">Gewicht</string>
     <string name="weightLabel">Gewicht(kg)</string>
     <string name="measureLabel">Messen</string>
-    <string name="sizeTableLabel">Messergebnisse : </string>
+    <string name="sizeTableLabel">Messergebnisse :</string>
     <string name="createProfilTitle">Neues Profil erstellen</string>
     <string name="profileSelected">Profil ausgewählt</string>
     <string name="createProfilQuestion">Wähle deinen Profilnamen ?</string>
