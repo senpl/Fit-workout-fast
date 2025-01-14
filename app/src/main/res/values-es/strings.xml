@@ -320,4 +320,8 @@
     <string name="app_name">Workouts\'N\'Rest</string>
     <string name="swipeGesturesDescription">Permita un cambio rápido de ejercicios al siguiente con un gesto de deslizamiento.</string>
     <string name="emptyExercisesInProgram"><![CDATA[[Ir al menú lateral (botón de hamburguesa), presione "Programa" en el menú lateral-> agregar ejercicio al programa primero]]></string>
+    <string name="filmUrl">URL de inicio de la película (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">Enlace de Youtube al momento en el que comienza la descripción de los ejercicios.</string>
+    <string name="show_exercise">Mostrar ejercicio</string>
+    <string name="urlOfVideoEnd">URL con los segundos en los que debe finalizar el vídeo (opcional)</string>
 </resources>

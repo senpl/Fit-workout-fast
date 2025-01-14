@@ -385,10 +385,11 @@
     <string name="user">user</string>
     <string name="cardioExerciceIndicatorImage">cardio exercice indicator image</string>
     <string name="video_time_in_seconds">Video length(sec)</string>
-    <string name="filmUrl">Film URL</string>
-    <string name="youtubeExerciseStartMoment">Youtube link to the moment when exercises desciption starts</string>
+    <string name="filmUrl">Film URL start (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">Youtube link to the moment when exercises description starts</string>
     <string name="YTURL">YT URL</string>
     <string name="YTURLEND">YT URL END</string>
-    <string name="urlOfVideoEnd">URL on which video should end</string>
+    <string name="urlOfVideoEnd">URL with seconds on which video should end (Optional)</string>
     <string name="pagerForExercisesChange">pager for exercies change</string>
+    <string name="show_exercise">Show exercise</string>
 </resources>

@@ -257,4 +257,8 @@
     <string name="global_warning">警告</string>
     <string name="global_confirm_question">你确定吗？</string>
     <string name="global_confirm">确认</string>
+    <string name="filmUrl">影片 URL 开始 (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">练习描述开始时刻的 YouTube 链接</string>
+    <string name="show_exercise">显示锻炼</string>
+    <string name="urlOfVideoEnd">视频结束时间（秒）的 URL（可选）</string>
 </resources>

@@ -303,4 +303,8 @@
     <string name="End">Fim</string>
     <string name="static_counter_minutes">%d:%02d s</string>
     <string name="rest_counter_minutes">Descanso %d:%02d s</string>
+    <string name="filmUrl">Início do URL do filme (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">Link do Youtube para o momento em que a descrição dos exercícios começa</string>
+    <string name="show_exercise">Mostrar exercício</string>
+    <string name="urlOfVideoEnd">URL com os segundos em que o vídeo deve terminar (opcional)</string>
 </resources>

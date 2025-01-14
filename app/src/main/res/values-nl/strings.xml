@@ -328,6 +328,10 @@
     <string name="deleteProgram_confirm_text">Wil je dit programma verwijderen? Alle bijbehorende oefeningen in dat programma worden verwijderd.</string>
     <string name="renameProgram_error_text2">FOUT: deze programmanaam bestaat al. Het is niet mogelijk om twee programma\'s met dezelfde naam samen te voegen.</string>
     <string name="app_name">Workouts\'N\'Rest</string>
+    <string name="filmUrl">Film-URL start (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">Youtube-link naar het moment waarop de beschrijving van de oefeningen begint</string>
+    <string name="show_exercise">Oefening tonen</string>
+    <string name="urlOfVideoEnd">URL met seconden waarop de video moet eindigen (optioneel)</string>
 
 </resources>
 

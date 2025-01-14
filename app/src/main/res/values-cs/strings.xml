@@ -318,5 +318,9 @@
     <string name="deleteProgram_confirm_text">Chcete tento program smazat? Všechna související cvičení v tomto programu budou vymazána.</string>
     <string name="renameProgram_error_text2">CHYBA: Tento název programu již existuje. Není možné sloučit dva programy se stejným názvem.</string>
     <string name="app_name">Workouts\'N\'Rest</string>
+    <string name="filmUrl">Začátek URL filmu (Youtube)</string>
+    <string name="youtubeExerciseStartMoment">Odkaz na YouTube k okamžiku, kdy začíná popis cvičení</string>
+    <string name="show_exercise">Ukaž cvičení</string>
+    <string name="urlOfVideoEnd">Adresa URL se sekundami, ve kterých má video skončit (Volitelné)</string>
 
 </resources>

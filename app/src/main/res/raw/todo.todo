@@ -1,21 +1,25 @@
-Wysłać zmiany
+Przygotować wersję do wdrożenia
+    Opublikować w końcu
+
 publish
     Na githubie wystarczy zbudować
     Na play store wymaga zmiany nazwy
-        i autoryzacji dokumentu
         i pewnie wielu innych kroków
 
-someday/maybe
-cleanup
-   Oczyścić build.gradle ze starego śmiecia
-   Bo w razie czego jest w repo
-Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
-Uaktualnić build do wersji kotlinowej
+V.23
 Dodać przykładowe ćwiczenia
     Na ból pleców
     Na rehabilitację kostki
     Dla każdego ćwiczenia w programie
     Sprawdzić opis działania, co po koleji napisać jak robić
+
+someday/maybe
+Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
+
+cleanup
+   Oczyścić build.gradle ze starego śmiecia
+   Bo w razie czego jest w repo
+
 Chować przycisk video gdy url jest pusty ???
         Bo w sumie jest nie potrzebny
     Przywrócić poprzednie ładniejsze przyciski?
@@ -62,6 +66,8 @@ Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
 Check if crop images works
 Spróbować zamienić Rx3Timer na Kotlin flow, żeby poznać co to daje
     Ale to pewnie niewielki zysk, a potencjał na nowe błędy, więc pewnie nie warto
+Przemyśleć jak zoptymalizować start aplikacji
+    https://engineering.backmarket.com/how-we-enhanced-our-android-apps-startup-time-by-over-50-0fb220d27b14
 Automatyczne sprzątanie przez delegację fragmentów
     Pewnie to już nie potrzebne
     https://medium.com/@rahmicemreunal/auto-inflated-cleared-view-binding-in-fragments-using-delegation-2ada0b43a8e4

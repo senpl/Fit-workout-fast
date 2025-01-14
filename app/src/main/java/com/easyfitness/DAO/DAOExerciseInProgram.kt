@@ -261,8 +261,8 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
 
         //rest between exercises
         private const val REST_SECONDS = "rest_seconds"
-        private const val YOUTUBE_URL_START = "youtube_url_start"
-        private const val VIDEO_SECONDS = "youtube_url_end"
+        const val YOUTUBE_URL_START = "youtube_url_start"
+        const val VIDEO_SECONDS = "youtube_url_end"
 
         private const val PROGRAM_ID = "program_id"
         const val ORDER_EXECUTION = "order_in_program"

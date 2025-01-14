@@ -42,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.view.get
@@ -319,7 +320,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 Button(onClick = {
                     showVideoDialog.value = true
                 }) {
-                    Text(text = "Show Video")
+                    Text(text = stringResource(R.string.show_exercise))
                 }
             }
             Column(

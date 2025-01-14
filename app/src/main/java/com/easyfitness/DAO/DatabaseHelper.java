@@ -19,15 +19,13 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 21;
+    public static final int DATABASE_VERSION = 22;
     private static final String OLD09_DATABASE_NAME = "easyfitness";
     private static final String DATABASE_NAME = "easyfitness.db";
     private static DatabaseHelper sInstance;
-    private Context mContext;
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
     }
 
     static DatabaseHelper getInstance(Context context) {
@@ -154,6 +152,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String defaultProgramName="training program default";
                     DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
                     break;
+                case 22:
+                      db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.YOUTUBE_URL_START + " TEXT");
+                      db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.VIDEO_SECONDS + " INTEGER DEFAULT 0");
+                    break;
             }
             upgradeTo++;
         }
@@ -223,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + DAOWeight.TABLE_NAME;
         //SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor = null;
+        Cursor mCursor;
         mCursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -231,10 +233,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 ContentValues value = new ContentValues();
 
-                value.put(DAOBodyMeasure.DATE, mCursor.getString(mCursor.getColumnIndex(DAOWeight.DATE)));
-                value.put(DAOBodyMeasure.BODYPART_ID, BodyPartExtensions.WEIGHT);
-                value.put(DAOBodyMeasure.MEASURE, mCursor.getFloat(mCursor.getColumnIndex(DAOWeight.POIDS)));
-                value.put(DAOBodyMeasure.PROFIL_KEY, mCursor.getLong(mCursor.getColumnIndex(DAOWeight.PROFIL_KEY)));
+//                value.put(DAOBodyMeasure.DATE, mCursor.getString(mCursor.getColumnIndex(DAOWeight.DATE)));
+//                value.put(DAOBodyMeasure.BODYPART_ID, BodyPartExtensions.WEIGHT);
+//                value.put(DAOBodyMeasure.MEASURE, mCursor.getFloat(mCursor.getColumnIndex(DAOWeight.POIDS)));
+//                value.put(DAOBodyMeasure.PROFIL_KEY, mCursor.getLong(mCursor.getColumnIndex(DAOWeight.PROFIL_KEY)));
 
                 db.insert(DAOBodyMeasure.TABLE_NAME, null, value);
             } while (mCursor.moveToNext());
