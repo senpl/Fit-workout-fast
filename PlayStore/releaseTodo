@@ -1,3 +1,4 @@
+[ ] zmergować najnowsze tłumaczenia z https://hosted.weblate.org/projects/httpsgithubcomsenplfit-workout-fast/translate/#repository
 [ ] podnieść code version w build.gradle
 [ ] podnieść values/about.xml versie i revision history string
 [ ] wysłać zmiany do githuba.
