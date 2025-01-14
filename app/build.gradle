@@ -13,8 +13,8 @@ android {
         minSdkVersion 26
         compileSdk 35
         targetSdkVersion 35
-        versionCode 62
-        versionName "0.24.07"
+        versionCode 64
+        versionName "0.25.01"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -43,9 +43,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue("bool", "FIREBASE_CRASH_ENABLED", "true")
+//            resValue("bool", "FIREBASE_CRASH_ENABLED", "true")
+            proguardFiles getDefaultProguardFile(
+                'proguard-android-optimize.txt'),
+                'proguard-rules.pro'
             if (rootProject.file('release.properties').exists()) {
                 signingConfig signingConfigs.release
             }
