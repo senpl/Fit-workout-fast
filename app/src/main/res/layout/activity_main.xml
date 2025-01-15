@@ -14,7 +14,7 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingLeft="0dp"
-        android:paddingTop="24dp"
+        android:paddingTop="48dp"
         android:paddingRight="0dp"
         android:paddingBottom="0dp">
 
