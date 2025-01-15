@@ -79,9 +79,13 @@ public class DAOProfil extends DAOBase {
         value.put(DAOProfil.NAME, pName);
         //value.put(DAOProfil.BIRTHDAY, DateConverter.dateToDBDateStr(m.getBirthday()));
         //value.put(DAOProfil.SIZE, 0);
-
-        db.insert(DAOProfil.TABLE_NAME, null, value);
-
+        try {
+            db.insert(DAOProfil.TABLE_NAME, null, value);
+        } catch (Exception e) {
+            //safely ignore as profile already exist
+            System.out.println("Safely ignored profil creation");
+            //throw new RuntimeException(e);
+        }
         close();
     }
 

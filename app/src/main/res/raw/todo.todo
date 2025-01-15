@@ -3,6 +3,10 @@ Przygotować wersję do wdrożenia
         Poprawić wygląd górnej belki, bo to średnio profesjonalnie na zdjęciach będize wyglądać
     Przygotować ich opis
     uaktualnić w sklepie
+set ustawiać na 1
+    Bo to by default powinno być 1, bo prawie zawsze jest 1
+Teraz często przy przechodzeniu z exercise in program do program runner leci błąd.
+    Ale też nie zawsze.
 publish
     Na githubie wystarczy zbudować
     Na play store wymaga zmiany nazwy
