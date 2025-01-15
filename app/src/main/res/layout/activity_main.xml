@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <!-- The main content view -->
 
@@ -14,7 +15,7 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingLeft="0dp"
-        android:paddingTop="48dp"
+        android:paddingTop="0dp"
         android:paddingRight="0dp"
         android:paddingBottom="0dp">
 
