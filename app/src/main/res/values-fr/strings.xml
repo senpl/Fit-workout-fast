@@ -24,7 +24,6 @@
     <string name="PoidsLabel">Poids</string>
     <string name="NotesLabel">Notes</string>
     <string name="TopTenLabel">Derniers enregistrements:</string>
-
     <!-- Share text -->
     <string name="ShareText">Partager</string>
     <string name="ShareTitle">Partage ta performance</string>
@@ -76,9 +75,8 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-
-    <string name="maxRep1">Maximum (Reps >= 1)</string>
-    <string name="maxRep5d">Maximum (Reps >= 5)</string>
+    <string name="maxRep1">Maximum (Reps &gt;= 1)</string>
+    <string name="maxRep5d">Maximum (Reps &gt;= 5)</string>
     <string name="sum">Somme</string>
     <string-array name="graph_functions">
         <item>@string/maxRep1</item>
@@ -101,7 +99,6 @@
     <string name="backDialog_confirm_text">Voulez-vous sauver avant de quitter ?</string>
     <string name="deleteMachine_confirm_text">Voulez-vous supprimer cette machine ? Tous les enregistrements associés seront supprimés</string>
     <string name="renameMachine_warning_text">ATTENTION: Cette machine existe déjà. Les enregistrements vont être regroupés entre les deux machines.</string>
-
     <!-- Photo -->
     <string name="camera">Appareil Photo</string>
     <string name="gallery">Galerie</string>
