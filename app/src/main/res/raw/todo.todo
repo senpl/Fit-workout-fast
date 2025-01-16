@@ -1,17 +1,20 @@
-Na ból pleców
-    Bo w sumie i dla mnie się przyda
-Przygotować nowe obrazki
-    Na nich ćwiczenia
-Przygotować ich opis
-    uaktualnić w sklepie
 publish
     Na githubie wystarczy zbudować
     Na play store wymaga zmiany nazwy
         i pewnie wielu innych kroków
+Przygotować ich opis
+    Przetłumaczyć
+    uaktualnić w sklepie
+    I finalnie zamknąć ten etap
+Nowe obrazki do store'a
+    Opisać nowe obrazki
+    Upload nowych obrazków
+
 Update play store descriptions and pictures
     To show that video uplad now possible
         And add description to what is possible
-
+Na ból pleców
+    Bo w sumie i dla mnie się przyda
 V.23
 Dodać przykładowe ćwiczenia
     Na ból pleców
@@ -26,7 +29,11 @@ Dodać dodawanie zdjęć ???
 cleanup
    Oczyścić build.gradle ze starego śmiecia
    Bo w razie czego jest w repo
-
+Usunać stary kod:
+    Bo wydłuża budowanie, a lepiej jak się buduje szybciej
+    material-intro
+    pagerslidingtabstrip
+    circleprogress
 Chować przycisk video gdy url jest pusty ???
         Bo w sumie jest nie potrzebny
     Przywrócić poprzednie ładniejsze przyciski?

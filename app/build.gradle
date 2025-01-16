@@ -13,8 +13,8 @@ android {
         minSdkVersion 26
         compileSdk 35
         targetSdkVersion 35
-        versionCode 68
-        versionName "0.25.05"
+        versionCode 69
+        versionName "0.26.01"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -46,6 +46,9 @@ android {
             minifyEnabled true
             shrinkResources true
 
+            ndk{
+                debugSymbolLevel "FULL"
+            }
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            resValue("bool", "FIREBASE_CRASH_ENABLED", "true")
             proguardFiles getDefaultProguardFile(
