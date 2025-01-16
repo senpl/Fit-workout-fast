@@ -1,12 +1,9 @@
-Przygotować wersję do wdrożenia
-    Przygotować nowe obrazki
-        Poprawić wygląd górnej belki, bo to średnio profesjonalnie na zdjęciach będize wyglądać
-    Przygotować ich opis
+Na ból pleców
+    Bo w sumie i dla mnie się przyda
+Przygotować nowe obrazki
+    Na nich ćwiczenia
+Przygotować ich opis
     uaktualnić w sklepie
-set ustawiać na 1
-    Bo to by default powinno być 1, bo prawie zawsze jest 1
-Teraz często przy przechodzeniu z exercise in program do program runner leci błąd.
-    Ale też nie zawsze.
 publish
     Na githubie wystarczy zbudować
     Na play store wymaga zmiany nazwy
@@ -24,7 +21,8 @@ Dodać przykładowe ćwiczenia
 
 someday/maybe
 Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
-
+Dodać dodawanie zdjęć ???
+    Chyba nie konieczny feature
 cleanup
    Oczyścić build.gradle ze starego śmiecia
    Bo w razie czego jest w repo

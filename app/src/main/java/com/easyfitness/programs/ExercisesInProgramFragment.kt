@@ -590,6 +590,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
                 binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
                 binding.serieCardView.visibility = View.VISIBLE
+                binding.seriesEdit.setText("1")
                 binding.repetitionCardView.visibility = GONE
                 binding.secondsCardView.visibility = View.VISIBLE
                 binding.weightCardView.visibility = View.VISIBLE
@@ -603,6 +604,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
                 binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
                 binding.serieCardView.visibility = View.VISIBLE
+                binding.seriesEdit.setText("1")
                 binding.repetitionCardView.visibility = View.VISIBLE
                 binding.secondsCardView.visibility = GONE
                 binding.weightCardView.visibility = View.VISIBLE

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 22;
+    public static final int DATABASE_VERSION = 23;
     private static final String OLD09_DATABASE_NAME = "easyfitness";
     private static final String DATABASE_NAME = "easyfitness.db";
     private static DatabaseHelper sInstance;
@@ -151,9 +151,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     db.execSQL(DAOExerciseInProgram.TABLE_CREATE);
                     String defaultProgramName="training program default";
                     DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
+                    break;
+                case 22:
                     db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.YOUTUBE_URL_START + " TEXT");
                     db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.VIDEO_SECONDS + " INTEGER DEFAULT 0");
                     break;
+//                case24:
+//                    db.
             }
             upgradeTo++;
         }

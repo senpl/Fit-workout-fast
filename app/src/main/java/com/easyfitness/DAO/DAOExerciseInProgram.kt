@@ -3,6 +3,8 @@ package com.easyfitness.DAO
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.Cursor.FIELD_TYPE_INTEGER
+import android.database.Cursor.FIELD_TYPE_STRING
 import android.widget.Toast
 import timber.log.Timber
 import java.util.*
@@ -156,6 +158,19 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                 val distanceUnit = cursor!!.getColumnIndex(DISTANCE_UNIT)
                 val youtubeUrlStart = cursor!!.getColumnIndex(YOUTUBE_URL_START)
                 val videoSeconds = cursor!!.getColumnIndex(VIDEO_SECONDS)
+                var youtubeUrl=""
+                var youtubeEnd=0
+                try{    //probably not needed, but to not crash for old user
+                    if (cursor!!.getType(youtubeUrlStart) == FIELD_TYPE_STRING) {
+                        youtubeUrl = cursor!!.getString(youtubeUrlStart)
+                    }
+                    if (cursor!!.getType(videoSeconds) == FIELD_TYPE_INTEGER) {
+                        youtubeEnd = cursor!!.getInt(videoSeconds)
+                    }
+                }catch(e:Exception){
+                    youtubeUrl=""
+                    youtubeEnd=0
+                }
                 val value = ExerciseInProgram( //int secRest, String pMachine, int pSerie, int pRepetition, float pPoids,
                     //                             Profile pProfile, int pUnit, String pNote, long pMachineKey, String pTime,
                     //                             int type, int distance, String duration, int seconds, int distanceUnit,
@@ -175,8 +190,8 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                     cursor!!.getLong(cursor!!.getColumnIndex(DURATION)),
                     cursor!!.getInt(cursor!!.getColumnIndex(SECONDS)),
                     cursor!!.getInt(distanceUnit),
-                    cursor!!.getString(youtubeUrlStart),
-                    cursor!!.getInt(videoSeconds),
+                    youtubeUrl,//cursor!!.getString(youtubeUrlStart),
+                    youtubeEnd,//cursor!!.getInt(videoSeconds),
                     cursor!!.getLong(cursor!!.getColumnIndex(ORDER_EXECUTION))
                 )
                 value.setId(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
@@ -213,8 +228,8 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                     cursor!!.getInt(cursor!!.getColumnIndex(MACHINE_KEY)).toLong(),
                     cursor!!.getString(cursor!!.getColumnIndex(TIME)),
                     cursor!!.getInt(cursor!!.getColumnIndex(TYPE)),
-                    cursor!!.getString(cursor!!.getColumnIndex(YOUTUBE_URL_START)),
-                    cursor!!.getInt(cursor!!.getColumnIndex(VIDEO_SECONDS)),
+                    "",//cursor!!.getString(cursor!!.getColumnIndex(YOUTUBE_URL_START)),
+                    0,//cursor!!.getInt(cursor!!.getColumnIndex(VIDEO_SECONDS)),
                     mContext
                 )
                 value.setId(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
