@@ -368,6 +368,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @Composable
     private fun PlayTube(videoUrl: String) {
+//        KToast.infoToast(
+//            requireActivity(),
+//            "videoUrl: $videoUrl ", Gravity.BOTTOM, KToast.LENGTH_SHORT
+//        )
         if (videoUrl.isNotEmpty()) {
             if (videoUrl.contains("youtu")) {
                 var videoHash = videoUrl
@@ -402,7 +406,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     } catch (ex: NumberFormatException) {
                         KToast.infoToast(
                             requireActivity(),
-                            "Failed to convert string to number:$timeString Ex: $ex",
+                            "Failed to convert string to number:$timeString",
                             Gravity.BOTTOM,
                             KToast.LENGTH_LONG
                         )
@@ -425,7 +429,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
         when (val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
-                Text(text = "Error: ${state.message}")
+//                Text(text = "Error: ${state.message}")
             }
 
             YouTubePlayerState.Idle -> {
@@ -472,7 +476,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Show exercise") {
-                    seekExerciseTimeInVideo(hostState, coroutineScope, startSeconds)
+                    coroutineScope.launch { hostState.seekTo(startSeconds.seconds) }
+
+                    //seekToTimeVideoPlaying(hostState, coroutineScope, startSeconds)
                 }
                 SimpleButton(text = "Pause") {
                     coroutineScope.launch { hostState.pause() }
@@ -490,13 +496,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
     }
 
-    private fun seekExerciseTimeInVideo(
-        hostState: YouTubePlayerHostState,
-        coroutineScope: CoroutineScope,
-        secondsOfStart: Int
-    ) {
-        coroutineScope.launch { hostState.seekTo(secondsOfStart.seconds) }
-    }
+//    private fun seekToTimeVideoPlaying(
+//        hostState: YouTubePlayerHostState,
+//        coroutineScope: CoroutineScope,
+//        secondsOfStart: Int
+//    ) {
+//        coroutineScope.launch { hostState.seekTo(secondsOfStart.seconds) }
+//    }
 
 
     @SuppressLint("SetTextI18n")
@@ -655,7 +661,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (showVideoDialog.value) {
             Dialog(onDismissRequest = { showVideoDialog.value = false }
             ) {
-                PlayTube(exercisesFromProgram[currentExerciseOrder].urlVideoStart)
+                if(exercisesFromProgram.isNotEmpty()){
+                    PlayTube(exercisesFromProgram[currentExerciseOrder].urlVideoStart)
+//                }else{
+//                    KToast.normalToast(activity,"No Exercises, add them",Gravity.BOTTOM,KToast.LENGTH_SHORT)
+                }
             }
         }
     }

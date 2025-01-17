@@ -152,10 +152,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String defaultProgramName="training program default";
                     DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
                     break;
-                case 22:
-                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.YOUTUBE_URL_START + " TEXT");
-                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.VIDEO_SECONDS + " INTEGER DEFAULT 0");
-                    break;
+//                case 22:
+//                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.YOUTUBE_URL_START + " TEXT");
+//                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.VIDEO_SECONDS + " INTEGER DEFAULT 0");
+//                    break;
 //                case24:
 //                    db.
             }

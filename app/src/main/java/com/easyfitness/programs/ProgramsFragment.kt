@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -64,12 +63,17 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
     private val onClickListItem = OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
         // Get Machine Name selected
         val textViewID = view.findViewById<TextView>(R.id.LIST_Program_ID)
-        val programID = java.lang.Long.valueOf(textViewID.text.toString())
-        val programDetailsPager = ProgramDetailsPager.newInstance(programID, (activity as MainActivity?)!!.currentProfile!!.id)
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, programDetailsPager, "ProgramDetails")
-        transaction.addToBackStack(null)
-        transaction.commit()
+        if(textViewID.text.toString()!="") {
+            val programID = java.lang.Long.valueOf(textViewID.text.toString())
+            val programDetailsPager = ProgramDetailsPager.newInstance(
+                programID,
+                (activity as MainActivity?)!!.currentProfile!!.id
+            )
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, programDetailsPager, "ProgramDetails")
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     override fun onCreateView(
@@ -89,15 +93,15 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         binding.programsList.onItemClickListener = onClickListItem
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle presses on the action bar items
-        //for add Programs menu
-        val addId = 555
-        if (item.itemId == addId) {
-            clickAddButton.onClick(view)
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle presses on the action bar items
+//        //for add Programs menu
+//        val addId = 555
+//        if (item.itemId == addId) {
+//            clickAddButton.onClick(view)
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     val name: String?
         get() = requireArguments().getString("name")
