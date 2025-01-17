@@ -430,6 +430,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         when (val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
 //                Text(text = "Error: ${state.message}")
+                KToast.infoToast(
+                    requireActivity(),
+                    "State error:${state.message}",
+                    Gravity.BOTTOM,
+                    KToast.LENGTH_SHORT
+                )
             }
 
             YouTubePlayerState.Idle -> {
