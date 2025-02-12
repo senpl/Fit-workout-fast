@@ -1,5 +1,8 @@
 package com.easyfitness;
 
+import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -79,7 +82,7 @@ public class CountdownDialogbox extends Dialog implements
 
     private static void registerAlarm(Context context, int uniqueId, long triggerAlarmAt) {
         Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, uniqueId, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, uniqueId, intent, FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAlarmAt, pendingIntent);
@@ -88,7 +91,7 @@ public class CountdownDialogbox extends Dialog implements
 
     private static void unregisterAlarm(Context context, int uniqueId) {
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, uniqueId, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, uniqueId, alarmIntent, FLAG_IMMUTABLE);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent);
         pendingIntent.cancel();
