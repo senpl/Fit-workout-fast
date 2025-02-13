@@ -81,15 +81,12 @@ import com.easyfitness.utils.UnitConverter
 import com.fitworkoutfast.MainActivity
 import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 import com.onurkaganaldemir.ktoastlib.KToast
-//import com.pacific.timer.Rx2Timer
-//import com.pacific.timer.rx2.Rx2Timer
 import com.pacific.timer.rx3.Rx3Timer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
-//import io.reactivex.rxjava3.internal.util.HalfSerializer.onComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pl.senpl.fitnesswithdemonstration.pl.senpl.fitnesswithdemonstration.SimpleButton

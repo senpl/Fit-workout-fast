@@ -3,6 +3,7 @@ package com.easyfitness.programs
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ import java.text.DecimalFormat
 class ExerciseInProgramAdapter(context: Context, private val exercisesList: MutableList<ExerciseInProgram>, clickDelete: BtnOnPostiomClickListener?, itemLongClick: IOnRecyclerItemLongClick?) : RecyclerView.Adapter<ExerciseInProgramAdapter.ViewHolder>() {
     private val mDeleteClickListener: BtnOnPostiomClickListener? = clickDelete
     private var mItemLongClickHandler: IOnRecyclerItemLongClick? = null
-    private val mRetrievalHandler = Handler()
+    private val mRetrievalHandler = Handler(Looper.getMainLooper())
     var mContext: Context
     private fun reload(callback: ReloadDoneCallback?) {
         mRetrievalHandler.post {
@@ -113,7 +114,7 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
 
             val deleteImg = itemView.findViewById<ImageView>(R.id.deleteButton)
             deleteImg.tag = exercise.id
-            deleteImg.setOnClickListener { v: View -> mDeleteClickListener?.onBtnClick(v.tag as Long, this.adapterPosition)
+            deleteImg.setOnClickListener { v: View -> mDeleteClickListener?.onBtnClick(v.tag as Long, this.absoluteAdapterPosition)
             }
         }
 //        init {

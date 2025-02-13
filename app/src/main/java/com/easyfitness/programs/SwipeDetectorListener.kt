@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import timber.log.Timber
 import kotlin.math.abs
 
 class SwipeDetectorListener(private val programRunner: ProgramRunner) : OnTouchListener {
@@ -12,12 +11,10 @@ class SwipeDetectorListener(private val programRunner: ProgramRunner) : OnTouchL
     private var upX = 0f
 
     private fun onRightSwipe() {
-        Timber.d("RightToLeftSwipe!")
         programRunner.nextExercise()
     }
 
     private fun onLeftSwipe() {
-        Timber.d("LeftToRightSwipe!")
         programRunner.previousExercise()
     }
 
@@ -42,7 +39,6 @@ class SwipeDetectorListener(private val programRunner: ProgramRunner) : OnTouchL
                         return true
                     }
                 } else {
-                    Timber.d("%s%s", "Horizontal Swipe was only  long ",abs(deltaX))
                     return false // We don't consume the event
                 }
                 return true
