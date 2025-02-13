@@ -2,8 +2,8 @@
 <img src="https://github.com/senpl/Fit-workout-fast/blob/masterRemote/app/src/main/res/drawable-xxxhdpi/iconman.png" height="80"> [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.fitworkoutfast)
-     [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
+     [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
      height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.fitworkoutfast)<a href="https://hosted.weblate.org/engage/httpsgithubcomsenplfit-workout-fast/">
 <a href="https://hosted.weblate.org/engage/httpsgithubcomsenplfit-workout-fast/">
 <img src="https://hosted.weblate.org/widgets/httpsgithubcomsenplfit-workout-fast/-/translate/multi-auto.svg" alt="Stan tłumaczenia" />
