@@ -54,7 +54,7 @@ See [Contributing.md](/Contributing.md/)
 
 BSD 3-Clause License
 
-Copyright (c) 2019-2020, Michał Urbanek base on work of Charles Combes and others in fastnfitness(https://github.com/brodeurlv/fastnfitness)
+Copyright (c) 2019-2025, Michał Urbanek base on work of Charles Combes and others in fastnfitness(https://github.com/brodeurlv/fastnfitness)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
