@@ -88,24 +88,17 @@
                         tools:text="22"
                         app:layout_constraintEnd_toEndOf="parent" />
 
-                    <com.mazenrashed.dotsindicator.DotsIndicator
+                    <com.hrskrs.instadotlib.InstaDotView
                         android:id="@+id/exerciseIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        app:dot_height="22dp"
-                        app:dot_width="22dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:margins_between_dots="4dp"
-                        app:selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp" />
+                        app:layout_constraintTop_toTopOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout

@@ -190,10 +190,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             exercisesFromProgram =
                                 daoExerciseInProgram.getAllExerciseInProgram(programId)
                             if (exercisesFromProgram.isNotEmpty()) {
-                                binding.exerciseIndicator.initDots(exercisesFromProgram.size)
+                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
                                 binding.exerciseInProgramNumber.text =
                                     exercisesFromProgram.size.toString()
-                                binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+                                binding.exerciseIndicator.setNoOfPages(currentExerciseOrder)
                                 binding.currentExerciseNumber.text = "1"
                                 saveToPreference("currentProgram", programId)
                                 saveToPreference("currentProgramPosition", position)
@@ -329,9 +329,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
 
-        binding.exerciseIndicator.onSelectListener = {
-            seekExerciseTimeInVideo(it)
-        }
+//        binding.exerciseIndicator.onSelectListener = {
+//            seekExerciseTimeInVideo(it)
+//        }
 
         if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE)
                 .getBoolean("swipeGesturesSwitch", true)
@@ -520,7 +520,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder < exercisesFromProgram.size - 1) {
             currentExerciseOrder++
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+            binding.exerciseIndicator.setNoOfPages(currentExerciseOrder)
             refreshData()
         }
     }
@@ -531,7 +531,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder > 0) {
             currentExerciseOrder--
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+            binding.exerciseIndicator.setNoOfPages(currentExerciseOrder)
             refreshData()
         }
     }
@@ -827,13 +827,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (restTime != 0) {
             binding.restFillBackgroundProgress.visibility = VISIBLE
         }
-        binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor(Color.parseColor("#6bd505"))
+        //binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor(Color.parseColor("#6bd505"))
         runRest(restTime)
     }
 
     private val clickFailButton = OnClickListener {
         if (exercisesFromProgram.isNotEmpty()) {
-            binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor(Color.parseColor("#CD5B55"))
+            //TODO
+//            binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor(Color.parseColor("#CD5B55"))
         }
     }
 

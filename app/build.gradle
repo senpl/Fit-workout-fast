@@ -54,6 +54,7 @@ android {
             proguardFiles getDefaultProguardFile(
                 'proguard-android-optimize.txt'),
                 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
             if (rootProject.file('release.properties').exists()) {
                 signingConfig signingConfigs.release
             }
@@ -133,10 +134,10 @@ dependencies {
     implementation libs.rxjava
     implementation libs.rx2.timer
     implementation libs.fillprogresslayout
-    implementation libs.dotsindicatorwithoutviewpager
     implementation libs.androidx.recyclerview
     implementation libs.ultimateringtonepicker
     implementation(libs.android.image.cropper)
+    implementation libs.instadotview
 }
 
 //apply plugin: 'com.google.gms.google-services'
