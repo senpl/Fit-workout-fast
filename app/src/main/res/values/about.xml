@@ -10,6 +10,10 @@
     <string name="email_url" translatable="false">urbanekmike@gmail.com</string>
     <string name="revision_history_label" translatable="false">Revision History: </string>
     <string name="revision_history" translatable="false">\n
+                v0.26.03: February 19, 2025\n
+ \t- Lightbolb icon not works but just is
+        \t Upper navigation no longer visible
+        \n
         v0.26.02: January 17, 2025\n
  \t- Small bugfixes\n
 
