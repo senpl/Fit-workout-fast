@@ -191,7 +191,7 @@
     <string name="waterLabel">நீர் (%)</string>
     <string name="musclesLabel">தசைகள் (%)</string>
     <string name="measureLabel">அளவீடு</string>
-    <string name="sizeTableLabel">வரலாற்றை அளவிடுகிறது:</string>
+    <string name="sizeTableLabel">அளவிடு வரலாறு:</string>
     <string name="MachinesLabel">பயிற்சிகள்</string>
     <string name="pref_ui_setting">இடைமுகம் அமைப்புகள்</string>
     <string name="pref_show_mp3_player">எம்பி 3 பிளேயரைக் காட்டு</string>
@@ -264,4 +264,13 @@
     <string name="youtubeExerciseStartMoment">பயிற்சி விளக்கம் தொடங்கும் தருணத்திற்கான Youtube இணைப்பு.</string>
     <string name="show_exercise">உடற்பயிற்சியைக் காட்டு</string>
     <string name="urlOfVideoEnd">வீடியோ முடிவடைய வேண்டிய வினாடிகளைக் கொண்ட URL (விரும்பினால்)</string>
+    <string name="time_set">நேரத்தை அமை</string>
+    <string name="add_image">படத்தைச் சேர்</string>
+    <string name="list_of_exercises">உடற்பயிற்சி பட்டியல்</string>
+    <string name="user">பயனர்</string>
+    <string name="cardioExerciceIndicatorImage">இதய உடற்பயிற்சி காட்டி படம்</string>
+    <string name="video_time_in_seconds">காணொளி நீளம் (நொடி)</string>
+    <string name="YTURL">ஒய்டி முகவரி</string>
+    <string name="YTURLEND">ஒய்டி முகவரி முடிவு</string>
+    <string name="pagerForExercisesChange">உடற்பயிற்சிகளுக்கான அகவி மாற்றம்</string>
 </resources>
