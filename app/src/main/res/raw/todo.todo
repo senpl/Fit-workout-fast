@@ -1,13 +1,11 @@
 Zrobić, żeby dot indicator znów był widoczny
     O ile się łatwo da
-Dodać przycisk do wyłączania ekranu.
-    Dodać przycisk do layoutu runner'a
-        Wywalić z layput hardcode
-        dodać przycisk którym będziemy to regulować
-        Sprawdzić działanie
-    Bo to oszczędza energię
-    A nie zawsze user ma baterię żeby ćwiczyć
-        i wtedy to będzie przydatne
+Dodać wprwadzenie lub ułatwienia obsługi do Workouts'n'Rest
+    Bo jest zainteresowanie pewne
+Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń
+	bo to nie spotykana opcja
+	Niech nagrywa i gdy wykona powtórzenie to po powrocie do około pozycji niech zliczy
+	    Wymagałoby to dodatkowego licznika, którey by liczył ile udało mu się zliczyć
 Na ból pleców dodać ćwiczenia
     Bo w sumie i dla mnie się przyda
 Dodać instrukcję używania
@@ -79,6 +77,14 @@ Wywalić zmianę profilu jako zbędny badziew
 Przerobić preferences na nowe, bo podobno lepsze i bezpieczniejsze.
 Przerobić bazę danych na nową
 default weight unit in preferences, and set it for all new added exercises
+Dodać przycisk do wyłączania ekranu.
+    Dodać przycisk do layoutu runner'a
+        Wywalić z layput hardcode
+        dodać przycisk którym będziemy to regulować
+        Sprawdzić działanie
+    Bo to oszczędza energię
+    A nie zawsze user ma baterię żeby ćwiczyć
+        i wtedy to będzie przydatne
 Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
 Check if crop images works
 Spróbować zamienić Rx3Timer na Kotlin flow, żeby poznać co to daje
