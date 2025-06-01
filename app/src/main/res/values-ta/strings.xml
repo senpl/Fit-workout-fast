@@ -32,7 +32,7 @@
     <string name="renameProfilQuestion">இந்த சுயவிவரத்தை மறுபெயரிடவா?</string>
     <string name="SettingLabel">அமைப்புகள்</string>
     <string name="export_database">ஏற்றுமதி பதிவுகள்</string>
-    <string name="export_question">நீங்கள் தரவுத்தளத்தை ஏற்றுமதி செய்ய விரும்புகிறீர்களா?</string>
+    <string name="export_question">நீங்கள் தரவுத்தளத்தை ஏற்றுமதி செய்ய விரும்புகிறீர்களா</string>
     <string name="export_success">தரவுத்தளம் ஏற்றுமதி செய்யப்பட்டது</string>
     <string name="export_failed">தரவுத்தள ஏற்றுமதி தோல்வியடைந்தது</string>
     <string name="import_database">பதிவுகளை இறக்குமதி செய்யுங்கள்</string>
@@ -171,7 +171,7 @@
     <string name="single_exercise_and_results">முடிவுகள்</string>
     <string name="static_prepare_seconds">நிலையான உடற்பயிற்சி எப்போதும் 5 நொடி நேரத்தை ஆயத்தம் செய்யுங்கள்.</string>
     <string name="anonymous">இயல்புநிலை</string>
-    <string name="emptyExercisesInProgram">&lt;!</string>
+    <string name="emptyExercisesInProgram"><![CDATA[பக்க மெனுவிற்கு (ஹாம்பர்கர் பொத்தான்) சென்று, பக்க மெனுவிலிருந்து "நிரல்" என்பதை அழுத்தவும்-> முதலில் நிரலில் பயிற்சியைச் சேர்]]></string>
     <string name="DateLabel">திகதி</string>
     <string name="FunctionLabel">காட்சி</string>
     <string name="HistoryLabel">வரலாறு</string>
@@ -261,7 +261,7 @@
     <string name="SaveRepsLabel">பிரதிநிதிகளை நிரலில் சேமிக்கவும்</string>
     <string name="add_exercise_to_program_first">முதலில் நிரலில் உடற்பயிற்சியைச் சேர்க்கவும். பயிற்சிகள் இல்லாமல் எந்த நிரலும் அனுமதிக்கப்படவில்லை.</string>
     <string name="filmUrl">திரைப்பட URL தொடக்கம் (YouTube)</string>
-    <string name="youtubeExerciseStartMoment">பயிற்சி விளக்கம் தொடங்கும் தருணத்திற்கான Youtube இணைப்பு.</string>
+    <string name="youtubeExerciseStartMoment">பயிற்சி விளக்கம் தொடங்கும் தருணத்திற்கான யுடியுப் இணைப்பு</string>
     <string name="show_exercise">உடற்பயிற்சியைக் காட்டு</string>
     <string name="urlOfVideoEnd">வீடியோ முடிவடைய வேண்டிய வினாடிகளைக் கொண்ட URL (விரும்பினால்)</string>
     <string name="time_set">நேரத்தை அமை</string>
