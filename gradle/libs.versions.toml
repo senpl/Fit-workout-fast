@@ -1,32 +1,30 @@
 [versions]
-#agp = "8.7.3"
-activityCompose = "1.10.0"
+activityCompose = "1.10.1"
 androidImageCropper = "4.6.0"
 annotation = "1.9.1"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 cardview = "1.0.0"
 circleprogress = "1.2.4"
 circularimageview = "4.3.1"
-constraintlayout = "2.2.0"
-coordinatorlayout = "1.2.0"
+constraintlayout = "2.2.1"
+coordinatorlayout = "1.3.0"
+dotsindicator = "5.1.0"
 drawerlayout = "1.2.0"
-exifinterface = "1.3.7"
+exifinterface = "1.4.1"
 fillprogresslayout = "0.0.9"
-fragmentKtx = "1.8.6"
-gradle = "8.8.1"
+fragmentKtx = "1.8.8"
+gradle = "8.11.0"
 instadotview = "1.1"
 kotlin = "2.0.0"
-#coreKtx = "1.10.1"
 ktoast = "1.0.3"
 library = "1.6.2"
 libraryVersion = "2.0.0"
 licensesdialog = "2.2.0"
-#lifecycleRuntimeKtx = "2.8.7"
 material = "1.12.0"
 materialfavoritebutton = "0.1.5"
 materialIntro = "1.6"
-materialVersion = "1.7.8"
-mpandroidchart = "3.1.0"
+materialVersion = "1.8.3"
+mpandroidchart = "3.1.0.27"
 numberslidingpicker = "2cd87266c8e7d7656df9eef964bf062da95833a3"
 pagerslidingtabstrip = "1.0.1"
 preferenceKtx = "1.2.1"
@@ -36,6 +34,8 @@ rxjava = "3.0.6"
 ultimateringtonepicker = "3.3.0"
 viewpager = "1.1.0"
 youtubeplayerCompose = "2024.02.25"
+dotsindicatorwithoutviewpager = "1.0.0"
+
 
 [libraries]
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
@@ -44,11 +44,9 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
-#androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
 androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
-#androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
@@ -56,9 +54,11 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
 circleprogress = { module = "com.github.lzyzsd:circleprogress", version.ref = "circleprogress" }
 circularimageview = { module = "com.mikhaellopez:circularimageview", version.ref = "circularimageview" }
+#dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
 fillprogresslayout = { module = "com.github.JDevZone:FillProgressLayout", version.ref = "fillprogresslayout" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
-instadotview = { module = "com.github.hrskrs:InstaDotView", version.ref = "instadotview" }
+#instadotview = { module = "com.github.hrskrs:InstaDotView", version.ref = "instadotview" }
+dotsindicatorwithoutviewpager = { module = "com.github.mazenrashed:DotsIndicatorWithoutViewpager", version.ref = "dotsindicatorwithoutviewpager" }
 ktoast = { module = "com.github.onurkagan:ktoast", version.ref = "ktoast" }
 library = { module = "com.github.f0ris.sweetalert:library", version.ref = "library" }
 licensesdialog = { module = "de.psdev.licensesdialog:licensesdialog", version.ref = "licensesdialog" }
@@ -76,7 +76,6 @@ utils-v4 = { module = "com.ogaclejapan.smarttablayout:utils-v4", version.ref = "
 youtubeplayer-compose = { module = "io.github.ilyapavlovskii:youtubeplayer-compose", version.ref = "youtubeplayerCompose" }
 
 [plugins]
-#android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

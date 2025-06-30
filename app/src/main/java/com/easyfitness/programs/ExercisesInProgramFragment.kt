@@ -35,6 +35,7 @@ import com.onurkaganaldemir.ktoastlib.KToast
 import timber.log.Timber
 import java.lang.Integer.parseInt
 import java.util.*
+import androidx.core.view.isGone
 
 class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises) {
     private lateinit var mainActivity: MainActivity
@@ -448,7 +449,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             }
         } else {
             if (v.id == R.id.exerciseEdit) { // If a creation of a new machine is not ongoing.
-                if (binding.exerciseTypeSelectorLayout.visibility == GONE) setCurrentExercise(binding.exerciseEdit.text.toString())
+                if (binding.exerciseTypeSelectorLayout.isGone) setCurrentExercise(binding.exerciseEdit.text.toString())
             }
         }
     }

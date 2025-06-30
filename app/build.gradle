@@ -116,7 +116,8 @@ dependencies {
 // Other
     implementation libs.licensesdialog //2.0.0
     implementation libs.mpandroidchart
-    implementation libs.pagerslidingtabstrip //DEPRECATED
+    implementation(libs.dotsindicatorwithoutviewpager)
+//    implementation libs.pagerslidingtabstrip //DEPRECATED
     implementation libs.smarttablayout.library
     implementation libs.utils.v4
     implementation libs.circleprogress
@@ -134,7 +135,7 @@ dependencies {
     implementation libs.androidx.recyclerview
     implementation libs.ultimateringtonepicker
     implementation(libs.android.image.cropper)
-    implementation libs.instadotview
+    implementation(libs.dotsindicatorwithoutviewpager)
 }
 
 //apply plugin: 'com.google.gms.google-services'

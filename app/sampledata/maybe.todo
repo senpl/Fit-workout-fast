@@ -1,0 +1,12 @@
+Dodać przycisk do wyłączania ekranu.
+    Dodać przycisk do layoutu runner'a
+        Wywalić z layput hardcode
+        dodać przycisk którym będziemy to regulować
+        Sprawdzić działanie
+    Bo to oszczędza energię
+    A nie zawsze user ma baterię żeby ćwiczyć
+        i wtedy to będzie przydatne
+Inny Dot indicator z pewną licencją
+    Choć to z tydzień roboty a efekt niepewny
+Oznaczanie skończone, nie skończone mogłoby być ładniejsze
+    Jak w poprzednim dot indicatorze

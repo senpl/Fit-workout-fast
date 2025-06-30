@@ -87,8 +87,9 @@
                         android:layout_marginEnd="16dp"
                         tools:text="22"
                         app:layout_constraintEnd_toEndOf="parent" />
-
-                    <com.hrskrs.instadotlib.InstaDotView
+<!--                    <com.hrskrs.instadotlib.InstaDotView-->
+<!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+                    <com.mazenrashed.dotsindicator.DotsIndicator
                         android:id="@+id/exerciseIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -98,7 +99,14 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:dot_height="22dp"
+                        app:dot_width="22dp"
+                        app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
+                        app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
+                        app:margins_between_dots="4dp"
+                        app:selected_dot_resource="@drawable/pager_box_white_24dp"
+                        app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
@@ -685,7 +693,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 >
-                <ImageButton
+                <ImageButton android:visibility="gone"
                     android:id='@+id/keepScreenOn'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
