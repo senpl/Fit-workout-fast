@@ -245,7 +245,7 @@ class MainActivity : AppCompatActivity() {
                     val m = lDAOMachine.getMachine(record.exercice)
                     var exerciseName = record.exercice
                     if (m != null) { // if a machine exists
-                        if (m.type == DAOMachine.TYPE_FONTE) { // if it is not a Cardio type
+                        if (m.type == DAOMachine.TYPE_STRENGTH) { // if it is not a Cardio type
                             exerciseName = "$exerciseName-Cardio" // add a suffix to
                         }
                     }

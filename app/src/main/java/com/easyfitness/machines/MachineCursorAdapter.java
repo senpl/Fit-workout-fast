@@ -51,7 +51,7 @@ public class MachineCursorAdapter extends CursorAdapter implements Filterable {
                 String lThumbPath = imgUtil.getThumbPath(lPath);
                 ImageUtil.setThumb(i0, lThumbPath);
             } catch (Exception e) {
-                if (lType == DAOMachine.TYPE_FONTE ) {
+                if (lType == DAOMachine.TYPE_STRENGTH) {
                     i0.setImageResource(R.drawable.ic_gym_bench_50dp); }
                 else if (lType == DAOMachine.TYPE_STATIC ) {
                     i0.setImageResource(R.drawable.ic_static);
@@ -62,7 +62,7 @@ public class MachineCursorAdapter extends CursorAdapter implements Filterable {
                 e.printStackTrace();
             }
         } else {
-            if (lType == DAOMachine.TYPE_FONTE) {
+            if (lType == DAOMachine.TYPE_STRENGTH) {
                 i0.setImageResource(R.drawable.ic_gym_bench_50dp); }
             else if (lType == DAOMachine.TYPE_STATIC ) {
                 i0.setImageResource(R.drawable.ic_static);

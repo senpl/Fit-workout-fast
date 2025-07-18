@@ -110,7 +110,7 @@ public class FontesFragment extends Fragment {
     TextView bodybuildingSelector = null;
     TextView cardioSelector = null;
     TextView staticExerciseSelector = null;
-    int selectedType = DAOMachine.TYPE_FONTE;
+    int selectedType = DAOMachine.TYPE_STRENGTH;
     // Cardio Part
     LinearLayout bodyBuildingLayout = null;
     LinearLayout restTimeLayout = null;
@@ -187,7 +187,7 @@ public class FontesFragment extends Fragment {
 //                break;
 //            case R.id.bodyBuildingSelection:
             default:
-                changeExerciseTypeUI(DAOMachine.TYPE_FONTE, true);
+                changeExerciseTypeUI(DAOMachine.TYPE_STRENGTH, true);
                 break;
         }
     };
@@ -212,7 +212,7 @@ public class FontesFragment extends Fragment {
         if (r != null) {
             // Copy values above
             setCurrentMachine(r.getExercise());
-            if (r.getType() == DAOMachine.TYPE_FONTE) {
+            if (r.getType() == DAOMachine.TYPE_STRENGTH) {
                 Fonte f = (Fonte) r;
                 repetitionEdit.setText(String.format("%d", f.getRepetition()));
                 serieEdit.setText(String.format("%d", f.getSerie()));
@@ -264,7 +264,7 @@ public class FontesFragment extends Fragment {
             timeStr = timeEdit.getText().toString();
         }
 
-        int exerciseType = DAOMachine.TYPE_FONTE;
+        int exerciseType = DAOMachine.TYPE_STRENGTH;
         Machine lMachine = mDbMachine.getMachine(machineEdit.getText().toString());
         if (lMachine == null) {
             exerciseType = selectedType;
@@ -272,7 +272,7 @@ public class FontesFragment extends Fragment {
             exerciseType = lMachine.getType();
         }
 
-        if (exerciseType == DAOMachine.TYPE_FONTE) {
+        if (exerciseType == DAOMachine.TYPE_STRENGTH) {
             // Verifie que les infos sont completes
             if (serieEdit.getText().toString().isEmpty() ||
                 repetitionEdit.getText().toString().isEmpty() ||
@@ -627,7 +627,7 @@ public class FontesFragment extends Fragment {
                     //Toast.makeText(getActivity(), "Share soon available", Toast.LENGTH_SHORT).show();
                     IRecord r = mDb.getRecord(id);
                     String text = "";
-                    if (r.getType() == DAOMachine.TYPE_FONTE ||r.getType() == DAOMachine.TYPE_STATIC  ) {
+                    if (r.getType() == DAOMachine.TYPE_STRENGTH ||r.getType() == DAOMachine.TYPE_STATIC  ) {
                         Fonte fonte = (Fonte) r;
                         // Build text
                         text = getView().getContext().getResources().getText(R.string.ShareTextDefault).toString();
@@ -767,7 +767,7 @@ public class FontesFragment extends Fragment {
         mDbMachine = new DAOMachine(getContext());
         dateEdit.setText(DateConverter.currentDate());
         timeEdit.setText(DateConverter.currentTime());
-        selectedType = DAOMachine.TYPE_FONTE;
+        selectedType = DAOMachine.TYPE_STRENGTH;
 
         machineImage.setOnClickListener(v -> {
             Machine m = mDbMachine.getMachine(machineEdit.getText().toString());
@@ -953,7 +953,7 @@ public class FontesFragment extends Fragment {
         if (lMachine == null) {
             machineEdit.setText("");
             machineImage.setImageResource(R.drawable.ic_gym_bench_50dp); // Default image
-            changeExerciseTypeUI(DAOMachine.TYPE_FONTE, true);
+            changeExerciseTypeUI(DAOMachine.TYPE_STRENGTH, true);
             updateMinMax(null);
             return;
         }
@@ -993,7 +993,7 @@ public class FontesFragment extends Fragment {
         String unitStr = "";
         float weight = 0;
         if (getProfil() != null && m != null) {
-            if (m.getType() == DAOMachine.TYPE_FONTE || m.getType() == DAOMachine.TYPE_STATIC) {
+            if (m.getType() == DAOMachine.TYPE_STRENGTH || m.getType() == DAOMachine.TYPE_STATIC) {
                 Weight minValue = mDbBodyBuilding.getMin(getProfil(), m);
                 if (minValue != null) {
                     minMaxLayout.setVisibility(View.VISIBLE);
@@ -1041,7 +1041,7 @@ public class FontesFragment extends Fragment {
         distanceEdit.setText("1");
         durationEdit.setText("00:10:00");
         if (lLastRecord != null) {
-            if (lLastRecord.getType() == DAOMachine.TYPE_FONTE) {
+            if (lLastRecord.getType() == DAOMachine.TYPE_STRENGTH) {
                 Fonte lLastBodyBuildingRecord = (Fonte) lLastRecord;
                 serieEdit.setText(String.valueOf(lLastBodyBuildingRecord.getSerie()));
                 repetitionEdit.setText(String.valueOf(lLastBodyBuildingRecord.getRepetition()));
@@ -1142,7 +1142,7 @@ public class FontesFragment extends Fragment {
                         distanceEdit.setText("1");
                         durationEdit.setText("00:10:00");
                         setCurrentMachine("");
-                        changeExerciseTypeUI(DAOMachine.TYPE_FONTE, true);
+                        changeExerciseTypeUI(DAOMachine.TYPE_STRENGTH, true);
                     }
                 } else { // Restore on fragment restore.
                     setCurrentMachine(machineEdit.getText().toString());
@@ -1194,7 +1194,7 @@ public class FontesFragment extends Fragment {
                 durationCardView.setVisibility(View.GONE);
                 selectedType = DAOMachine.TYPE_STATIC;
                 break;
-            case DAOMachine.TYPE_FONTE:
+            case DAOMachine.TYPE_STRENGTH:
             default:
                 cardioSelector.setBackgroundColor(getResources().getColor(R.color.background));
                 bodybuildingSelector.setBackgroundColor(getResources().getColor(R.color.record_background_odd));
@@ -1206,7 +1206,7 @@ public class FontesFragment extends Fragment {
                 restTimeLayout.setVisibility(View.VISIBLE);
                 distanceCardView.setVisibility(View.GONE);
                 durationCardView.setVisibility(View.GONE);
-                selectedType = DAOMachine.TYPE_FONTE;
+                selectedType = DAOMachine.TYPE_STRENGTH;
         }
     }
 

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
@@ -56,7 +54,7 @@ import com.easyfitness.DAO.DAOExerciseInProgram
 import com.easyfitness.DAO.DAOFonte
 import com.easyfitness.DAO.DAOMachine
 import com.easyfitness.DAO.DAOMachine.TYPE_CARDIO
-import com.easyfitness.DAO.DAOMachine.TYPE_FONTE
+import com.easyfitness.DAO.DAOMachine.TYPE_STRENGTH
 import com.easyfitness.DAO.DAOMachine.TYPE_STATIC
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.DAORecord
@@ -110,7 +108,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var mainActivity: MainActivity
     private var lTableColor = 1
     private var machineListDialog: AlertDialog? = null
-    private var selectedType = TYPE_FONTE
+    private var selectedType = TYPE_STRENGTH
     private lateinit var daoProgram: DAOProgram
     private var programId: Long = 1
     private var currentExerciseOrder = 0  //start from 0
@@ -228,7 +226,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
         swipeDetectorListener = SwipeDetectorListener(this)
         mDbMachine = DAOMachine(context)
-        selectedType = TYPE_FONTE
+        selectedType = TYPE_STRENGTH
         binding.imageExerciseThumb.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
             if (m != null) {
@@ -589,7 +587,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (r != null) {
             setCurrentMachine(r.exercise, r.type)
             when (r.type) {
-                TYPE_FONTE -> {
+                TYPE_STRENGTH -> {
                     val f = r as Fonte
                     binding.repsPicker.progress = f.repetition
                     binding.seriesEdit.setText(String.format(Locale.ENGLISH, "%d", f.serie))
@@ -711,7 +709,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 //        binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#CD5B55".toColorInt())
         binding.exerciseIndicator[currentExerciseOrder].background = "#CD5B55".toColorInt().toDrawable()
         when (exerciseType) {
-            TYPE_FONTE -> {
+            TYPE_STRENGTH -> {
                 if (binding.seriesEdit.text.toString().isEmpty() ||
                     binding.poidsEdit.text.toString().isEmpty()
                 ) {
@@ -840,7 +838,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty()) {
             //TODO
 //            binding.exerciseIndicator.background = "#CD5B55".toColorInt().toDrawable()
-            binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor(Color.parseColor("#CD5B55"))
+            binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#CD5B55".toColorInt())
         }
     }
 
@@ -1053,7 +1051,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (lMachine == null) {
             binding.exerciseEdit.setText("")
             binding.imageExerciseThumb.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
-            changeExerciseTypeUI(TYPE_FONTE)
+            changeExerciseTypeUI(TYPE_STRENGTH)
             return
         }
         // Update EditView
@@ -1124,7 +1122,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         updateRecordTable(exercise.exerciseName)
         binding.notesInExercise.setText(exercise.note)
         when (exercise.type) {
-            TYPE_FONTE -> {
+            TYPE_STRENGTH -> {
                 binding.repsPicker.progress = exercise.repetition
                 binding.seriesEdit.setText(exercise.serie.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
@@ -1191,7 +1189,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (lMachine == null) {
             binding.exerciseEdit.setText("")
             binding.imageExerciseThumb.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
-            changeExerciseTypeUI(TYPE_FONTE)
+            changeExerciseTypeUI(TYPE_STRENGTH)
             updateMinMax(null)
             return
         }
@@ -1230,7 +1228,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         var unitStr: String
         var weight: Float
         if (getProfilFromMain() != null && m != null) {
-            if (m.type == TYPE_FONTE || m.type == TYPE_STATIC) {
+            if (m.type == TYPE_STRENGTH || m.type == TYPE_STATIC) {
                 val minValue: Weight? = strengthRecordsDao.getMin(getProfilFromMain(), m)
                 if (minValue != null) {
                     binding.minMaxLayout.visibility = VISIBLE
@@ -1278,7 +1276,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.distanceEdit.setText("1")
         binding.durationEdit.text = "00:10:00"
         if (lLastRecord != null) {
-            if (lLastRecord.type == TYPE_FONTE) {
+            if (lLastRecord.type == TYPE_STRENGTH) {
                 val lLastBodyBuildingRecord = lLastRecord as Fonte
                 if (lLastBodyBuildingRecord.serie > 1) { //only show when more then one to keep interface clean
                     binding.serieCardView.visibility = VISIBLE
@@ -1398,7 +1396,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 selectedType = TYPE_STATIC
             }
 
-            TYPE_FONTE -> {
+            TYPE_STRENGTH -> {
                 binding.serieCardView.visibility = GONE
                 binding.repetitionCardView.visibility = VISIBLE
                 binding.secondsCardView.visibility = GONE
@@ -1407,7 +1405,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.distanceCardView.visibility = GONE
                 binding.durationCardView.visibility = GONE
                 binding.staticFillBackgroundProgress.visibility = GONE
-                selectedType = TYPE_FONTE
+                selectedType = TYPE_STRENGTH
             }
 
             else -> {
@@ -1419,7 +1417,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.distanceCardView.visibility = GONE
                 binding.durationCardView.visibility = GONE
                 binding.staticFillBackgroundProgress.visibility = GONE
-                selectedType = TYPE_FONTE
+                selectedType = TYPE_STRENGTH
             }
         }
     }

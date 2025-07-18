@@ -78,7 +78,7 @@ public class RecordCursorAdapter extends CursorAdapter {
 
         /* Specific display */
         int recordType = cursor.getInt(cursor.getColumnIndex(DAORecord.TYPE));
-        if (recordType == DAOMachine.TYPE_FONTE) {
+        if (recordType == DAOMachine.TYPE_STRENGTH) {
             // UI
             tSerieLabel.setText(mContext.getString(R.string.SerieLabel));
             tWeightLabel.setText(mContext.getString(R.string.PoidsLabel));

@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.Cursor.FIELD_TYPE_INTEGER
 import android.database.Cursor.FIELD_TYPE_STRING
+import android.database.sqlite.SQLiteDatabase
 import android.widget.Toast
 import timber.log.Timber
 import java.util.*
@@ -167,7 +168,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
                     if (cursor!!.getType(videoSeconds) == FIELD_TYPE_INTEGER) {
                         youtubeEnd = cursor!!.getInt(videoSeconds)
                     }
-                }catch(e:Exception){
+                }catch(_:Exception){
                     youtubeUrl=""
                     youtubeEnd=0
                 }
@@ -289,5 +290,45 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
             + " INTEGER," + TIME + " TEXT," + DISTANCE + " REAL, " + DURATION + " TEXT, "
             + TYPE + " INTEGER, " + SECONDS + " INTEGER, " + DISTANCE_UNIT + " INTEGER, "
             + PROGRAM_ID + " INTEGER, " + YOUTUBE_URL_START + " TEXT, " + VIDEO_SECONDS + " INTEGER, " + ORDER_EXECUTION + " INTEGER);")
+
+        fun addInitialExercise(
+            db: SQLiteDatabase, order: Long, programId: Long,
+            restSeconds: Int, exerciseName: String, pType: Int,
+            pSerie: Int, pRepetition: Int, pPoids: Float,
+            pProfile: Int, pUnit: Int, pNote: String,
+            pTime: String, pDistance: Float,
+            pDuration: Long, pSeconds: Int, distanceUnit: Int,
+            youtubeUrlStart: String, videoSeconds: Int
+        ) :Long {
+            val values= ContentValues().apply {
+            put(PROGRAM_ID, programId)
+            put(REST_SECONDS, restSeconds)
+            put(EXERCISE, exerciseName)
+            put(SERIE, pSerie)
+            put(REPETITION, pRepetition)
+            put(WEIGHT, pPoids)
+            put(PROFIL_KEY, pProfile)
+            put(UNIT, pUnit)
+            put(NOTES, pNote)
+//            put(MACHINE_KEY, pMachine)
+            put(TIME, pTime)
+            put(DISTANCE, pDistance)
+            put(DURATION, pDuration)
+            put(TYPE, pType)
+            put(SECONDS, pSeconds)
+            put(DISTANCE_UNIT, distanceUnit)
+            put(YOUTUBE_URL_START,youtubeUrlStart)
+            put(VIDEO_SECONDS,videoSeconds)
+            put(ORDER_EXECUTION, order)
+            }
+            val newRowId = db.insert(TABLE_NAME, null, values)
+
+            if (newRowId == -1L) {
+                System.err.println("DB Upgrade: Failed to insert exercise '$exerciseName' for program ID $programId. ContentValues: $values")
+            } else {
+                println("DB Upgrade: Successfully inserted exercise '$exerciseName' for program ID $programId with new exercise record ID: $newRowId")
+            }
+            return newRowId
+        }
     }
 }

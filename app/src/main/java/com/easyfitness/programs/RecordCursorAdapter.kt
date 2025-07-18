@@ -68,7 +68,7 @@ class RecordCursorAdapter internal constructor(private val mContext: Context, c:
         /* Specific display */
         val cursorType = cursor.getColumnIndex(DAOExerciseInProgram.TYPE)
         when (cursor.getInt(cursorType)) {
-            DAOMachine.TYPE_FONTE -> {
+            DAOMachine.TYPE_STRENGTH -> {
                 // UI
                 tSeriesLabel.text = mContext.getString(R.string.SerieLabel)
                 tWeightLabel.text = mContext.getString(R.string.PoidsLabel)

@@ -41,7 +41,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     private lateinit var mainActivity: MainActivity
     private var lTableColor = 1
     private var machineListDialog: AlertDialog? = null
-    private var selectedType = TYPE_FONTE
+    private var selectedType = TYPE_STRENGTH
     private lateinit var daoProgram: DAOProgram
     private var programId: Long = 1
     var programs: MutableList<String>? = null
@@ -133,7 +133,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         binding.unitDistanceSpinner.setSelection(distanceUnit)
         // Initialization of the database
         mDbMachine = DAOMachine(context)
-        selectedType = TYPE_FONTE
+        selectedType = TYPE_STRENGTH
         binding.exerciseImage.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
             if (m != null) {
@@ -198,8 +198,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         when (v.id) {
             R.id.staticExerciseSelector -> changeExerciseTypeUI(TYPE_STATIC, true)
             R.id.cardioSelector -> changeExerciseTypeUI(TYPE_CARDIO, true)
-            R.id.bodybuildingSelector -> changeExerciseTypeUI(TYPE_FONTE, true)
-            else -> changeExerciseTypeUI(TYPE_FONTE, true)
+            R.id.bodybuildingSelector -> changeExerciseTypeUI(TYPE_STRENGTH, true)
+            else -> changeExerciseTypeUI(TYPE_STRENGTH, true)
         }
     }
     private val checkExerciseExists = View.OnKeyListener { _: View?, _: Int, _: KeyEvent? ->
@@ -253,7 +253,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         }
         val currentTimeAsOrder: Long = System.currentTimeMillis()
         when (exerciseType) {
-            TYPE_FONTE -> {
+            TYPE_STRENGTH -> {
                 if (binding.seriesEdit.text.toString().isEmpty() ||
                     binding.repetitionEdit.text.toString().isEmpty() ||
                     binding.poidsEdit.text.toString().isEmpty()) {
@@ -271,7 +271,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     currentTimeAsOrder,
                     programId, restTime,
                     binding.exerciseEdit.text.toString(),
-                    TYPE_FONTE, binding.seriesEdit.text.toString().toInt(), binding.repetitionEdit.text.toString().toInt(),
+                    TYPE_STRENGTH, binding.seriesEdit.text.toString().toInt(), binding.repetitionEdit.text.toString().toInt(),
                     tmpPoids,  // Always save in KG
                     profile!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
@@ -279,7 +279,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     videoUrl, videoSeconds
                 )
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
-                    mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_FONTE, "", false, null)
+                    mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_STRENGTH, "", false, null)
                 exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId)
                 val exercise = exercisesList[exercisesList.size - 1]
                 (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).add(exercise)
@@ -532,7 +532,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         if (lMachine == null) {
             binding.exerciseEdit.setText("")
             binding.exerciseImage.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
-            changeExerciseTypeUI(TYPE_FONTE, true)
+            changeExerciseTypeUI(TYPE_STRENGTH, true)
             return
         }
         binding.exerciseEdit.setText(lMachine.name)
@@ -600,7 +600,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 binding.durationCardView.visibility = GONE
                 selectedType = TYPE_STATIC
             }
-            TYPE_FONTE -> {
+            TYPE_STRENGTH -> {
                 binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
                 binding.bodybuildingSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.record_background_odd))
                 binding.staticExerciseSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
@@ -612,7 +612,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 binding.restTimeLayout.visibility = View.VISIBLE
                 binding.distanceCardView.visibility = GONE
                 binding.durationCardView.visibility = GONE
-                selectedType = TYPE_FONTE
+                selectedType = TYPE_STRENGTH
             }
             else -> {
                 binding.cardioSelector.setBackgroundColor(ContextCompat.getColor(requireActivity().baseContext, R.color.background))
@@ -625,7 +625,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 binding.restTimeLayout.visibility = View.VISIBLE
                 binding.distanceCardView.visibility = GONE
                 binding.durationCardView.visibility = GONE
-                selectedType = TYPE_FONTE
+                selectedType = TYPE_STRENGTH
             }
         }
     }

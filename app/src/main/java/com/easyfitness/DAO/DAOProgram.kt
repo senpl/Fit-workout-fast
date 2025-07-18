@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import java.util.*
+import java.security.AccessControlContext
 
 class DAOProgram(context: Context?) : DAOBase(context) {
     private var mCursor: Cursor? = null
@@ -133,11 +133,50 @@ class DAOProgram(context: Context?) : DAOBase(context) {
         const val TABLE_CREATE = ("CREATE TABLE " + TABLE_NAME
             + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROGRAM_NAME
             + " TEXT, " + PROFIL_KEY + " INTEGER);")
-        fun addInitialProgram(db : SQLiteDatabase, programName :String ) {
-            var value= ContentValues();
-            value.put(PROGRAM_NAME, programName);
-            value.put(PROFIL_KEY, 1);
-            db.insert(TABLE_NAME, null, value);
+        fun addInitialProgram(db : SQLiteDatabase, programName :String ): Long {
+            val value = ContentValues().apply {
+                put(PROGRAM_NAME, programName)
+                put(PROFIL_KEY, 1)
+            }
+            // db.insert returns the row ID of the newly inserted row,
+            // or -1 if an error occurred
+            val newRowId = db.insert(TABLE_NAME, null, value)
+            if (newRowId == -1L) {
+                System.err.println("Failed to insert program: $programName")
+                // Optionally, throw an exception here if you want to halt the upgrade on failure
+                // throw SQLException("Failed to insert program: $name")
+            } else {
+                System.out.println("Successfully inserted program '$programName' with ID: $newRowId")
+            }
+            return newRowId
+        }
+        fun getId(db : SQLiteDatabase, programName :String ): Long {
+            val value= ContentValues();
+//            value.put(PROGRAM_NAME, programName);
+//            value.put(PROFIL_KEY, 1);
+//            DAOProgram dao=DAOProgram(null);
+//            dao.getRecord(db, programName)
+//            val cursor = db.query(
+//                TABLE_NAME,
+//                arrayOf(PROGRAM_NAME),  // only get the key column
+//                null,
+//                null,
+//                null,
+//                null,
+//                null
+//            )
+
+//            while (cursor.moveToNext()) {
+//                val key = cursor.getLong(cursor.getColumnIndexOrThrow("name"))
+//                println("Key: $key")
+//            }
+//            cursor.close()
+            return 1;
+//            val result=db.query(TABLE_NAME, arrayOf<String>(KEY),)
+//            val result=db.query(TABLE_NAME, arrayOf<String>(DAOProgram.KEY),
+//                DAOProgram.PROGRAM_NAME + "=?", arrayOf(programName), null, null, null);
+//            System.out.println(result)
+//            return result.getLong(0);
         }
     }
 }

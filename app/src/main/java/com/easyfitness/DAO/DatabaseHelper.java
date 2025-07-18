@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.easyfitness.DAO.bodymeasures.BodyPartExtensions;
 import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure;
 import com.easyfitness.DAO.bodymeasures.DAOBodyPart;
+import com.easyfitness.utils.UnitConverter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 23;
+    public static final int DATABASE_VERSION = 24;
     private static final String OLD09_DATABASE_NAME = "easyfitness";
     private static final String DATABASE_NAME = "easyfitness.db";
     private static DatabaseHelper sInstance;
@@ -126,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     // Merge of Cardio DB and Fonte DB
                     db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.DISTANCE + " REAL");
                     db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.DURATION + " INTEGER");
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.TYPE + " INTEGER DEFAULT " + DAOMachine.TYPE_FONTE);
+                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.TYPE + " INTEGER DEFAULT " + DAOMachine.TYPE_STRENGTH);
                     break;
                 case 16:
                     // Merge of Cardio DB and Fonte DB
@@ -156,9 +157,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.YOUTUBE_URL_START + " TEXT");
 //                    db.execSQL("ALTER TABLE " + DAOExerciseInProgram.TABLE_NAME + " ADD COLUMN " + DAOExerciseInProgram.VIDEO_SECONDS + " INTEGER DEFAULT 0");
 //                    break;
-//                case24:
-//                    db.
-            }
+                case 24:
+                    String newProgramName = "Low Back Muscle Strain";
+                    long programId; // To store the ID of the newly inserted program
+
+                    try {
+                        // 1. Add the new program using DAOProgram's method which now returns the ID.
+                        // Pass any other required parameters to addInitialProgram if you modified its signature
+                        // (e.g., a default profilKey).
+                        programId = DAOProgram.Companion.addInitialProgram(db, newProgramName);
+                        // If DAOProgram is pure Java, it would be:
+                        // programId = DAOProgram.addInitialProgram(db, newProgramName);
+
+                        // 2. Check if the program was inserted successfully and an ID was retrieved
+                        if (programId != -1) {
+                            // The addInitialProgram method should have already logged success.
+                            // You can add an additional log here if desired for the upgrade step.
+                            System.out.println("DB Upgrade Case 25: Successfully obtained program ID: " + programId + " for '" + newProgramName + "'.");
+
+                            // 3. Add exercises using the retrieved programId
+                            DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId,10,"Knee Sway",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=91s",120);
+                            DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId,10,"Knee to Chest",DAOMachine.TYPE_STATIC,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,20,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",214);
+                            DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId,10,"Cat Cow",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=214s",265);
+                            DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId,10,"Child's Pose with Reach",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=265s",280);
+                            System.out.println("DB Upgrade Case 25: Successfully added exercises for program ID: " + programId);
+
+                        } else {
+                            // addInitialProgram should have logged the specific insertion error.
+                            System.err.println("DB Upgrade Case 25: Failed to insert or retrieve ID for program '" + newProgramName + "'. Exercises will not be added.");
+                        }
+                    } catch (android.database.SQLException e) {
+                        // This catch block is useful if addInitialProgram is modified to throw an SQLException.
+                        System.err.println("DB Upgrade Case 25: SQLException during program/exercise addition for '" + newProgramName + "': " + e.getMessage());
+                        // programId would not have been assigned or would be -1 from a failed insert
+                    }
+                    break;
+          }
             upgradeTo++;
         }
     }

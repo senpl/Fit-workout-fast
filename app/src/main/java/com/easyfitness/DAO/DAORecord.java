@@ -160,14 +160,14 @@ public class DAORecord extends DAOBase {
             //Test is Machine exists. If not create it.
             DAOMachine lDAOMachine = new DAOMachine(mContext);
             if (mCursor.getString(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY)) == null) {
-                machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAOFonte.EXERCISE)), "", DAOMachine.TYPE_FONTE, "", false, "");
+                machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAOFonte.EXERCISE)), "", DAOMachine.TYPE_STRENGTH, "", false, "");
             } else {
                 machine_key = mCursor.getLong(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY));
             }
 
             IRecord value = null;
 
-            if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_FONTE) {
+            if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STRENGTH) {
                 value = new Fonte(date,
                     mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
                     mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),
@@ -592,7 +592,7 @@ public class DAORecord extends DAOBase {
 
                 IRecord value = null;
 
-                if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_FONTE) {
+                if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STRENGTH) {
                     value = new Fonte(date,
                         mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
                         mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),

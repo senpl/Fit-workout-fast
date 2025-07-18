@@ -87,7 +87,7 @@ public class MachineFragment extends Fragment {
                 long temp_machine_key = -1;
                 String pMachine = "";
                 DAOMachine lDAOMachine = new DAOMachine(getContext());
-                temp_machine_key = lDAOMachine.addMachine(pMachine, "", DAOMachine.TYPE_FONTE, "", false,"");
+                temp_machine_key = lDAOMachine.addMachine(pMachine, "", DAOMachine.TYPE_STRENGTH, "", false,"");
                 sDialog.dismissWithAnimation();
 
                 ExerciseDetailsPager machineDetailsFragment = ExerciseDetailsPager.newInstance(temp_machine_key, ((MainActivity) getActivity()).getCurrentProfile().getId());

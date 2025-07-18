@@ -33,7 +33,7 @@ public class DAOFonte extends DAORecord {
      *                 Le Record a ajouter a la base
      */
     public long addBodyBuildingRecord(Date pDate, String pMachine, int pSerie, int pRepetition, float pPoids, Profile pProfile, int pUnit, String pNote, String pTime) {
-        return addRecord(pDate, pMachine, DAOMachine.TYPE_FONTE, pSerie, pRepetition, pPoids, pProfile, pUnit, pNote, pTime, 0, 0, 0, 0);
+        return addRecord(pDate, pMachine, DAOMachine.TYPE_STRENGTH, pSerie, pRepetition, pPoids, pProfile, pUnit, pNote, pTime, 0, 0, 0, 0);
     }
 
     /**
@@ -41,7 +41,7 @@ public class DAOFonte extends DAORecord {
      */
     public void addBodyBuildingList(List<Fonte> fonteList) {
         for (Fonte fonte: fonteList) {
-            addRecord(fonte.mDate, fonte.mExercise, DAOMachine.TYPE_FONTE, fonte.getSerie(), fonte.getRepetition(), fonte.getPoids(), fonte.mProfile, fonte.getUnit(), fonte.getNote(), fonte.mTime, 0, 0, 0, 0);
+            addRecord(fonte.mDate, fonte.mExercise, DAOMachine.TYPE_STRENGTH, fonte.getSerie(), fonte.getRepetition(), fonte.getPoids(), fonte.mProfile, fonte.getUnit(), fonte.getNote(), fonte.mTime, 0, 0, 0, 0);
         }
     }
 
@@ -89,7 +89,7 @@ public class DAOFonte extends DAORecord {
                 //Test is Machine exists. If not create it.
                 DAOMachine lDAOMachine = new DAOMachine(mContext);
                 if (mCursor.getString(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY)) == null) {
-                    machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAOFonte.EXERCISE)), "", DAOMachine.TYPE_FONTE, "", false, "");
+                    machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAOFonte.EXERCISE)), "", DAOMachine.TYPE_STRENGTH, "", false, "");
                 } else {
                     machine_key = mCursor.getLong(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY));
                 }
@@ -118,7 +118,7 @@ public class DAOFonte extends DAORecord {
     public List<Fonte> getAllBodyBuildingRecords() {
         // Select All Query
         String selectQuery = "SELECT  " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " WHERE " + TYPE + "=" + DAOMachine.TYPE_FONTE
+            + " WHERE " + TYPE + "=" + DAOMachine.TYPE_STRENGTH
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
 
         // return value list
@@ -139,7 +139,7 @@ public class DAOFonte extends DAORecord {
         // Select All Query
         String selectQuery = "SELECT " + TABLE_ARCHI + " FROM " + TABLE_NAME
             + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
-            + " AND " + TYPE + "=" + DAOMachine.TYPE_FONTE
+            + " AND " + TYPE + "=" + DAOMachine.TYPE_STRENGTH
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
 
         // Return value list
@@ -398,7 +398,7 @@ public class DAOFonte extends DAORecord {
         value.put(DAOFonte.NOTES, m.getNote());
         value.put(DAOFonte.PROFIL_KEY, m.getProfilKey());
         value.put(DAOFonte.TIME, m.getTime());
-        value.put(DAOFonte.TYPE, DAOMachine.TYPE_FONTE);
+        value.put(DAOFonte.TYPE, DAOMachine.TYPE_STRENGTH);
 
         // updating row
         return db.update(TABLE_NAME, value, KEY + " = ?",

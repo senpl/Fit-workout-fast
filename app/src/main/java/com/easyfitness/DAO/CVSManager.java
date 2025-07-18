@@ -136,7 +136,7 @@ public class CVSManager {
                 csvOutputFonte.write(Integer.toString(records.get(i).getUnit()));
                 if (records.get(i).getNote() == null) csvOutputFonte.write("");
                 else csvOutputFonte.write(records.get(i).getNote());
-                csvOutputFonte.write(Integer.toString(DAOMachine.TYPE_FONTE));
+                csvOutputFonte.write(Integer.toString(DAOMachine.TYPE_STRENGTH));
                 csvOutputFonte.endRecord();
             }
             csvOutputFonte.close();
@@ -491,7 +491,7 @@ public class CVSManager {
                         String time = csvRecords.get(DAOFonte.TIME);
                         String machine = csvRecords.get(DAOFonte.EXERCISE);
                         if ( dbcMachine.getMachine(machine) != null ) {
-                            if (dbcMachine.getMachine(machine).getType() == DAOMachine.TYPE_FONTE) {
+                            if (dbcMachine.getMachine(machine).getType() == DAOMachine.TYPE_STRENGTH) {
                                 float poids = Float.valueOf(csvRecords.get(DAOFonte.WEIGHT));
                                 int repetition = Integer.valueOf(csvRecords.get(DAOFonte.REPETITION));
                                 int serie = Integer.valueOf(csvRecords.get(DAOFonte.SERIE));

@@ -22,7 +22,7 @@ public class DAOMachine extends DAOBase {
     public static final String FAVORITES = "favorites"; // DEPRECATED - Specific DataBase created for this.
 
 
-    public static final int TYPE_FONTE = 0;
+    public static final int TYPE_STRENGTH = 0;
     public static final int TYPE_CARDIO = 1;
     public static final int TYPE_STATIC = 2;
 
@@ -326,7 +326,7 @@ public class DAOMachine extends DAOBase {
     }
 
     public void populate() {
-        addMachine("Dev Couche", "Developper couche : blabla ", TYPE_FONTE, "", true, "");
-        addMachine("Biceps", "Developper couche : blabla ", TYPE_FONTE, "", false, "");
+        addMachine("Dev Couche", "Developper couche : blabla ", TYPE_STRENGTH, "", true, "");
+        addMachine("Biceps", "Developper couche : blabla ", TYPE_STRENGTH, "", false, "");
     }
 }

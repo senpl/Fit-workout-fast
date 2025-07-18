@@ -26,7 +26,7 @@ public class Fonte extends ARecord {
         this.mProfile = pProfile;
         this.mExerciseId = pMachineKey;
         this.mTime = pTime;
-        this.mType = DAOMachine.TYPE_FONTE;
+        this.mType = DAOMachine.TYPE_STRENGTH;
     }
 
     public int getSerie() {

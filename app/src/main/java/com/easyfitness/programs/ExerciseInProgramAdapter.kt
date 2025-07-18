@@ -72,7 +72,7 @@ class ExerciseInProgramAdapter(context: Context, private val exercisesList: Muta
             val tRepsLayout = itemView.findViewById<LinearLayout>(R.id.REP_LAYOUT)
 
             when (exercise.type) {
-                TYPE_FONTE -> {
+                TYPE_STRENGTH -> {
                     // UI
                     tSeriesLabel.text = mContext.getString(R.string.SerieLabel)
                     tWeightLabel.text = mContext.getString(R.string.PoidsLabel)

@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +26,6 @@ import android.widget.TextView;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
-import com.canhub.cropper.CropImage;
-import com.easyfitness.BtnClickListener;
 import com.easyfitness.DAO.DAOMachine;
 import com.easyfitness.DAO.DAORecord;
 import com.easyfitness.DAO.Machine;
@@ -41,13 +36,8 @@ import com.easyfitness.utils.RealPathUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class MachineDetailsFragment extends Fragment {
@@ -63,7 +53,7 @@ public class MachineDetailsFragment extends Fragment {
     ImageView machinePhoto = null;
     FloatingActionButton machineAction = null;
     LinearLayout machinePhotoLayout = null;
-    int selectedType = DAOMachine.TYPE_FONTE;
+    int selectedType = DAOMachine.TYPE_STRENGTH;
     String machineNameArg = null;
     long machineIdArg = 0;
     long machineProfilIdArg = 0;
@@ -219,7 +209,7 @@ public class MachineDetailsFragment extends Fragment {
                 if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
                     ImageUtil.setPic(machinePhoto, mCurrentPhotoPath);
                 } else {
-                    if (mMachine.getType() == DAOMachine.TYPE_FONTE) {
+                    if (mMachine.getType() == DAOMachine.TYPE_STRENGTH) {
                         imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp));
                     } else if (mMachine.getType() == DAOMachine.TYPE_STATIC) {
                         imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_static));
@@ -237,7 +227,7 @@ public class MachineDetailsFragment extends Fragment {
         musclesList.addTextChangedListener(watcher);
 
         imgUtil.setOnDeleteImageListener(imgUtil -> {
-            if (mMachine.getType() == DAOMachine.TYPE_FONTE) {
+            if (mMachine.getType() == DAOMachine.TYPE_STRENGTH) {
                 imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp));
             } else if (mMachine.getType() == DAOMachine.TYPE_STATIC) {
                 imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_static));
