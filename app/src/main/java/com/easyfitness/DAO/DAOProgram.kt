@@ -150,33 +150,5 @@ class DAOProgram(context: Context?) : DAOBase(context) {
             }
             return newRowId
         }
-        fun getId(db : SQLiteDatabase, programName :String ): Long {
-            val value= ContentValues();
-//            value.put(PROGRAM_NAME, programName);
-//            value.put(PROFIL_KEY, 1);
-//            DAOProgram dao=DAOProgram(null);
-//            dao.getRecord(db, programName)
-//            val cursor = db.query(
-//                TABLE_NAME,
-//                arrayOf(PROGRAM_NAME),  // only get the key column
-//                null,
-//                null,
-//                null,
-//                null,
-//                null
-//            )
-
-//            while (cursor.moveToNext()) {
-//                val key = cursor.getLong(cursor.getColumnIndexOrThrow("name"))
-//                println("Key: $key")
-//            }
-//            cursor.close()
-            return 1;
-//            val result=db.query(TABLE_NAME, arrayOf<String>(KEY),)
-//            val result=db.query(TABLE_NAME, arrayOf<String>(DAOProgram.KEY),
-//                DAOProgram.PROGRAM_NAME + "=?", arrayOf(programName), null, null, null);
-//            System.out.println(result)
-//            return result.getLong(0);
-        }
     }
 }

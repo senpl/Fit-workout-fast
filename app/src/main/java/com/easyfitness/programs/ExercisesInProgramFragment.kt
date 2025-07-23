@@ -36,6 +36,7 @@ import timber.log.Timber
 import java.lang.Integer.parseInt
 import java.util.*
 import androidx.core.view.isGone
+import androidx.core.content.edit
 
 class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises) {
     private lateinit var mainActivity: MainActivity
@@ -120,14 +121,14 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         var weightUnit: Int
         try {
             weightUnit = sharedPreferences?.getString(SettingsFragment.WEIGHT_UNIT_PARAM, "0")?.toInt()!!
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Timber.d("Conversion Not important")
             weightUnit = UnitConverter.UNIT_KG
         }
         binding.unitSpinner.setSelection(weightUnit)
         val distanceUnit: Int = try {
              sharedPreferences?.getString(SettingsFragment.DISTANCE_UNIT_PARAM, "0")?.toInt()!!
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             UnitConverter.UNIT_KM
         }
         binding.unitDistanceSpinner.setSelection(distanceUnit)
@@ -234,7 +235,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         var restTime = 60
         try {
             restTime = binding.restTimeEdit.text.toString().toInt()
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             binding.restTimeEdit.setText("60")
         }
         val videoUrl=binding.youtubeStartUrl.text.toString()
@@ -300,7 +301,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 }
                 try {
                     restTime = binding.restTimeEdit.text.toString().toInt()
-                } catch (e: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     restTime = 0
                     binding.restTimeEdit.setText("0")
                 }
@@ -492,17 +493,17 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         val tx = timeTextView?.text.toString()
         val hour: Int = try {
             tx.substring(0, 2).toInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
         val min: Int = try {
             tx.substring(3, 5).toInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
         val sec: Int = try {
             tx.substring(6).toInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
         if (timeTextView!!.id == R.id.durationEdit) {
@@ -632,31 +633,31 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
     private fun saveSharedParams() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val editor = sharedPref?.edit()
-        editor?.putString("restTime", binding.restTimeEdit.text.toString())
-        editor?.putBoolean("restCheck", binding.restTimeCheck.isChecked)
-        editor?.putBoolean("showDetails", binding.detailsLayout.isShown)
-        editor?.apply()
+        sharedPref?.edit {
+            this.putString("restTime", binding.restTimeEdit.text.toString())
+            this.putBoolean("restCheck", binding.restTimeCheck.isChecked)
+            this.putBoolean("showDetails", binding.detailsLayout.isShown)
+        }
     }
 
     private fun saveSharedVideo() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val editor = sharedPref?.edit()
-        editor?.putString("youtubeStartUrl", binding.youtubeStartUrl.text.toString())
-        if(binding.youtubeEndUrl.text.toString().contains("&s=")){
-            var url = binding.youtubeEndUrl.text.toString()
-            url = url.substring(url.indexOf("&s=")+"&s=".length)
-            if(url.contains("&")){
-                url = url.substring(0, url.indexOf("&"))
-            }
-            try {
-                val secondsToEnd = parseInt(url)
-                editor?.putInt("videoSeconds", secondsToEnd)
-            }catch(ex: Exception){
-                editor?.putInt("videoSeconds", 50)
+        sharedPref?.edit {
+            this.putString("youtubeStartUrl", binding.youtubeStartUrl.text.toString())
+            if (binding.youtubeEndUrl.text.toString().contains("&s=")) {
+                var url = binding.youtubeEndUrl.text.toString()
+                url = url.substring(url.indexOf("&s=") + "&s=".length)
+                if (url.contains("&")) {
+                    url = url.substring(0, url.indexOf("&"))
+                }
+                try {
+                    val secondsToEnd = parseInt(url)
+                    this.putInt("videoSeconds", secondsToEnd)
+                } catch (_: Exception) {
+                    this.putInt("videoSeconds", 50)
+                }
             }
         }
-        editor?.apply()
     }
 
     private fun restoreSharedParams() {

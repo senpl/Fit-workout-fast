@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
+import android.net.Uri.parse
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,6 +27,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -120,12 +122,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
     private lateinit var mDbMachine: DAOMachine
     private lateinit var swipeDetectorListener: SwipeDetectorListener
+    private lateinit var programSelect: Spinner
+    private lateinit var exerciseIndicator: com.mazenrashed.dotsindicator.DotsIndicator
     private var restTimer: Rx3Timer? = null
     private lateinit var staticTimer: Rx3Timer
     private var staticTimerRunning: Boolean = false
     private var restTimerRunning: Boolean = false
     private val showVideoDialog = mutableStateOf(false)
     private var _binding: TabProgramRunnerBinding? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -174,17 +179,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 ).getInt("currentProgramPosition", 1)
                 val adapter =
                     ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs)
-                binding.programSelect.adapter = adapter
+                programSelect=view.findViewById(R.id.programSelect)
+                programSelect.adapter = adapter
                 if (tempPosition < programs.size) {
-                    binding.programSelect.setSelection(tempPosition)
+                    programSelect.setSelection(tempPosition)
                 }
-                binding.programSelect.onItemSelectedListener = object :
+                programSelect.onItemSelectedListener = object :
                     AdapterView.OnItemSelectedListener {
                     @SuppressLint("SetTextI18n")
                     override fun onItemSelected(
                         parent: AdapterView<*>,
                         view: View?, position: Int, id: Long
                     ) {
+                        adapter.notifyDataSetChanged()
                         val program: Program? = daoProgram.getRecord(programs[position])
                         if (program != null) {
                             programId = program.id
@@ -192,12 +199,34 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             exercisesFromProgram =
                                 daoExerciseInProgram.getAllExerciseInProgram(programId)
                             if (exercisesFromProgram.isNotEmpty()) {
-                                binding.exerciseIndicator.initDots(exercisesFromProgram.size)
+                                exerciseIndicator=requireActivity().findViewById(R.id.exerciseIndicator)
+//                                binding.exerciseIndicator.visibility=VISIBLE
+//                                val dotsIndicator = requireActivity().findViewById<DotsIndicator>(R.id.exerciseIndicator)
+//                               dotsIndicator.visibility=VISIBLE
+//                                val viewPager = findViewById<ViewPager>(R.id.view_pager)
+//                                val adapter = ViewPagerAdapter()
+//                                viewPager.adapter = adapter
+//                                dotsIndicator.attachTo(viewPager)
+                                exerciseIndicator.initDots(exercisesFromProgram.size)
                                 binding.currentExerciseNumber.text = "1"
 //                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
                                 binding.exerciseInProgramNumber.text =
                                     exercisesFromProgram.size.toString()
-                                binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+                                try {
+                                    exerciseIndicator.setDotSelection(currentExerciseOrder)
+                                }catch (_: Exception){
+                                    println(exerciseIndicator.isDirty())
+                                    if(exerciseIndicator.isDirty()){
+                                        exerciseIndicator.invalidate()
+                                    }
+                                    adapter.notifyDataSetChanged()
+                                    exerciseIndicator= com.mazenrashed.dotsindicator.DotsIndicator(requireContext().applicationContext)
+                                    exerciseIndicator.selectedDotResource=R.drawable.pager_box_white_24dp
+                                    exerciseIndicator.initDots(exercisesFromProgram.size)
+                                    exerciseIndicator.setDotSelection(0)
+                                    currentExerciseOrder=0
+                                    Timber.w("IllegalState when changing to bigger exercise")
+                                }
 //                                binding.exerciseIndicator.onPageChange(currentExerciseOrder);
                                 saveToPreference("currentProgram", programId)
                                 saveToPreference("currentProgramPosition", position)
@@ -333,9 +362,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
 
-        binding.exerciseIndicator.onSelectListener = {
-            seekExerciseTimeInVideo(it)
-        }
+//        //TODO
+//        binding.exerciseIndicator.onSelectListener = {
+//            seekExerciseTimeInVideo(it)
+//        }
+
 
         if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE)
                 .getBoolean("swipeGesturesSwitch", true)
@@ -520,7 +551,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder < exercisesFromProgram.size - 1) {
             currentExerciseOrder++
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+            exerciseIndicator.setDotSelection(currentExerciseOrder)
 //            binding.exerciseIndicator.(currentExerciseOrder)
             refreshData()
         }
@@ -532,12 +563,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder > 0) {
             currentExerciseOrder--
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+            exerciseIndicator.setDotSelection(currentExerciseOrder)
 //            binding.exerciseIndicator.onPageChange(currentExerciseOrder)
             refreshData()
         }
     }
-
     fun saveToPreference(prefName: String?, prefLongToSet: Long?) {
         val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
         sharedPref.edit {
@@ -707,7 +737,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val date = Date()
         val timeStr = DateConverter.currentTime()
 //        binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#CD5B55".toColorInt())
-        binding.exerciseIndicator[currentExerciseOrder].background = "#CD5B55".toColorInt().toDrawable()
+        exerciseIndicator[currentExerciseOrder].background = "#CD5B55".toColorInt().toDrawable()
         when (exerciseType) {
             TYPE_STRENGTH -> {
                 if (binding.seriesEdit.text.toString().isEmpty() ||
@@ -830,13 +860,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (restTime != 0) {
             binding.restFillBackgroundProgress.visibility = VISIBLE
         }
-        binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#6bd505".toColorInt())
+        exerciseIndicator[currentExerciseOrder].setBackgroundColor("#6bd505".toColorInt())
         runRest(restTime)
     }
 
     private val clickFailButton = OnClickListener {
         if (exercisesFromProgram.isNotEmpty()) {
-            //TODO
 //            binding.exerciseIndicator.background = "#CD5B55".toColorInt().toDrawable()
             binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#CD5B55".toColorInt())
         }
@@ -877,7 +906,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     ) {
                         val mediaPlayer = MediaPlayer()
                         try {
-                            val myUri: Uri = Uri.parse(
+                            val myUri: Uri = parse(
                                 requireContext().getSharedPreferences(
                                     "restSound",
                                     Context.MODE_PRIVATE

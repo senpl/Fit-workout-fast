@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
@@ -43,6 +42,7 @@ import com.onurkaganaldemir.ktoastlib.KToast
 //import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
 import java.util.*
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_INTRO = 111
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
         val dayNightAuto = sharedPreferences.getString("dayNightAuto", resources.getInteger(R.integer.dark_mode_value).toString())
         val dayNightAutoValue: Int = try {
             dayNightAuto!!.toInt()
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             resources.getInteger(R.integer.dark_mode_value)
         }
         if (dayNightAutoValue == resources.getInteger(R.integer.dark_mode_value)) {
@@ -716,13 +716,13 @@ class MainActivity : AppCompatActivity() {
     private fun savePreferences() {
         // Restore preferences
         val settings = getSharedPreferences(PREFS_NAME, 0)
-        val editor :SharedPreferences.Editor = settings.edit()
-        if (currentProfile != null) {
-            editor.putLong("currentProfil", currentProfile!!.id).apply()
+        settings.edit {
+            if (currentProfile != null) {
+                putLong("currentProfil", currentProfile!!.id).apply()
+            }
+            putBoolean("intro014Launched", mIntro014Launched)
+            putBoolean("migrationBD15done", mMigrationBD15done)
         }
-        editor.putBoolean("intro014Launched", mIntro014Launched)
-        editor.putBoolean("migrationBD15done", mMigrationBD15done)
-        editor.apply()
     }
 
     private val fontesPagerFragment: FontesPagerFragment?
@@ -838,7 +838,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val lList = mDbProfils!!.allProfils
                 currentProfile = lList[0]
-            } catch (e: IndexOutOfBoundsException) {
+            } catch (_: IndexOutOfBoundsException) {
                 createNewProfil()
             }
         }
@@ -896,10 +896,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TIME_INTERVAL = 2000 // # milliseconds, desired time passed between two back presses.
         var FONTESPAGER = "FontePager"
-        var FONTES = "Fonte"
-        var HISTORY = "History"
-        var GRAPHIC = "Graphics"
-        var CARDIO = "Cardio"
         var WEIGHT = "Weight"
         var PROFILE = "Profile"
         var PROGRAMS = "Programs"

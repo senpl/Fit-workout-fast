@@ -1,14 +1,14 @@
+W sumie teraz obchodzę ten błąd i tak może zostać
+Błąd jest tylko gdy element z którego zmieniamy jest na indexie większym niż na ten co zmieniamy w innym programie.
+Naprawić błąd z setDotSelection gdy zwraca null
+Nadpisać tą klasę?
+      	at com.mazenrashed.dotsindicator.DotsIndicator.setDotSelection
+
+Dodać zapamiętywanie stanu selectu
+bo to life usage improvment
 Niech wyświetla film gdy jest w głównym ekranie
     Bo już wiem jak to zrobić
     Przerobić zdjęcia z aplikacji
-Dodać program na ból pleców
-    Bo zademonstruje co to w ogóle można zrobić
-Dodać program na ból kostki
-    Nazwa programu,
-    nazwa ćwiczenia
-    powtórzenia
-    czas
-    link do wideo
 Dodać program na ból ramion
     Nazwa programu,
     nazwa ćwiczenia

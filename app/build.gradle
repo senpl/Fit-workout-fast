@@ -93,6 +93,7 @@ android {
 
 dependencies {
 // Support
+    implementation(libs.dotsindicator)
     implementation libs.androidx.annotation
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.appcompat
