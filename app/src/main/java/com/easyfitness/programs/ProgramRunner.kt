@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
-import android.net.Uri.parse
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -103,6 +102,7 @@ import kotlin.time.Duration.Companion.seconds
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
+import androidx.core.net.toUri
 import androidx.core.view.get
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
@@ -179,7 +179,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 ).getInt("currentProgramPosition", 1)
                 val adapter =
                     ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs)
-                programSelect=view.findViewById(R.id.programSelect)
+                programSelect = view.findViewById(R.id.programSelect)
                 programSelect.adapter = adapter
                 if (tempPosition < programs.size) {
                     programSelect.setSelection(tempPosition)
@@ -199,14 +199,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             exercisesFromProgram =
                                 daoExerciseInProgram.getAllExerciseInProgram(programId)
                             if (exercisesFromProgram.isNotEmpty()) {
-                                exerciseIndicator=requireActivity().findViewById(R.id.exerciseIndicator)
-//                                binding.exerciseIndicator.visibility=VISIBLE
-//                                val dotsIndicator = requireActivity().findViewById<DotsIndicator>(R.id.exerciseIndicator)
-//                               dotsIndicator.visibility=VISIBLE
-//                                val viewPager = findViewById<ViewPager>(R.id.view_pager)
-//                                val adapter = ViewPagerAdapter()
-//                                viewPager.adapter = adapter
-//                                dotsIndicator.attachTo(viewPager)
+                                exerciseIndicator = requireActivity().findViewById(R.id.exerciseIndicator)
                                 exerciseIndicator.initDots(exercisesFromProgram.size)
                                 binding.currentExerciseNumber.text = "1"
 //                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
@@ -214,17 +207,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                                     exercisesFromProgram.size.toString()
                                 try {
                                     exerciseIndicator.setDotSelection(currentExerciseOrder)
-                                }catch (_: Exception){
-                                    println(exerciseIndicator.isDirty())
-                                    if(exerciseIndicator.isDirty()){
+                                } catch (_: Exception) {
+                                    println(exerciseIndicator.isDirty)
+                                    if (exerciseIndicator.isDirty) {
                                         exerciseIndicator.invalidate()
                                     }
                                     adapter.notifyDataSetChanged()
-                                    exerciseIndicator= com.mazenrashed.dotsindicator.DotsIndicator(requireContext().applicationContext)
-                                    exerciseIndicator.selectedDotResource=R.drawable.pager_box_white_24dp
+                                    exerciseIndicator =
+                                        com.mazenrashed.dotsindicator.DotsIndicator(requireContext().applicationContext)
+                                    exerciseIndicator.selectedDotResource =
+                                        R.drawable.pager_box_white_24dp
                                     exerciseIndicator.initDots(exercisesFromProgram.size)
                                     exerciseIndicator.setDotSelection(0)
-                                    currentExerciseOrder=0
+                                    currentExerciseOrder = 0
                                     Timber.w("IllegalState when changing to bigger exercise")
                                 }
 //                                binding.exerciseIndicator.onPageChange(currentExerciseOrder);
@@ -362,9 +357,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
 
-//        //TODO
-//        binding.exerciseIndicator.onSelectListener = {
-//            seekExerciseTimeInVideo(it)
+//        //TODO maybe it might be worth to support clicking on exercise change
+//        exerciseIndicator.onSelectListener = {
+//            changeExercise(it)
 //        }
 
 
@@ -539,12 +534,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 //    }
 
 
-    @SuppressLint("SetTextI18n")
-    private fun seekExerciseTimeInVideo(selected: Int) {
-        currentExerciseOrder = selected
-        binding.currentExerciseNumber.text = (selected + 1).toString()
-        refreshData()
-    }
+//    @SuppressLint("SetTextI18n")
+//    private fun changeExercise(selected: Int) {
+//        currentExerciseOrder = selected
+//        binding.currentExerciseNumber.text = (selected + 1).toString()
+//        refreshData()
+//    }
 
     @SuppressLint("SetTextI18n")
     fun nextExercise() {
@@ -568,6 +563,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             refreshData()
         }
     }
+
     fun saveToPreference(prefName: String?, prefLongToSet: Long?) {
         val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
         sharedPref.edit {
@@ -696,7 +692,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (showVideoDialog.value) {
             Dialog(onDismissRequest = { showVideoDialog.value = false }
             ) {
-                if(exercisesFromProgram.isNotEmpty()){
+                if (exercisesFromProgram.isNotEmpty()) {
                     PlayTube(exercisesFromProgram[currentExerciseOrder].urlVideoStart)
 //                }else{
 //                    KToast.normalToast(activity,"No Exercises, add them",Gravity.BOTTOM,KToast.LENGTH_SHORT)
@@ -906,15 +902,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     ) {
                         val mediaPlayer = MediaPlayer()
                         try {
-                            val myUri: Uri = parse(
-                                requireContext().getSharedPreferences(
-                                    "restSound",
-                                    Context.MODE_PRIVATE
-                                ).getString(
-                                    "restSound",
-                                    RingtoneManager.getDefaultUri(R.raw.chime).toString()
-                                )
+                            val uriString = requireContext().getSharedPreferences(
+                                "restSound",
+                                Context.MODE_PRIVATE
+                            ).getString(
+                                "restSound",
+                                RingtoneManager.getDefaultUri(R.raw.chime).toString()
                             )
+                            val myUri: Uri =
+                                uriString?.toUri() ?: RingtoneManager.getDefaultUri(R.raw.chime)
                             mediaPlayer.setDataSource(this.requireContext(), myUri)
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -1185,15 +1181,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         ) {
             val mediaPlayer = MediaPlayer()
             try {
-                val myUri: Uri = Uri.parse(
-                    requireContext().getSharedPreferences(
-                        "staticSound",
-                        Context.MODE_PRIVATE
-                    ).getString(
-                        "staticSound",
-                        RingtoneManager.getDefaultUri(R.raw.chime).toString()
-                    )
+                val uriString = requireContext().getSharedPreferences(
+                    "staticSound",
+                    Context.MODE_PRIVATE
+                ).getString(
+                    "staticSound",
+                    RingtoneManager.getDefaultUri(R.raw.chime).toString()
                 )
+                val myUri: Uri = uriString?.toUri() ?: RingtoneManager.getDefaultUri(R.raw.chime)
                 mediaPlayer.setDataSource(this.requireContext(), myUri)
             } catch (e: IOException) {
                 e.printStackTrace()

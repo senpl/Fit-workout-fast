@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 31;
+    public static final int DATABASE_VERSION = 24;
     private static final String OLD09_DATABASE_NAME = "easyfitness";
     private static final String DATABASE_NAME = "easyfitness.db";
     private static DatabaseHelper sInstance;
@@ -61,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DAOExerciseInProgram.TABLE_CREATE);
         String defaultProgramName="training program default";
         DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
+        addExampleExercises(db);
     }
 
     @Override
@@ -153,82 +154,86 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String defaultProgramName="training program default";
                     DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
                     break;
-                case 31:
-                    String newProgramName = "Low Back Muscle Strain";
-                    long programId; // To store the ID of the newly inserted program
-                    try {
-                        programId = DAOProgram.Companion.addInitialProgram(db, newProgramName);
-                       if (programId != -1) {
-                           System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId + " for '" + newProgramName + "'.");
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId,10,"Knee Sway",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=91s",120);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId,10,"Knee to Chest",DAOMachine.TYPE_STATIC,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,20,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",214);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId,10,"Cat Cow",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=214s",265);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId,10,"Child's Pose with Reach",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=265s",280);
-                            System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId);
-                        } else {
-                            System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName + "'. Exercises will not be added.");
-                        }
-                        String newProgramName2 = "Low Back And Core Pain prevention with ball";
-                        long programId2 = DAOProgram.Companion.addInitialProgram(db, newProgramName2);
-                        if (programId2 != -1) {
-                            System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId2 + " for '" + newProgramName2 + "'.");
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId2,10,"Opposite Arm/Leg Lift",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=106s",154);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId2,10,"Plank on Elbows",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=154s",238);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId2,10,"Roll Out",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=238s",296);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId2,10,"Curl Up",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=296s",280);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId2,10,"Side Crunch",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"stay safe when you need support leg use it","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=357s",452);
-                            System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId2);
-                        } else {
-                            System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName2 + "'. Exercises will not be added.");
-                        }
-                        String newProgramName3 = "Recovery breathing and better sleep";
-                        long programId3 = DAOProgram.Companion.addInitialProgram(db, newProgramName3);
-                        if (programId3 != -1) {
-                            System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId3 + " for '" + newProgramName3 + "'.");
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId3,10,"Breath Awareness",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=130s",244);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId3,10,"Inhale through Nose, Exhale through Mouth",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=244s",250);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId3,10,"Accentuate Breath in lower part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=250s",282);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId3,10,"Accentuate Breath in upper part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=282",318);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId3,10,"Accentuate Breath in side and back part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=318",350);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId3,10,"Vary Breathing Pace fast inhale slow exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId3,10,"Vary Breathing Pace slow inhale fast exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
-                            System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId3);
-                        } else {
-                            System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName3 + "'. Exercises will not be added.");
-                        }
-                        String newProgramName4 = "Ankle Mobility, Flexibility and Strength";
-                        long programId4 = DAOProgram.Companion.addInitialProgram(db, newProgramName4);
-                        if (programId4 != -1) {
-                            System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId4 + " for '" + newProgramName4 + "'.");
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId4,5,"Massage pain in ankle",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=99",105);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId4,5,"Ankle side move with resistance(band)",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=304",320);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId4,10,"Ankle Alphabet",DAOMachine.TYPE_STRENGTH,1,2,0.0f,1,UnitConverter.UNIT_KG,"Try 3 repetitions","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=105s",126);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,8,programId4,10,"Heel Toe Raise",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=126s",150);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,9,programId4,10,"Heel Toe Raise finger inward",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=150",157);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,10,programId4,10,"Heel Toe Raise finger out",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=157",192);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,11,programId4,10,"Single injured leg balance with eyes open",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=192s",208);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,12,programId4,10,"Single injured leg balance with eyes closed",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,10,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=208",251);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,13,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,14,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,15,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,16,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                            DAOExerciseInProgram.Companion.addInitialExercise(db,17,programId4,10,"Side step squats",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=278",345);
-                            System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId4);
-                        } else {
-                            System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName4 + "'. Exercises will not be added.");
-                        }
-                    } catch (android.database.SQLException e) {
-                        System.err.println("DB Upgrade Case 24: SQLException during program/exercise addition for '" + newProgramName + "': " + e.getMessage());
-                    }
+                case 24:
+                    addExampleExercises(db);
                     break;
           }
             upgradeTo++;
+        }
+    }
+
+    private static void addExampleExercises(SQLiteDatabase db) {
+        String newProgramName = "Low Back Muscle Strain";
+        long programId; // To store the ID of the newly inserted program
+        try {
+            programId = DAOProgram.Companion.addInitialProgram(db, newProgramName);
+           if (programId != -1) {
+               System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId + " for '" + newProgramName + "'.");
+                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId,10,"Knee Sway",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=91s",120);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId,10,"Knee to Chest",DAOMachine.TYPE_STATIC,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,20,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",214);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId,10,"Cat Cow",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=214s",265);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId,10,"Child's Pose with Reach",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=265s",280);
+                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId);
+            } else {
+                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName + "'. Exercises will not be added.");
+            }
+            String newProgramName2 = "Low Back And Core Pain prevention with ball";
+            long programId2 = DAOProgram.Companion.addInitialProgram(db, newProgramName2);
+            if (programId2 != -1) {
+                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId2 + " for '" + newProgramName2 + "'.");
+                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId2,10,"Opposite Arm/Leg Lift",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=106s",154);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId2,10,"Plank on Elbows",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=154s",238);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId2,10,"Roll Out",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=238s",296);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId2,10,"Curl Up",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=296s",280);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId2,10,"Side Crunch",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"stay safe when you need support leg use it","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=357s",452);
+                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId2);
+            } else {
+                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName2 + "'. Exercises will not be added.");
+            }
+            String newProgramName3 = "Recovery breathing and better sleep";
+            long programId3 = DAOProgram.Companion.addInitialProgram(db, newProgramName3);
+            if (programId3 != -1) {
+                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId3 + " for '" + newProgramName3 + "'.");
+                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId3,10,"Breath Awareness",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=130s",244);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId3,10,"Inhale through Nose, Exhale through Mouth",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=244s",250);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId3,10,"Accentuate Breath in lower part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=250s",282);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId3,10,"Accentuate Breath in upper part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=282",318);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId3,10,"Accentuate Breath in side and back part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=318",350);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId3,10,"Vary Breathing Pace fast inhale slow exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId3,10,"Vary Breathing Pace slow inhale fast exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
+                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId3);
+            } else {
+                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName3 + "'. Exercises will not be added.");
+            }
+            String newProgramName4 = "Ankle Mobility, Flexibility and Strength";
+            long programId4 = DAOProgram.Companion.addInitialProgram(db, newProgramName4);
+            if (programId4 != -1) {
+                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId4 + " for '" + newProgramName4 + "'.");
+                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId4,5,"Massage pain in ankle",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=99",105);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId4,5,"Ankle side move with resistance(band)",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=304",320);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId4,10,"Ankle Alphabet",DAOMachine.TYPE_STRENGTH,1,2,0.0f,1,UnitConverter.UNIT_KG,"Try 3 repetitions","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=105s",126);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,8,programId4,10,"Heel Toe Raise",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=126s",150);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,9,programId4,10,"Heel Toe Raise finger inward",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=150",157);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,10,programId4,10,"Heel Toe Raise finger out",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=157",192);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,11,programId4,10,"Single injured leg balance with eyes open",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=192s",208);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,12,programId4,10,"Single injured leg balance with eyes closed",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,10,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=208",251);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,13,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,14,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,15,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,16,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
+                DAOExerciseInProgram.Companion.addInitialExercise(db,17,programId4,10,"Side step squats",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=278",345);
+                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId4);
+            } else {
+                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName4 + "'. Exercises will not be added.");
+            }
+        } catch (android.database.SQLException e) {
+            System.err.println("DB Upgrade Case 24: SQLException during program/exercise addition for '" + newProgramName + "': " + e.getMessage());
         }
     }
 

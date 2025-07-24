@@ -45,8 +45,8 @@ import java.util.*
 import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
-    private val REQUEST_CODE_INTRO = 111
-    private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1001
+    private val intro = 111
+    private val requestPermissionToExternalStorage = 1001
     private var mDrawerAdapter: CustomDrawerAdapter? = null
     private lateinit var dataList: MutableList<DrawerItem>//? = null
     private var mpFontesPagerFrag: FontesPagerFragment? = null
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     var currentProfile: Profile? = null
         private set
     private var mCurrentProfilID: Long = -1
-    private var m_importCVSchosenDir = ""
+    private var mImportcvschosendir = ""
     lateinit var activityToolbar: Toolbar
         private set
 
@@ -194,20 +194,24 @@ class MainActivity : AppCompatActivity() {
         } catch (_: NumberFormatException) {
             resources.getInteger(R.integer.dark_mode_value)
         }
-        if (dayNightAutoValue == resources.getInteger(R.integer.dark_mode_value)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            SweetAlertDialog.DARK_STYLE = true
-        } else if (dayNightAutoValue == resources.getInteger(R.integer.light_mode_value)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            SweetAlertDialog.DARK_STYLE = false
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            val currentNightMode = (resources.configuration.uiMode
-                and Configuration.UI_MODE_NIGHT_MASK)
-            when (currentNightMode) {
-                Configuration.UI_MODE_NIGHT_NO -> SweetAlertDialog.DARK_STYLE = false
-                Configuration.UI_MODE_NIGHT_YES -> SweetAlertDialog.DARK_STYLE = true
-                else -> SweetAlertDialog.DARK_STYLE = false
+        when (dayNightAutoValue) {
+            resources.getInteger(R.integer.dark_mode_value) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                SweetAlertDialog.DARK_STYLE = true
+            }
+            resources.getInteger(R.integer.light_mode_value) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                SweetAlertDialog.DARK_STYLE = false
+            }
+            else -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                val currentNightMode = (resources.configuration.uiMode
+                    and Configuration.UI_MODE_NIGHT_MASK)
+                when (currentNightMode) {
+                    Configuration.UI_MODE_NIGHT_NO -> SweetAlertDialog.DARK_STYLE = false
+                    Configuration.UI_MODE_NIGHT_YES -> SweetAlertDialog.DARK_STYLE = true
+                    else -> SweetAlertDialog.DARK_STYLE = false
+                }
             }
         }
         setContentView(R.layout.activity_main)
@@ -235,7 +239,7 @@ class MainActivity : AppCompatActivity() {
         }
         loadPreferences()
         DatabaseHelper.renameOldDatabase(this)
-        if (DatabaseHelper.DATABASE_VERSION >= 15 && !mMigrationBD15done) {
+        if (!mMigrationBD15done) {
             val mDbOldCardio = DAOOldCardio(this)
             val lDAOMachine = DAOMachine(this)
             if (mDbOldCardio.tableExists()) {
@@ -266,7 +270,7 @@ class MainActivity : AppCompatActivity() {
             savePreferences()
         }
         if (savedInstanceState == null) {
-            showFragment(FONTESPAGER, false) // Create fragment, do not add to backstack
+            showFragment(FONTESPAGER) // Create fragment, do not add to backstack
             currentFragmentName = FONTESPAGER
         }
         dataList = ArrayList()
@@ -300,8 +304,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setHomeButtonEnabled(true)
         musicController.initView()
 
-        // Lance l'intro
-        // Tester si l'intro a déjà été lancé
         if (!mIntro014Launched) {
             createNewProfil()
 //            val intent = Intent(this, MainIntroActivity::class.java)
@@ -389,7 +391,7 @@ class MainActivity : AppCompatActivity() {
             != PackageManager.PERMISSION_GRANTED) {
             // No explanation needed; request the permission
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
+                requestPermissionToExternalStorage)
         } else {
             // Afficher une boite de dialogue pour confirmer
             val exportDbBuilder = AlertDialog.Builder(this)
@@ -430,7 +432,7 @@ class MainActivity : AppCompatActivity() {
             R.id.import_database -> {
                 // Create DirectoryChooserDialog and register a callback
                 val fileChooserDialog = FileChooserDialog(this) { chosenDir: String ->
-                    m_importCVSchosenDir = chosenDir
+                    mImportcvschosendir = chosenDir
                     //Toast.makeText(getActivity().getBaseContext(), "Chosen directory: " +
                     //    chosenDir, Toast.LENGTH_LONG).show();
                     SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
@@ -440,10 +442,10 @@ class MainActivity : AppCompatActivity() {
                         .setConfirmClickListener { sDialog: SweetAlertDialog ->
                             sDialog.dismissWithAnimation()
                             val cvsMan = CVSManager(activity.baseContext)
-                            if (cvsMan.importDatabase(m_importCVSchosenDir, currentProfile)) {
-                                KToast.successToast(activity, m_importCVSchosenDir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
+                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
                             } else {
-                                KToast.errorToast(activity, m_importCVSchosenDir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
                             }
                             setCurrentProfil(currentProfile) // Refresh profile
                         }
@@ -516,7 +518,7 @@ class MainActivity : AppCompatActivity() {
                                             permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // If request is cancelled, the result arrays are empty.
-        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE) {
+        if (requestCode == requestPermissionToExternalStorage) {
             if (grantResults.isNotEmpty()
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 KToast.infoToast(this, getString(R.string.access_granted), Gravity.BOTTOM, KToast.LENGTH_SHORT)
@@ -588,7 +590,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDrawerTitle(pProfilName: String) {
-        Objects.requireNonNull(mDrawerAdapter!!.getItem(0))?.title  = pProfilName
+        val drowerTitle=Objects.requireNonNull(mDrawerAdapter!!.getItem(0))
+        if (drowerTitle != null) {
+            drowerTitle.title  = pProfilName
+        }
         mDrawerAdapter!!.notifyDataSetChanged()
         mDrawerLayout!!.invalidate()
     }
@@ -598,9 +603,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun selectItem(position: Int) {
         // Highlight the selected item, update the title, and close the drawer
-        mDrawerList!!.setItemChecked(position, true)
+        mDrawerList.setItemChecked(position, true)
         //setTitle(mPlanetTitles[position]);
-        mDrawerLayout!!.closeDrawer(mDrawerList!!)
+        mDrawerLayout!!.closeDrawer(mDrawerList)
     }
 
     override fun setTitle(title: CharSequence) {
@@ -618,30 +623,40 @@ class MainActivity : AppCompatActivity() {
         mDrawerToggle!!.onConfigurationChanged(newConfig)
     }
 
-    private fun showFragment(pFragmentName: String, addToBackStack: Boolean = true) {
+    private fun showFragment(pFragmentName: String) {
         if (currentFragmentName == pFragmentName) return  // If this is already the current fragment, do no replace.
         val fragmentManager = supportFragmentManager
         val ft = fragmentManager.beginTransaction()
 
         // Then show the fragments
-        if (pFragmentName == FONTESPAGER) {
-            ft.replace(R.id.fragment_container, fontesPagerFragment!!, FONTESPAGER)
-        } else if (pFragmentName == PROGRAMS) {
-            ft.replace(R.id.fragment_container, programsFragment, PROGRAMS)
-        } else if (pFragmentName == FONTESPAGER + "OLD") {
-            ft.replace(R.id.fragment_container, fontesOldPagerFragment!!, FONTESPAGER + "OLD")
-        } else if (pFragmentName == WEIGHT) {
-            ft.replace(R.id.fragment_container, weightFragment!!, WEIGHT)
-        } else if (pFragmentName == SETTINGS) {
-            ft.replace(R.id.fragment_container, settingsFragment, SETTINGS)
-        } else if (pFragmentName == MACHINES) {
-            ft.replace(R.id.fragment_container, machineFragment!!, MACHINES)
-        } else if (pFragmentName == ABOUT) {
-            ft.replace(R.id.fragment_container, aboutFragment!!, ABOUT)
-        } else if (pFragmentName == BODYTRACKING) {
-            ft.replace(R.id.fragment_container, bodyPartFragment!!, BODYTRACKING)
-        } else if (pFragmentName == PROFILE) {
-            ft.replace(R.id.fragment_container, profileFragment!!, PROFILE)
+        when (pFragmentName) {
+            FONTESPAGER -> {
+                ft.replace(R.id.fragment_container, fontesPagerFragment!!, FONTESPAGER)
+            }
+            PROGRAMS -> {
+                ft.replace(R.id.fragment_container, programsFragment, PROGRAMS)
+            }
+            FONTESPAGER + "OLD" -> {
+                ft.replace(R.id.fragment_container, fontesOldPagerFragment!!, FONTESPAGER + "OLD")
+            }
+            WEIGHT -> {
+                ft.replace(R.id.fragment_container, weightFragment!!, WEIGHT)
+            }
+            SETTINGS -> {
+                ft.replace(R.id.fragment_container, settingsFragment, SETTINGS)
+            }
+            MACHINES -> {
+                ft.replace(R.id.fragment_container, machineFragment!!, MACHINES)
+            }
+            ABOUT -> {
+                ft.replace(R.id.fragment_container, aboutFragment!!, ABOUT)
+            }
+            BODYTRACKING -> {
+                ft.replace(R.id.fragment_container, bodyPartFragment!!, BODYTRACKING)
+            }
+            PROFILE -> {
+                ft.replace(R.id.fragment_container, profileFragment!!, PROFILE)
+            }
         }
         currentFragmentName = pFragmentName
         //if (addToBackStack) ft.addToBackStack(null);
@@ -683,24 +698,24 @@ class MainActivity : AppCompatActivity() {
     //    public long getCurrentProfilID() {
     //        return mCurrentProfile.getId();
     //    }
-    private fun setPhotoProfile(path: String) {
-        val imgUtil = ImageUtil()
-
-        // Check if path is pointing to a thumb else create it and use it.
-        val thumbPath = imgUtil.getThumbPath(path)
-        if (thumbPath != null) {
-            ImageUtil.setPic(roundProfile, thumbPath)
-            mDrawerAdapter!!.getItem(0)!!.img = thumbPath
-            mDrawerAdapter!!.notifyDataSetChanged()
-            mDrawerLayout!!.invalidate()
-        } else {
-            roundProfile!!.setImageDrawable(getDrawable(R.drawable.ic_person_black_24dp))
-            mDrawerAdapter!!.getItem(0)!!.imgResID = R.drawable.ic_person_black_24dp
-            mDrawerAdapter!!.getItem(0)!!.img = null // Img has priority over Resource
-            mDrawerAdapter!!.notifyDataSetChanged()
-            mDrawerLayout!!.invalidate()
-        }
-    }
+//    private fun setPhotoProfile(path: String) {
+//        val imgUtil = ImageUtil()
+//
+//        // Check if path is pointing to a thumb else create it and use it.
+//        val thumbPath = imgUtil.getThumbPath(path)
+//        if (thumbPath != null) {
+//            ImageUtil.setPic(roundProfile, thumbPath)
+//            mDrawerAdapter!!.getItem(0)!!.img = thumbPath
+//            mDrawerAdapter!!.notifyDataSetChanged()
+//            mDrawerLayout!!.invalidate()
+//        } else {
+//            roundProfile!!.setImageDrawable(getDrawable(R.drawable.ic_person_black_24dp))
+//            mDrawerAdapter!!.getItem(0)!!.imgResID = R.drawable.ic_person_black_24dp
+//            mDrawerAdapter!!.getItem(0)!!.img = null // Img has priority over Resource
+//            mDrawerAdapter!!.notifyDataSetChanged()
+//            mDrawerLayout!!.invalidate()
+//        }
+//    }
 
     val activity: MainActivity
         get() = this
@@ -791,7 +806,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_INTRO) {
+        if (requestCode == intro) {
             if (resultCode == RESULT_OK) {
                 initActivity()
                 mIntro014Launched = true
@@ -805,17 +820,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Deprecated(message = "because use deprecacted onBackPressed")
-    override fun onBackPressed() {
+    fun onBackPressedDispatcher() {
         val index = activity.supportFragmentManager.backStackEntryCount - 1
         if (index >= 0) { // Si on est dans une sous activité
             val backEntry = supportFragmentManager.getBackStackEntryAt(index)
             val tag = backEntry.name
             supportFragmentManager.findFragmentByTag(tag)
-            super.onBackPressed()
+            super.onBackPressedDispatcher.onBackPressed()
             activity.supportActionBar?.show()
         } else { // Si on est la racine, avec il faut cliquer deux fois
             if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-                super.onBackPressed()
+                super.onBackPressedDispatcher.onBackPressed()
                 return
             } else {
                 Toast.makeText(baseContext, R.string.pressBackAgain, Toast.LENGTH_SHORT).show()

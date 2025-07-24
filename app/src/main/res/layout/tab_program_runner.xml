@@ -70,14 +70,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="1"
-                        tools:text="1"
-                        app:layout_constraintEnd_toStartOf="@+id/slash" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/slash"
+                        tools:text="1" />
 
                     <TextView
                         android:id="@+id/slash"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/slash"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/exerciseInProgramNumber" />
 
                     <TextView
@@ -85,8 +87,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="16dp"
-                        tools:text="22"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="22" />
 <!--                    <com.hrskrs.instadotlib.InstaDotView-->
 <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
 <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
