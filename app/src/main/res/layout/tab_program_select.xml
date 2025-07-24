@@ -1,0 +1,50 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabProgramRunner"
+    android:name="tab_program_runner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:keepScreenOn="true">
+
+    <LinearLayout
+        android:id="@+id/layoutProgramRunner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:animateLayoutChanges="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp"
+        android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:background="@color/sweet_dialog_bg_color_dark">
+        <TextView
+            android:text="@string/program_selection"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/programSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/minTouchSize"
+            android:minWidth="@dimen/minTouchSize"
+            android:padding="2dp"
+            style="@style/TextAppearance.AppCompat.Large" />
+    </LinearLayout>
+
+         </LinearLayout>
+
+
+</ScrollView>

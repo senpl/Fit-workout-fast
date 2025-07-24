@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import java.security.AccessControlContext
+import java.util.Collections.emptyList
 
 class DAOProgram(context: Context?) : DAOBase(context) {
     private var mCursor: Cursor? = null
@@ -69,14 +70,14 @@ class DAOProgram(context: Context?) : DAOBase(context) {
         return value
     }
 
-    val allProgramsNames: MutableList<String>?
+    val allProgramsNames: MutableList<String>
         get() {
             val programs: MutableList<String> = ArrayList()
             val db = this.readableDatabase
             mCursor = null
             mCursor = db.query(TABLE_NAME, arrayOf(PROGRAM_NAME), null, null, null, null, PROGRAM_NAME)
             if (mCursor != null) mCursor!!.moveToFirst()
-            if (mCursor!!.count == 0) return null
+            if (mCursor!!.count == 0) return emptyList()
             if (mCursor!!.moveToFirst()) {
                 do {
                     programs.add(mCursor!!.getString(mCursor!!.getColumnIndex(PROGRAM_NAME)))
@@ -87,13 +88,32 @@ class DAOProgram(context: Context?) : DAOBase(context) {
             return programs
         }
 
-    val allPrograms: Cursor?
+    val allPrograms: Cursor
         get() {
             val selectQuery = ("SELECT  * FROM " + TABLE_NAME + " ORDER BY "
                 + PROGRAM_NAME + " ASC")
             return getProgramListCursor(selectQuery)
         }
 
+    val allProgramsToView: MutableList<Program>
+        get() {
+            val programs: MutableList<Program> = ArrayList()
+            val db = this.readableDatabase
+            mCursor = null
+            mCursor = db.query(TABLE_NAME, arrayOf(PROGRAM_NAME,KEY), null, null, null, null, PROGRAM_NAME)
+            if (mCursor != null) mCursor!!.moveToFirst()
+            if (mCursor!!.count == 0) return emptyList()
+            if (mCursor!!.moveToFirst()) {
+                do {
+                    val program = Program(mCursor!!.getString(mCursor!!.getColumnIndex(PROGRAM_NAME)), 1)
+                    program.id=mCursor!!.getLong(mCursor!!.getColumnIndex(KEY))
+                    programs.add(program)
+                } while (mCursor!!.moveToNext())
+            }
+            mCursor!!.close()
+            close()
+            return programs
+        }
     /**
      * @return List of Machine object ordered by Favorite and Name
      */

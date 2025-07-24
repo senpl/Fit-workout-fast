@@ -1,11 +1,4 @@
-W sumie teraz obchodzę ten błąd i tak może zostać
 Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
-
-Błąd jest tylko gdy element z którego zmieniamy jest na indexie większym niż na ten co zmieniamy w innym programie.
-Naprawić błąd z setDotSelection gdy zwraca null
-Nadpisać tą klasę?
-      	at com.mazenrashed.dotsindicator.DotsIndicator.setDotSelection
-
 Dodać zapamiętywanie stanu selectu
 bo to life usage improvment
 Niech wyświetla film gdy jest w głównym ekranie
