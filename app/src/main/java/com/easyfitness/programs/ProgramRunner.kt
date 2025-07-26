@@ -38,9 +38,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -161,16 +163,17 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.programSelect.adapter = adapter
-            Log.d("ProgramRunner", "Spinner adapter set with ${programsList.size} programs.")
+            Timber.tag("ProgramRunner")
+                .d("Spinner adapter set with ${programsList.size} programs.")
         } else {
-            Log.d("ProgramRunner", "No programs to load into spinner.")
+            Timber.tag("ProgramRunner").d("No programs to load into spinner.")
             binding.programSelect.adapter = null // Clear adapter if no programs
             clearExerciseUI()
         }
     }
 
     private fun clearExerciseUI() {
-        Log.d("ProgramRunner", "Clearing all exercise UI components.")
+        Timber.tag("ProgramRunner").d("Clearing all exercise UI components.")
         binding.exerciseIndicator.visibility = GONE
         binding.currentExerciseNumber.text = "0"
         binding.exerciseInProgramNumber.text = "0"
@@ -275,7 +278,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val sharedPreferences =
             activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
-        if (programs.isNullOrEmpty()) {
+        if (programs.isEmpty()) {
             val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
@@ -573,12 +576,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         when (val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
 //                Text(text = "Error: ${state.message}")
-                KToast.infoToast(
-                    requireActivity(),
-                    "State error:${state.message}",
-                    Gravity.BOTTOM,
-                    KToast.LENGTH_SHORT
-                )
+//                    KToast.infoToast(
+//                    requireActivity(),
+//                    "State error:${state.message}",
+//                    Gravity.BOTTOM,
+//                    KToast.LENGTH_SHORT
+//                    )
             }
 
             YouTubePlayerState.Idle -> {
