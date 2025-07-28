@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -27,7 +26,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -38,11 +36,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -50,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.easyfitness.BtnClickListener
 import com.easyfitness.DAO.Cardio
 import com.easyfitness.DAO.DAOCardio
@@ -107,10 +102,8 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
-
-//import androidx.paging.map
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -138,9 +131,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val showVideoDialog = mutableStateOf(false)
     private var _binding: TabProgramRunnerBinding? = null
 
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -206,55 +197,24 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     exercisesFromProgram =
                         daoExerciseInProgram.getAllExerciseInProgram(programId)
                     if (exercisesFromProgram.isNotEmpty()) {
-//                        binding.exerciseIndicator = requireActivity().findViewById(R.id.exerciseIndicator)
                         binding.exerciseIndicator.initDots(exercisesFromProgram.size)
+                        //                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
                         binding.currentExerciseNumber.text = "1"
-//                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
                         binding.exerciseInProgramNumber.text =
                             exercisesFromProgram.size.toString()
                         try {
-//                            if (binding.exerciseIndicator.isDirty) {
-//                                binding.exerciseIndicator.invalidate()
-//                                binding.exerciseIndicator.visibility= GONE
-////                                binding.exerciseIndicator=view.findViewById(R.id.exerciseIndicator)
-////                                adapter?.notifyDataSetChanged()
-////                                binding.programSelect.invalidate()
-//                                binding.exerciseIndicator.initDots(exercisesFromProgram.size)
-                                binding.exerciseIndicator.setDotSelection(0)
-//                                binding.exerciseIndicator.visibility=VISIBLE
-//                            } else {
-                                binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
-//                            }
-                            } catch (_: Exception) {
-//                            println(exerciseIndicator.isDirty)
-//                                binding.exerciseIndicator.invalidate()
-//                                binding.programSelect.invalidate()
-//                            }
+                             binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+                        // binding.exerciseIndicator.onPageChange(currentExerciseOrder);
+                        } catch (_: Exception) {
                             binding.programSelect.invalidate()
                             adapter?.notifyDataSetChanged()
                             binding.exerciseIndicator.invalidate()
                             binding.exerciseIndicator.visibility=GONE
-//                            binding.exerciseIndicator.initDots(exercisesFromProgram.size)
-//                            binding.exerciseIndicator.setDotSelection(0)
-
-//                            exerciseIndicator =
-//                                com.mazenrashed.dotsindicator.DotsIndicator(requireContext().applicationContext)
-//                            binding.exerciseIndicator.selectedDotResource =
-//                                R.drawable.pager_box_white_24dp
-//                            binding.exerciseIndicator.initDots(exercisesFromProgram.size)
-//                            binding.exerciseIndicator.setDotSelection(0)
-//                            currentExerciseOrder = 0
                             Timber.w("IllegalState when changing to bigger exercise")
                         }
-//                                binding.exerciseIndicator.onPageChange(currentExerciseOrder);
                         saveToPreference("currentProgram", programId)
                         saveToPreference("currentProgramPosition", position)
                         refreshData()
-//                        Toast.makeText(
-//                            context,
-//                            getString(R.string.program_selection) + " " + programs[position],
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                     } else {
                         val profileId: Long? =
                             (requireActivity() as MainActivity).currentProfile?.id
@@ -267,8 +227,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
             }
         daoRecord = DAORecord(context)
         strengthRecordsDao = DAOFonte(context)
@@ -292,83 +251,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 programId =
                     requireContext().getSharedPreferences("currentProgram", Context.MODE_PRIVATE)
                         .getLong("currentProgram", programFirst.id)
-                val tempPosition = requireContext().getSharedPreferences(
-                    "currentProgramPosition",
-                    Context.MODE_PRIVATE
-                ).getInt("currentProgramPosition", 1)
-//                val adapter =
-//                    ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs)
-//                programSelect = view.findViewById(R.id.programSelect)
-//                if (position < binding.exerciseIndicator.drawableState..hasEnded()) { // Or however you get the count
-//                    dotsIndicator.setDotSelection(position) // Or the relevant method
-//                } else {
-//                    Log.e("ProgramRunner", "Invalid position $position for DotsIndicator with ${dotsIndicator.dotsCount} dots")
-//                }
-//                if (tempPosition < programs.size) {
-//                    binding.programSelect.setSelection(tempPosition)
-//                }
-//                programSelect.onItemSelectedListener = object :
-//                    AdapterView.OnItemSelectedListener {
-//                    @SuppressLint("SetTextI18n")
-//                    override fun onItemSelected(
-//                        parent: AdapterView<*>,
-//                        view: View?, position: Int, id: Long
-//                    ) {
-//                        adapter.notifyDataSetChanged()
-//                        val program: Program? = daoProgram.getRecord(programs[position])
-//                        if (program != null) {
-//                            programId = program.id
-//                            currentExerciseOrder = 0
-//                            exercisesFromProgram =
-//                                daoExerciseInProgram.getAllExerciseInProgram(programId)
-//                            if (exercisesFromProgram.isNotEmpty()) {
-//                                exerciseIndicator = requireActivity().findViewById(R.id.exerciseIndicator)
-//                                exerciseIndicator.initDots(exercisesFromProgram.size)
-//                                binding.currentExerciseNumber.text = "1"
-////                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
-//                                binding.exerciseInProgramNumber.text =
-//                                    exercisesFromProgram.size.toString()
-//                                try {
-//                                    exerciseIndicator.setDotSelection(currentExerciseOrder)
-//                                } catch (_: Exception) {
-//                                    println(exerciseIndicator.isDirty)
-//                                    if (exerciseIndicator.isDirty) {
-//                                        exerciseIndicator.invalidate()
-//                                    }
-//                                    adapter.notifyDataSetChanged()
-//                                    exerciseIndicator =
-//                                        com.mazenrashed.dotsindicator.DotsIndicator(requireContext().applicationContext)
-//                                    exerciseIndicator.selectedDotResource =
-//                                        R.drawable.pager_box_white_24dp
-//                                    exerciseIndicator.initDots(exercisesFromProgram.size)
-//                                    exerciseIndicator.setDotSelection(0)
-//                                    currentExerciseOrder = 0
-//                                    Timber.w("IllegalState when changing to bigger exercise")
-//                                }
-////                                binding.exerciseIndicator.onPageChange(currentExerciseOrder);
-//                                saveToPreference("currentProgram", programId)
-//                                saveToPreference("currentProgramPosition", position)
-//                                refreshData()
-//                                Toast.makeText(
-//                                    context,
-//                                    getString(R.string.program_selection) + " " + programs[position],
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            } else {
-//                                val profileId: Long? =
-//                                    (requireActivity() as MainActivity).currentProfile?.id
-//                                val programsFragment = ProgramsFragment.newInstance("", profileId)
-//                                requireActivity().supportFragmentManager.commit {
-//                                    addToBackStack(null)
-//                                    add(R.id.fragment_container, programsFragment)
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    override fun onNothingSelected(parent: AdapterView<*>) {
-//                    }
-//                }
+//                val tempPosition = requireContext().getSharedPreferences(
+//                    "currentProgramPosition",
+//                    Context.MODE_PRIVATE
+//                ).getInt("currentProgramPosition", 1)
             }
         }
         swipeDetectorListener = SwipeDetectorListener(this)
@@ -480,10 +366,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
 
-//        //TODO maybe it might be worth to support clicking on exercise change
-//        exerciseIndicator.onSelectListener = {
-//            changeExercise(it)
-//        }
+        binding.exerciseIndicator.onSelectListener = {
+            changeExercise(it)
+        }
 
 
         if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE)
@@ -575,6 +460,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
         when (val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
+                //TODO show error but only once so to not throw that many errors into user face
 //                Text(text = "Error: ${state.message}")
 //                    KToast.infoToast(
 //                    requireActivity(),
@@ -657,12 +543,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 //    }
 
 
-//    @SuppressLint("SetTextI18n")
-//    private fun changeExercise(selected: Int) {
-//        currentExerciseOrder = selected
-//        binding.currentExerciseNumber.text = (selected + 1).toString()
-//        refreshData()
-//    }
+    @SuppressLint("SetTextI18n")
+    private fun changeExercise(selected: Int) {
+        currentExerciseOrder = selected
+        binding.currentExerciseNumber.text = (selected + 1).toString()
+        refreshData()
+    }
 
     @SuppressLint("SetTextI18n")
     fun nextExercise() {
@@ -1077,7 +963,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             } else {
                 val mTableAdapter = machineList.adapter as MachineCursorAdapter
                 oldCursor = mTableAdapter.swapCursor(c)
-                oldCursor?.close()
+                oldCursor.close()
             }
             machineList.onItemClickListener =
                 OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
@@ -1128,13 +1014,14 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun showDeleteDialog(idToDelete: Long) {
-        SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText(getString(R.string.DeleteRecordDialog))
-            .setContentText(resources.getText(R.string.areyousure).toString())
-            .setCancelText(resources.getText(R.string.global_no).toString())
-            .setConfirmText(resources.getText(R.string.global_yes).toString())
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog: SweetAlertDialog ->
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.DeleteRecordDialog))
+            .setMessage(resources.getString(R.string.areyousure))
+            .setNeutralButton(resources.getString(R.string.global_cancel)) { dialog, which ->
+            }
+            .setNegativeButton(resources.getString(R.string.global_no)) { dialog, which ->
+            }
+            .setPositiveButton(resources.getString(R.string.global_yes)) { dialog, which ->
                 daoRecord.deleteRecord(idToDelete)
                 updateRecordTable(binding.exerciseEdit.text.toString())
                 KToast.infoToast(
@@ -1143,7 +1030,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     Gravity.BOTTOM,
                     KToast.LENGTH_LONG
                 )
-                sDialog.dismissWithAnimation()
             }
             .show()
     }
@@ -1494,7 +1380,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     val mTableAdapter = binding.recordList.adapter as RecordCursorAdapter
                     mTableAdapter.setFirstColorOdd(lTableColor)
                     oldCursor = mTableAdapter.swapCursor(c)
-                    oldCursor?.close()
+                    oldCursor.close()
                 }
             }
         }

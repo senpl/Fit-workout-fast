@@ -37,6 +37,7 @@ import java.lang.Integer.parseInt
 import java.util.*
 import androidx.core.view.isGone
 import androidx.core.content.edit
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises) {
     private lateinit var mainActivity: MainActivity
@@ -456,20 +457,23 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     }
 
     private fun showDeleteDialog(idToDelete: Long, position: Int) {
-        SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText(getString(R.string.DeleteRecordDialog))
-            .setContentText(resources.getText(R.string.areyousure).toString())
-            .setCancelText(resources.getText(R.string.global_no).toString())
-            .setConfirmText(resources.getText(R.string.global_yes).toString())
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog: SweetAlertDialog ->
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.DeleteRecordDialog))
+            .setMessage(resources.getString(R.string.areyousure))
+            .setNegativeButton(resources.getString(R.string.global_no)) { dialog, which ->
+            }
+            .setPositiveButton(resources.getString(R.string.global_yes)) { dialog, which ->
                 daoExerciseInProgram.deleteRecord(idToDelete)
                 (binding.exercisesRecycler.adapter!! as ExerciseInProgramAdapter).removeAt(position)
-                exercisesList = daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
-                KToast.infoToast(requireActivity(), resources.getText(R.string.removedid).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                sDialog.dismissWithAnimation()
-            }
-            .show()
+                exercisesList =
+                    daoExerciseInProgram.getAllExerciseInProgram(programId).toMutableList()
+                KToast.infoToast(
+                    requireActivity(),
+                    resources.getText(R.string.removedid).toString(),
+                    Gravity.BOTTOM,
+                    KToast.LENGTH_LONG
+                )
+            }.show()
     }
 
     override fun onStart() {
@@ -546,7 +550,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
     @SuppressLint("SetTextI18n")
     private fun refreshData() {
-        if (programs!!.size != daoProgram.allProgramsNames?.size) {//only for program list refresh after add
+        if (programs!!.size != daoProgram.allProgramsNames.size) {//only for program list refresh after add
             programs = daoProgram.allProgramsNames //update programs
             programId = daoProgram.getRecord(programs!![0])!!.id
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs!!)

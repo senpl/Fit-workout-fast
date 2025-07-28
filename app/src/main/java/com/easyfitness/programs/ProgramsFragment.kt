@@ -117,7 +117,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             if (profil != null) {
                 val daoProgram = DAOProgram(context)
                 c = daoProgram.allPrograms
-                if (c == null || c.count <= 0) {
+                if (c.count <= 0) {
                     binding.programsList.adapter = null
                 } else {
                     if (binding.programsList.adapter == null) {
