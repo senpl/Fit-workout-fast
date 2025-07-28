@@ -51,6 +51,7 @@ freeline.py
 freeline/
 freeline_project_description.json
 
+app/release
 # keystore
 release.properties
 debug.properties

@@ -1,7 +1,3 @@
-Usuwanie ćwicznia z programu nie działa, zbadać, dlaczego
-    Nie mam reprodukcji, nawet na razie nie mam logów
-    I jak się da to naprwić
-
 Dodać zapamiętywanie stanu selectu
    Jest w wersji Compose, pytanie czy przenosiść to.
 Dodać lepszy import i eksport( bardziej automatyczny)

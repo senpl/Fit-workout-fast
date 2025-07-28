@@ -1,3 +1,4 @@
+repro błędu usuwania na podstawie logów
 Ukrywać sets gdy tylko 1 set jest bo w sumie oczyści interfejs
    I wyróżniać innym kolorem gdy jest inna niż 1
    Niech widok edycji większości pół jest wyświetlany dopiero po kliknięciu
