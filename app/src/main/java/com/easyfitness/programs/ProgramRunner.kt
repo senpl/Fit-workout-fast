@@ -251,10 +251,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 programId =
                     requireContext().getSharedPreferences("currentProgram", Context.MODE_PRIVATE)
                         .getLong("currentProgram", programFirst.id)
-//                val tempPosition = requireContext().getSharedPreferences(
-//                    "currentProgramPosition",
-//                    Context.MODE_PRIVATE
-//                ).getInt("currentProgramPosition", 1)
             }
         }
         swipeDetectorListener = SwipeDetectorListener(this)

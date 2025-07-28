@@ -18,7 +18,6 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.easyfitness.*
 import com.easyfitness.DAO.*
 import com.easyfitness.DAO.DAOMachine.*
@@ -150,8 +149,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
         val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(recyclerView: RecyclerView, dragged: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                val fromPosition = dragged.adapterPosition
-                val toPosition = target.adapterPosition
+                val fromPosition = dragged.getBindingAdapterPosition()
+                val toPosition = target.getBindingAdapterPosition()
                 val listOfExercises: List<ExerciseInProgram> = exercisesList
                 if (fromPosition < toPosition) {
                     for (i in fromPosition until toPosition) {
@@ -401,7 +400,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             } else {
                 val mTableAdapter = machineList.adapter as MachineCursorAdapter
                 oldCursor = mTableAdapter.swapCursor(c)
-                oldCursor?.close()
+                oldCursor.close()
             }
             machineList.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
                 val textView = view.findViewById<TextView>(R.id.LIST_MACHINE_ID)

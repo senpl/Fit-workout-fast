@@ -1,5 +1,6 @@
 Dodać zapamiętywanie stanu selectu
    Jest w wersji Compose, pytanie czy przenosiść to.
+
 Dodać lepszy import i eksport( bardziej automatyczny)
 zbadać możliwości eksportu bazy danych przez android backup tag. Bo to w sumie miałoby sens.
 Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
