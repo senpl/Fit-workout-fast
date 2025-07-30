@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/programNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="18sp"
+        tools:text="Full Body Workout" />
+
+    <!-- Optional: Add more details like a short description or number of exercises -->
+    <TextView
+        android:id="@+id/programDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItemSecondary"
+        android:textSize="14sp"
+        tools:text="A comprehensive workout targeting all major muscle groups."
+        android:layout_marginTop="4dp"
+        android:visibility="gone" /> <!-- Example: Initially gone, set visible if description exists -->
+
+</LinearLayout>

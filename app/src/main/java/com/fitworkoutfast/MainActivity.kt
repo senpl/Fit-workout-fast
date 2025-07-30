@@ -219,8 +219,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(activityToolbar)
         activityToolbar.title = resources.getText(R.string.app_name)
         if (savedInstanceState == null) {
-            if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6)
-            if (mpFontesOldPagerFrag == null) mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER + "OLD", 6)
+            if (mpProgramPagerFrag == null) mpProgramPagerFrag = ProgramsPagerFragment.newInstance(PROGRAMS, 6)
+            if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6);            if (mpFontesOldPagerFrag == null) mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER + "OLD", 6)
             if (mpWeightFrag == null) mpWeightFrag = WeightFragment.newInstance(WEIGHT, 5)
             if (mpProfileFrag == null) mpProfileFrag = ProfileFragment.newInstance(PROFILE, 10)
             if (mpSettingFrag == null) mpSettingFrag = SettingsFragment.newInstance(SETTINGS, 8)
@@ -743,7 +743,7 @@ class MainActivity : AppCompatActivity() {
     private val fontesPagerFragment: FontesPagerFragment?
         get() {
             if (mpFontesPagerFrag == null) mpFontesPagerFrag = supportFragmentManager.findFragmentByTag(FONTESPAGER) as FontesPagerFragment?
-            if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6)
+//            if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6)
             return mpFontesPagerFrag
         }
     private val fontesOldPagerFragment: FontesOldPagerFragment?

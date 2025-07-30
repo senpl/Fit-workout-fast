@@ -1,11 +1,44 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabProgramRunner"
-    android:name="tab_program_runner"
-    android:layout_width="wrap_content"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:keepScreenOn="true">
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tabProgramRunner">
+
+
+<com.google.android.material.appbar.AppBarLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:theme="@style/AppTheme.NoActionBar"> <!-- Or your app bar theme -->
+
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"/>
+<!--    app:popupTheme="@style/AppTheme.PopupOverlay" -->
+     <!-- Or your popup theme -->
+
+</com.google.android.material.appbar.AppBarLayout>
+
+<androidx.fragment.app.FragmentContainerView
+android:id="@+id/nav_host_fragment_container"
+android:name="androidx.navigation.fragment.NavHostFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph" />
+
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/tabProgramRunner"-->
+<!--    android:name="tab_program_runner_select"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:fillViewport="true"-->
+<!--    android:keepScreenOn="true">-->
 
     <LinearLayout
         android:id="@+id/layoutProgramRunner"
@@ -42,9 +75,15 @@
             android:minWidth="@dimen/minTouchSize"
             android:padding="2dp"
             style="@style/TextAppearance.AppCompat.Large" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/programsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_program" />
     </LinearLayout>
 
          </LinearLayout>
 
 
-</ScrollView>
+<!--</ScrollView>-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

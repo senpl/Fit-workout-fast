@@ -6,7 +6,7 @@
     android:keepScreenOn="true"
     android:layout_gravity="bottom">
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/noviewpagertab"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -34,7 +34,7 @@
         app:stl_defaultTabTextColor="@color/enabled_color"
         android:visibility="gone"/>
 
-    <com.easyfitness.programs.NonSwipeableViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/programrunner_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

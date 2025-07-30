@@ -1,37 +1,52 @@
-package com.easyfitness.fonte
+package com.easyfitness.programs
 
+import ProgramSelectFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.semantics.text
 import androidx.fragment.app.Fragment
-//import androidx.viewpager.widget.ViewPager
-//import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2 // Use ViewPager2
 import com.easyfitness.R
-import com.easyfitness.programs.FontesViewPagerAdapter
-//import com.easyfitness.programs.NonSwipeableViewPager
-import com.easyfitness.programs.ProgramRunner
+//import com.easyfitness.programs.ProgramSelectFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.ogaclejapan.smarttablayout.SmartTabLayout
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
+// Import your other fragments for the tabs like FonteHistoryFragment, FonteGraphFragment if they exist
 
-//import com.easyfitness.programs.ProgramRunner;
+// You'll need an adapter
+class FontesViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+
+    // Define your tabs. You can make this more dynamic.
+    private val fragmentCreators: Map<Int, () -> Fragment> = mapOf(
+        0 to { ProgramSelectFragment() }, // First tab
+        1 to { ExercisesInProgramFragment() },  // Second tab (example)
+        2 to { ProgramsFragment() }    // Third tab (example)
+        // Add more tabs as needed
+    )
+
+    override fun getItemCount(): Int = fragmentCreators.size
+
+    override fun createFragment(position: Int): Fragment {
+        return fragmentCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
+    }
+}
+
+
 class FontesPagerFragment : Fragment() { // Your original class, converted to Kotlin for example
-
     // Consider using ViewBinding for FontesPagerFragment's layout
-//    private lateinit var viewPager: ViewPager2
+    private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout // Your SmartTabLayout or a standard TabLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.programrunner_pager, container, false)
-        val viewPager = view.findViewById<ViewPager2>(R.id.programrunner_pager)
+        // Inflate the layout for this fragment
+        // Ensure this layout contains a ViewPager2 and a TabLayout
+        val view = inflater.inflate(R.layout.programrunner_pager, container, false) // RENAME this layout if it's not generic
+
+        viewPager = view.findViewById(R.id.programrunner_pager) // RENAME this ID to view_pager_fontes or similar
         tabLayout = view.findViewById(R.id.noviewpagertab) // Your TabLayout ID
 
         // IMPORTANT: Use this for FragmentStateAdapter inside a Fragment
@@ -55,18 +70,5 @@ class FontesPagerFragment : Fragment() { // Your original class, converted to Ko
         return view
     }
 
-    companion object {
-        private const val ARG_NAME = "pager_name"
-        private const val ARG_ID = "pager_id"
-
-        @JvmStatic // Good practice, especially if MainActivity could be Java
-        fun newInstance(name: String, id: Int): FontesPagerFragment {
-            val fragment = FontesPagerFragment()
-            val args = Bundle()
-            args.putString(ARG_NAME, name)
-            args.putInt(ARG_ID, id)
-            fragment.arguments = args
-            return fragment
-        }
-    }
+    // ... other methods from your original FontesPagerFragment if needed ...
 }

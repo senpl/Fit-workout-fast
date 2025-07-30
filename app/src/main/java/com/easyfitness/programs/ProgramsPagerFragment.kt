@@ -60,13 +60,17 @@ class ProgramsPagerFragment : Fragment() {
 //    }
 
     companion object {
-        fun newInstance(name: String, id: Int): ProgramsPagerFragment {
-            val f = ProgramsPagerFragment()
+        private const val ARG_PARAM1 = "param1" // Example argument name
+        private const val ARG_PARAM2 = "param2" // Example argument name
+
+        @JvmStatic // Important if you need to call this from Java
+        fun newInstance(param1: String, param2: Int): ProgramsPagerFragment {
+            val fragment = ProgramsPagerFragment()
             val args = Bundle()
-            args.putString("name", name)
-            args.putInt("id", id)
-            f.arguments = args
-            return f
+            args.putString(ARG_PARAM1, param1)
+            args.putInt(ARG_PARAM2, param2)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

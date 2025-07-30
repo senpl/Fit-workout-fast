@@ -1,10 +1,11 @@
+Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
+
+bo to life usage improvment
 Dodać zapamiętywanie stanu selectu
    Jest w wersji Compose, pytanie czy przenosiść to.
-
-Dodać lepszy import i eksport( bardziej automatyczny)
-zbadać możliwości eksportu bazy danych przez android backup tag. Bo to w sumie miałoby sens.
-Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
-bo to life usage improvment
+    Idalnie byłoby po last used, bo i czemu nie
+    Wymaga last used in program database. więc można dodać
+    I tym sposobem mieć stale ostatnio wybrany program na górze, a starsze na dole
 Niech wyświetla film gdy jest w głównym ekranie
     Bo już wiem jak to zrobić
     Przerobić zdjęcia z aplikacji

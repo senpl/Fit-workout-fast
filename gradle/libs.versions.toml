@@ -36,6 +36,8 @@ ultimateringtonepicker = "3.3.0"
 viewpager = "1.1.0"
 youtubeplayerCompose = "2024.02.25"
 dotsindicatorwithoutviewpager = "1.0.0"
+navigationFragmentKtx = "2.9.2"
+navigationUiKtx = "2.9.2"
 
 
 [libraries]
@@ -76,6 +78,8 @@ smarttablayout-library = { module = "com.ogaclejapan.smarttablayout:library", ve
 ultimateringtonepicker = { module = "com.github.DeweyReed:UltimateRingtonePicker", version.ref = "ultimateringtonepicker" }
 utils-v4 = { module = "com.ogaclejapan.smarttablayout:utils-v4", version.ref = "libraryVersion" }
 youtubeplayer-compose = { module = "io.github.ilyapavlovskii:youtubeplayer-compose", version.ref = "youtubeplayerCompose" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

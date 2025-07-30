@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -11,8 +12,8 @@ android {
         minSdkVersion 26
         compileSdk 35
         targetSdkVersion 35
-        versionCode 74
-        versionName "0.26.06"
+        versionCode 75
+        versionName "0.26.07"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -137,6 +138,8 @@ dependencies {
     implementation libs.ultimateringtonepicker
     implementation(libs.android.image.cropper)
     implementation(libs.dotsindicatorwithoutviewpager)
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
 }
 
 //apply plugin: 'com.google.gms.google-services'

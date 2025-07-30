@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/programSelectFragment">
+
+    <fragment
+        android:id="@+id/programSelectFragment"
+        android:name="com.easyfitness.programs.ProgramsFragment"
+        android:label="Select Program"
+        tools:layout="@layout/tab_program_select">
+        <action
+            android:id="@+id/action_programSelectFragment_to_programRunnerFragment"
+            app:destination="@id/programRunnerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/programRunnerFragment"
+        android:name="com.easyfitness.programs.ProgramRunner"
+        android:label="Workout"
+        tools:layout="@layout/tab_program_runner">
+        <argument
+            android:name="programId"
+            app:argType="long" /> <!-- Argument ProgramRunnerFragment expects -->
+    </fragment>
+
+    <!-- Add other fragments/destinations as needed -->
+
+</navigation>
