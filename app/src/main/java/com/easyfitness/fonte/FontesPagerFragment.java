@@ -16,16 +16,9 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import java.util.Objects;
 
 public class FontesPagerFragment extends Fragment {
     private FragmentPagerItemAdapter pagerAdapter = null;
-    //    private String name;
-//    private int id;
-//    private FontesFragment mpFontesFrag = null;
-//    private FonteHistoryFragment mpHistoryFrag = null;
-//    private FonteGraphFragment mpGraphFrag = null;
-
     /**
      * Create a new instance of DetailsFragment, initialized to
      * show the text at 'index'.
@@ -54,16 +47,17 @@ public class FontesPagerFragment extends Fragment {
         if (mViewPager.getAdapter() == null) {
 
             Bundle args = this.getArguments();
+            assert args != null;
             args.putLong("machineID", -1);
             args.putLong("machineProfile", -1);
 
             pagerAdapter = new FragmentPagerItemAdapter(
+//                getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
+//                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
                 getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
                 .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
 //                .add(R.string.ExerciceLabel, FontesFragment.class)
-//                .add(R.string.GraphLabel, FonteGraphFragment.class, args)
-//                .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
-                .create());
+              .create());
 
             mViewPager.setAdapter(pagerAdapter);
 
@@ -93,31 +87,11 @@ public class FontesPagerFragment extends Fragment {
                 public void onPageScrollStateChanged(int state) {
                 }
             });
-
-            // Locate the viewpager in activity_main.xml
-            //ViewPager viewPager = view.findViewById(R.id.pager);
-
-            // Set the ViewPagerAdapter into ViewPager
-            //viewPager.setAdapter(new FontesViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext()));
-
-            // Bind the tabs to the ViewPager
-            //PagerSlidingTabStrip tabs = view.findViewById(R.id.tabs);
-            //tabs.setViewPager(viewPager);
-
         }
 
         // Inflate the layout for this fragment
         return view;
     }
-
-//    public void onPageSelected(int position) {
-//        //.instantiateItem() from until .destroyItem() is called it will be able to get the Fragment of page.
-//        //Fragment page = pagerAdapter.getPage(position);
-//    }
-//
-//    public ViewPager getViewPager() {
-//        return (ViewPager) getView().findViewById(R.id.pager);
-//    }
 
     private FragmentPagerItemAdapter getViewPagerAdapter() {
         return (FragmentPagerItemAdapter) ((ViewPager) (requireView().findViewById(R.id.programrunner_pager))).getAdapter();
@@ -140,33 +114,4 @@ public class FontesPagerFragment extends Fragment {
             }
         }
     }
-
-//    public FontesFragment getFontesFragment() {
-//        if (mpFontesFrag == null)
-//            mpFontesFrag = (FontesFragment) getChildFragmentManager().findFragmentByTag(MainActivity.FONTES);
-//        if (mpFontesFrag == null) mpFontesFrag = FontesFragment.newInstance(MainActivity.FONTES, 1);
-//
-//        //mpFontesFrag.onHiddenChanged(false);
-//        return mpFontesFrag;
-//    }
-//
-//    public FonteGraphFragment getGraphFragment() {
-//        if (mpGraphFrag == null)
-//            mpGraphFrag = (FonteGraphFragment) getChildFragmentManager().findFragmentByTag(MainActivity.GRAPHIC);
-//        if (mpGraphFrag == null)
-//            mpGraphFrag = FonteGraphFragment.newInstance(MainActivity.GRAPHIC, 2);
-//
-//        //mpGraphFrag.onHiddenChanged(false);
-//        return mpGraphFrag;
-//    }
-//
-//    public FonteHistoryFragment getHistoricFragment() {
-//        if (mpHistoryFrag == null)
-//            mpHistoryFrag = (FonteHistoryFragment) getChildFragmentManager().findFragmentByTag(MainActivity.HISTORY);
-//        if (mpHistoryFrag == null)
-//            mpHistoryFrag = FonteHistoryFragment.newInstance(-1, -1);
-//
-//        //mpHistoryFrag.onHiddenChanged(false);
-//        return mpHistoryFrag;
-//    }
 }
