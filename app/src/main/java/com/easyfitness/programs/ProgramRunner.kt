@@ -122,8 +122,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
     private lateinit var mDbMachine: DAOMachine
     private lateinit var swipeDetectorListener: SwipeDetectorListener
-//    private lateinit var programSelect: Spinner
-//    private lateinit var exerciseIndicator: com.mazenrashed.dotsindicator.DotsIndicator
     private var restTimer: Rx3Timer? = null
     private lateinit var staticTimer: Rx3Timer
     private var staticTimerRunning: Boolean = false
