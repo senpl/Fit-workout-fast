@@ -122,6 +122,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
     private lateinit var mDbMachine: DAOMachine
     private lateinit var swipeDetectorListener: SwipeDetectorListener
+    //    private lateinit var programSelect: Spinner
+//    private lateinit var exerciseIndicator: com.mazenrashed.dotsindicator.DotsIndicator
     private var restTimer: Rx3Timer? = null
     private lateinit var staticTimer: Rx3Timer
     private var staticTimerRunning: Boolean = false
@@ -395,7 +397,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
     }
 
-    fun youtubeUrlRemoving(videoUrl: String): YouTubeVideoDetails {
+    @Composable
+    private fun PlayTube(videoUrl: String) {
         if (videoUrl.isNotEmpty()) {
             if (videoUrl.contains("youtu")) {
                 var videoHash = videoUrl
@@ -436,18 +439,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         )
                     }
                 }
-                return YouTubeVideoDetails(videoHash, startTime)
-            }
-        }
-        return YouTubeVideoDetails(videoUrl, 0)
-    }
-
-    @Composable
-    private fun PlayTube(videoUrl: String) {
-        @Composable {
-            val videoHash = youtubeUrlRemoving(videoUrl).videoHash
-            val startTime = youtubeUrlRemoving(videoUrl).startTime
-            if (videoHash.isNotEmpty()) {
                 KToast.infoToast(
                     requireActivity(),
                     "videoHash: $videoHash ", Gravity.BOTTOM, KToast.LENGTH_SHORT
@@ -455,57 +446,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 PlayVideo(videoHash, startTime)
             }
         }
-    }
-
-    data class YouTubeVideoDetails(var videoHash: String, val startTime: Int)
-
-    fun removePlaylistFromYoutubeUrl(videoUrl: String): YouTubeVideoDetails {
-        if (videoUrl.isNotEmpty()) {
-            var urlForTimestampExtraction = videoUrl
-            if (videoUrl.contains("&list")) {
-                val listParamIndex = urlForTimestampExtraction.indexOf("&list=")
-                if (listParamIndex != -1) {
-                    val endOfListParam = urlForTimestampExtraction.indexOf('&', listParamIndex + 1)
-                    if (endOfListParam != -1) {
-                        urlForTimestampExtraction = urlForTimestampExtraction.substring(0, listParamIndex) + urlForTimestampExtraction.substring(endOfListParam)
-                    } else {
-                        urlForTimestampExtraction = urlForTimestampExtraction.substring(0, listParamIndex)
-                    }
-                }
-                val indexParamIndex = urlForTimestampExtraction.indexOf("&index=")
-                if (indexParamIndex != -1) {
-                    val endOfIndexParam = urlForTimestampExtraction.indexOf('&', indexParamIndex + 1)
-                    if (endOfIndexParam != -1) {
-                        urlForTimestampExtraction = urlForTimestampExtraction.substring(0, indexParamIndex) + urlForTimestampExtraction.substring(endOfIndexParam)
-                    } else {
-                        urlForTimestampExtraction = urlForTimestampExtraction.substring(0, indexParamIndex)
-                    }
-                }
-                var startTime = 0
-                if (videoUrl.contains("t=")) {
-                    var timeString = videoUrl.substring(videoUrl.lastIndexOf("t=") + "t=".length)
-                    if (timeString.contains('s')) {
-                        timeString = timeString.substring(0, timeString.lastIndexOf('s'))
-                    }
-                    try {
-                        val re = Regex("[^0-9 ]")
-                        val onlySeconds = re.replace(timeString, "")
-                        startTime = parseInt(onlySeconds)
-                    } catch (_: NumberFormatException) {
-                        KToast.infoToast(
-                            requireActivity(),
-                            "Failed to convert string to number:$timeString",
-                            Gravity.BOTTOM,
-                            KToast.LENGTH_LONG
-                        )
-
-                    }
-
-                }
-                return YouTubeVideoDetails(urlForTimestampExtraction, startTime) // Return the pair
-            }
-        }
-        return YouTubeVideoDetails(videoUrl, 0)
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
