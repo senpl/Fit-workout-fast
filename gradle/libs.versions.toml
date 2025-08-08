@@ -14,7 +14,7 @@ drawerlayout = "1.2.0"
 exifinterface = "1.4.1"
 fillprogresslayout = "0.0.9"
 fragmentKtx = "1.8.8"
-gradle = "8.11.1"
+gradle = "8.12.0"
 instadotview = "1.1"
 kotlin = "2.2.0"
 ktoast = "1.0.3"
@@ -23,6 +23,7 @@ libraryVersion = "2.0.0"
 licensesdialog = "2.2.0"
 material = "1.12.0"
 materialfavoritebutton = "0.1.5"
+materialIconsExtended = "1.7.8"
 materialIntro = "1.6"
 materialVersion = "1.8.3"
 mpandroidchart = "3.1.0.28"
@@ -50,6 +51,7 @@ androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", vers
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }

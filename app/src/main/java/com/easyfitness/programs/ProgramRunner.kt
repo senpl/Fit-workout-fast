@@ -103,6 +103,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
@@ -471,6 +472,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             is YouTubePlayerState.Playing -> {
+                coroutineScope.launch {                 if (startTime > 0) { // Only seek if startTime is valid
+                    hostState.seekTo(startTime.seconds)
+                    }
+                }
+
                 // Update UI button states
             }
 
@@ -664,7 +670,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
     }
 
-
     private val restClickTimer = OnClickListener {
         restTimer?.restart()
     }
@@ -701,7 +706,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             Dialog(onDismissRequest = { showVideoDialog.value = false }
             ) {
                 if (exercisesFromProgram.isNotEmpty()) {
-                    PlayTube(exercisesFromProgram[currentExerciseOrder].urlVideoStart)
+                    val youtubeUrl= removePlaylistFromYoutubeUrl(
+                        this,
+                        exercisesFromProgram[currentExerciseOrder].urlVideoStart
+                    )
+                    PlayTube(youtubeUrl.videoHash)
 //                }else{
 //                    KToast.normalToast(activity,"No Exercises, add them",Gravity.BOTTOM,KToast.LENGTH_SHORT)
                 }

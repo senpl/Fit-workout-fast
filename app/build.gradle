@@ -6,13 +6,13 @@ plugins {
 
 android {
     namespace = "com.easyfitness"
+    compileSdk = 36
     defaultConfig {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
-        compileSdk 35
-        targetSdkVersion 35
-        versionCode 74
-        versionName "0.26.06"
+        targetSdkVersion 36
+        versionCode 75
+        versionName "0.26.08"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -68,12 +68,8 @@ android {
 
     compileOptions {
         encoding = 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     buildFeatures {
