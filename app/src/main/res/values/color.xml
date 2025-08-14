@@ -19,6 +19,8 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="color_green_button">#82CE3C</color>
     <color name="redWarn">#D50000</color>
+    <color name="transparent">#00000000</color> <!-- Całkowicie przezroczysty -->
+    <color name="edittext_underline_focused">@color/blue_btn_bg_pressed_color</color> <!-- Kolor podkreślenia po kliknięciu (np. z Material Design) -->
     <array name="gradientColors">
         <item>#5E5E5E</item>
         <item>#388E3C</item>

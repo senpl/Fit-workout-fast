@@ -37,6 +37,7 @@ ultimateringtonepicker = "3.3.0"
 viewpager = "1.1.0"
 youtubeplayerCompose = "2024.02.25"
 dotsindicatorwithoutviewpager = "1.0.0"
+uiTooling = "1.8.3"
 
 
 [libraries]
@@ -78,6 +79,7 @@ smarttablayout-library = { module = "com.ogaclejapan.smarttablayout:library", ve
 ultimateringtonepicker = { module = "com.github.DeweyReed:UltimateRingtonePicker", version.ref = "ultimateringtonepicker" }
 utils-v4 = { module = "com.ogaclejapan.smarttablayout:utils-v4", version.ref = "libraryVersion" }
 youtubeplayer-compose = { module = "io.github.ilyapavlovskii:youtubeplayer-compose", version.ref = "youtubeplayerCompose" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

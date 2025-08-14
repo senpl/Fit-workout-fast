@@ -36,9 +36,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -105,6 +108,10 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -444,17 +451,18 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     requireActivity(),
                     "videoHash: $videoHash ", Gravity.BOTTOM, KToast.LENGTH_SHORT
                 )
-                PlayVideo(videoHash, startTime)
+                val hasRunOnceActionForThisVideo = remember { mutableStateOf(false) }
+
+                PlayVideo(videoHash, startTime,hasRunOnceActionForThisVideo)
             }
         }
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
-    private fun PlayVideo(youtubeUrl: String, startTime: Int) {
+    private fun PlayVideo(youtubeUrl: String, startTime: Int, hasRunOnceActionForThisVideo: MutableState<Boolean>) {
         val coroutineScope = rememberCoroutineScope()
         val hostState = remember { YouTubePlayerHostState() }
-
         when (val state = hostState.currentState) {
             is YouTubePlayerState.Error -> {
                 //TODO show error but only once so to not throw that many errors into user face
@@ -472,10 +480,24 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             is YouTubePlayerState.Playing -> {
-                coroutineScope.launch {                 if (startTime > 0) { // Only seek if startTime is valid
-                    hostState.seekTo(startTime.seconds)
+                coroutineScope.launch {
+                    if (!hasRunOnceActionForThisVideo.value) {
+                        if (startTime > 0) {
+                            Timber.d("Seeking '$youtubeUrl' to: ${startTime}s")
+                            hostState.seekTo(startTime.seconds)
+                        }
+                        Timber.d(">>> YouTubePlayer: State is PLAYING. Running one-time action for '$youtubeUrl'.")
+                        hasRunOnceActionForThisVideo.value = true // Set the flag for the current youtubeUrl
                     }
                 }
+
+
+
+//                coroutineScope.launch {
+//                    if (startTime > 0) { // Only seek if startTime is valid
+//                    hostState.seekTo(startTime.seconds)
+//                    }
+//                }
 
                 // Update UI button states
             }
@@ -484,7 +506,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 hostState.loadVideo(YouTubeVideoId(youtubeUrl))
             }
         }
+
+
         ShowVideo(hostState, coroutineScope, startTime)
+
+
     }
 
     @Composable

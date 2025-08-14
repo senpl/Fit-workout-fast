@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:id="@+id/layoutProgramRunner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:animateLayoutChanges="true"
@@ -32,6 +32,7 @@
         android:padding="2dp"
         android:background="@color/sweet_dialog_bg_color_dark">
         <TextView
+            android:layout_marginStart="4dp"
             android:text="@string/program_selection"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
@@ -143,7 +144,8 @@
                         android:layout_gravity="center_vertical|center"
                         android:src="@drawable/ic_gym_bench_50dp"
                         app:civ_border_width="0dp"
-                        app:civ_shadow="false" />
+                        app:civ_shadow="false"
+                        android:visibility="gone"/>
 
                     <AutoCompleteTextView
                         android:id="@+id/exerciseEdit"
@@ -151,6 +153,7 @@
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/minTouchSize"
                         android:minWidth="@dimen/minTouchSize"
+                        android:layout_marginStart="20dp"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_toStartOf="@+id/exercisesListButton"
@@ -158,6 +161,7 @@
                         android:hint="@string/MachineHint"
                         android:inputType="none"
                         android:imeOptions="actionNext"
+                        android:background="@drawable/edittext_underline_selector"
                         android:singleLine="true" />
 
                     <ImageButton
@@ -185,6 +189,7 @@
             android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:background="@color/sweet_dialog_bg_color_dark"
             android:visibility="visible">
 
             <!-- WEIGHT -->
@@ -192,7 +197,7 @@
                 android:id="@+id/weightCardView"
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="35"
                 android:visibility="visible"
                 >
@@ -201,7 +206,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
 
                     <TextView
                         android:id="@+id/poidsLabel"
@@ -225,8 +231,10 @@
                             android:gravity="center"
                             android:inputType="numberDecimal|numberSigned"
                             android:label="@string/weightLabel"
+                            android:textSize="24sp"
                             android:minEms="3"
                             tools:labelFor="@id/weightCardView"
+                            android:background="@drawable/edittext_underline_selector"
                             tools:text="10" />
 
                         <ImageButton
@@ -296,14 +304,14 @@
                 android:id="@+id/serieCardView"
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="15"
                 android:visibility="gone"
                 >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -330,16 +338,18 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/repetitionCardView"
                 style="@style/CardViewStyle"
+                android:layout_margin="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="30"
                 android:visibility="visible"
                 >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -348,15 +358,18 @@
 
                     <it.sephiroth.android.library.numberpicker.NumberPicker
                         android:id="@+id/repsPicker"
-                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        app:picker_editTextStyle="@style/textAccent"
                         app:picker_max="100"
                         app:picker_min="0"
-                        app:picker_stepSize="1"
-                        app:picker_tracker="exponential"
                         app:picker_orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        app:picker_stepSize="1"
+                        app:picker_tracker="exponential" />
+
+
                     <ImageButton
                         android:id="@+id/saveReps"
                         android:visibility="gone"
@@ -377,7 +390,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="30"
+                android:minHeight="68dp"
                 android:visibility="gone"
+                android:layout_margin="5dp"
                 >
 
                 <LinearLayout
@@ -388,7 +403,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/SecondsLabel_short" />
+                        android:text="@string/SecondsLabel_short"
+                        android:layout_margin="5dp"
+                        />
 
                     <EditText
                         android:id="@+id/secondsEdit"
@@ -397,8 +414,9 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:inputType="number"
-                        android:minEms="2"
-                        android:textSize="18sp"
+                        android:minEms="3"
+                        android:textSize="24sp"
+                        android:background="@drawable/edittext_underline_selector"
                         tools:text="10" />
 
                 </LinearLayout>
@@ -412,6 +430,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="10"
                 android:visibility="visible"
+                android:layout_margin="5dp"
                 >
                 <LinearLayout
                     android:id="@+id/restTimeLayout"
@@ -424,7 +443,8 @@
                         android:id="@+id/restTimeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/restLabel" />
+                        android:text="@string/restLabel"
+                        android:layout_margin="5dp"/>
 
                     <EditText
                         android:id="@+id/restTimeEdit"
@@ -436,6 +456,8 @@
                         android:gravity="center"
                         android:inputType="number"
                         android:singleLine="true"
+                        android:textSize="24sp"
+                        android:background="@drawable/edittext_underline_selector"
                         android:text="60"
                         />
                 </LinearLayout>
@@ -523,9 +545,9 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            style="@style/CardViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             >
 
             <LinearLayout
@@ -535,10 +557,13 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 android:layout_gravity="top"
+                android:layout_marginStart="20dp"
                 >
 
                 <EditText
                     android:id="@+id/notesInExercise"
+                    android:background="@drawable/edittext_custom_dark_background"
+                    android:textColor="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/NotesLabel"
@@ -548,6 +573,7 @@
                     android:gravity="top"
                     android:ems="10"
                     android:minHeight="18dp"
+                    style="@style/editableTextView"
                     android:paddingVertical="20dp"
                     />
 
@@ -571,26 +597,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginEnd="5dp"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
 
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
                     style="@style/AddImageButton"
+                    android:background="@color/transparent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="3dp"
                     android:clickable="true"
                     android:contentDescription="@string/arrowPreviousAsText"
                     android:focusable="true"
                     android:minHeight="68dp"
-                    android:src="@drawable/round_arrow_back_white_36dp"
+                    android:src="@drawable/baseline_arrow_white_24"
                     android:text="@string/arrowPreviousAsText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -600,6 +630,7 @@
                 <ImageButton
                     android:id="@+id/failButton"
                     style="@style/AddImageButton"
+                    android:background="@drawable/button_less_rounded_background"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/addButton"
@@ -619,6 +650,7 @@
                 <ImageButton
                     android:id="@+id/addButton"
                     style="@style/AddImageButton"
+                    android:background="@drawable/button_less_rounded_background"
                     android:backgroundTint="@color/color_green_button"
                     android:layout_width="0dp"
                     android:minHeight="68dp"
@@ -638,12 +670,13 @@
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
                     style="@style/AddImageButton"
-                    android:src="@drawable/round_arrow_forward_white_36dp"
+                    android:background="@color/transparent"
+                    android:src="@drawable/baseline_arrow_forward_white_24"
                     android:layout_width="0dp"
                     app:layout_constraintWidth_percent="0.2"
                     android:minWidth = "64dp"
                     android:minHeight="68dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="3dp"
                     android:baselineAlignBottom="false"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

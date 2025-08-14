@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Stan: Skupiony (kliknięty) -->
+    <item android:state_focused="true">
+        <layer-list>
+            <!-- Opcjonalnie: tło samego pola, jeśli chcesz -->
+            <!-- <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/transparent"/>
+                </shape>
+            </item> -->
+            <!-- Podkreślenie -->
+            <item android:gravity="bottom">
+                <shape android:shape="rectangle">
+                    <size android:height="2dp" /> <!-- Grubość podkreślenia -->
+                    <solid android:color="@color/edittext_underline_focused"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- Stan: Domyślny (nie skupiony) -->
+    <item>
+        <layer-list>
+            <!-- Opcjonalnie: tło samego pola -->
+            <!-- <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/transparent"/>
+                </shape>
+            </item> -->
+            <!-- Przezroczyste podkreślenie (lub bardzo cienkie/jasne, jeśli wolisz) -->
+            <item android:gravity="bottom">
+                <shape android:shape="rectangle">
+                    <size android:height="1dp" /> <!-- Możesz dać 1dp lub 0dp -->
+                    <solid android:color="@color/transparent"/> <!-- WAŻNE: Przezroczyste domyślnie -->
+                    <!-- Alternatywnie, jeśli chcesz bardzo subtelne podkreślenie: -->
+                    <!-- <solid android:color="#E0E0E0"/> -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>

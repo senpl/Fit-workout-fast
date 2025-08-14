@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Layer 1: Dark background for the text input area -->
+    <item
+        android:left="2dp" android:right="2dp"
+        android:top="2dp" android:bottom="6dp">  <!-- Adjust padding: bottom > top to leave space for underline -->
+        <shape android:shape="rectangle">
+            <solid android:color="@color/sweet_dialog_bg_color_dark" /> <!-- Same dark color -->
+            <!-- Optional: add padding inside this shape if needed -->
+            <!-- <padding android:left="8dp" android:right="8dp" android:top="8dp" android:bottom="8dp"/> -->
+        </shape>
+    </item>
+
+    <!-- Layer 2: Your existing underline selector -->
+    <item>
+        <selector>
+            <!-- Copied from your edittext_underline_selector.xml or reference it if possible -->
+            <!-- State: Focused (clicked) -->
+            <item android:state_focused="true">
+                <layer-list>
+                    <item android:gravity="bottom">
+                        <shape android:shape="rectangle">
+                            <size android:height="2dp" />
+                            <solid android:color="@color/edittext_underline_focused"/>
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+            <!-- State: Default (not focused) -->
+            <item>
+                <layer-list>
+                    <item android:gravity="bottom">
+                        <shape android:shape="rectangle">
+                            <size android:height="1dp" />
+                            <solid android:color="@android:color/transparent"/>
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+        </selector>
+    </item>
+
+</layer-list>

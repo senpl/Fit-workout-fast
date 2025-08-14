@@ -185,6 +185,9 @@
         <item name="android:textSize">18sp</item>
         <item name="android:title">@string/edit_value</item>
     </style>
-
+    <style name="textAccent" parent="NumberPicker.EditTextStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>
