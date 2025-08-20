@@ -1,10 +1,8 @@
-Błąd  nie wyświetlania curl z programu na brzuch na piłce.
-   Zbadać, czemu to nie działa
 Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.
    Dziwne
-Błąd z wchodzeniem do settingsu podczas przerwy
-   Niby nic poważnego, ale jednak to błąd
-Poprawić wizualnie aplikacje, teraz rest jest trochę za nisko a weight nie jest idealnie na środku, przez co nie jest super symetrycznie
+Poprawić wizualnie aplikacje
+   Oczyszczić możliwie intefejs
+   Usunąć wybór ćwicznia?
    Poprawić też zdjęcia do aplikacji jak już finalnie na coś się zdecyduje
 Usunąć kreskę w add description jako że też najczęściej nie potrzebna
 Ukrywać last rekords gdy puste ???

@@ -213,7 +213,9 @@
                         android:id="@+id/poidsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/PoidsLabel" />
+                        android:text="@string/PoidsLabel"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="3dp"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -225,17 +227,18 @@
                             android:id="@+id/poidsEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:minHeight="@dimen/minTouchSize"
-                            android:minWidth="@dimen/minTouchSize"
+                            android:layout_marginStart="7sp"
                             android:autofillHints="false"
+                            android:background="@drawable/edittext_underline_selector"
                             android:gravity="center"
                             android:inputType="numberDecimal|numberSigned"
                             android:label="@string/weightLabel"
+                            android:minWidth="@dimen/minTouchSize"
+                            android:minHeight="@dimen/minTouchSize"
+                            android:minEms="4"
                             android:textSize="24sp"
-                            android:minEms="3"
                             tools:labelFor="@id/weightCardView"
-                            android:background="@drawable/edittext_underline_selector"
-                            tools:text="10" />
+                            tools:text="10.5" />
 
                         <ImageButton
                             android:id="@+id/saveWeight"
@@ -428,38 +431,42 @@
                 style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_weight="10"
                 android:visibility="visible"
                 android:layout_margin="5dp"
                 >
+
                 <LinearLayout
                     android:id="@+id/restTimeLayout"
-                    android:layout_weight="10"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:layout_weight="10"
+                    android:gravity="center"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/restTimeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/restLabel"
-                        android:layout_margin="5dp"/>
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:text="@string/restLabel" />
 
                     <EditText
                         android:id="@+id/restTimeEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="@dimen/minTouchSize"
-                        android:minWidth="@dimen/minTouchSize"
-                        android:ems="4"
+                        android:layout_gravity="center"
+                        android:background="@drawable/edittext_underline_selector"
+                        android:ems="3"
                         android:gravity="center"
                         android:inputType="number"
                         android:singleLine="true"
-                        android:textSize="24sp"
-                        android:background="@drawable/edittext_underline_selector"
                         android:text="60"
-                        />
+                        android:textSize="24sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

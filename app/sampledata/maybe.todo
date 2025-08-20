@@ -1,3 +1,5 @@
+Błąd z wchodzeniem do settingsu podczas przerwy
+   Niby nic poważnego, ale jednak to błąd
 repro błędu usuwania na podstawie logów
 Ukrywać sets gdy tylko 1 set jest bo w sumie oczyści interfejs
    I wyróżniać innym kolorem gdy jest inna niż 1
@@ -16,3 +18,5 @@ Inny Dot indicator z pewną licencją
     Choć to z tydzień roboty a efekt niepewny
 Oznaczanie skończone, nie skończone mogłoby być ładniejsze
     Jak w poprzednim dot indicatorze
+Zapis serii trzymać jako osobne ćwicznia, albo jedno i jednak wyświetlać serie
+   Teraz puki jest jedna seria to ukrywa , pokazuje od 2 chyba
