@@ -55,7 +55,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="2dp"
                 android:background="@color/sweet_dialog_bg_color_dark">
 
@@ -64,31 +64,63 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:minHeight="30dp">
+                    >
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_85_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.85" />
+                    <com.mazenrashed.dotsindicator.DotsIndicator
+                        android:id="@+id/exerciseIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:dot_height="22dp"
+                        app:dot_width="22dp"
+                        app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
+                        app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
+                        app:margins_between_dots="4dp"
+                        app:selected_dot_resource="@drawable/pager_box_white_24dp"
+                        app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_85_percent" />
 
                     <TextView
                         android:id="@+id/currentExerciseNumber"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="1"
+
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline_85_percent"
                         app:layout_constraintEnd_toStartOf="@+id/slash"
                         tools:text="1" />
 
                     <TextView
                         android:id="@+id/slash"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/slash"
+
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/currentExerciseNumber"
                         app:layout_constraintEnd_toStartOf="@+id/exerciseInProgramNumber" />
+
 
                     <TextView
                         android:id="@+id/exerciseInProgramNumber"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/slash"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:text="22" />
 <!--                    <com.hrskrs.instadotlib.InstaDotView-->
@@ -111,24 +143,7 @@
 <!--                        app:selectedDotColor="@color/colorSecondary"-->
 <!--                        app:progressMode="true"-->
 <!--                        />-->
-                    <com.mazenrashed.dotsindicator.DotsIndicator
-                        android:id="@+id/exerciseIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:dot_height="22dp"
-                        app:dot_width="22dp"
-                        app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
-                        app:margins_between_dots="4dp"
-                        app:selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
-                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
@@ -154,6 +169,7 @@
                         android:minHeight="@dimen/minTouchSize"
                         android:minWidth="@dimen/minTouchSize"
                         android:layout_marginStart="20dp"
+                        android:gravity="center"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_toStartOf="@+id/exercisesListButton"
@@ -166,6 +182,7 @@
 
                     <ImageButton
                         android:id="@+id/exercisesListButton"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/minTouchSize"
@@ -195,15 +212,15 @@
             <!-- WEIGHT -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/weightCardView"
-                style="@style/CardViewStyle"
+                android:background="@drawable/edittext_custom_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="35"
+                android:layout_weight="30"
                 android:visibility="visible"
                 >
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -213,11 +230,12 @@
                         android:id="@+id/poidsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/PoidsLabel"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="3dp"/>
 
-                    <LinearLayout
+                        android:gravity="end"
+                        android:text="@string/PoidsLabel"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -227,35 +245,48 @@
                             android:id="@+id/poidsEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="7sp"
+                            android:layout_marginTop="5dp"
+                            android:minHeight="44dp"
                             android:autofillHints="false"
                             android:background="@drawable/edittext_underline_selector"
-                            android:gravity="center"
+                            android:gravity="end"
                             android:inputType="numberDecimal|numberSigned"
                             android:label="@string/weightLabel"
-                            android:minWidth="@dimen/minTouchSize"
-                            android:minHeight="@dimen/minTouchSize"
-                            android:minEms="4"
+
+                            android:minWidth="48dp"
                             android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:labelFor="@id/weightCardView"
                             tools:text="10.5" />
-
                         <ImageButton
                             android:id="@+id/saveWeight"
-                            android:visibility="gone"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
+                            android:layout_width="22sp"
+                            android:layout_height="22sp"
+                            android:layout_marginStart="7dp"
                             android:contentDescription="@string/SaveWeightLabel"
                             android:src="@drawable/baseline_save_yellow_a200_24dp"
                             android:text="@string/SaveWeightLabel"
-                            /><TextView
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toTopOf="@+id/unitShow"
+                            app:layout_constraintEnd_toStartOf="@+id/poidsEdit"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/poidsEdit" />
+
+                        <TextView
                             android:id="@+id/unitShow"
-                            android:gravity="center"
-                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="kg"/>
-                    </LinearLayout>
+                            android:layout_gravity="start"
+                            android:layout_marginStart="8dp"
+                            android:gravity="start"
+                            android:layout_marginEnd="30sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/poidsEdit"
+                            app:layout_constraintStart_toEndOf="@id/poidsEdit"
+                            tools:text="kg" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:id="@+id/minMaxLayout"
@@ -305,7 +336,7 @@
             <!-- SETS -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/serieCardView"
-                style="@style/CardViewStyle"
+                android:background="@drawable/edittext_custom_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
@@ -340,7 +371,7 @@
             <!-- REPS -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/repetitionCardView"
-                style="@style/CardViewStyle"
+                android:background="@drawable/edittext_custom_dark_background"
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -361,6 +392,7 @@
 
                     <it.sephiroth.android.library.numberpicker.NumberPicker
                         android:id="@+id/repsPicker"
+                        android:background="@drawable/edittext_underline_selector"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -389,7 +421,7 @@
             <!-- SECONDS -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/secondsCardView"
-                style="@style/CardViewStyle"
+                android:background="@drawable/edittext_custom_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="30"
@@ -428,11 +460,9 @@
             <!-- REST -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/restCardView"
-                style="@style/CardViewStyle"
+                android:background="@drawable/edittext_custom_dark_background"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_gravity="center"
                 android:layout_weight="10"
                 android:visibility="visible"
                 android:layout_margin="5dp"
@@ -442,8 +472,7 @@
                     android:id="@+id/restTimeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <TextView
@@ -451,7 +480,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:text="@string/restLabel" />
 
@@ -459,9 +488,9 @@
                         android:id="@+id/restTimeEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:background="@drawable/edittext_underline_selector"
-                        android:ems="3"
+                        android:minHeight="@dimen/minTouchSize"
+                        android:minWidth="68dp"
                         android:gravity="center"
                         android:inputType="number"
                         android:singleLine="true"

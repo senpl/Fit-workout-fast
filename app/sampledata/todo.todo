@@ -1,17 +1,14 @@
-Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.
-   Dziwne
 Poprawić wizualnie aplikacje
    Oczyszczić możliwie intefejs
-   Usunąć wybór ćwicznia?
    Poprawić też zdjęcia do aplikacji jak już finalnie na coś się zdecyduje
-Usunąć kreskę w add description jako że też najczęściej nie potrzebna
-Ukrywać last rekords gdy puste ???
-Show and hide last records???
+Niech zaznacza ostatnio wybrany program, bo to jednak life improvments
+Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.
+   Dziwne
+
 Przenieść rzeczy związane z youtube do nowej klasy
 Dodać zapamiętywanie stanu selectu
    Jest w wersji Compose, pytanie czy przenosiść to.
-
-Dodać lepszy import i eksport( bardziej automatyczny)
+Dodać lepszy import i eksport( bardziej automatyczny?)
 zbadać możliwości eksportu bazy danych przez android backup tag. Bo to w sumie miałoby sens.
 Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
 bo to life usage improvment
