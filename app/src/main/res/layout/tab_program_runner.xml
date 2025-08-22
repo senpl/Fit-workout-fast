@@ -32,10 +32,11 @@
         android:padding="2dp"
         android:background="@color/sweet_dialog_bg_color_dark">
         <TextView
-            android:layout_marginStart="4dp"
-            android:text="@string/program_selection"
+            android:layout_marginStart="6dp"
+            android:text="@string/ProgramLabel"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:textAllCaps="true"/>
 
         <Spinner
             android:id="@+id/programSelect"
@@ -230,7 +231,8 @@
                         android:id="@+id/poidsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:labelFor="@+id/poidsEdit"
+                        android:layout_marginStart="10dp"
                         android:gravity="end"
                         android:text="@string/PoidsLabel"
                         />
@@ -634,7 +636,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginEnd="5dp"
+
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -642,7 +644,9 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="2dp"
+                android:paddingBottom="5dp"
+                >
 
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
@@ -651,10 +655,7 @@
                     android:layout_width="0dp"
                     android:scaleType="centerCrop"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:paddingStart="3dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:layout_gravity="start"
                     android:clickable="true"
                     android:contentDescription="@string/arrowPreviousAsText"
                     android:focusable="true"
@@ -664,7 +665,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.2" />
+                    app:layout_constraintWidth_percent="0.27" />
 
                 <ImageButton
                     android:id="@+id/failButton"
@@ -679,12 +680,12 @@
                     android:contentDescription="@string/failedToDoReps"
                     android:focusable="true"
                     android:minHeight="68dp"
-                    android:src="@drawable/round_cancel_white_36dp"
+                    android:src="@drawable/outline_close_small_54"
                     android:text="@string/FailLabel"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/previousExerciseArrow"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.25" />
+                    app:layout_constraintWidth_percent="0.21" />
 
                 <ImageButton
                     android:id="@+id/addButton"
@@ -704,7 +705,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/nextExerciseArrow"
                     app:layout_constraintStart_toEndOf="@+id/failButton"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
+                    android:focusable="true"
+                    app:layout_constraintWidth_percent="0.25"/>
 
                 <ImageButton
                     android:id="@+id/nextExerciseArrow"
@@ -713,14 +715,14 @@
                     android:src="@drawable/baseline_arrow_forward_white_24"
                     android:layout_width="0dp"
                     android:scaleType="centerCrop"
-                    app:layout_constraintWidth_percent="0.2"
+                    app:layout_constraintWidth_percent="0.27"
                     android:minWidth = "64dp"
                     android:minHeight="68dp"
-                    android:layout_marginEnd="3dp"
-                    android:baselineAlignBottom="false"
-                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="3sp"
                     android:layout_alignParentEnd="true"
-                    android:layout_gravity="center|end"
+                    android:layout_gravity="end"
                     android:contentDescription="@string/arrowNextAsText"
                     android:text="@string/arrowNextAsText"
                     android:clickable="true"
@@ -806,7 +808,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:layout_marginStart="3dp"
+                            android:layout_marginStart="5dp"
+                            android:paddingStart="5dp"
                             android:text="@string/TopTenLabel" />
 
                     </LinearLayout>
@@ -816,7 +819,8 @@
             android:id="@+id/recordList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/row_fonte" />
+            tools:listitem="@layout/row_fonte"
+            />
     </LinearLayout>
 
 
