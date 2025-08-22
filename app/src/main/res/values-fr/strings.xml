@@ -272,4 +272,5 @@
     <string name="youtubeExerciseStartMoment">Lien Youtube vers le moment où la description des exercices commence</string>
     <string name="show_exercise">Afficher l\'exercice</string>
     <string name="urlOfVideoEnd">URL avec les secondes auxquelles la vidéo doit se terminer (facultatif)</string>
+    <string name="ProgramLabel">Programme</string>
 </resources>

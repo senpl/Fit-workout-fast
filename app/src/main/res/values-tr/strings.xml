@@ -264,4 +264,5 @@
     <string name="youtubeExerciseStartMoment">Egzersizlerin açıklamasının başladığı anın Youtube bağlantısı</string>
     <string name="show_exercise">Egzersizi göster</string>
     <string name="urlOfVideoEnd">Videonun bitmesi gereken saniyeleri içeren URL (İsteğe bağlı)</string>
+    <string name="ProgramLabel">Programı</string>
 </resources>

@@ -293,5 +293,6 @@
     <string name="youtubeExerciseStartMoment">Odkaz na YouTube k okamžiku, kdy začíná popis cvičení</string>
     <string name="show_exercise">Ukaž cvičení</string>
     <string name="urlOfVideoEnd">Adresa URL se sekundami, ve kterých má video skončit (Volitelné)</string>
+    <string name="ProgramLabel">Program</string>
 
 </resources>

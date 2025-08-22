@@ -1,10 +1,8 @@
-Poprawić wizualnie aplikacje
-   Oczyszczić możliwie intefejs
-
-   Poprawić też zdjęcia do aplikacji jak już finalnie na coś się zdecyduje
-   Usunąć stare pliki x'a, oraz strzałek?
-   Większa czcionka?
-Tłumaczenie Program zrobić
+Usunąć logikę z wyboru ćwiczenia w Program Runnerze
+Przygotować do wydania wersję
+Przygotować obrazki
+Niech dotIndicator będzie nowszy ładniejszy
+   i niech się mieści w wyznaczonym mu miejscu.
 Usunąć kod do wyboru ćwiczenia, jako nieużywany z programRunnera
 Niech zaznacza ostatnio wybrany program, bo to jednak life improvments
 Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.

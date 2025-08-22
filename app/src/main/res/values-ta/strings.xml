@@ -273,4 +273,5 @@
     <string name="YTURL">ஒய்டி முகவரி</string>
     <string name="YTURLEND">ஒய்டி முகவரி முடிவு</string>
     <string name="pagerForExercisesChange">உடற்பயிற்சிகளுக்கான அகவி மாற்றம்</string>
+    <string name="ProgramLabel">திட்டம்</string>
 </resources>

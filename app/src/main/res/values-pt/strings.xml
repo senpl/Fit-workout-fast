@@ -260,4 +260,5 @@
     <string name="SaveWeightLabel">Gravar peso no programa</string>
     <string name="saved_into_program">Salvo no programa</string>
     <string name="SaveRepsLabel">Gravar repetições no programa</string>
+    <string name="ProgramLabel">Programa</string>
 </resources>

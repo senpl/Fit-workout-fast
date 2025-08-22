@@ -261,4 +261,5 @@
     <string name="youtubeExerciseStartMoment">练习描述开始时刻的 YouTube 链接</string>
     <string name="show_exercise">显示锻炼</string>
     <string name="urlOfVideoEnd">视频结束时间（秒）的 URL（可选）</string>
+    <string name="ProgramLabel">程序</string>
 </resources>
