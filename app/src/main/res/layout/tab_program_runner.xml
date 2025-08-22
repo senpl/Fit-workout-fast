@@ -254,9 +254,9 @@
                             android:gravity="end"
                             android:inputType="numberDecimal|numberSigned"
                             android:label="@string/weightLabel"
-
+                            android:textStyle="bold"
                             android:minWidth="48dp"
-                            android:textSize="24sp"
+                            android:textSize="28sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -452,7 +452,8 @@
                         android:gravity="center"
                         android:inputType="number"
                         android:minEms="3"
-                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
                         android:background="@drawable/edittext_underline_selector"
                         tools:text="10" />
 
@@ -497,7 +498,7 @@
                         android:inputType="number"
                         android:singleLine="true"
                         android:text="60"
-                        android:textSize="24sp" />
+                        android:textSize="28sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
