@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -480,18 +481,17 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             is YouTubePlayerState.Playing -> {
-                coroutineScope.launch {
-                    if (!hasRunOnceActionForThisVideo.value) {
-                        if (startTime > 0) {
-                            Timber.d("Seeking '$youtubeUrl' to: ${startTime}s")
-                            hostState.seekTo(startTime.seconds)
-                        }
-                        Timber.d(">>> YouTubePlayer: State is PLAYING. Running one-time action for '$youtubeUrl'.")
-                        hasRunOnceActionForThisVideo.value = true // Set the flag for the current youtubeUrl
-                    }
-                }
-
-
+//                LaunchedEffect(youtubeUrl, startTime,coroutineScope.) {
+//                if (!hasRunOnceActionForThisVideo.value) {
+//                        if (startTime > 0) {
+//                            Timber.d("Seeking '$youtubeUrl' to: ${startTime}s")
+//                            hostState.seekTo(startTime.seconds)
+//                        }
+//                        Timber.d(">>> YouTubePlayer: State is PLAYING. Running one-time action for '$youtubeUrl'.")
+////                        hasRunOnceActionForThisVideo.value =
+////                            true // Set the flag for the current youtubeUrl
+//                    }
+//                }
 
 //                coroutineScope.launch {
 //                    if (startTime > 0) { // Only seek if startTime is valid
@@ -502,11 +502,29 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 // Update UI button states
             }
 
-            YouTubePlayerState.Ready -> coroutineScope.launch {
-                hostState.loadVideo(YouTubeVideoId(youtubeUrl))
+            YouTubePlayerState.Ready -> {
+                LaunchedEffect(youtubeUrl, startTime, coroutineScope) {
+                    try {
+                        Timber.d("Coroutine: Starting video load for ID: ${youtubeUrl}")
+                        hostState.loadVideo(YouTubeVideoId(youtubeUrl))
+                        Timber.d("Coroutine: loadVideo completed for ID: ${YouTubeVideoId(youtubeUrl)}")
+                        if (startTime > 0) {
+                            Timber.d("Coroutine: Seeking to $startTime")
+                            hostState.seekTo(startTime.seconds)
+                            Timber.d("Coroutine: seekTo completed.")
+                        }
+
+                        // 3. Optional: Call play after loading and seeking
+                        // Timber.d("Coroutine: Attempting to play video.")
+                        // hostState.play() // Also a suspend function
+                        // Timber.d("Coroutine: Play command sent.")
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error in YouTube player coroutine (loading/seeking)")
+                        // Handle exceptions appropriately, e.g., show an error message
+                    }
+                }
             }
         }
-
 
         ShowVideo(hostState, coroutineScope, startTime)
 
