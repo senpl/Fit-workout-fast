@@ -10,11 +10,13 @@
     <string name="email_url" translatable="false">urbanekmike@gmail.com</string>
     <string name="revision_history_label" translatable="false">Revision History: </string>
     <string name="revision_history" translatable="false">\n
-                v0.26.08: September 8, 2025\n
+               v0.26.10: September 25, 2025\n
  \t- Now video start of moment indicated in video start, Some reloading possible
         \t still close to expected effect of start of exercise with video start.
         \t playlists url now also possible still not really recommended.
-        \n
+
+                v0.26.09: September 8, 2025\n
+ \t- New design        \n
 
 	</string>
     <string name="thanks_label" translatable="false">Libraries used in this app: </string>

@@ -1,7 +1,6 @@
 package com.easyfitness.programs
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.media.MediaPlayer
@@ -25,7 +24,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -41,8 +39,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -75,7 +71,6 @@ import com.easyfitness.SettingsFragment
 import com.easyfitness.TimePickerDialogFragment
 import com.easyfitness.databinding.TabProgramRunnerBinding
 import com.easyfitness.machines.ExerciseDetailsPager
-import com.easyfitness.machines.MachineCursorAdapter
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.UnitConverter
@@ -109,16 +104,11 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
     private lateinit var mainActivity: MainActivity
     private var lTableColor = 1
-    private var machineListDialog: AlertDialog? = null
     private var selectedType = TYPE_STRENGTH
     private lateinit var daoProgram: DAOProgram
     private var programId: Long = 1
@@ -280,7 +270,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.previousExerciseArrow.setOnClickListener(clickArrows)
         binding.addButton.setOnClickListener(clickAddButton)
         binding.failButton.setOnClickListener(clickFailButton)
-        binding.exercisesListButton.setOnClickListener(onClickMachineListWithIcons)
+//        binding.exercisesListButton.setOnClickListener(onClickMachineListWithIcons)
         binding.durationEdit.setOnClickListener(clickDateEdit)
         binding.exerciseEdit.setOnKeyListener(checkExerciseExists)
         binding.exerciseEdit.onItemClickListener = onItemClickFilterList
@@ -494,10 +484,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 //                }
 
 //                coroutineScope.launch {
-//                    if (startTime > 0) { // Only seek if startTime is valid
+//                    if (!hasRunOnceActionForThisVideo.value && startTime > 0 ) { // Only seek if startTime is valid
 //                    hostState.seekTo(startTime.seconds)
+//                        hasRunOnceActionForThisVideo.value = true
 //                    }
 //                }
+
 
                 // Update UI button states
             }
@@ -505,9 +497,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             YouTubePlayerState.Ready -> {
                 LaunchedEffect(youtubeUrl, startTime, coroutineScope) {
                     try {
-                        Timber.d("Coroutine: Starting video load for ID: ${youtubeUrl}")
+                        Timber.d("Coroutine: Starting video load for ID: $youtubeUrl")
                         hostState.loadVideo(YouTubeVideoId(youtubeUrl))
                         Timber.d("Coroutine: loadVideo completed for ID: ${YouTubeVideoId(youtubeUrl)}")
+                        hostState.play()
                         if (startTime > 0) {
                             Timber.d("Coroutine: Seeking to $startTime")
                             hostState.seekTo(startTime.seconds)
@@ -990,50 +983,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
     }
 
-    private val onClickMachineListWithIcons = OnClickListener { v ->
-        val oldCursor: Cursor
-        if (machineListDialog != null && machineListDialog!!.isShowing) {        // In case the dialog is already open
-            return@OnClickListener
-        }
-        val machineList = ListView(v.context)
-        val c: Cursor? = mDbMachine.allMachines
-        if (c == null || c.count == 0) {
-            KToast.warningToast(
-                requireActivity(),
-                resources.getText(R.string.createExerciseFirst).toString(),
-                Gravity.BOTTOM,
-                KToast.LENGTH_SHORT
-            )
-            machineList.adapter = null
-        } else {
-            if (machineList.adapter == null) {
-                val mTableAdapter = MachineCursorAdapter(activity, c, 0, mDbMachine)
-                machineList.adapter = mTableAdapter
-            } else {
-                val mTableAdapter = machineList.adapter as MachineCursorAdapter
-                oldCursor = mTableAdapter.swapCursor(c)
-                oldCursor.close()
-            }
-            machineList.onItemClickListener =
-                OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
-                    val textView = view.findViewById<TextView>(R.id.LIST_MACHINE_ID)
-                    val machineID = textView.text.toString().toLong()
-                    val lMachineDb = DAOMachine(context)
-                    val lMachine = lMachineDb.getMachine(machineID)
-                    setCurrentExercise(lMachine.name)
-                    mainActivity.findViewById<View>(R.id.drawer_layout).requestFocus()
-                    hideKeyboard()
-                    if (machineListDialog!!.isShowing) {
-                        machineListDialog!!.dismiss()
-                    }
-                }
-            val builder = AlertDialog.Builder(v.context)
-            builder.setTitle(R.string.selectMachineDialogLabel)
-            builder.setView(machineList)
-            machineListDialog = builder.create()
-            machineListDialog!!.show()
-        }
-    }
     private val onItemClickFilterList =
         OnItemClickListener { _: AdapterView<*>?, _: View?, _: Int, _: Long ->
             setCurrentExercise(binding.exerciseEdit.text.toString())

@@ -176,29 +176,12 @@
                 android:gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_toStartOf="@+id/exercisesListButton"
                 android:layout_toEndOf="@+id/imageExerciseThumb"
                 android:hint="@string/MachineHint"
                 android:inputType="none"
                 android:imeOptions="actionNext"
                 android:background="@drawable/edittext_underline_selector"
                 android:singleLine="true" />
-
-            <ImageButton
-                android:id="@+id/exercisesListButton"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/minTouchSize"
-                android:minWidth="@dimen/minTouchSize"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:adjustViewBounds="true"
-                android:background="@android:color/transparent"
-                android:baselineAlignBottom="false"
-                android:cropToPadding="false"
-                android:src="@drawable/baseline_list_alt_54"
-                android:contentDescription="@string/MachinesLabel" />
 
         </RelativeLayout>
         <LinearLayout
