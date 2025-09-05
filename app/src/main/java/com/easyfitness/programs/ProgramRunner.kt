@@ -496,8 +496,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
 
         ShowVideo(hostState, coroutineScope, startTime)
-
-
     }
 
     @Composable
@@ -554,7 +552,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 //    ) {
 //        coroutineScope.launch { hostState.seekTo(secondsOfStart.seconds) }
 //    }
-
 
     @SuppressLint("SetTextI18n")
     private fun changeExercise(selected: Int) {

@@ -1,5 +1,84 @@
 Wybór programu przenieść na inny ekran?
    Wtedy nie zaśmiecałby interfejsu, ale i wiele rzeczy trzeba by przepisać
+Niech dotIndicator będzie nowszy ładniejszy
+   i niech się mieści w wyznaczonym mu miejscu.
+Usunąć kod do wyboru ćwiczenia, jako nieużywany z programRunnera
+Niech zaznacza ostatnio wybrany program, bo to jednak life improvments
+Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.
+   Dziwne
+Przenieść rzeczy związane z youtube do nowej klasy
+Dodać lepszy import i eksport( bardziej automatyczny?)
+zbadać możliwości eksportu bazy danych przez android backup tag. Bo to w sumie miałoby sens.
+Wydzielić Program runnera z program select, bo jednak to może być problematyczne.
+Niech wyświetla film gdy jest w głównym ekranie
+    Bo już wiem jak to zrobić
+    Przerobić zdjęcia z aplikacji
+Dodać program na ból ramion
+    Nazwa programu,
+    nazwa ćwiczenia
+    powtórzenia
+    czas
+    link do wideo
+Dodać wprwadzenie lub ułatwienia obsługi do Workouts'n'Rest
+    Bo jest zainteresowanie pewne
+Na ból pleców dodać ćwiczenia
+    Bo w sumie i dla mnie się przyda
+Dodać instrukcję używania
+    Może też na przycisk z pytajnikiem?
+        Bo to da ludziom jakąś informację jak używać
+V.27.03
+Sprawdzić opis działania, co po koleji napisać jak robić
+I po prostu wyświetlać LBS bez przeliczania
+    Bo to uprości użytkowanie i sam kod
+publish
+someday/maybe
+Wywalić stare części jako potencjalnie generujące błędy
+    A przez to obniżające rating.
+Opcjonalny przycisk show video zrobić, bo jednak trochę teraz zaśmieca UI gdy nie jest potrzebne
+Wywalić body track i weight track?
+Dodać dodawanie zdjęć ???
+    Chyba nie konieczny feature
+cleanup
+   Oczyścić build.gradle ze starego śmiecia
+   Bo w razie czego jest w repo
+Usunać stary kod:
+    Bo wydłuża budowanie, a lepiej jak się buduje szybciej
+    material-intro
+    pagerslidingtabstrip
+    circleprogress
+    Ustawić warunkowe wyświetlanie filmu, gdy mamy zapisany do ćwiczenia
+        Dodać przykłądowe ćwiczenie w aplikacji
+        Sprawdzić, czy i jak całość działa
+    Dodać wyświetlanie zdjęcia
+        gdy w urlu jest tylko zdjęcie pokaż zdjęcie
+            Przygotować takie ćwicznie z obrazkiem
+Poprawić na co nażeka build analyzer
+Sprawdzić, czy ustawianie LBS w ogóle działa, czy na sztywno lecą kilogramy
+Remove old java parts(bo w sumie to już mi nie potrzebne).
+Poszukać opcji zapętlania tego filmu( bo to mogłoby być fajną opcją)
+Zastanowić się, czy warto ikonkę przy nazwie ćwiczenia przywracać do dawnej
+    Bo pewnie można by stworzyć nowe
+    Na tą chwilę trochę to dziwnie wygląda
+Przycisk do przełączania autoplay na wszystkich ćwiczeniach
+    Bo w sumie najczęściej ich nie chcemy.
+    To chyba powinien być widok detali.
+    Ale to by wymagało nowych widoków
+        Exercise detail i tam opis oraz film i ew. zdjęcia
+    Finalnie można to tak zrobić
+Przerobić budowanie na najnowszego Kotlina
+    Żeby na przyszłość być wolnym od potencjalnych problemów
+Locale wyświetlać w różnych językach, bo teraz tylko angielskie cyfry
+    A przynajmniej dla niemców i innych nacji to mogłyby być w ich języku znaki
+Zmniejszyć ilość warningów na używanych layoutach i klasach,
+    np. przez dodanie content descriptions tam gdzie to praktyczne
+Przyciski do szybszej nawigacji nie chowane
+    Dla większych rozdzielczości
+Info pytajnik na górze co jak działa
+    żeby userzy wiedzieli
+Wywalić zmianę profilu jako zbędny badziew
+Przerobić preferences na nowe, bo podobno lepsze i bezpieczniejsze.
+Przerobić bazę danych na nową
+
 Wersja na IPhona, testowo
    żeby się nauczyć wdrażania tam
 Ukrywać last rekords gdy puste ???
@@ -16,6 +95,12 @@ Ukrywać sets gdy tylko 1 set jest bo w sumie oczyści interfejs
    Niech widok edycji większości pół jest wyświetlany dopiero po kliknięciu
    Bo pewnie może dzięki temu będzie ładniej wyglądać
 Dodać obrazki, ćwiczeń
+Chować przycisk video gdy url jest pusty ???
+    Przygotować ćwiczenie bez filmu
+       I sprawdzić, czy if tam działa
+    Bo w sumie jest nie potrzebny
+        I to nie powinno być dużo roboty
+Check if crop images works
 Dodać przycisk do wyłączania ekranu.
     Dodać przycisk do layoutu runner'a
         Wywalić z layput hardcode
@@ -28,5 +113,17 @@ Inny Dot indicator z pewną licencją
     Choć to z tydzień roboty a efekt niepewny
 Oznaczanie skończone, nie skończone mogłoby być ładniejsze
     Jak w poprzednim dot indicatorze
+Dodać info, że nie ma video do tego ćwiczenia
+    Bo na tą chwilę trochę to wszystko nie do końca intuicyjne
+Przerobić do najnowszego Kotlina, bo jednak teraz to dalej stara wersja, a pewnie lepiej mieć nową
 Zapis serii trzymać jako osobne ćwicznia, albo jedno i jednak wyświetlać serie
    Teraz puki jest jedna seria to ukrywa , pokazuje od 2 chyba
+default weight unit in preferences, and set it for all new added exercises
+Przywrócić intro ale już bez tworzeniu profilu, więc bez tego widoku
+Spróbować zamienić Rx3Timer na Kotlin flow, żeby poznać co to daje
+    Ale to pewnie niewielki zysk, a potencjał na nowe błędy, więc pewnie nie warto
+Przemyśleć jak zoptymalizować start aplikacji
+    https://engineering.backmarket.com/how-we-enhanced-our-android-apps-startup-time-by-over-50-0fb220d27b14
+Automatyczne sprzątanie przez delegację fragmentów
+    Pewnie to już nie potrzebne
+    https://medium.com/@rahmicemreunal/auto-inflated-cleared-view-binding-in-fragments-using-delegation-2ada0b43a8e4
