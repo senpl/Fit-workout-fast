@@ -1,11 +1,9 @@
-Przygotować nową wersję
-   Bo jednak jest lepsza od poprzedniej
-
-Dodać zapamiętywanie stanu selectu
-   Jest w wersji Compose, pytanie czy przenosić to.
 Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń
 	bo to nie spotykana opcja
+	https://github.com/giaongo/RepDetect
+	   Zobaczyć jak to działa
 	Niech nagrywa i gdy wykona powtórzenie to po powrocie do około pozycji niech zliczy
 	    Wymagałoby to dodatkowego licznika, które by liczył ile udało mu się zliczyć
 Selector programu niech będzie osobnym ekranem
     Bo obecnie zaśmieca interfejs nie wnosząc wiele na ekranie samych ćwiczeń
+    Przygotować nowe screeny, bo stare już są nieaktuane ???
