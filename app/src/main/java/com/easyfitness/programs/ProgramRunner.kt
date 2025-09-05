@@ -121,8 +121,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private lateinit var daoExerciseInProgram: DAOExerciseInProgram
     private lateinit var mDbMachine: DAOMachine
     private lateinit var swipeDetectorListener: SwipeDetectorListener
-    //    private lateinit var programSelect: Spinner
-//    private lateinit var exerciseIndicator: com.mazenrashed.dotsindicator.DotsIndicator
     private var restTimer: Rx3Timer? = null
     private lateinit var staticTimer: Rx3Timer
     private var staticTimerRunning: Boolean = false
@@ -270,7 +268,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.previousExerciseArrow.setOnClickListener(clickArrows)
         binding.addButton.setOnClickListener(clickAddButton)
         binding.failButton.setOnClickListener(clickFailButton)
-//        binding.exercisesListButton.setOnClickListener(onClickMachineListWithIcons)
         binding.durationEdit.setOnClickListener(clickDateEdit)
         binding.exerciseEdit.setOnKeyListener(checkExerciseExists)
         binding.exerciseEdit.onItemClickListener = onItemClickFilterList
@@ -471,27 +468,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             is YouTubePlayerState.Playing -> {
-//                LaunchedEffect(youtubeUrl, startTime,coroutineScope.) {
-//                if (!hasRunOnceActionForThisVideo.value) {
-//                        if (startTime > 0) {
-//                            Timber.d("Seeking '$youtubeUrl' to: ${startTime}s")
-//                            hostState.seekTo(startTime.seconds)
-//                        }
-//                        Timber.d(">>> YouTubePlayer: State is PLAYING. Running one-time action for '$youtubeUrl'.")
-////                        hasRunOnceActionForThisVideo.value =
-////                            true // Set the flag for the current youtubeUrl
-//                    }
-//                }
-
-//                coroutineScope.launch {
-//                    if (!hasRunOnceActionForThisVideo.value && startTime > 0 ) { // Only seek if startTime is valid
-//                    hostState.seekTo(startTime.seconds)
-//                        hasRunOnceActionForThisVideo.value = true
-//                    }
-//                }
-
-
-                // Update UI button states
             }
 
             YouTubePlayerState.Ready -> {
@@ -554,8 +530,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             ) {
                 SimpleButton(text = "Show exercise") {
                     coroutineScope.launch { hostState.seekTo(startSeconds.seconds) }
-
-                    //seekToTimeVideoPlaying(hostState, coroutineScope, startSeconds)
                 }
                 SimpleButton(text = "Pause") {
                     coroutineScope.launch { hostState.pause() }

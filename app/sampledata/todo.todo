@@ -1,3 +1,5 @@
+Selector niech będzie osobnym ekranem
+    Bo obecnie zaśmieca interfejs nie wnosząc wiele na ekranie
 Niech dotIndicator będzie nowszy ładniejszy
    i niech się mieści w wyznaczonym mu miejscu.
 Usunąć kod do wyboru ćwiczenia, jako nieużywany z programRunnera
@@ -35,12 +37,8 @@ Dodać instrukcję używania
         Bo to da ludziom jakąś informację jak używać
 Dodać info, że nie ma video do tego ćwiczenia
     Bo na tą chwilę trochę to wszystko nie do końca intuicyjne
-V.26.03
-Dodać przykładowe ćwiczenia
-    Na ból pleców
-    Na rehabilitację kostki
-    Dla każdego ćwiczenia w programie
-    Sprawdzić opis działania, co po koleji napisać jak robić
+V.27.03
+Sprawdzić opis działania, co po koleji napisać jak robić
 Chować przycisk video gdy url jest pusty ???
         Bo w sumie jest nie potrzebny
         I to nie powinno być dużo roboty
