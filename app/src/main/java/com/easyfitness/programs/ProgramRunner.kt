@@ -102,6 +102,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import com.easyfitness.utils.Gender
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -428,7 +429,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             Timber.d("Program ID $selectedProgramId has no exercises.")
             clearExerciseUI() // Clear UI if no exercises
             // Example: Navigate or show message
-            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+            val profileId: Long? = 1L //(requireActivity() as MainActivity).currentProfile?.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             requireActivity().supportFragmentManager.commit {
                 addToBackStack(null)
@@ -924,7 +925,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         refreshData()
         val adapter = ArrayAdapter(
             requireView().context,
-            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile)
+            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(getProfilFromMain())
         )
         binding.exerciseEdit.setAdapter(adapter)
         // Launch Rest Countdown
@@ -1091,8 +1092,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     val fragment: ProgramRunner
         get() = this
 
-    private val profile: Profile?
-        get() = (requireActivity() as MainActivity).currentProfile
+//    private val profile: Profile?
+//        get() = 1//(requireActivity() as MainActivity).currentProfile
 
     val machine: String
         get() = binding.exerciseEdit.text.toString()
@@ -1322,7 +1323,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @SuppressLint("SetTextI18n")
     private fun updateLastRecord(m: Machine) {
-        val lLastRecord = daoRecord.getLastExerciseRecord(m.id, profile)
+        val lLastRecord = daoRecord.getLastExerciseRecord(m.id, getProfilFromMain())
         // Default Values
         binding.seriesEdit.setText("1")
         binding.repsPicker.progress = 10
@@ -1380,7 +1381,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             val oldCursor: Cursor
             //Get results
             val limitShowedResults = 10
-            c = (daoRecord.getAllRecordByMachines(profile, exerciseName, limitShowedResults)
+            c = (daoRecord.getAllRecordByMachines(getProfilFromMain(), exerciseName, limitShowedResults)
                 ?: return@post)
             if (c.count == 0) {
                 binding.recordList.adapter = null
@@ -1406,11 +1407,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun getProfilFromMain(): Profile? {
-        return mainActivity.currentProfile
+        val date= Date()
+        return Profile( 1L,date,"default",1, date,"",Gender.MALE)//mainActivity.currentProfile
     }
 
     @SuppressLint("SetTextI18n")
     private fun refreshData() {
+        val profile = getProfilFromMain()
         if (profile != null) {
             daoExerciseInProgram.setProfile(profile)
             if (exercisesFromProgram.isNotEmpty()) {

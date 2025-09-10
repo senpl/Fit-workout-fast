@@ -1,8 +1,8 @@
 # Workouts'N'Rest Privacy Policy
 
-For purposes of this Agreement, “Service” refers to the software's services when it's utilized. “You” refers to you, as a user of the software's services.
-The developer is committed to maintaining robust privacy protections for its users. This privacy policy is designed to help you understand how data is collected, used, and how secure that information you provide to us is. This policy statement would assist you in making informed decisions when using our Service.
-By utilizing this software, you accept all the terms stated in this Privacy Policy statement, and you consent to the collection, storage, use and disclosure of your Personal Information as described in this Privacy Policy. Kindly note that this privacy policy is restricted only to Workouts'N'Rest software and the developer is not, and will not be liable to be held in account for the privacy practices of any third-party tools or services that may be contained in the software.
+Effective Date: 10.09.2025
+
+Workout'N'Rest (“the App”) is a fitness application that helps users follow exercise routines and rest intervals. The App provides video content from YouTube to demonstrate exercises.
 
 ## Permission and Access
 
@@ -59,7 +59,11 @@ Workouts'N'Rest contains links to other services that are not directly operated 
 
 ## Children's policy
 
-This software is intended for general use and has no restrictions on utilization by children except otherwise stated in a law governing that locale.
+Workout'N'Rest is safe for children to use.
+
+We do not knowingly collect any personal information from children under the age of 13.
+
+If you believe your child has provided personal information to us, please contact us, and we will immediately delete such information.
 
 ## Security Of Data
 
@@ -73,8 +77,38 @@ This privacy policy statement is not final and is subject to changes at later ti
 
 Workouts'N'Rest is developed in good faith to help end users track their fitness progress. The software has an external dependency on third-party libraries that might collect some information when you utilize Workouts'N'Rest. This is not directly controlled by the developer, neither does the developer has oversight of the operations of those APIs. Hence, the developer assumes no responsibility for any losses and/or damages of data that are in connection with the use of this software.
 
+## Information We Collect
+
+No Personal Information: Workout'N'Rest does not collect, store, or share any personal information such as name, email, or contact details.
+
+## How We Use Information
+
+Since the App does not collect personal information, we do not use or share user data for any purpose.
+
+## Third-Party Services
+
+The App uses YouTube API Services to display video content. By using Workout'N'Rest, you are also agreeing to be bound by the YouTube Terms of Service and Google’s Privacy Policy:
+
+[YouTube Terms of Service|https://www.youtube.com/t/terms]
+
+[Google Privacy Policy|https://policies.google.com/privacy]
+
+## Data Security
+
+Because we do not collect or store your personal information, there is no risk of your personal data being leaked from this App.
+
+## Children’s Privacy
+
+Workout'N'Rest does not knowingly collect any personal data from children under 13. Since no information is collected, children can safely use the App.
+
+## Changes to This Privacy Policy
+
+We may update this Privacy Policy from time to time. Any changes will be posted within the App and updated with a new effective date.
+
 ## Contact Us
 
+If you have any questions or concerns about this Privacy Policy, please contact us at:
+urbanekmike@gmail.com
 Workouts'N'Rest would certainly improve with contributions from the open source community. Feel free to make contributions and suggestions to this project either by opening an issue or implementing opening pull requests of those suggestions and improvements. For further inquiry regarding this privacy policy or any other issue relating to the development or within the circumference of Workouts'N'Rest software, please contact the developer either by opening an [issue](https://github.com/senpl/Fit-workout-fast/issues/new) on the app's official repository [here](https://github.com/senpl/Fit-workout-fast) on Github. You can also check out the [developer's profile](https://github.com/senpl) for more information.
 
 
