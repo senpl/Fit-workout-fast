@@ -89,9 +89,9 @@ Since the App does not collect personal information, we do not use or share user
 
 The App uses YouTube API Services to display video content. By using Workout'N'Rest, you are also agreeing to be bound by the YouTube Terms of Service and Google’s Privacy Policy:
 
-[YouTube Terms of Service|https://www.youtube.com/t/terms]
+[YouTube Terms of Service](https://www.youtube.com/t/terms)
 
-[Google Privacy Policy|https://policies.google.com/privacy]
+[Google Privacy Policy](https://policies.google.com/privacy)
 
 ## Data Security
 
