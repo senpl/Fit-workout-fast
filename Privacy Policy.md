@@ -1,8 +1,8 @@
-# Workouts'N'Rest Privacy Policy
+# Wrkt’N’Rest - TRAIN WITH VIDEO (Workouts'N'Rest) Privacy Policy
 
 Effective Date: 10.09.2025
 
-Workout'N'Rest (“the App”) is a fitness application that helps users follow exercise routines and rest intervals. The App provides video content from YouTube to demonstrate exercises.
+"Wrkt’N’Rest" - TRAIN WITH VIDEO (also known as Workout'N'Rest, and Workouts'N'Rest) (“the App”) is a fitness application that helps users follow exercise routines and rest intervals. The App provides video content from YouTube to demonstrate exercises.
 
 ## Permission and Access
 
