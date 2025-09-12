@@ -2,7 +2,7 @@
 
 Effective Date: 10.09.2025
 
-"Wrkt’N’Rest" - TRAIN WITH VIDEO (also known as Workout'N'Rest, and Workouts'N'Rest) (“the App”) is a fitness application that helps users follow exercise routines and rest intervals. The App provides video content from YouTube to demonstrate exercises.
+"Wrkt’N’Rest - TRAIN WITH VIDEO" (in rest of document called "Workouts'N'Rest" or the app) is a fitness application that helps users follow exercise routines and rest intervals. Workouts'N'Rest provides video content from YouTube to demonstrate exercises.
 
 ## Permission and Access
 
@@ -59,7 +59,7 @@ Workouts'N'Rest contains links to other services that are not directly operated 
 
 ## Children's policy
 
-Workout'N'Rest is safe for children to use.
+Workouts'N'Rest is safe for children to use.
 
 We do not knowingly collect any personal information from children under the age of 13.
 
@@ -79,7 +79,7 @@ Workouts'N'Rest is developed in good faith to help end users track their fitness
 
 ## Information We Collect
 
-No Personal Information: Workout'N'Rest does not collect, store, or share any personal information such as name, email, or contact details.
+No Personal Information: Workouts'N'Rest does not collect, store, or share any personal information such as name, email, or contact details.
 
 ## How We Use Information
 
@@ -87,7 +87,7 @@ Since the App does not collect personal information, we do not use or share user
 
 ## Third-Party Services
 
-The App uses YouTube API Services to display video content. By using Workout'N'Rest, you are also agreeing to be bound by the YouTube Terms of Service and Google’s Privacy Policy:
+The App uses YouTube API Services to display video content. By using Workouts'N'Rest, you are also agreeing to be bound by the YouTube Terms of Service and Google’s Privacy Policy:
 
 [YouTube Terms of Service](https://www.youtube.com/t/terms)
 
@@ -99,7 +99,7 @@ Because we do not collect or store your personal information, there is no risk o
 
 ## Children’s Privacy
 
-Workout'N'Rest does not knowingly collect any personal data from children under 13. Since no information is collected, children can safely use the App.
+Workouts'N'Rest does not knowingly collect any personal data from children under 13. Since no information is collected, children can safely use the App.
 
 ## Changes to This Privacy Policy
 
