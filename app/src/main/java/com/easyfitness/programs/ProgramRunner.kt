@@ -102,7 +102,6 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
-import com.easyfitness.utils.Gender
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -132,11 +131,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    // Preference keys
-    private val prefsName = "program_runner_prefs"
-    private val lastSelectedProgramId = "last_selected_program_id"
-    private val lastSelectedProgramPosition = "last_selected_program_position" // To restore spinner position
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -146,11 +140,32 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         return binding.root
     }
 
+    private fun loadProgramsIntoSpinner(daoProgram: DAOProgram) {
+        // Fetch your list of programs
+        val programsList = daoProgram.allProgramsNames // Or your method to get List<Program>
+
+        if (programsList.isNotEmpty()) {
+            // Create an ArrayAdapter (or your custom adapter)
+            // You might want to display program.name in the Spinner
+            val programNames = programsList
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programNames)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.programSelect.adapter = adapter
+            Timber.tag("ProgramRunner")
+                .d("Spinner adapter set with ${programsList.size} programs.")
+        } else {
+            Timber.tag("ProgramRunner").d("No programs to load into spinner.")
+            binding.programSelect.adapter = null // Clear adapter if no programs
+            clearExerciseUI()
+        }
+    }
+
     private fun clearExerciseUI() {
         Timber.tag("ProgramRunner").d("Clearing all exercise UI components.")
         binding.exerciseIndicator.visibility = GONE
         binding.currentExerciseNumber.text = "0"
         binding.exerciseInProgramNumber.text = "0"
+//        clearExerciseDetails()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -158,69 +173,67 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         super.onViewCreated(view, savedInstanceState)
         // Initialization of the database
         daoProgram = DAOProgram(context)
+        loadProgramsIntoSpinner(daoProgram)
+        val programs = daoProgram.allProgramsNames
+        val adapter =
+            fragment.context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, programs) }
+        binding.programSelect.adapter = adapter
+
+        binding.programSelect.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            @SuppressLint("SetTextI18n")
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?, position: Int, id: Long
+            ) {
+                adapter?.notifyDataSetChanged()
+                val program: Program? = daoProgram.getRecord(programs[position])
+                if (program != null) {
+                    programId = program.id
+                    currentExerciseOrder = 0
+                    exercisesFromProgram =
+                        daoExerciseInProgram.getAllExerciseInProgram(programId)
+                    if (exercisesFromProgram.isNotEmpty()) {
+                        binding.exerciseIndicator.initDots(exercisesFromProgram.size)
+                        //                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
+                        binding.currentExerciseNumber.text = "1"
+                        binding.exerciseInProgramNumber.text =
+                            exercisesFromProgram.size.toString()
+                        try {
+                            binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
+                            // binding.exerciseIndicator.onPageChange(currentExerciseOrder);
+                        } catch (_: Exception) {
+                            binding.programSelect.invalidate()
+                            adapter?.notifyDataSetChanged()
+                            binding.exerciseIndicator.invalidate()
+                            binding.exerciseIndicator.visibility=GONE
+                            Timber.w("IllegalState when changing to bigger exercise")
+                        }
+                        saveToPreference("currentProgram", programId)
+                        saveToPreference("currentProgramPosition", position)
+                        refreshData()
+                    } else {
+                        val profileId: Long? =
+                            (requireActivity() as MainActivity).currentProfile?.id
+                        val programsFragment = ProgramsFragment.newInstance("", profileId)
+                        requireActivity().supportFragmentManager.commit {
+                            addToBackStack(null)
+                            add(R.id.fragment_container, programsFragment)
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
         daoRecord = DAORecord(context)
         strengthRecordsDao = DAOFonte(context)
         daoCardio = DAOCardio(context)
         daoStatic = DAOStatic(context)
         mDbMachine = DAOMachine(context)
-        daoExerciseInProgram = DAOExerciseInProgram(requireContext())
-
-        val programs = daoProgram.allProgramsNames // Assuming this returns List<String> of program names
-        if (programs.isEmpty()) {
-            // Handle no programs case (as you already do)
-            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
-            val programsFragment = ProgramsFragment.newInstance("", profileId)
-            Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
-            requireActivity().supportFragmentManager.commit {
-                addToBackStack(null)
-                add(R.id.fragment_container, programsFragment)
-            }
-            return // Exit early if no programs
-        }
-
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programs)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.programSelect.adapter = adapter
-        // Load last selected program
-        val lastSelectedProgramPosition = getLastSelectedProgramPosition()
-        val lastSelectedProgramId = getLastSelectedProgramId()
-
-        if (lastSelectedProgramId != -1L && lastSelectedProgramPosition < programs.size && lastSelectedProgramPosition != -1) {
-            // Check if the program with lastSelectedProgramId still exists
-            val programExists = daoProgram.getRecord(programs[lastSelectedProgramPosition])?.id == lastSelectedProgramId
-            if (programExists) {
-                programId = lastSelectedProgramId
-                binding.programSelect.setSelection(lastSelectedProgramPosition, false) // Set spinner without triggering onItemSelected
-                // Manually trigger the logic that onItemSelected would normally do
-                loadProgramDetails(programId)
-                Timber.d("Restored last selected program: ID $programId at position $lastSelectedProgramPosition")
-            } else {
-                Timber.d("Last selected program (ID $lastSelectedProgramId) no longer exists. Loading first program.")
-                setDefaultProgramSelection(programs)
-            }
-        } else {
-            Timber.d("No last selected program found or position invalid. Loading first program.")
-            setDefaultProgramSelection(programs)
-        }
-
-        binding.programSelect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedProgramName = programs[position]
-                val program: Program? = daoProgram.getRecord(selectedProgramName)
-                if (program != null) {
-                    programId = program.id // Update current programId
-                    saveLastSelectedProgram(program.id, position) // Save the selected program ID and position
-                    loadProgramDetails(program.id)
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Optionally handle this case
-            }
-        }
-
         val sharedPreferences =
             activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
+        daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs.isEmpty()) {
             val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
@@ -378,84 +391,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
         }
-    }
-
-    private fun setDefaultProgramSelection(programs: List<String>) {
-        if (programs.isNotEmpty()) {
-            val firstProgram = daoProgram.getRecord(programs[0])
-            if (firstProgram != null) {
-                programId = firstProgram.id
-                // Spinner will automatically select the first item (position 0)
-                // and onItemSelected will be triggered if not already set by setSelection
-                // To be safe, explicitly call loadProgramDetails if you want immediate effect.
-                if (binding.programSelect.selectedItemPosition == 0) {
-                    loadProgramDetails(programId)
-                } else {
-                    binding.programSelect.setSelection(0) // This will trigger onItemSelected
-                }
-                saveLastSelectedProgram(programId, 0)
-            }
-        } else {
-            clearExerciseUI()
-        }
-    }
-
-    private fun loadProgramDetails(selectedProgramId: Long) {
-        currentExerciseOrder = 0 // Reset exercise order for the new program
-        exercisesFromProgram = daoExerciseInProgram.getAllExerciseInProgram(selectedProgramId)
-
-        if (exercisesFromProgram.isNotEmpty()) {
-            binding.exerciseIndicator.visibility = VISIBLE
-            binding.exerciseIndicator.initDots(exercisesFromProgram.size)
-            binding.currentExerciseNumber.text = "1"
-            binding.exerciseInProgramNumber.text = exercisesFromProgram.size.toString()
-            try {
-                binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
-            } catch (e: Exception) {
-                // Consider logging the specific exception if it's not an IllegalStateException
-                // or if you want more details.
-                Timber.w(e, "Error setting dot selection, potentially due to view state issues.")
-                // Attempt to re-validate views that might be in a problematic state.
-                binding.programSelect.invalidate()
-                (binding.programSelect.adapter as? ArrayAdapter<*>)?.notifyDataSetChanged()
-                binding.exerciseIndicator.invalidate()
-                // It might be better to hide the indicator if it's causing persistent crashes.
-                 binding.exerciseIndicator.visibility = GONE
-            }
-            refreshData() // Call your existing refreshData method
-        } else {
-            // Handle case where a program has no exercises (as you already do)
-            // For instance, navigate to ProgramsFragment or show a message.
-            Timber.d("Program ID $selectedProgramId has no exercises.")
-            clearExerciseUI() // Clear UI if no exercises
-            // Example: Navigate or show message
-            val profileId: Long? = 1L //(requireActivity() as MainActivity).currentProfile?.id
-            val programsFragment = ProgramsFragment.newInstance("", profileId)
-            requireActivity().supportFragmentManager.commit {
-                addToBackStack(null)
-                add(R.id.fragment_container, programsFragment)
-            }
-        }
-    }
-
-    private fun saveLastSelectedProgram(programIdToSave: Long, position: Int) {
-        val sharedPreferences = requireActivity().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putLong(lastSelectedProgramId, programIdToSave)
-            putInt(lastSelectedProgramPosition, position)
-            apply()
-            Timber.d("Saved last selected program: ID $programIdToSave at position $position")
-        }
-    }
-
-    private fun getLastSelectedProgramId(): Long {
-        val sharedPreferences = requireActivity().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-        return sharedPreferences.getLong(lastSelectedProgramId, -1L) // Return -1 if not found
-    }
-
-    private fun getLastSelectedProgramPosition(): Int {
-        val sharedPreferences = requireActivity().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-        return sharedPreferences.getInt(lastSelectedProgramPosition, -1) // Return -1 if not found
     }
 
     @Composable
@@ -648,6 +583,20 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
             }//            binding.exerciseIndicator.onPageChange(currentExerciseOrder)
             refreshData()
+        }
+    }
+
+    fun saveToPreference(prefName: String?, prefLongToSet: Long?) {
+        val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
+        sharedPref.edit {
+            putLong(prefName, prefLongToSet!!)
+        }
+    }
+
+    fun saveToPreference(prefName: String?, prefIntToSet: Int?) {
+        val sharedPref = requireContext().getSharedPreferences(prefName, Context.MODE_PRIVATE)
+        sharedPref.edit {
+            putInt(prefName, prefIntToSet!!)
         }
     }
 
@@ -925,7 +874,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         refreshData()
         val adapter = ArrayAdapter(
             requireView().context,
-            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(getProfilFromMain())
+            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile)
         )
         binding.exerciseEdit.setAdapter(adapter)
         // Launch Rest Countdown
@@ -1092,8 +1041,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     val fragment: ProgramRunner
         get() = this
 
-//    private val profile: Profile?
-//        get() = 1//(requireActivity() as MainActivity).currentProfile
+    private val profile: Profile?
+        get() = mainActivity.currentProfile
 
     val machine: String
         get() = binding.exerciseEdit.text.toString()
@@ -1323,7 +1272,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     @SuppressLint("SetTextI18n")
     private fun updateLastRecord(m: Machine) {
-        val lLastRecord = daoRecord.getLastExerciseRecord(m.id, getProfilFromMain())
+        val lLastRecord = daoRecord.getLastExerciseRecord(m.id, profile)
         // Default Values
         binding.seriesEdit.setText("1")
         binding.repsPicker.progress = 10
@@ -1375,13 +1324,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun updateRecordTable(exerciseName: String) { // Records from records table
-//        mainActivity.currentMachine = exerciseName
+        mainActivity.currentMachine = exerciseName
         requireView().post {
             val c: Cursor?
             val oldCursor: Cursor
             //Get results
             val limitShowedResults = 10
-            c = (daoRecord.getAllRecordByMachines(getProfilFromMain(), exerciseName, limitShowedResults)
+            c = (daoRecord.getAllRecordByMachines(profile, exerciseName, limitShowedResults)
                 ?: return@post)
             if (c.count == 0) {
                 binding.recordList.adapter = null
@@ -1407,13 +1356,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun getProfilFromMain(): Profile? {
-        val date= Date()
-        return Profile( 1L,date,"default",1, date,"",Gender.MALE)//mainActivity.currentProfile
+        return mainActivity.currentProfile
     }
 
     @SuppressLint("SetTextI18n")
     private fun refreshData() {
-        val profile = getProfilFromMain()
         if (profile != null) {
             daoExerciseInProgram.setProfile(profile)
             if (exercisesFromProgram.isNotEmpty()) {

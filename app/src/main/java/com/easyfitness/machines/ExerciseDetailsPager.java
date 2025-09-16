@@ -56,6 +56,7 @@ public class ExerciseDetailsPager extends Fragment {
         switch (v.getId()) {
             case R.id.saveButton:
                 saveMachine();
+                assert getActivity() != null;
                 getActivity().findViewById(R.id.tab_machine_details).requestFocus();
                 break;
             case R.id.deleteButton:

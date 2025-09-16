@@ -56,7 +56,6 @@ public class FontesPagerFragment extends Fragment {
 //                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
                 getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
                 .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
-//                .add(R.string.ExerciceLabel, FontesFragment.class)
               .create());
 
             mViewPager.setAdapter(pagerAdapter);

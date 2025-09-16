@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -164,6 +165,7 @@ class MainActivity : AppCompatActivity() {
     private var mBackPressed: Long = 0
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED) {
@@ -306,8 +308,6 @@ class MainActivity : AppCompatActivity() {
 
         if (!mIntro014Launched) {
             createNewProfil()
-//            val intent = Intent(this, MainIntroActivity::class.java)
-//            startActivityForResult(intent, REQUEST_CODE_INTRO)
         }
     }
 

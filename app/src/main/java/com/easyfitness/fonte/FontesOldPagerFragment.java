@@ -20,7 +20,6 @@ public class FontesOldPagerFragment extends Fragment {
     private FragmentPagerItemAdapter pagerAdapter = null;
     //    private String name;
 //    private int id;
-//    private FontesFragment mpFontesFrag = null;
 //    private FonteHistoryFragment mpHistoryFrag = null;
 //    private FonteGraphFragment mpGraphFrag = null;
 
@@ -58,7 +57,6 @@ public class FontesOldPagerFragment extends Fragment {
             pagerAdapter = new FragmentPagerItemAdapter(
                 getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
 //                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
-                .add(R.string.ExerciceLabel, FontesFragment.class)
                 .add(R.string.GraphLabel, FonteGraphFragment.class, args)
                 .add(R.string.HistoryLabel, FonteHistoryFragment.class, args)
                 .create());
@@ -138,33 +136,4 @@ public class FontesOldPagerFragment extends Fragment {
             }
         }
     }
-
-//    public FontesFragment getFontesFragment() {
-//        if (mpFontesFrag == null)
-//            mpFontesFrag = (FontesFragment) getChildFragmentManager().findFragmentByTag(MainActivity.FONTES);
-//        if (mpFontesFrag == null) mpFontesFrag = FontesFragment.newInstance(MainActivity.FONTES, 1);
-//
-//        //mpFontesFrag.onHiddenChanged(false);
-//        return mpFontesFrag;
-//    }
-//
-//    public FonteGraphFragment getGraphFragment() {
-//        if (mpGraphFrag == null)
-//            mpGraphFrag = (FonteGraphFragment) getChildFragmentManager().findFragmentByTag(MainActivity.GRAPHIC);
-//        if (mpGraphFrag == null)
-//            mpGraphFrag = FonteGraphFragment.newInstance(MainActivity.GRAPHIC, 2);
-//
-//        //mpGraphFrag.onHiddenChanged(false);
-//        return mpGraphFrag;
-//    }
-//
-//    public FonteHistoryFragment getHistoricFragment() {
-//        if (mpHistoryFrag == null)
-//            mpHistoryFrag = (FonteHistoryFragment) getChildFragmentManager().findFragmentByTag(MainActivity.HISTORY);
-//        if (mpHistoryFrag == null)
-//            mpHistoryFrag = FonteHistoryFragment.newInstance(-1, -1);
-//
-//        //mpHistoryFrag.onHiddenChanged(false);
-//        return mpHistoryFrag;
-//    }
 }
