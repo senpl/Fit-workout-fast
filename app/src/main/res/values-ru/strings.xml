@@ -9,7 +9,7 @@
     <string name="global_no">Нет</string>
     <string name="removedid">Удалённый ID</string>
     <string name="failedtocreatefolder">Не удалось создать папку</string>
-    <string name="app_name">Тренировка и отдых</string>
+    <string name="app_name">Тренировки и отдых</string>
     <string name="action_settings">Настройки</string>
     <string name="DateLabel">Дата</string>
     <string name="FunctionLabel">Отображение</string>
@@ -135,7 +135,7 @@
     <string name="name_or_pseudo">Имя / псевдоним</string>
     <string name="name_is_required">Имя обязательно</string>
     <string name="create_a_profile">Создать профиль</string>
-    <string name="introSlide1Text">Вас приветствует Тренировка и отдых! Приложение для быстрых тренировок с автоматическим отсчётом отдыха.</string>
+    <string name="introSlide1Text">Вас приветствует Тренировки и отдых! Приложение для быстрых тренировок с автоматическим отсчётом отдыха.</string>
     <string name="introSlide2Text">В программе тренировок легко менять упражнения. Упражнение меняется после заданного отдыха.</string>
     <string name="introSlide2Title">Легко меняйте упражнения кнопками или жестами</string>
     <string name="titleSlideEssential">Перейти к сути</string>
