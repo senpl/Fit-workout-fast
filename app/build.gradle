@@ -11,8 +11,8 @@ android {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 81
-        versionName "0.26.14"
+        versionCode 82
+        versionName "0.26.15"
 //        vectorDrawables.useSupportLibrary = true
     }
 
@@ -88,12 +88,21 @@ android {
     }
 }
 
+configurations.configureEach {
+    resolutionStrategy {
+        force(libs.material)
+        force('androidx.core:core:1.16.0')
+    }
+    exclude group: 'com.android.support', module: 'support-compat'
+    exclude group: 'com.android.support', module: 'support-v4'
+}
+
 dependencies {
 // Support
     implementation(libs.dotsindicator)
     implementation libs.androidx.annotation
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.appcompat
+//    implementation libs.androidx.appcompat
     implementation libs.androidx.cardview
     implementation libs.androidx.coordinatorlayout
     implementation libs.androidx.drawerlayout

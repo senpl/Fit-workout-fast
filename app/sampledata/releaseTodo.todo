@@ -5,7 +5,11 @@
         [dodać remote repository] https://hosted.weblate.org/projects/httpsgithubcomsenplfit-workout-fast/translate/
         merge from this repo
 [ ] podnieść code version w build.gradle
-[ ] podnieść values/about.xml versie i revision history string
+[ ] podnieść values/about.xml versie
+   [ ] app_version
+   [ ] revision history string
+            Usunąć najstarszy
+            dodać najnowszy
 [ ] wysłać zmiany do githuba.
 [ ] zbudować podspisaną wersję
 [ ] wgrać wersję do github releases https://github.com/senpl/Fit-workout-fast/releases G:\1Proj\fastnfitness\app\release
