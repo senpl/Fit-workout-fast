@@ -67,19 +67,15 @@ public class WeightFragment extends Fragment {
 
     private AdapterView.OnClickListener showDetailsFragment = v -> {
         int bodyPartID = BodyPartExtensions.WEIGHT;
-        switch (v.getId()) {
-            case R.id.weightDetailsButton:
-                bodyPartID = BodyPartExtensions.WEIGHT;
-                break;
-            case R.id.fatDetailsButton:
-                bodyPartID = BodyPartExtensions.FAT;
-                break;
-            case R.id.musclesDetailsButton:
-                bodyPartID = BodyPartExtensions.MUSCLES;
-                break;
-            case R.id.waterDetailsButton:
-                bodyPartID = BodyPartExtensions.WATER;
-                break;
+        int viewId = v.getId();
+        if (viewId == R.id.weightDetailsButton) {
+            bodyPartID = BodyPartExtensions.WEIGHT;
+        } else if (viewId == R.id.fatDetailsButton) {
+            bodyPartID = BodyPartExtensions.FAT;
+        } else if (viewId == R.id.musclesDetailsButton) {
+            bodyPartID = BodyPartExtensions.MUSCLES;
+        } else if (viewId == R.id.waterDetailsButton) {
+            bodyPartID = BodyPartExtensions.WATER;
         }
 
         BodyPartDetailsFragment fragment = BodyPartDetailsFragment.newInstance(bodyPartID, false);
@@ -109,24 +105,20 @@ public class WeightFragment extends Fragment {
         EditableInputViewWithDate v = (EditableInputViewWithDate) view;
         //save values to databases
         try {
-            switch (view.getId()) {
-                case R.id.weightInput:
-                    // push value to database
-                    float weightValue = Float.parseFloat(v.getText());
-                    mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.WEIGHT, weightValue, getProfile().getId());
-                    break;
-                case R.id.fatInput:
-                    float fatValue = Float.parseFloat(v.getText());
-                    mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.FAT, fatValue, getProfile().getId());
-                    break;
-                case R.id.musclesInput:
-                    float musclesValue = Float.parseFloat(v.getText());
-                    mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.MUSCLES, musclesValue, getProfile().getId());
-                    break;
-                case R.id.waterInput:
-                    float waterValue = Float.parseFloat(v.getText());
-                    mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.WATER, waterValue, getProfile().getId());
-                    break;
+            int viewId = view.getId();
+            if (viewId == R.id.weightInput) {
+                // push value to database
+                float weightValue = Float.parseFloat(v.getText());
+                mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.WEIGHT, weightValue, getProfile().getId());
+            } else if (viewId == R.id.fatInput) {
+                float fatValue = Float.parseFloat(v.getText());
+                mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.FAT, fatValue, getProfile().getId());
+            } else if (viewId == R.id.musclesInput) {
+                float musclesValue = Float.parseFloat(v.getText());
+                mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.MUSCLES, musclesValue, getProfile().getId());
+            } else if (viewId == R.id.waterInput) {
+                float waterValue = Float.parseFloat(v.getText());
+                mDbBodyMeasure.addBodyMeasure(v.getDate(), BodyPartExtensions.WATER, waterValue, getProfile().getId());
             }
         } catch (NumberFormatException e) {
             // Nothing to be done
@@ -135,32 +127,29 @@ public class WeightFragment extends Fragment {
         refreshData();
     };
     private OnClickListener showHelp = v -> {
-        switch (v.getId()) {
-            case R.id.imcHelp:
-                new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText(R.string.BMI_dialog_title)
-                    .setContentText(getString(R.string.BMI_formula))
-                    .setConfirmText(getResources().getText(R.string.global_ok).toString())
-                    .showCancelButton(true)
-                    .show();
-                break;
-            case R.id.ffmiHelp:
-                new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText(R.string.FFMI_dialog_title)
-                    .setContentText(getString(R.string.FFMI_formula))
-                    .setConfirmText(getResources().getText(R.string.global_ok).toString())
-                    .showCancelButton(true)
-                    .show();
-                break;
-            case R.id.rfmHelp:
-                new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText(R.string.RFM_dialog_title)
-                    .setContentText(getString(R.string.RFM_female_formula) +
-                        getString(R.string.RFM_male_formula))
-                    .setConfirmText(getResources().getText(R.string.global_ok).toString())
-                    .showCancelButton(true)
-                    .show();
-                break;
+        int viewId = v.getId();
+        if (viewId == R.id.imcHelp) {
+            new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(R.string.BMI_dialog_title)
+                .setContentText(getString(R.string.BMI_formula))
+                .setConfirmText(getResources().getText(R.string.global_ok).toString())
+                .showCancelButton(true)
+                .show();
+        } else if (viewId == R.id.ffmiHelp) {
+            new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(R.string.FFMI_dialog_title)
+                .setContentText(getString(R.string.FFMI_formula))
+                .setConfirmText(getResources().getText(R.string.global_ok).toString())
+                .showCancelButton(true)
+                .show();
+        } else if (viewId == R.id.rfmHelp) {
+            new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(R.string.RFM_dialog_title)
+                .setContentText(getString(R.string.RFM_female_formula) +
+                    getString(R.string.RFM_male_formula))
+                .setConfirmText(getResources().getText(R.string.global_ok).toString())
+                .showCancelButton(true)
+                .show();
         }
     };
     private MiniDateGraph mWeightGraph;

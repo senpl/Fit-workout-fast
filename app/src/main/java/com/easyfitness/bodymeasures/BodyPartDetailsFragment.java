@@ -191,10 +191,8 @@ public class BodyPartDetailsFragment extends Fragment implements DatePickerDialo
 
     private View.OnClickListener onClickToolbarItem = v -> {
         // Handle presses on the action bar items
-        switch (v.getId()) {
-            case R.id.deleteButton:
-                delete();
-                break;
+        if (v.getId() == R.id.deleteButton) {
+            delete();
         }
     };
 
@@ -401,16 +399,14 @@ public class BodyPartDetailsFragment extends Fragment implements DatePickerDialo
         boolean toUpdate = false;
 
         // Save all the fields in the Profile
-        switch (view.getId()) {
-            case R.id.BODYPART_NAME:
-                mInitialBodyPart.setCustomName(nameEdit.getText());
-                toUpdate = true;
-                break;
-            case R.id.BODYPART_LOGO:
-                // TODO if it has been deleted, remove the CustomPicture
-                mInitialBodyPart.setCustomPicture(mCurrentPhotoPath);
-                toUpdate = true;
-                break;
+        int id = view.getId();
+        if (id == R.id.BODYPART_NAME) {
+            mInitialBodyPart.setCustomName(nameEdit.getText());
+            toUpdate = true;
+        } else if (id == R.id.BODYPART_LOGO) {
+            // TODO if it has been deleted, remove the CustomPicture
+            mInitialBodyPart.setCustomPicture(mCurrentPhotoPath);
+            toUpdate = true;
         }
 
         if (toUpdate) {

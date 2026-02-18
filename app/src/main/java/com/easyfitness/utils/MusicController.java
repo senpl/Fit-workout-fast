@@ -146,36 +146,29 @@ public class MusicController {
                 loadPreferences();
             }
 
-            switch (v.getId()) {
-                case R.id.playerPlay:
-                    if (mediaPlayer.isPlaying()) {
-                        Pause();
-                    } else {
-                        Play();
-                    }
-                    break;
-                case R.id.playerStop:
-                    Stop();
-                    break;
-                case R.id.playerNext:
-                    Next();
-                    break;
-                case R.id.playerPrevious:
-                    Previous();
-                    break;
-                case R.id.playerList:
-                    fileChooserDialog.chooseDirectory(currentPath);
-                    break;
-                case R.id.playerLoop:
-                    if (isReplayOn) {
-                        isReplayOn = false;
-                        musicReplay.setImageResource(R.drawable.ic_replay_blue_24dp);
-                    } else {
-                        isReplayOn = true;
-                        musicReplay.setImageResource(R.drawable.ic_replay_black_24dp);
-                    }
-
-                    break;
+            int id = v.getId();
+            if (id == R.id.playerPlay) {
+                if (mediaPlayer.isPlaying()) {
+                    Pause();
+                } else {
+                    Play();
+                }
+            } else if (id == R.id.playerStop) {
+                Stop();
+            } else if (id == R.id.playerNext) {
+                Next();
+            } else if (id == R.id.playerPrevious) {
+                Previous();
+            } else if (id == R.id.playerList) {
+                fileChooserDialog.chooseDirectory(currentPath);
+            } else if (id == R.id.playerLoop) {
+                if (isReplayOn) {
+                    isReplayOn = false;
+                    musicReplay.setImageResource(R.drawable.ic_replay_blue_24dp);
+                } else {
+                    isReplayOn = true;
+                    musicReplay.setImageResource(R.drawable.ic_replay_black_24dp);
+                }
             }
         }
     };

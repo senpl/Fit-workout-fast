@@ -25,28 +25,28 @@
         android:paddingBottom="0dp"
         android:scrollbars="vertical">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="2dp"
-        android:background="@color/sweet_dialog_bg_color_dark">
-        <TextView
-            android:layout_marginStart="6dp"
-            android:text="@string/ProgramLabel"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textAllCaps="true"/>
-
-        <Spinner
-            android:id="@+id/programSelect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/minTouchSize"
-            android:minWidth="@dimen/minTouchSize"
+            android:orientation="horizontal"
             android:padding="2dp"
-            style="@style/TextAppearance.AppCompat.Large" />
-    </LinearLayout>
+            android:background="@color/sweet_dialog_bg_color_dark">
+            <TextView
+                android:layout_marginStart="6dp"
+                android:text="@string/ProgramLabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textAllCaps="true"/>
+
+            <Spinner
+                android:id="@+id/programSelect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/minTouchSize"
+                android:minWidth="@dimen/minTouchSize"
+                android:padding="2dp"
+                style="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             style="@style/CardViewStyle"
@@ -124,26 +124,26 @@
                         app:layout_constraintStart_toEndOf="@+id/slash"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:text="22" />
-<!--                    <com.hrskrs.instadotlib.InstaDotView-->
-<!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-<!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-<!--                        android:id="@+id/exerciseIndicator"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginTop="16dp"-->
-<!--                        android:layout_marginBottom="16dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:dotsColor="@color/blue"-->
-<!--                        app:dotsCornerRadius="8dp"-->
-<!--                        app:dotsSize="16dp"-->
-<!--                        app:dotsSpacing="4dp"-->
-<!--                        app:dotsWidthFactor="2.5"-->
-<!--                        app:selectedDotColor="@color/colorSecondary"-->
-<!--                        app:progressMode="true"-->
-<!--                        />-->
+                    <!--                    <com.hrskrs.instadotlib.InstaDotView-->
+                    <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+                    <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
+                    <!--                        android:id="@+id/exerciseIndicator"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:layout_marginTop="16dp"-->
+                    <!--                        android:layout_marginBottom="16dp"-->
+                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:dotsColor="@color/blue"-->
+                    <!--                        app:dotsCornerRadius="8dp"-->
+                    <!--                        app:dotsSize="16dp"-->
+                    <!--                        app:dotsSpacing="4dp"-->
+                    <!--                        app:dotsWidthFactor="2.5"-->
+                    <!--                        app:selectedDotColor="@color/colorSecondary"-->
+                    <!--                        app:progressMode="true"-->
+                    <!--                        />-->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -604,13 +604,13 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal">
-                <LinearLayout
-                    android:id="@+id/restControlLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/restControlLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                    </LinearLayout>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -788,15 +788,15 @@
                     android:layout_height="wrap_content"
                     />
             </LinearLayout>
-                        <TextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginStart="5dp"
-                            android:paddingStart="5dp"
-                            android:text="@string/TopTenLabel" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:paddingStart="5dp"
+                android:text="@string/TopTenLabel" />
 
-                    </LinearLayout>
+        </LinearLayout>
 
 
         <com.easyfitness.utils.ExpandedListView

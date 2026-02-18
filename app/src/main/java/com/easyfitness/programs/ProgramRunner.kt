@@ -102,8 +102,13 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -167,6 +172,41 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.exerciseInProgramNumber.text = "0"
 //        clearExerciseDetails()
     }
+//    private val ARG_OBJECT = "object"
+
+    class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+
+        override fun getCount(): Int  = 100
+
+        override fun getItem(i: Int): Fragment {
+            val fragment = DemoObjectFragment()
+            fragment.arguments = Bundle().apply {
+                // Our object is just an integer :-P
+                putInt("demoObj", i + 1)
+            }
+            return fragment
+        }
+
+        override fun getPageTitle(position: Int): CharSequence {
+            return "OBJECT ${(position + 1)}"
+        }
+    }
+
+    class DemoObjectFragment : Fragment() {
+
+        override fun onCreateView(inflater: LayoutInflater,
+                                  container: ViewGroup?,
+                                  savedInstanceState: Bundle?): View {
+            return inflater.inflate(R.layout.program_pager, container, false)
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            arguments?.takeIf { it.containsKey("demoObj") }?.apply {
+                val textView: TextView = view.findViewById(android.R.id.text1)
+                textView.text = getInt("demoObj").toString()
+            }
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -194,6 +234,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     exercisesFromProgram =
                         daoExerciseInProgram.getAllExerciseInProgram(programId)
                     if (exercisesFromProgram.isNotEmpty()) {
+//                        val dotsIndicator = view?.findViewById<DotsIndicator>(R.id.exerciseIndicator)
+//                        val viewPager = view?.findViewById<ViewPager2>(R.id.pager)
+////                        val adapter = DemoCollectionPagerAdapter()
+////                        viewPager.adapter = adapter
+////                        dotsIndicator.attachTo(viewPager)
                         binding.exerciseIndicator.initDots(exercisesFromProgram.size)
                         //                                binding.exerciseIndicator.setNoOfPages(exercisesFromProgram.size)
                         binding.currentExerciseNumber.text = "1"

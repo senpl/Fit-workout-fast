@@ -234,41 +234,36 @@ public class ProfileFragment extends Fragment {
 
     private void requestForSave(View view) {
         boolean profileToUpdate = false;
+        int viewId = view.getId();
 
         // Save all the fields in the Profile
-        switch (view.getId()) {
-            case R.id.name:
-                mProfile.setName(nameEdit.getText());
-                profileToUpdate = true;
-                break;
-            case R.id.size:
-                try {
-                    mProfile.setSize((int) Float.parseFloat(sizeEdit.getText()));
-                } catch (NumberFormatException e) {
-                    mProfile.setSize(0);
-                }
-                profileToUpdate = true;
-                break;
-            case R.id.birthday:
-                mProfile.setBirthday(DateConverter.localDateStrToDate(birthdayEdit.getText(), getContext()));
-                profileToUpdate = true;
-                break;
-            case R.id.photo:
-                mProfile.setPhoto(mCurrentPhotoPath);
-                profileToUpdate = true;
-                break;
-            case R.id.gender:
-                int lGender = Gender.UNKNOWN;
-                if (genderEdit.getText().equals(getString(R.string.maleGender))) {
-                    lGender = Gender.MALE;
-                } else if (genderEdit.getText().equals(getString(R.string.femaleGender))) {
-                    lGender = Gender.FEMALE;
-                } else if (genderEdit.getText().equals(getString(R.string.otherGender))) {
-                    lGender = Gender.OTHER;
-                }
-                mProfile.setGender(lGender);
-                profileToUpdate = true;
-                break;
+        if (viewId == R.id.name) {
+            mProfile.setName(nameEdit.getText());
+            profileToUpdate = true;
+        } else if (viewId == R.id.size) {
+            try {
+                mProfile.setSize((int) Float.parseFloat(sizeEdit.getText()));
+            } catch (NumberFormatException e) {
+                mProfile.setSize(0);
+            }
+            profileToUpdate = true;
+        } else if (viewId == R.id.birthday) {
+            mProfile.setBirthday(DateConverter.localDateStrToDate(birthdayEdit.getText(), getContext()));
+            profileToUpdate = true;
+        } else if (viewId == R.id.photo) {
+            mProfile.setPhoto(mCurrentPhotoPath);
+            profileToUpdate = true;
+        } else if (viewId == R.id.gender) {
+            int lGender = Gender.UNKNOWN;
+            if (genderEdit.getText().equals(getString(R.string.maleGender))) {
+                lGender = Gender.MALE;
+            } else if (genderEdit.getText().equals(getString(R.string.femaleGender))) {
+                lGender = Gender.FEMALE;
+            } else if (genderEdit.getText().equals(getString(R.string.otherGender))) {
+                lGender = Gender.OTHER;
+            }
+            mProfile.setGender(lGender);
+            profileToUpdate = true;
         }
 
         if (profileToUpdate) {

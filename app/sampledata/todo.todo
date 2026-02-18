@@ -1,4 +1,8 @@
-Naprawianie builda
+przywrócić dot selector do tego który działał.
+    I spróbować, czy video działa
+    Jeśli działa to opublikować nową wersję
+Przywrócić apkę do play store'a bo jednak nie ma sensu robić czegoś,
+    czego nie można opublikować
 Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń
 	bo to nie spotykana opcja
 	https://github.com/giaongo/RepDetect

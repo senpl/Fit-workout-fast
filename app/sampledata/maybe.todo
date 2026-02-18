@@ -1,7 +1,12 @@
+Opublikować wersję działającą
 Wybór programu przenieść na inny ekran?
    Wtedy nie zaśmiecałby interfejsu, ale i wiele rzeczy trzeba by przepisać
 Niech dotIndicator będzie nowszy ładniejszy
+    https://github.com/tommybuonomo/dotsindicator
    i niech się mieści w wyznaczonym mu miejscu.
+Oczyszczić ze starych elementów
+    Bo tylko obniżają rating apce
+    A nic nie dają
 Usunąć kod do wyboru ćwiczenia, jako nieużywany z programRunnera
 Niech zaznacza ostatnio wybrany program, bo to jednak life improvments
 Dalej nie startuje video jak powinien, ale tylko na urządzeniu, na emulatorze jest ok.

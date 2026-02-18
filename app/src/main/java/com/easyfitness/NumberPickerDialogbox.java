@@ -50,27 +50,13 @@ public class NumberPickerDialogbox extends Dialog implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_ok:
-                //dismiss();
-                break;
-            case R.id.btn_cancel:
-                dismiss();
-                break;
-            case R.id.btn_minusOne:
-                //dismiss();
-                break;
-            case R.id.btn_plusOne:
-                //dismiss();
-                break;
-            case R.id.btn_minusFive:
-                //dismiss();
-                break;
-            case R.id.btn_plusFive:
-                //dismiss();
-                break;
-            default:
-                break;
+        if(v.getId()==R.id.btn_ok){}
+        else if(v.getId()==R.id.btn_cancel){
+            dismiss();
+        } else if (v.getId()==R.id.btn_minusOne) {
+        } else if (v.getId()==R.id.btn_plusOne) {
+        } else if (v.getId()==R.id.btn_minusFive) {
+        } else if (v.getId()==R.id.btn_plusFive) {
         }
     }
 /*

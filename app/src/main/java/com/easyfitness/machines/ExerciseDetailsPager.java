@@ -53,17 +53,15 @@ public class ExerciseDetailsPager extends Fragment {
     private int id;
     private View.OnClickListener onClickToolbarItem = v -> {
         // Handle presses on the action bar items
-        switch (v.getId()) {
-            case R.id.saveButton:
-                saveMachine();
-                assert getActivity() != null;
-                getActivity().findViewById(R.id.tab_machine_details).requestFocus();
-                break;
-            case R.id.deleteButton:
-                deleteMachine();
-                break;
-            default:
-                saveMachineDialog();
+        int id = v.getId();
+        if (id == R.id.saveButton) {
+            saveMachine();
+            assert getActivity() != null;
+            getActivity().findViewById(R.id.tab_machine_details).requestFocus();
+        } else if (id == R.id.deleteButton) {
+            deleteMachine();
+        } else {
+            saveMachineDialog();
         }
     };
 

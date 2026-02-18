@@ -80,19 +80,15 @@ public class FonteGraphFragment extends Fragment {
         }
     };
     private OnClickListener onZoomClick = v -> {
-        switch (v.getId()) {
-            case R.id.allbutton:
-                currentZoom = zoomType.ZOOM_ALL;
-                break;
-            case R.id.lastweekbutton:
-                currentZoom = zoomType.ZOOM_WEEK;
-                break;
-            case R.id.lastmonthbutton:
-                currentZoom = zoomType.ZOOM_MONTH;
-                break;
-            case R.id.lastyearbutton:
-                currentZoom = zoomType.ZOOM_YEAR;
-                break;
+        int id = v.getId();
+        if (id == R.id.allbutton) {
+            currentZoom = zoomType.ZOOM_ALL;
+        } else if (id == R.id.lastweekbutton) {
+            currentZoom = zoomType.ZOOM_WEEK;
+        } else if (id == R.id.lastmonthbutton) {
+            currentZoom = zoomType.ZOOM_MONTH;
+        } else if (id == R.id.lastyearbutton) {
+            currentZoom = zoomType.ZOOM_YEAR;
         }
         mDateGraph.setZoom(currentZoom);
     };
