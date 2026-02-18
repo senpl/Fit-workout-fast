@@ -105,7 +105,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
+//import androidx.viewpager2.widget.ViewPager2
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -1328,7 +1328,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (lLastRecord != null) {
             if (lLastRecord.type == TYPE_STRENGTH) {
                 val lLastBodyBuildingRecord = lLastRecord as Fonte
-                if (lLastBodyBuildingRecord.serie > 1) { //only show when more then one to keep interface clean
+                if (lLastBodyBuildingRecord.serie > 1) { //only show when more than one to keep interface clean
                     binding.serieCardView.visibility = VISIBLE
                 }
                 binding.seriesEdit.setText(lLastBodyBuildingRecord.serie.toString())
