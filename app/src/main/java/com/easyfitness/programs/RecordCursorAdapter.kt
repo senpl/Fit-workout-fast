@@ -41,7 +41,7 @@ class RecordCursorAdapter internal constructor(private val mContext: Context, c:
         val tDate = view.findViewById<TextView>(R.id.DATE_CELL)
         var date: Date?=null// = DateConverter.DBDateStrToDate("")
         val cursorDate = cursor.getColumnIndex(DAORecord.DATE)
-        if(cursor.getColumnIndex(DAORecord.DATE) > 0) {
+        if(cursor.getColumnIndex(DAORecord.DATE) >= 0) {
             val dateString = cursor.getString(cursorDate)
             date = DateConverter.DBDateStrToDate(dateString)
         }
