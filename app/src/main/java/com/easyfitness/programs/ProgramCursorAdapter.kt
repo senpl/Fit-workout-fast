@@ -18,12 +18,12 @@ class ProgramCursorAdapter(context: Context, c: Cursor?, flags: Int, pDbMachine:
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val t0 = view.findViewById<TextView>(R.id.LIST_Program_ID)
         val cursorDaoProgram = cursor.getColumnIndex(DAOProgram.KEY)
-        if (cursorDaoProgram > 0) {
+        if (cursorDaoProgram >= 0) {
             t0.text = cursor.getString(cursorDaoProgram)
         }
         val t1 = view.findViewById<TextView>(R.id.LIST_Program_name)
         val cursorDaoProgramName = cursor.getColumnIndex(DAOProgram.PROGRAM_NAME)
-        if (cursorDaoProgramName > 0) {
+        if (cursorDaoProgramName >= 0) {
             t1.text = cursor.getString(cursorDaoProgramName)
         }
     }
