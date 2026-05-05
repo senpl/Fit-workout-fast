@@ -58,17 +58,17 @@ class BodyPartListAdapter(data: ArrayList<BodyPart?>, context: Context) :
         //Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
         //result.startAnimation(animation);
         //lastPosition = position;
-        viewHolder.txtID!!.setText(dataModel!!.getId().toString())
+        viewHolder.txtID!!.setText(dataModel!!.id.toString())
         viewHolder.txtName!!.setText(dataModel.getName(getContext()))
 
-        if (dataModel.getLastMeasure() != null) viewHolder.txtLastMeasure!!.setText(
-            dataModel.getLastMeasure().getBodyMeasure().toString()
+        if (dataModel.lastMeasure != null) viewHolder.txtLastMeasure!!.setText(
+            dataModel.lastMeasure!!.bodyMeasure.toString()
         )
         else viewHolder.txtLastMeasure!!.setText("-")
-        if (dataModel.getCustomPicture() != "") {
-            ImageUtil.setPic(viewHolder.logo, dataModel.getCustomPicture())
+        if (dataModel.customPicture != "") {
+            ImageUtil.setPic(viewHolder.logo, dataModel.customPicture)
         } else {
-            if (dataModel.getBodyPartResKey() != -1) viewHolder.logo!!.setImageDrawable(
+            if (dataModel.bodyPartResKey != -1) viewHolder.logo!!.setImageDrawable(
                 dataModel.getPicture(
                     getContext()
                 )
@@ -79,7 +79,7 @@ class BodyPartListAdapter(data: ArrayList<BodyPart?>, context: Context) :
         convertView.post(Runnable {
             val mDbBodyMeasure = DAOBodyMeasure(getContext())
             val valueList = mDbBodyMeasure.getBodyPartMeasuresListTop4(
-                dataModel.getId(),
+                dataModel.id,
                 this.profile
             )
             if (valueList != null) {
@@ -93,8 +93,8 @@ class BodyPartListAdapter(data: ArrayList<BodyPart?>, context: Context) :
                         for (i in valueList.indices.reversed()) {
                             val value = Entry(
                                 DateConverter.nbDays(
-                                    valueList.get(i)!!.getDate().getTime().toDouble()
-                                ).toFloat(), valueList.get(i)!!.getBodyMeasure()
+                                    valueList.get(i)!!.date!!.getTime().toDouble()
+                                ).toFloat(), valueList.get(i)!!.bodyMeasure
                             )
                             yVals.add(value)
                         }

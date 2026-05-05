@@ -78,7 +78,7 @@ class FonteHistoryFragment : Fragment() {
                     val currentDateSelection = ""
 
                     //  Update currentSelectedMachine
-                    val lDbMachine = DAOMachine(getContext())
+                    val lDbMachine = DAOMachine(requireContext())
                     val machine: Machine? = null
                     if (exerciseList!!.getSelectedItem().toString() != requireView().resources
                             .getText(R.string.all).toString()
@@ -140,7 +140,7 @@ class FonteHistoryFragment : Fragment() {
         if (machineIdArg != -1L) {
             // Hide the spinner
             view.findViewById<View?>(R.id.tableRowFilterMachine).setVisibility(View.GONE)
-            val lDbMachine = DAOMachine(getContext())
+            val lDbMachine = DAOMachine(requireContext())
             selectedMachine = lDbMachine.getMachine(machineIdArg)
             mExerciseArray!!.add(selectedMachine!!.name)
             mAdapterMachine!!.notifyDataSetChanged()
@@ -201,7 +201,7 @@ class FonteHistoryFragment : Fragment() {
         }
 
         // Get Values
-        val c = mDb!!.getFilteredRecords(this.profil, pMachine, pDate)
+        val c = mDb!!.getFilteredRecords(this.profil!!, pMachine, pDate)
 
         if (c == null || c.getCount() == 0) {
             filterList!!.setAdapter(null)

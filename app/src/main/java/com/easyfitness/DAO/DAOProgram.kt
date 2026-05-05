@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import java.security.AccessControlContext
 import java.util.Collections.emptyList
 
-class DAOProgram(context: Context?) : DAOBase(context) {
+class DAOProgram(context: Context) : DAOBase(context) {
     private var mCursor: Cursor? = null
     fun addRecord(programName: String?): Long {
         val value = ContentValues()
@@ -18,7 +18,7 @@ class DAOProgram(context: Context?) : DAOBase(context) {
         value.put(PROGRAM_NAME, programName)
         value.put(PROFIL_KEY, 1)
         val db = open()
-        newId = db.insert(TABLE_NAME, null, value)
+        newId = db!!.insert(TABLE_NAME, null, value)
         close()
         return newId
     }
@@ -32,7 +32,7 @@ class DAOProgram(context: Context?) : DAOBase(context) {
         value.put(PROGRAM_NAME, programName)
         value.put(PROFIL_KEY, profileId)
         val db = open()
-        newId = db.insert(TABLE_NAME, null, value)
+        newId = db!!.insert(TABLE_NAME, null, value)
         close()
         return newId
     }
@@ -45,13 +45,13 @@ class DAOProgram(context: Context?) : DAOBase(context) {
     fun getRecord(pName: String?): Program? {
         val db = this.readableDatabase
         mCursor = null
-        mCursor = db.query(TABLE_NAME, arrayOf(KEY, PROGRAM_NAME, PROFIL_KEY), "$PROGRAM_NAME=?", arrayOf(pName), null, null, null, null)
+        mCursor = db!!.query(TABLE_NAME, arrayOf(KEY, PROGRAM_NAME, PROFIL_KEY), "$PROGRAM_NAME=?", arrayOf(pName), null, null, null, null)
         if (mCursor != null) mCursor!!.moveToFirst()
         if (mCursor!!.count == 0) return null
         val value = Program(
             mCursor!!.getString(1),
             mCursor!!.getLong(2))
-        value.setId(mCursor!!.getLong(0))
+        value.id=(mCursor!!.getLong(0))
         mCursor!!.close()
         close()
         return value
@@ -60,11 +60,11 @@ class DAOProgram(context: Context?) : DAOBase(context) {
     fun getRecord(id: Long): Program? {
         val db = this.readableDatabase
         mCursor = null
-        mCursor = db.query(TABLE_NAME, arrayOf(KEY, PROGRAM_NAME, PROFIL_KEY), "$KEY=?", arrayOf(id.toString()), null, null, null, null)
+        mCursor = db!!.query(TABLE_NAME, arrayOf(KEY, PROGRAM_NAME, PROFIL_KEY), "$KEY=?", arrayOf(id.toString()), null, null, null, null)
         if (mCursor != null) mCursor!!.moveToFirst()
         if (mCursor!!.count == 0) return null
         val value = Program(mCursor!!.getString(1), mCursor!!.getLong(2))
-        value.setId(mCursor!!.getLong(0))
+        value.id=(mCursor!!.getLong(0))
         mCursor!!.close()
         close()
         return value
@@ -75,7 +75,7 @@ class DAOProgram(context: Context?) : DAOBase(context) {
             val programs: MutableList<String> = ArrayList()
             val db = this.readableDatabase
             mCursor = null
-            mCursor = db.query(TABLE_NAME, arrayOf(PROGRAM_NAME), null, null, null, null, PROGRAM_NAME)
+            mCursor = db!!.query(TABLE_NAME, arrayOf(PROGRAM_NAME), null, null, null, null, PROGRAM_NAME)
             if (mCursor != null) mCursor!!.moveToFirst()
             if (mCursor!!.count == 0) return emptyList()
             if (mCursor!!.moveToFirst()) {
@@ -100,7 +100,7 @@ class DAOProgram(context: Context?) : DAOBase(context) {
             val programs: MutableList<Program> = ArrayList()
             val db = this.readableDatabase
             mCursor = null
-            mCursor = db.query(TABLE_NAME, arrayOf(PROGRAM_NAME,KEY), null, null, null, null, PROGRAM_NAME)
+            mCursor = db!!.query(TABLE_NAME, arrayOf(PROGRAM_NAME,KEY), null, null, null, null, PROGRAM_NAME)
             if (mCursor != null) mCursor!!.moveToFirst()
             if (mCursor!!.count == 0) return emptyList()
             if (mCursor!!.moveToFirst()) {
@@ -127,20 +127,20 @@ class DAOProgram(context: Context?) : DAOBase(context) {
 
     private fun getProgramListCursor(pRequest: String): Cursor {
         val db = this.readableDatabase
-        return db.rawQuery(pRequest, null)
+        return db!!.rawQuery(pRequest, null)
     }
 
     fun updateRecord(m: Program): Int {
         val db = this.writableDatabase
         val value = ContentValues()
         value.put(PROGRAM_NAME, m.programName)
-        return db.update(TABLE_NAME, value, "$KEY = ?", arrayOf(m.getId().toString()))
+        return db!!.update(TABLE_NAME, value, "$KEY = ?", arrayOf(m.id.toString()))
     }
 
     fun delete(m: Program?) {
         if (m != null) {
             val db = this.writableDatabase
-            db.delete(TABLE_NAME, "$KEY = ?", arrayOf(m.getId().toString()))
+            db!!.delete(TABLE_NAME, "$KEY = ?", arrayOf(m.id.toString()))
             db.close()
         }
     }

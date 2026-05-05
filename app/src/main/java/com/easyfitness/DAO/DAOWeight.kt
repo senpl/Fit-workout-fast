@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
 
-class DAOWeight(context: Context?) : DAOBase(context) {
+class DAOWeight(context: Context) : DAOBase(context) {
     private var mProfile: Profile? = null
     private var mCursor: Cursor? = null
 
@@ -23,7 +23,7 @@ class DAOWeight(context: Context?) : DAOBase(context) {
      * @param pProfile profil associated with the measure
      */
     fun addWeight(pDate: Date, pWeight: Float, pProfile: Profile) {
-        val db = this.getWritableDatabase()
+        val db = this.writableDatabase
 
         val value = ContentValues()
 
@@ -34,16 +34,16 @@ class DAOWeight(context: Context?) : DAOBase(context) {
         value.put(POIDS, pWeight)
         value.put(PROFIL_KEY, pProfile.id)
 
-        db.insert(TABLE_NAME, null, value)
+        db!!.insert(TABLE_NAME, null, value)
         db.close() // Closing database connection
     }
 
     // Getting single value
     private fun getMeasure(id: Long): ProfileWeight {
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
 
         mCursor = null
-        mCursor = db.query(
+        mCursor = db!!.query(
             TABLE_NAME,
             arrayOf<String>(KEY, DATE, POIDS, PROFIL_KEY),
             KEY + "=?",
@@ -71,10 +71,10 @@ class DAOWeight(context: Context?) : DAOBase(context) {
     val lastMeasure: ProfileWeight
         // Getting single value
         get() {
-            val db = this.getReadableDatabase()
+            val db = this.readableDatabase
 
             mCursor = null
-            mCursor = db.query(
+            mCursor = db!!.query(
                 TABLE_NAME,
                 arrayOf<String>(
                     KEY,
@@ -121,9 +121,9 @@ class DAOWeight(context: Context?) : DAOBase(context) {
         val valueList: MutableList<ProfileWeight?> = ArrayList<ProfileWeight?>()
 
         // Select All Query
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
         mCursor = null
-        mCursor = db.rawQuery(pRequest, null)
+        mCursor = db!!.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
         if (mCursor!!.moveToFirst()) {
@@ -170,29 +170,29 @@ class DAOWeight(context: Context?) : DAOBase(context) {
 
     // Updating single value
     fun updateMeasure(m: ProfileWeight): Int {
-        val db = this.getWritableDatabase()
+        val db = this.writableDatabase
 
         val value = ContentValues()
-        value.put(DATE, m.getDate().toString())
-        value.put(POIDS, m.getWeight())
-        value.put(PROFIL_KEY, m.getProfilId())
+        value.put(DATE, m.date.toString())
+        value.put(POIDS, m.weight)
+        value.put(PROFIL_KEY, m.profilId)
 
         // updating row
-        return db.update(
+        return db!!.update(
             TABLE_NAME, value, KEY + " = ?",
-            arrayOf<String>(m.getId().toString())
+            arrayOf<String>(m.id.toString())
         )
     }
 
     // Deleting single Measure
     fun deleteMeasure(m: ProfileWeight) {
-        deleteMeasure(m.getId())
+        deleteMeasure(m.id)
     }
 
     // Deleting single Measure
     fun deleteMeasure(id: Long) {
-        val db = this.getWritableDatabase()
-        db.delete(
+        val db = this.writableDatabase
+        db!!.delete(
             TABLE_NAME, KEY + " = ?",
             arrayOf<String>(id.toString())
         )
@@ -203,8 +203,8 @@ class DAOWeight(context: Context?) : DAOBase(context) {
         get() {
             val countQuery = "SELECT  * FROM " + TABLE_NAME
             open()
-            val db = this.getReadableDatabase()
-            val cursor = db.rawQuery(countQuery, null)
+            val db = this.readableDatabase
+            val cursor = db!!.rawQuery(countQuery, null)
 
             val value = cursor.getCount()
             cursor.close()

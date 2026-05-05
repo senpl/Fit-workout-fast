@@ -47,7 +47,7 @@ class ProgramDetailsFragment : Fragment() {
         fragmentView = view
 
         daoProgram = DAOProgram(requireContext())
-        mDbRecord = DAORecord(context)
+        mDbRecord = DAORecord(requireContext())
         programName = view.findViewById(R.id.programName)
         val args = this.arguments
         idArg = args!!.getLong("programID")

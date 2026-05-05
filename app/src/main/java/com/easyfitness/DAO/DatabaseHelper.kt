@@ -1,359 +1,1158 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.DatabaseUtils
+import android.database.SQLException
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
+import android.database.sqlite.SQLiteOpenHelper
+import com.easyfitness.DAO.DAOExerciseInProgram.Companion.addInitialExercise
+import com.easyfitness.DAO.DAOProgram.Companion.addInitialProgram
+import com.easyfitness.DAO.bodymeasures.BodyPartExtensions
+import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure
+import com.easyfitness.DAO.bodymeasures.DAOBodyPart
+import com.easyfitness.utils.UnitConverter
+import java.io.File
 
-import com.easyfitness.DAO.bodymeasures.BodyPartExtensions;
-import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure;
-import com.easyfitness.DAO.bodymeasures.DAOBodyPart;
-import com.easyfitness.utils.UnitConverter;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-public class DatabaseHelper extends SQLiteOpenHelper {
-
-    public static final int DATABASE_VERSION = 24;
-    private static final String OLD09_DATABASE_NAME = "easyfitness";
-    private static final String DATABASE_NAME = "easyfitness.db";
-    private static DatabaseHelper sInstance;
-
-    private DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+class DatabaseHelper private constructor(context: Context?) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(DAORecord.Companion.TABLE_CREATE) // Covers Fonte and Cardio and Static
+        db.execSQL(DAOProfil.Companion.TABLE_CREATE)
+        db.execSQL(DAOWeight.TABLE_CREATE)
+        db.execSQL(DAOMachine.TABLE_CREATE)
+        db.execSQL(DAOBodyMeasure.Companion.TABLE_CREATE)
+        db.execSQL(DAOBodyPart.Companion.TABLE_CREATE)
+        initBodyPartTable(db)
+        db.execSQL(DAOProgram.TABLE_CREATE)
+        db.execSQL(DAOExerciseInProgram.TABLE_CREATE)
+        val defaultProgramName = "training program default"
+        addInitialProgram(db, defaultProgramName)
+        addExampleExercises(db)
     }
 
-    static DatabaseHelper getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
-        if (sInstance == null) {
-            sInstance = new DatabaseHelper(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
-    public static void renameOldDatabase(Activity activity) {
-        File oldDatabaseFile = activity.getDatabasePath(OLD09_DATABASE_NAME);
-        if (oldDatabaseFile.exists()) {
-            File newDatabaseFile = new File(oldDatabaseFile.getParentFile(), DATABASE_NAME);
-            oldDatabaseFile.renameTo(newDatabaseFile);
-        }
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DAORecord.TABLE_CREATE); // Covers Fonte and Cardio and Static
-        db.execSQL(DAOProfil.TABLE_CREATE);
-        db.execSQL(DAOWeight.TABLE_CREATE);
-        db.execSQL(DAOMachine.TABLE_CREATE);
-        db.execSQL(DAOBodyMeasure.TABLE_CREATE);
-        db.execSQL(DAOBodyPart.TABLE_CREATE);
-        initBodyPartTable(db);
-        db.execSQL(DAOProgram.TABLE_CREATE);
-        db.execSQL(DAOExerciseInProgram.TABLE_CREATE);
-        String defaultProgramName="training program default";
-        DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
-        addExampleExercises(db);
-    }
-
-    @Override
-    public void onUpgrade(
-        final SQLiteDatabase db, final int oldVersion,
-        final int newVersion) {
-        int upgradeTo = oldVersion + 1;
+    override fun onUpgrade(
+        db: SQLiteDatabase, oldVersion: Int,
+        newVersion: Int
+    ) {
+        var upgradeTo = oldVersion + 1
         while (upgradeTo <= newVersion) {
-            switch (upgradeTo) {
-                case 1:
-                case 2:
-                    db.execSQL(DAOCardio.TABLE_CREATE);
-                    break;
-                case 3:
-                    db.execSQL(DAOCardio.TABLE_DROP);
-                    db.execSQL(DAOCardio.TABLE_CREATE);
-                    break;
-                case 4: // Easyfitness 0.7
-                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.NOTES + " TEXT");
-                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.UNIT + " INTEGER DEFAULT 0");
-                    break;
-                case 5:
-                    db.execSQL(DAOMachine.TABLE_CREATE_5);
-                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.MACHINE_KEY + " INTEGER");
-                    break;
-                case 6: // Easyfitness 0.8
-                    if (!isFieldExist(db, DAOMachine.TABLE_NAME, DAOMachine.BODYPARTS)) // Easyfitness 0.9 : Probleme d'upgrade
-                        db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.BODYPARTS + " TEXT");
-                    break;
-                case 7: // Easyfitness 0.10
-                    db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.PICTURE + " TEXT");
-                    break;
-                case 8: // Easyfitness 0.12
-                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.TIME + " TEXT");
-                    break;
-                case 9: // Easyfitness 0.13
-                    db.execSQL(DAOBodyMeasure.TABLE_CREATE);
-                    break;
-                case 10: // Easyfitness 0.13 BIS
-                    db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.FAVORITES + " INTEGER");
-                    break;
-                case 11: // FastnFitness 0.13.3 - Changed Poids from Integer to Real
-                    // Renomme la table FONTE en table temporaire
-                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " RENAME TO tmp_table_name");
-                    // Cree la nouvelle table FONTE
-                    db.execSQL(DAOFonte.TABLE_CREATE);
-                    // Copie les infos de l'ancienne vers la nouvelle
-                    db.execSQL("INSERT INTO " + DAOFonte.TABLE_NAME + " SELECT * FROM tmp_table_name");
-                    // do not delete old table here in case of issue
-                    break;
-                case 12:
-                    // Delete old table table
-                    db.execSQL("DROP TABLE IF EXISTS tmp_table_name");
-                    break;
-                case 13:
+            when (upgradeTo) {
+                1, 2 -> db.execSQL(DAORecord.Companion.TABLE_CREATE)
+                3 -> {
+                    db.execSQL(DAORecord.Companion.TABLE_DROP)
+                    db.execSQL(DAORecord.Companion.TABLE_CREATE)
+                }
+
+                4 -> {
+//                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.NOTES + " TEXT")
+//                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.UNIT + " INTEGER DEFAULT 0")
+                }
+
+                5 -> {
+//                    db.execSQL(DAOMachine.TABLE_CREATE_5)
+//                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.MACHINE_KEY + " INTEGER")
+                }
+
+                6 -> if (!isFieldExist(
+                        db,
+                        DAOMachine.TABLE_NAME,
+                        DAOMachine.BODYPARTS
+                    )
+                )  // Easyfitness 0.9 : Probleme d'upgrade
+                    db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.BODYPARTS + " TEXT")
+
+                7 -> db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.PICTURE + " TEXT")
+//                8 -> db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " ADD COLUMN " + DAOFonte.TIME + " TEXT")
+                9 -> db.execSQL(DAOBodyMeasure.Companion.TABLE_CREATE)
+                10 -> db.execSQL("ALTER TABLE " + DAOMachine.TABLE_NAME + " ADD COLUMN " + DAOMachine.FAVORITES + " INTEGER")
+//                11 -> {
+//                    // Renomme la table FONTE en table temporaire
+//                    db.execSQL("ALTER TABLE " + DAOFonte.TABLE_NAME + " RENAME TO tmp_table_name")
+//                    // Cree la nouvelle table FONTE
+//                    db.execSQL(DAOFonte.TABLE_CREATE)
+//                    // Copie les infos de l'ancienne vers la nouvelle
+//                    db.execSQL("INSERT INTO " + DAOFonte.TABLE_NAME + " SELECT * FROM tmp_table_name")
+//                }
+
+                12 ->                     // Delete old table table
+                    db.execSQL("DROP TABLE IF EXISTS tmp_table_name")
+
+                13 -> {
                     // Update profile database
-                    db.execSQL("ALTER TABLE " + DAOProfil.TABLE_NAME + " ADD COLUMN " + DAOProfil.SIZE + " INTEGER");
-                    db.execSQL("ALTER TABLE " + DAOProfil.TABLE_NAME + " ADD COLUMN " + DAOProfil.BIRTHDAY + " DATE");
-                    break;
-                case 14:
-                    db.execSQL("ALTER TABLE " + DAOProfil.TABLE_NAME + " ADD COLUMN " + DAOProfil.PHOTO + " TEXT");
-                    break;
-                case 15:
+                    db.execSQL("ALTER TABLE " + DAOProfil.Companion.TABLE_NAME + " ADD COLUMN " + DAOProfil.Companion.SIZE + " INTEGER")
+                    db.execSQL("ALTER TABLE " + DAOProfil.Companion.TABLE_NAME + " ADD COLUMN " + DAOProfil.Companion.BIRTHDAY + " DATE")
+                }
+
+                14 -> db.execSQL("ALTER TABLE " + DAOProfil.Companion.TABLE_NAME + " ADD COLUMN " + DAOProfil.Companion.PHOTO + " TEXT")
+                15 -> {
                     // Merge of Cardio DB and Fonte DB
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.DISTANCE + " REAL");
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.DURATION + " INTEGER");
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.TYPE + " INTEGER DEFAULT " + DAOMachine.TYPE_STRENGTH);
-                    break;
-                case 16:
+                    db.execSQL("ALTER TABLE " + DAORecord.Companion.TABLE_NAME + " ADD COLUMN " + DAORecord.Companion.DISTANCE + " REAL")
+                    db.execSQL("ALTER TABLE " + DAORecord.Companion.TABLE_NAME + " ADD COLUMN " + DAORecord.Companion.DURATION + " INTEGER")
+                    db.execSQL("ALTER TABLE " + DAORecord.Companion.TABLE_NAME + " ADD COLUMN " + DAORecord.Companion.TYPE + " INTEGER DEFAULT " + DAOMachine.TYPE_STRENGTH)
+                }
+
+                16 -> {
                     // Merge of Cardio DB and Fonte DB
-                    db.execSQL("ALTER TABLE " + DAOBodyMeasure.TABLE_NAME + " ADD COLUMN " + DAOBodyMeasure.UNIT + " INTEGER");
-                    migrateWeightTable(db);
-                    break;
-                case 17:
-                    db.execSQL("ALTER TABLE " + DAOProfil.TABLE_NAME + " ADD COLUMN " + DAOProfil.GENDER + " INTEGER");
-                    break;
-                case 18:
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.SECONDS + " INTEGER DEFAULT 0");
-                    break;
-                case 19:
-                    db.execSQL("ALTER TABLE " + DAORecord.TABLE_NAME + " ADD COLUMN " + DAORecord.DISTANCE_UNIT + " INTEGER DEFAULT 0");
-                    break;
-                case 20:
-                    db.execSQL(DAOBodyPart.TABLE_CREATE);
-                    initBodyPartTable(db);
-                    break;
-                case 21:
-                    db.execSQL(DAOProgram.TABLE_CREATE);
-                    db.execSQL(DAOExerciseInProgram.TABLE_CREATE);
-                    String defaultProgramName="training program default";
-                    DAOProgram.Companion.addInitialProgram(db, defaultProgramName);
-                    break;
-                case 24:
-                    addExampleExercises(db);
-                    break;
-          }
-            upgradeTo++;
+                    db.execSQL("ALTER TABLE " + DAOBodyMeasure.Companion.TABLE_NAME + " ADD COLUMN " + DAOBodyMeasure.Companion.UNIT + " INTEGER")
+                    migrateWeightTable(db)
+                }
+
+                17 -> db.execSQL("ALTER TABLE " + DAOProfil.Companion.TABLE_NAME + " ADD COLUMN " + DAOProfil.Companion.GENDER + " INTEGER")
+                18 -> db.execSQL("ALTER TABLE " + DAORecord.Companion.TABLE_NAME + " ADD COLUMN " + DAORecord.Companion.SECONDS + " INTEGER DEFAULT 0")
+                19 -> db.execSQL("ALTER TABLE " + DAORecord.Companion.TABLE_NAME + " ADD COLUMN " + DAORecord.Companion.DISTANCE_UNIT + " INTEGER DEFAULT 0")
+                20 -> {
+                    db.execSQL(DAOBodyPart.Companion.TABLE_CREATE)
+                    initBodyPartTable(db)
+                }
+
+                21 -> {
+                    db.execSQL(DAOProgram.TABLE_CREATE)
+                    db.execSQL(DAOExerciseInProgram.TABLE_CREATE)
+                    val defaultProgramName = "training program default"
+                    addInitialProgram(db, defaultProgramName)
+                }
+
+                24 -> addExampleExercises(db)
+            }
+            upgradeTo++
         }
     }
 
-    private static void addExampleExercises(SQLiteDatabase db) {
-        String newProgramName = "Low Back Muscle Strain";
-        long programId; // To store the ID of the newly inserted program
-        try {
-            programId = DAOProgram.Companion.addInitialProgram(db, newProgramName);
-           if (programId != -1) {
-               System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId + " for '" + newProgramName + "'.");
-                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId,10,"Knee Sway",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=91s",120);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId,10,"Knee to Chest",DAOMachine.TYPE_STATIC,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,20,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",214);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId,10,"Knee to Chest",DAOMachine.TYPE_STATIC,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,20,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",214);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId,10,"Cat Cow",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=214s",265);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId,10,"Child's Pose with Reach",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=265s",280);
-                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId);
-            } else {
-                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName + "'. Exercises will not be added.");
-            }
-            String newProgramName2 = "Low Back And Core Pain prevention with ball";
-            long programId2 = DAOProgram.Companion.addInitialProgram(db, newProgramName2);
-            if (programId2 != -1) {
-                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId2 + " for '" + newProgramName2 + "'.");
-                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId2,10,"Back extension on ball",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",106);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId2,10,"Opposite Arm/Leg Lift",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=106s",154);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId2,10,"Plank on Elbows",DAOMachine.TYPE_STRENGTH,1,15,0.0f,1,UnitConverter.UNIT_KG,"as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=154s",238);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId2,10,"Roll Out",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=238s",296);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId2,10,"Curl Up",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"as far and as many as comfortable","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=296s",280);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId2,10,"Side Crunch",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"stay safe when you need support leg use it","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=357s",452);
-                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId2);
-            } else {
-                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName2 + "'. Exercises will not be added.");
-            }
-            String newProgramName3 = "Recovery breathing and better sleep";
-            long programId3 = DAOProgram.Companion.addInitialProgram(db, newProgramName3);
-            if (programId3 != -1) {
-                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId3 + " for '" + newProgramName3 + "'.");
-                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId3,10,"Breath Awareness",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=130s",244);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId3,10,"Inhale through Nose, Exhale through Mouth",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=244s",250);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId3,10,"Accentuate Breath in upper part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=250s",282);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId3,10,"Accentuate Breath in lower part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=282",318);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId3,10,"Accentuate Breath in side and back part of lungs",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=318",350);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId3,10,"Vary Breathing Pace fast inhale slow exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId3,10,"Vary Breathing Pace slow inhale fast exhale",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",428);
-                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId3);
-            } else {
-                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName3 + "'. Exercises will not be added.");
-            }
-            String newProgramName4 = "Ankle Mobility, Flexibility and Strength";
-            long programId4 = DAOProgram.Companion.addInitialProgram(db, newProgramName4);
-            if (programId4 != -1) {
-                System.out.println("DB Upgrade Case 24: Successfully obtained program ID: " + programId4 + " for '" + newProgramName4 + "'.");
-                DAOExerciseInProgram.Companion.addInitialExercise(db,1,programId4,5,"Massage pain in ankle",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=99",105);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,2,programId4,5,"Ankle side move with resistance(band)",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=304",320);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,3,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,4,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,5,programId4,5,"Calf Stretch Right",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,6,programId4,5,"Calf Stretch Left",DAOMachine.TYPE_STATIC,1,1,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,30,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",105);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,7,programId4,10,"Ankle Alphabet",DAOMachine.TYPE_STRENGTH,1,2,0.0f,1,UnitConverter.UNIT_KG,"Try 3 repetitions","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=105s",126);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,8,programId4,10,"Heel Toe Raise",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=126s",150);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,9,programId4,10,"Heel Toe Raise finger inward",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=150",157);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,10,programId4,10,"Heel Toe Raise finger out",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=157",192);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,11,programId4,10,"Single injured leg balance with eyes open",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,30,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=192s",208);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,12,programId4,10,"Single injured leg balance with eyes closed",DAOMachine.TYPE_STATIC,1,10,0.0f,1,UnitConverter.UNIT_KG,"hold wall if needed","0",0.0f,10,10,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=208",251);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,13,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,14,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,15,programId4,10,"3-way Lunge Right",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,16,programId4,10,"3-way Lunge Left",DAOMachine.TYPE_STRENGTH,1,10,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",278);
-                DAOExerciseInProgram.Companion.addInitialExercise(db,17,programId4,10,"Side step squats",DAOMachine.TYPE_STRENGTH,1,20,0.0f,1,UnitConverter.UNIT_KG,"","0",0.0f,10,0,UnitConverter.UNIT_KM,"https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=278",345);
-                System.out.println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId4);
-            } else {
-                System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName4 + "'. Exercises will not be added.");
-            }
-        } catch (android.database.SQLException e) {
-            System.err.println("DB Upgrade Case 24: SQLException during program/exercise addition for '" + newProgramName + "': " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void onDowngrade(
-        final SQLiteDatabase db, final int oldVersion,
-        final int newVersion) {
-        int upgradeTo = oldVersion - 1;
+    override fun onDowngrade(
+        db: SQLiteDatabase?, oldVersion: Int,
+        newVersion: Int
+    ) {
+        var upgradeTo = oldVersion - 1
         while (upgradeTo >= newVersion) {
-            switch (upgradeTo) {
-                case 2:
-                    // Ne fonctionne pas pour ces versions
-                    break;
-                case 3:
-                    // Ne fonctionne pas pour ces versions
-                    //db.execSQL("ALTER TABLE "+ DAOFonte.TABLE_NAME + " DROP COLUMN " + DAOFonte.NOTES);
-                    //db.execSQL("ALTER TABLE "+ DAOFonte.TABLE_NAME + " DROP COLUMN " + DAOFonte.UNIT);
-                    break;
-                case 4:
-                    //db.execSQL(DAOMachine.TABLE_DROP);
-                    //db.execSQL("ALTER TABLE "+ DAOFonte.TABLE_NAME + " DROP COLUMN " + DAOFonte.MACHINE_KEY );
-                    break;
-                case 5:
-                    //db.execSQL("ALTER TABLE "+ DAOMachine.TABLE_NAME + " DROP COLUMN " + DAOMachine.BODYPARTS );
-                    break;
+            when (upgradeTo) {
+                2 -> {}
+                3 -> {}
+                4 -> {}
+                5 -> {}
             }
-            upgradeTo--;
+            upgradeTo--
         }
     }
 
     // This method will return if your table exist a field or not
-    private boolean isFieldExist(SQLiteDatabase db, String tableName, String fieldName) {
-        boolean isExist = true;
-        Cursor res;
+    private fun isFieldExist(db: SQLiteDatabase, tableName: String?, fieldName: String?): Boolean {
+        var isExist = true
+        val res: Cursor?
 
         try {
-            res = db.rawQuery("SELECT " + fieldName + " FROM " + tableName, null);
-            res.close();
-        } catch (SQLiteException e) {
-            isExist = false;
+            res = db.rawQuery("SELECT " + fieldName + " FROM " + tableName, null)
+            res.close()
+        } catch (e: SQLiteException) {
+            isExist = false
         }
 
-        return isExist;
+        return isExist
     }
 
-    public boolean tableExists(SQLiteDatabase db, String tableName) {
-        boolean isExist = true;
-        Cursor res;
+    fun tableExists(db: SQLiteDatabase, tableName: String?): Boolean {
+        var isExist = true
+        val res: Cursor?
 
         try {
-            res = db.rawQuery("SELECT * FROM " + tableName, null);
-            res.close();
-        } catch (SQLiteException e) {
-            isExist = false;
+            res = db.rawQuery("SELECT * FROM " + tableName, null)
+            res.close()
+        } catch (e: SQLiteException) {
+            isExist = false
         }
-        return isExist;
+        return isExist
     }
 
-    public boolean checkIfRecordExist(SQLiteDatabase db, String nameOfTable, String columnName, String columnValue) {
-        return DatabaseUtils.longForQuery(db, "select count(*) from " + nameOfTable + " where "+columnName+"=? limit 1", new String[] {columnValue}) > 0;
+    fun checkIfRecordExist(
+        db: SQLiteDatabase?,
+        nameOfTable: String?,
+        columnName: String?,
+        columnValue: String?
+    ): Boolean {
+        return DatabaseUtils.longForQuery(
+            db,
+            "select count(*) from " + nameOfTable + " where " + columnName + "=? limit 1",
+            arrayOf<String?>(columnValue)
+        ) > 0
     }
 
-    private void migrateWeightTable(SQLiteDatabase db) {
-        List<ProfileWeight> valueList = new ArrayList<>();
+    private fun migrateWeightTable(db: SQLiteDatabase) {
+        val valueList: MutableList<ProfileWeight?> = ArrayList<ProfileWeight?>()
         // Select All Query
-        String selectQuery = "SELECT * FROM " + DAOWeight.TABLE_NAME;
+        val selectQuery = "SELECT * FROM " + DAOWeight.TABLE_NAME
         //SQLiteDatabase db = this.getWritableDatabase();
-        Cursor mCursor;
-        mCursor = db.rawQuery(selectQuery, null);
+        val mCursor: Cursor?
+        mCursor = db.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
         if (mCursor.moveToFirst()) {
             do {
-                ContentValues value = new ContentValues();
+                val value = ContentValues()
 
-//                value.put(DAOBodyMeasure.DATE, mCursor.getString(mCursor.getColumnIndex(DAOWeight.DATE)));
+                //                value.put(DAOBodyMeasure.DATE, mCursor.getString(mCursor.getColumnIndex(DAOWeight.DATE)));
 //                value.put(DAOBodyMeasure.BODYPART_ID, BodyPartExtensions.WEIGHT);
 //                value.put(DAOBodyMeasure.MEASURE, mCursor.getFloat(mCursor.getColumnIndex(DAOWeight.POIDS)));
 //                value.put(DAOBodyMeasure.PROFIL_KEY, mCursor.getLong(mCursor.getColumnIndex(DAOWeight.PROFIL_KEY)));
-
-                db.insert(DAOBodyMeasure.TABLE_NAME, null, value);
-            } while (mCursor.moveToNext());
-            mCursor.close();
+                db.insert(DAOBodyMeasure.Companion.TABLE_NAME, null, value)
+            } while (mCursor.moveToNext())
+            mCursor.close()
             //db.close(); // Closing database connection
         }
     }
 
-    public void initBodyPartTable(SQLiteDatabase db){
-        int display_order=0;
+    fun initBodyPartTable(db: SQLiteDatabase) {
+        var display_order = 0
 
-        addInitialBodyPart(db, BodyPartExtensions.LEFTBICEPS, "","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.RIGHTBICEPS, "","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.PECTORAUX,"","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.WAIST, "","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.BEHIND,"","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.LEFTTHIGH,"","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.RIGHTTHIGH,"","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.LEFTCALVES, "","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.RIGHTCALVES,"","", display_order++, BodyPartExtensions.TYPE_MUSCLE);
-        addInitialBodyPart(db, BodyPartExtensions.WEIGHT,"","", 0, BodyPartExtensions.TYPE_WEIGHT);
-        addInitialBodyPart(db, BodyPartExtensions.MUSCLES, "","", 0, BodyPartExtensions.TYPE_WEIGHT);
-        addInitialBodyPart(db, BodyPartExtensions.WATER, "","", 0, BodyPartExtensions.TYPE_WEIGHT);
-        addInitialBodyPart(db, BodyPartExtensions.FAT, "","", 0, BodyPartExtensions.TYPE_WEIGHT);
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.LEFTBICEPS.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.RIGHTBICEPS.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.PECTORAUX.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.WAIST.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.BEHIND.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.LEFTTHIGH.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.RIGHTTHIGH.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.LEFTCALVES.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.RIGHTCALVES.toLong(),
+            "",
+            "",
+            display_order++,
+            BodyPartExtensions.TYPE_MUSCLE
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.WEIGHT.toLong(),
+            "",
+            "",
+            0,
+            BodyPartExtensions.TYPE_WEIGHT
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.MUSCLES.toLong(),
+            "",
+            "",
+            0,
+            BodyPartExtensions.TYPE_WEIGHT
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.WATER.toLong(),
+            "",
+            "",
+            0,
+            BodyPartExtensions.TYPE_WEIGHT
+        )
+        addInitialBodyPart(
+            db,
+            BodyPartExtensions.FAT.toLong(),
+            "",
+            "",
+            0,
+            BodyPartExtensions.TYPE_WEIGHT
+        )
     }
 
-    public void addInitialBodyPart(SQLiteDatabase db, long pKey, String pCustomName, String pCustomPicture, int pDisplay, int pType) {
+    fun addInitialBodyPart(
+        db: SQLiteDatabase,
+        pKey: Long,
+        pCustomName: String?,
+        pCustomPicture: String?,
+        pDisplay: Int,
+        pType: Int
+    ) {
         //SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues value = new ContentValues();
+        val value = ContentValues()
 
-        value.put(DAOBodyPart.KEY, pKey);
-        value.put(DAOBodyPart.BODYPART_RESID, pKey);
-        value.put(DAOBodyPart.CUSTOM_NAME, pCustomName);
-        value.put(DAOBodyPart.CUSTOM_PICTURE, pCustomPicture);
-        value.put(DAOBodyPart.DISPLAY_ORDER, pDisplay);
-        value.put(DAOBodyPart.TYPE, pType);
+        value.put(DAOBodyPart.Companion.KEY, pKey)
+        value.put(DAOBodyPart.Companion.BODYPART_RESID, pKey)
+        value.put(DAOBodyPart.Companion.CUSTOM_NAME, pCustomName)
+        value.put(DAOBodyPart.Companion.CUSTOM_PICTURE, pCustomPicture)
+        value.put(DAOBodyPart.Companion.DISPLAY_ORDER, pDisplay)
+        value.put(DAOBodyPart.Companion.TYPE, pType)
 
-        db.insert(DAOBodyPart.TABLE_NAME, null, value);
+        db.insert(DAOBodyPart.Companion.TABLE_NAME, null, value)
+    }
 
+    companion object {
+        const val DATABASE_VERSION: Int = 24
+        private const val OLD09_DATABASE_NAME = "easyfitness"
+        private const val DATABASE_NAME = "easyfitness.db"
+        private var sInstance: DatabaseHelper? = null
 
+        fun getInstance(context: Context): DatabaseHelper {
+            // Use the application context, which will ensure that you
+            // don't accidentally leak an Activity's context.
+            // See this article for more information: http://bit.ly/6LRzfx
+
+            if (sInstance == null) {
+                sInstance = DatabaseHelper(context)
+            }
+            return sInstance!!
+        }
+
+        fun renameOldDatabase(activity: Activity) {
+            val oldDatabaseFile = activity.getDatabasePath(OLD09_DATABASE_NAME)
+            if (oldDatabaseFile.exists()) {
+                val newDatabaseFile = File(oldDatabaseFile.getParentFile(), DATABASE_NAME)
+                oldDatabaseFile.renameTo(newDatabaseFile)
+            }
+        }
+
+        private fun addExampleExercises(db: SQLiteDatabase) {
+            val newProgramName = "Low Back Muscle Strain"
+            val programId: Long // To store the ID of the newly inserted program
+            try {
+                programId = addInitialProgram(db, newProgramName)
+                if (programId != -1L) {
+                    println("DB Upgrade Case 24: Successfully obtained program ID: " + programId + " for '" + newProgramName + "'.")
+                    addInitialExercise(
+                        db,
+                        1,
+                        programId,
+                        10,
+                        "Knee Sway",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=91s",
+                        120
+                    )
+                    addInitialExercise(
+                        db,
+                        2,
+                        programId,
+                        10,
+                        "Knee to Chest",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        20,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",
+                        214
+                    )
+                    addInitialExercise(
+                        db,
+                        3,
+                        programId,
+                        10,
+                        "Knee to Chest",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        20,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=120s",
+                        214
+                    )
+                    addInitialExercise(
+                        db,
+                        4,
+                        programId,
+                        10,
+                        "Cat Cow",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=214s",
+                        265
+                    )
+                    addInitialExercise(
+                        db,
+                        5,
+                        programId,
+                        10,
+                        "Child's Pose with Reach",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=NXEcEAHzSNg&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=4&t=265s",
+                        280
+                    )
+                    println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId)
+                } else {
+                    System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName + "'. Exercises will not be added.")
+                }
+                val newProgramName2 = "Low Back And Core Pain prevention with ball"
+                val programId2 = addInitialProgram(db, newProgramName2)
+                if (programId2 != -1L) {
+                    println("DB Upgrade Case 24: Successfully obtained program ID: " + programId2 + " for '" + newProgramName2 + "'.")
+                    addInitialExercise(
+                        db,
+                        1,
+                        programId2,
+                        10,
+                        "Back extension on ball",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",
+                        106
+                    )
+                    addInitialExercise(
+                        db,
+                        2,
+                        programId2,
+                        10,
+                        "Back extension on ball",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=36s",
+                        106
+                    )
+                    addInitialExercise(
+                        db,
+                        3,
+                        programId2,
+                        10,
+                        "Opposite Arm/Leg Lift",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "as many as comfortable",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=106s",
+                        154
+                    )
+                    addInitialExercise(
+                        db,
+                        4,
+                        programId2,
+                        10,
+                        "Plank on Elbows",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        15,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "as many as comfortable",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=154s",
+                        238
+                    )
+                    addInitialExercise(
+                        db,
+                        5,
+                        programId2,
+                        10,
+                        "Roll Out",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "as far and as many as comfortable",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=238s",
+                        296
+                    )
+                    addInitialExercise(
+                        db,
+                        6,
+                        programId2,
+                        10,
+                        "Curl Up",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "as far and as many as comfortable",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=296s",
+                        280
+                    )
+                    addInitialExercise(
+                        db,
+                        7,
+                        programId2,
+                        10,
+                        "Side Crunch",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "stay safe when you need support leg use it",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=ggUwvc-UDcM&list=PLQ3ggWrvWXyAGnvqnGrGW54Q_icij6ESg&index=25&t=357s",
+                        452
+                    )
+                    println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId2)
+                } else {
+                    System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName2 + "'. Exercises will not be added.")
+                }
+                val newProgramName3 = "Recovery breathing and better sleep"
+                val programId3 = addInitialProgram(db, newProgramName3)
+                if (programId3 != -1L) {
+                    println("DB Upgrade Case 24: Successfully obtained program ID: " + programId3 + " for '" + newProgramName3 + "'.")
+                    addInitialExercise(
+                        db,
+                        1,
+                        programId3,
+                        10,
+                        "Breath Awareness",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=130s",
+                        244
+                    )
+                    addInitialExercise(
+                        db,
+                        2,
+                        programId3,
+                        10,
+                        "Inhale through Nose, Exhale through Mouth",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=244s",
+                        250
+                    )
+                    addInitialExercise(
+                        db,
+                        3,
+                        programId3,
+                        10,
+                        "Accentuate Breath in upper part of lungs",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=250s",
+                        282
+                    )
+                    addInitialExercise(
+                        db,
+                        4,
+                        programId3,
+                        10,
+                        "Accentuate Breath in lower part of lungs",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=282",
+                        318
+                    )
+                    addInitialExercise(
+                        db,
+                        5,
+                        programId3,
+                        10,
+                        "Accentuate Breath in side and back part of lungs",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/04Z4t9udlmo?list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&t=318",
+                        350
+                    )
+                    addInitialExercise(
+                        db,
+                        6,
+                        programId3,
+                        10,
+                        "Vary Breathing Pace fast inhale slow exhale",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",
+                        428
+                    )
+                    addInitialExercise(
+                        db,
+                        7,
+                        programId3,
+                        10,
+                        "Vary Breathing Pace slow inhale fast exhale",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=04Z4t9udlmo&list=PLQ3ggWrvWXyBG09cIQCkWzdP2IkaPydVt&index=1&t=350s",
+                        428
+                    )
+                    println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId3)
+                } else {
+                    System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName3 + "'. Exercises will not be added.")
+                }
+                val newProgramName4 = "Ankle Mobility, Flexibility and Strength"
+                val programId4 = addInitialProgram(db, newProgramName4)
+                if (programId4 != -1L) {
+                    println("DB Upgrade Case 24: Successfully obtained program ID: " + programId4 + " for '" + newProgramName4 + "'.")
+                    addInitialExercise(
+                        db,
+                        1,
+                        programId4,
+                        5,
+                        "Massage pain in ankle",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=99",
+                        105
+                    )
+                    addInitialExercise(
+                        db,
+                        2,
+                        programId4,
+                        5,
+                        "Ankle side move with resistance(band)",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/jWGNwgQgBFk?list=PL23bUbC-jqMRypUnbrKD_wo98JuQRKRcg&t=304",
+                        320
+                    )
+                    addInitialExercise(
+                        db,
+                        3,
+                        programId4,
+                        5,
+                        "Calf Stretch Right",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",
+                        105
+                    )
+                    addInitialExercise(
+                        db,
+                        4,
+                        programId4,
+                        5,
+                        "Calf Stretch Left",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",
+                        105
+                    )
+                    addInitialExercise(
+                        db,
+                        5,
+                        programId4,
+                        5,
+                        "Calf Stretch Right",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",
+                        105
+                    )
+                    addInitialExercise(
+                        db,
+                        6,
+                        programId4,
+                        5,
+                        "Calf Stretch Left",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        1,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        30,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=67s",
+                        105
+                    )
+                    addInitialExercise(
+                        db,
+                        7,
+                        programId4,
+                        10,
+                        "Ankle Alphabet",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        2,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "Try 3 repetitions",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=105s",
+                        126
+                    )
+                    addInitialExercise(
+                        db,
+                        8,
+                        programId4,
+                        10,
+                        "Heel Toe Raise",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        20,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=126s",
+                        150
+                    )
+                    addInitialExercise(
+                        db,
+                        9,
+                        programId4,
+                        10,
+                        "Heel Toe Raise finger inward",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        20,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "hold wall if needed",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=150",
+                        157
+                    )
+                    addInitialExercise(
+                        db,
+                        10,
+                        programId4,
+                        10,
+                        "Heel Toe Raise finger out",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        20,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "hold wall if needed",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=157",
+                        192
+                    )
+                    addInitialExercise(
+                        db,
+                        11,
+                        programId4,
+                        10,
+                        "Single injured leg balance with eyes open",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "hold wall if needed",
+                        "0",
+                        0.0f,
+                        10,
+                        30,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=192s",
+                        208
+                    )
+                    addInitialExercise(
+                        db,
+                        12,
+                        programId4,
+                        10,
+                        "Single injured leg balance with eyes closed",
+                        DAOMachine.TYPE_STATIC,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "hold wall if needed",
+                        "0",
+                        0.0f,
+                        10,
+                        10,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=208",
+                        251
+                    )
+                    addInitialExercise(
+                        db,
+                        13,
+                        programId4,
+                        10,
+                        "3-way Lunge Right",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",
+                        278
+                    )
+                    addInitialExercise(
+                        db,
+                        14,
+                        programId4,
+                        10,
+                        "3-way Lunge Left",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",
+                        278
+                    )
+                    addInitialExercise(
+                        db,
+                        15,
+                        programId4,
+                        10,
+                        "3-way Lunge Right",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",
+                        278
+                    )
+                    addInitialExercise(
+                        db,
+                        16,
+                        programId4,
+                        10,
+                        "3-way Lunge Left",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        10,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://www.youtube.com/watch?v=Q9Z1xze9VkA&list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&index=11&t=251s",
+                        278
+                    )
+                    addInitialExercise(
+                        db,
+                        17,
+                        programId4,
+                        10,
+                        "Side step squats",
+                        DAOMachine.TYPE_STRENGTH,
+                        1,
+                        20,
+                        0.0f,
+                        1,
+                        UnitConverter.UNIT_KG,
+                        "",
+                        "0",
+                        0.0f,
+                        10,
+                        0,
+                        UnitConverter.UNIT_KM,
+                        "https://youtu.be/Q9Z1xze9VkA?list=PLQ3ggWrvWXyCLMZu_FE8n3b3danhqWdAY&t=278",
+                        345
+                    )
+                    println("DB Upgrade Case 24: Successfully added exercises for program ID: " + programId4)
+                } else {
+                    System.err.println("DB Upgrade Case 24: Failed to insert or retrieve ID for program '" + newProgramName4 + "'. Exercises will not be added.")
+                }
+            } catch (e: SQLException) {
+                System.err.println("DB Upgrade Case 24: SQLException during program/exercise addition for '" + newProgramName + "': " + e.message)
+            }
+        }
     }
 }

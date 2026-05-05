@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.photo_profil -> {
                 val optionListArray = arrayOfNulls<String>(2)
-                optionListArray[0] = activity.resources.getString(R.string.camera)
-                optionListArray[1] = activity.resources.getString(R.string.gallery)
+//                optionListArray[0] = activity.resources.getString(R.string.camera)
+//                optionListArray[1] = activity.resources.getString(R.string.gallery)
                 //profilListArray[2] = "Remove Image";
 
                 //requestPermissionForWriting(pF);
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                             KToast.errorToast(activity, activity.resources.getText(R.string.impossibleToDeleteProfile).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
                         } else {
                             val profileToDelete = mDbProfils!!.getProfil(checkedItem.toString())
-                            mDbProfils!!.deleteProfil(profileToDelete)
+                            mDbProfils!!.deleteProfil(profileToDelete!!)
                             KToast.infoToast(activity, getString(R.string.profileDeleted) + ":" + checkedItem.toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
                         }
                     }
@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                 val mDbCardio = DAOCardio(this)
                 val mList = mDbOldCardio.allRecords
                 for (record in mList) {
-                    val m = lDAOMachine.getMachine(record.exercice)
+                    val m = lDAOMachine.getMachine(record!!.exercice)
                     var exerciseName = record.exercice
                     if (m != null) { // if a machine exists
                         if (m.type == DAOMachine.TYPE_STRENGTH) { // if it is not a Cardio type
@@ -261,7 +261,7 @@ class MainActivity : AppCompatActivity() {
                 val mDbFonte = DAOFonte(this)
                 val mFonteList = mDbFonte.allBodyBuildingRecords
                 for (record in mFonteList) {
-                    mDbFonte.updateRecord(record) // Automatically update record Type
+                    mDbFonte.updateRecord(record!!) // Automatically update record Type
                 }
                 val machineList = lDAOMachine.allMachinesArray
                 for (record in machineList) {
@@ -400,15 +400,15 @@ class MainActivity : AppCompatActivity() {
 
             // Si oui, supprimer la base de donnee et refaire un Start.
             exportDbBuilder.setPositiveButton(activity.resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int ->
-                val cvsMan = CVSManager(activity.baseContext)
-                if (cvsMan.exportDatabase(currentProfile)) {
-                    KToast.successToast(activity, currentProfile!!.name + ": " + activity.resources.getText(R.string.export_success), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                } else {
-                    KToast.errorToast(activity, currentProfile!!.name + ": " + activity.resources.getText(R.string.export_failed), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                }
-
-                // Do nothing but close the dialog
-                dialog.dismiss()
+//                val cvsMan = CVSManager(activity.baseContext)
+//                if (cvsMan.exportDatabase(currentProfile)) {
+//                    KToast.successToast(activity, currentProfile!!.name + ": " + activity.resources.getText(R.string.export_success), Gravity.BOTTOM, KToast.LENGTH_LONG)
+//                } else {
+//                    KToast.errorToast(activity, currentProfile!!.name + ": " + activity.resources.getText(R.string.export_failed), Gravity.BOTTOM, KToast.LENGTH_LONG)
+//                }
+//
+//                // Do nothing but close the dialog
+//                dialog.dismiss()
             }
             exportDbBuilder.setNegativeButton(activity.resources.getText(R.string.global_no)) { dialog: DialogInterface, _: Int ->
                 // Do nothing
@@ -435,22 +435,22 @@ class MainActivity : AppCompatActivity() {
                     mImportcvschosendir = chosenDir
                     //Toast.makeText(getActivity().getBaseContext(), "Chosen directory: " +
                     //    chosenDir, Toast.LENGTH_LONG).show();
-                    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(this.resources.getString(R.string.global_confirm_question))
-                        .setContentText(this.resources.getString(R.string.import_new_exercise_first))
-                        .setConfirmText(this.resources.getString(R.string.global_yes))
-                        .setConfirmClickListener { sDialog: SweetAlertDialog ->
-                            sDialog.dismissWithAnimation()
-                            val cvsMan = CVSManager(activity.baseContext)
-                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
-                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-                            } else {
-                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-                            }
-                            setCurrentProfil(currentProfile) // Refresh profile
-                        }
-                        .setCancelText(this.resources.getString(R.string.global_no))
-                        .show()
+//                    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+//                        .setTitleText(this.resources.getString(R.string.global_confirm_question))
+//                        .setContentText(this.resources.getString(R.string.import_new_exercise_first))
+//                        .setConfirmText(this.resources.getString(R.string.global_yes))
+//                        .setConfirmClickListener { sDialog: SweetAlertDialog ->
+//                            sDialog.dismissWithAnimation()
+//                            val cvsMan = CVSManager(activity.baseContext)
+//                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
+//                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+//                            } else {
+//                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+//                            }
+//                            setCurrentProfil(currentProfile) // Refresh profile
+//                        }
+//                        .setCancelText(this.resources.getString(R.string.global_no))
+//                        .show()
                 }
                 fileChooserDialog.fileFilter = "csv"
                 fileChooserDialog.chooseDirectory(getExternalStorageDirectory().toString() + "/FastnFitness/export")
@@ -470,7 +470,7 @@ class MainActivity : AppCompatActivity() {
                         var i = 0
                         while (i < lList.size) {
                             val mTempProfile = lList[i]
-                            mDbProfils!!.deleteProfil(mTempProfile.id)
+                            mDbProfils!!.deleteProfil(mTempProfile!!.id)
                             i++
                         }
                     }

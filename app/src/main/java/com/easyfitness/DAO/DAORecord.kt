@@ -1,233 +1,212 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import com.easyfitness.R
+import com.easyfitness.utils.DateConverter
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
-import com.easyfitness.R;
-import com.easyfitness.utils.DateConverter;
+open class DAORecord(protected var mContext: Context) : DAOBase(mContext) {
+    protected var mProfile: Profile? = null
+    var cursor: Cursor? = null
+        protected set
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-public class DAORecord extends DAOBase {
-
-    // Contacts table name
-    public static final String TABLE_NAME = "EFfontes";
-
-    public static final String KEY = "_id";
-    public static final String DATE = "date";
-    public static final String TIME = "time";
-    public static final String EXERCISE = "machine";
-    public static final String PROFIL_KEY = "profil_id";
-    static final String MACHINE_KEY = "machine_id";
-    static final String NOTES = "notes";
-    public static final String TYPE = "type";
-
-    // Specific to BodyBuilding
-    public static final String SERIE = "serie";
-    public static final String REPETITION = "repetition";
-    public static final String WEIGHT = "poids";
-    public static final String UNIT = "unit"; // 0:kg 1:lbs
-
-    // Specific to Cardio
-    public static final String DISTANCE = "distance";
-    public static final String DURATION = "duration";
-    public static final String DISTANCE_UNIT = "distance_unit"; // 0:km 1:mi
-
-    // Specific to STATIC
-    public static final String SECONDS = "seconds";
-
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
-        + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE
-        + " DATE, " + EXERCISE + " TEXT, " + SERIE + " INTEGER, "
-        + REPETITION + " INTEGER, " + WEIGHT + " REAL, " + PROFIL_KEY
-        + " INTEGER, " + UNIT + " INTEGER, " + NOTES + " TEXT, " + MACHINE_KEY
-        + " INTEGER," + TIME + " TEXT," + DISTANCE + " REAL, " + DURATION + " TEXT, " + TYPE + " INTEGER, " + SECONDS + " INTEGER, " + DISTANCE_UNIT + " INTEGER);";
-
-    static final String TABLE_DROP = "DROP TABLE IF EXISTS "
-        + TABLE_NAME + ";";
-
-    protected Profile mProfile = null;
-    protected Cursor mCursor = null;
-    protected Context mContext;
-
-    public DAORecord(Context context) {
-        super(context);
-        mContext = context;
+    fun setProfile(pProfile: Profile?) {
+        mProfile = pProfile
     }
 
-    public void setProfile(Profile pProfile) {
-        mProfile = pProfile;
-    }
+    val count: Int
+        // Getting Count
+        get() {
+            val countQuery =
+                "SELECT " + KEY + " FROM " + TABLE_NAME
+            open()
+            val db = this.readableDatabase
+            val cursor = db!!.rawQuery(countQuery, null)
 
-    public Cursor getCursor() {
-        return mCursor;
-    }
+            val value = cursor.getCount()
+            cursor.close()
+            close()
 
-    // Getting Count
-    public int getCount() {
-        String countQuery = "SELECT " + KEY + " FROM " + TABLE_NAME;
-        open();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-
-        int value = cursor.getCount();
-        cursor.close();
-        close();
-
-        // return count
-        return value;
-    }
+            // return count
+            return value
+        }
 
     /**
      * @param pDate    Date
      * @param pMachine Machine name
      * @return id of the added record, -1 if error
      */
-    long addRecord(Date pDate, String pMachine, int pType, int pSerie, int pRepetition, float pPoids, Profile pProfile, int pUnit, String pNote, String pTime, float pDistance, long pDuration, int pSeconds, int distance_unit ) {
-        ContentValues value = new ContentValues();
-        long new_id = -1;
-        long machine_key = -1;
+    fun addRecord(
+        pDate: Date?,
+        pMachine: String?,
+        pType: Int,
+        pSerie: Int,
+        pRepetition: Int,
+        pPoids: Float,
+        pProfile: Profile?,
+        pUnit: Int,
+        pNote: String?,
+        pTime: String?,
+        pDistance: Float,
+        pDuration: Long,
+        pSeconds: Int,
+        distance_unit: Int
+    ): Long {
+        val value = ContentValues()
+        var new_id: Long = -1
+        var machine_key: Long = -1
 
         //Test is Machine exists. If not create it.
-        DAOMachine lDAOMachine = new DAOMachine(mContext);
+        val lDAOMachine = DAOMachine(mContext)
         if (!lDAOMachine.machineExists(pMachine)) {
-            machine_key = lDAOMachine.addMachine(pMachine, "", pType, "", false, "");
+            machine_key = lDAOMachine.addMachine(pMachine, "", pType, "", false, "")
         } else {
-            machine_key = lDAOMachine.getMachine(pMachine).id;
+            machine_key = lDAOMachine.getMachine(pMachine)!!.id
         }
 
-        value.put(DAORecord.DATE, DateConverter.dateToDBDateStr(pDate));
-        value.put(DAORecord.EXERCISE, pMachine);
-        value.put(DAORecord.SERIE, pSerie);
-        value.put(DAORecord.REPETITION, pRepetition);
-        value.put(DAORecord.WEIGHT, pPoids);
-        value.put(DAORecord.PROFIL_KEY, pProfile.id);
-        value.put(DAORecord.UNIT, pUnit);
-        value.put(DAORecord.NOTES, pNote);
-        value.put(DAORecord.MACHINE_KEY, machine_key);
-        value.put(DAORecord.TIME, pTime);
-        value.put(DAORecord.DISTANCE, pDistance);
-        value.put(DAORecord.DURATION, pDuration);
-        value.put(DAORecord.TYPE, pType);
-        value.put(DAORecord.SECONDS, pSeconds);
-        value.put(DAORecord.DISTANCE_UNIT, distance_unit);
+        value.put(DATE, DateConverter.dateToDBDateStr(pDate))
+        value.put(EXERCISE, pMachine)
+        value.put(SERIE, pSerie)
+        value.put(REPETITION, pRepetition)
+        value.put(WEIGHT, pPoids)
+        value.put(PROFIL_KEY, pProfile?.id)
+        value.put(UNIT, pUnit)
+        value.put(NOTES, pNote)
+        value.put(MACHINE_KEY, machine_key)
+        value.put(TIME, pTime)
+        value.put(DISTANCE, pDistance)
+        value.put(DURATION, pDuration)
+        value.put(TYPE, pType)
+        value.put(SECONDS, pSeconds)
+        value.put(DISTANCE_UNIT, distance_unit)
 
-        SQLiteDatabase db = open();
-        new_id = db.insert(DAORecord.TABLE_NAME, null, value);
-        close();
+        val db = open()
+        new_id = db!!.insert(TABLE_NAME, null, value)
+        close()
 
-        return new_id;
+        return new_id
     }
 
     // Deleting single Record
-    public void deleteRecord(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+    fun deleteRecord(id: Long) {
+        val db = this.writableDatabase
+        db!!.delete(TABLE_NAME, KEY + " = ?", arrayOf<String>(id.toString()))
+        db.close()
     }
 
     // Getting single value
-    public IRecord getRecord(long id) {
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + KEY + "=" + id;
+    open fun getRecord(id: Long): IRecord? {
+        val selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + KEY + "=" + id
 
-        mCursor = getRecordsListCursor(selectQuery);
-        if (mCursor.moveToFirst()) {
+        this.cursor = getRecordsListCursor(selectQuery)
+        if (cursor!!.moveToFirst()) {
             //Get Date
-            Date date;
+            var date: Date?
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                date = dateFormat.parse(mCursor.getString(mCursor.getColumnIndex(DAOFonte.DATE)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                date = new Date();
+                val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                date = dateFormat.parse(cursor!!.getString(cursor!!.getColumnIndex(DATE)))
+            } catch (e: ParseException) {
+                e.printStackTrace()
+                date = Date()
             }
 
             //Get Profile
-            DAOProfil lDAOProfil = new DAOProfil(mContext);
-            Profile lProfile = lDAOProfil.getProfil(mCursor.getLong(mCursor.getColumnIndex(DAOFonte.PROFIL_KEY)));
+            val lDAOProfil = DAOProfil(mContext)
+            val lProfile =
+                lDAOProfil.getProfil(cursor!!.getLong(cursor!!.getColumnIndex(PROFIL_KEY)))
 
-            long machine_key = -1;
+            var machine_key: Long = -1
 
             //Test is Machine exists. If not create it.
-            DAOMachine lDAOMachine = new DAOMachine(mContext);
-            if (mCursor.getString(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY)) == null) {
-                machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAOFonte.EXERCISE)), "", DAOMachine.TYPE_STRENGTH, "", false, "");
+            val lDAOMachine = DAOMachine(mContext)
+            if (cursor!!.getString(cursor!!.getColumnIndex(MACHINE_KEY)) == null) {
+                machine_key = lDAOMachine.addMachine(
+                    cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                    "",
+                    DAOMachine.TYPE_STRENGTH,
+                    "",
+                    false,
+                    ""
+                )
             } else {
-                machine_key = mCursor.getLong(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY));
+                machine_key = cursor!!.getLong(cursor!!.getColumnIndex(MACHINE_KEY))
             }
 
-            IRecord value = null;
+            var value: IRecord? = null
 
-            if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STRENGTH) {
-                value = new Fonte(date,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.REPETITION)),
-                    mCursor.getFloat(mCursor.getColumnIndex(DAORecord.WEIGHT)),
+            if (cursor!!.getInt(cursor!!.getColumnIndex(TYPE)) == DAOMachine.TYPE_STRENGTH) {
+                value = Fonte(
+                    date,
+                    cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(REPETITION)),
+                    cursor!!.getFloat(cursor!!.getColumnIndex(WEIGHT)),
                     lProfile,
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.UNIT)),
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.NOTES)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(UNIT)),
+                    cursor!!.getString(cursor!!.getColumnIndex(NOTES)),
                     machine_key,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)));
-            } else if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STATIC) {
-                value = new StaticExercise(date,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.SECONDS)),
-                    mCursor.getFloat(mCursor.getColumnIndex(DAORecord.WEIGHT)),
+                    cursor!!.getString(cursor!!.getColumnIndex(TIME))
+                )
+            } else if (cursor!!.getInt(cursor!!.getColumnIndex(TYPE)) == DAOMachine.TYPE_STATIC) {
+                value = StaticExercise(
+                    date,
+                    cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(SECONDS)),
+                    cursor!!.getFloat(cursor!!.getColumnIndex(WEIGHT)),
                     lProfile,
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.UNIT)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(UNIT)),
                     machine_key,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)));
+                    cursor!!.getString(cursor!!.getColumnIndex(TIME))
+                )
             } else {
-                value = new Cardio(date,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                    mCursor.getFloat(mCursor.getColumnIndex(DAORecord.DISTANCE)),
-                    mCursor.getLong(mCursor.getColumnIndex(DAORecord.DURATION)),
+                value = Cardio(
+                    date,
+                    cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                    cursor!!.getFloat(cursor!!.getColumnIndex(DISTANCE)),
+                    cursor!!.getLong(cursor!!.getColumnIndex(DURATION)),
                     lProfile,
-                    mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAORecord.DISTANCE_UNIT)));
+                    cursor!!.getString(cursor!!.getColumnIndex(TIME)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(DISTANCE_UNIT))
+                )
             }
 
-            value.setId(mCursor.getLong(mCursor.getColumnIndex(DAORecord.KEY)));
-            return value;
+            value.id=(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
+            return value
         } else {
-            return null;
+            return null
         }
     }
 
     // Get all record for one Machine
-    public Cursor getAllRecordByMachines(Profile pProfile, String pMachines) {
-        return getAllRecordByMachines(pProfile, pMachines, -1);
+    fun getAllRecordByMachines(pProfile: Profile, pMachines: String?): Cursor {
+        return getAllRecordByMachines(pProfile, pMachines, -1)
     }
 
-    public Cursor getAllRecordByMachines(Profile pProfile, String pMachines, int pNbRecords) {
-        String mTop;
-        if (pNbRecords == -1) mTop = "";
-        else mTop = " LIMIT " + pNbRecords;
+    fun getAllRecordByMachines(pProfile: Profile, pMachines: String?, pNbRecords: Int): Cursor {
+        val mTop: String?
+        if (pNbRecords == -1) mTop = ""
+        else mTop = " LIMIT " + pNbRecords
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME
-            + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.id
-            + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
+        val selectQuery = ("SELECT * FROM " + TABLE_NAME
+                + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
+                + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop)
 
         // return value list
-        return getRecordsListCursor(selectQuery);
+        return getRecordsListCursor(selectQuery)
     }
 
     // Getting All Records
-    public Cursor getAllRecordsByProfile(Profile pProfile) {
-        return getAllRecordsByProfile(pProfile, -1);
+    fun getAllRecordsByProfile(pProfile: Profile): Cursor {
+        return getAllRecordsByProfile(pProfile, -1)
     }
 
     /**
@@ -235,430 +214,486 @@ public class DAORecord extends DAOBase {
      * @param pNbRecords max number of records requested
      * @return pNbRecords number of records for a specified pProfile
      */
-    private Cursor getAllRecordsByProfile(Profile pProfile, int pNbRecords) {
-        String mTop;
-        if (pNbRecords == -1) mTop = "";
-        else mTop = " LIMIT " + pNbRecords;
+    private fun getAllRecordsByProfile(pProfile: Profile, pNbRecords: Int): Cursor {
+        val mTop: String?
+        if (pNbRecords == -1) mTop = ""
+        else mTop = " LIMIT " + pNbRecords
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME +
-            " WHERE " + PROFIL_KEY + "=" + pProfile.id +
-            " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
+        val selectQuery = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + PROFIL_KEY + "=" + pProfile.id +
+                " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop
 
         // Return value list
-        return getRecordsListCursor(selectQuery);
+        return getRecordsListCursor(selectQuery)
     }
 
     // Getting All Records
-    private Cursor getRecordsListCursor(String pRequest) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    private fun getRecordsListCursor(pRequest: String): Cursor {
+        val db = this.readableDatabase
+
         // Select All Query
 
         // return value list
-        return db.rawQuery(pRequest, null);
+        return db!!.rawQuery(pRequest, null)
     }
 
-    // Getting All Machines
-    public List<String> getAllMachinesStrList() {
-        return getAllMachinesStrList(null);
-    }
+    val allMachinesStrList: MutableList<String?>
+        // Getting All Machines
+        get() = getAllMachinesStrList(null)
 
     // Getting All Machines
-    public List<String> getAllMachinesStrList(Profile pProfile) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        String selectQuery = "";
-        if (pProfile == null) {
-            selectQuery = "SELECT DISTINCT " + EXERCISE + " FROM "
-                + TABLE_NAME + " ORDER BY " + EXERCISE + " ASC";
+    fun getAllMachinesStrList(pProfile: Profile?): MutableList<String?> {
+        val db = this.readableDatabase
+        this.cursor = null
+        val selectQuery = if (pProfile == null) {
+            ("SELECT DISTINCT " + EXERCISE + " FROM "
+                + TABLE_NAME + " ORDER BY " + EXERCISE + " ASC")
         } else {
-            selectQuery = "SELECT DISTINCT " + EXERCISE + " FROM "
-                + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC";
+            ("SELECT DISTINCT " + EXERCISE + " FROM "
+                + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC")
         }
-        mCursor = db.rawQuery(selectQuery, null);
+        this.cursor = db!!.rawQuery(selectQuery, null)
 
-        int size = mCursor.getCount();
+        val size = cursor!!.getCount()
 
-        List<String> valueList = new ArrayList<>(size);
+        val valueList: MutableList<String?> = ArrayList<String?>(size)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
-            int i = 0;
+        if (cursor!!.moveToFirst()) {
+            var i = 0
             do {
-                valueList.add(mCursor.getString(0));
-                i++;
-            } while (mCursor.moveToNext());
+                valueList.add(cursor!!.getString(0))
+                i++
+            } while (cursor!!.moveToNext())
         }
-        close();
+        close()
         // return value list
-        return valueList;
+        return valueList
     }
 
     // Getting All Machines
-    public String[] getAllMachines(Profile pProfile) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
+    open fun getAllMachines(pProfile: Profile): Array<String?> {
+        val db = this.readableDatabase
+        this.cursor = null
 
         // Select All Machines
-        String selectQuery = "SELECT DISTINCT " + EXERCISE + " FROM "
-            + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC";
-        mCursor = db.rawQuery(selectQuery, null);
+        val selectQuery = ("SELECT DISTINCT " + EXERCISE + " FROM "
+                + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC")
+        this.cursor = db!!.rawQuery(selectQuery, null)
 
-        int size = mCursor.getCount();
+        val size = cursor!!.getCount()
 
-        String[] valueList = new String[size];
-
-        // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
-            int i = 0;
-            do {
-                String value = mCursor.getString(0);
-                valueList[i] = value;
-                i++;
-            } while (mCursor.moveToNext());
-        }
-        close();
-        // return value list
-        return valueList;
-    }
-
-    // Getting All Machines
-    public String[] getAllMachines() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-
-        // Select All Machines
-        String selectQuery = "SELECT DISTINCT  " + EXERCISE + " FROM "
-            + TABLE_NAME + " ORDER BY " + EXERCISE + " ASC";
-        mCursor = db.rawQuery(selectQuery, null);
-
-        int size = mCursor.getCount();
-
-        String[] valueList = new String[size];
+        val valueList = arrayOfNulls<String>(size)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
-            int i = 0;
+        if (cursor!!.moveToFirst()) {
+            var i = 0
             do {
-                String value = mCursor.getString(0);
-                valueList[i] = value;
-                i++;
-            } while (mCursor.moveToNext());
+                val value = cursor!!.getString(0)
+                valueList[i] = value
+                i++
+            } while (cursor!!.moveToNext())
         }
-        close();
+        close()
         // return value list
-        return valueList;
+        return valueList
     }
+
+    val allMachines: Array<String?>
+        // Getting All Machines
+        get() {
+            val db = this.readableDatabase
+            this.cursor = null
+
+            // Select All Machines
+            val selectQuery =
+                ("SELECT DISTINCT  " + EXERCISE + " FROM "
+                        + TABLE_NAME + " ORDER BY " + EXERCISE + " ASC")
+            this.cursor = db!!.rawQuery(selectQuery, null)
+
+            val size = cursor!!.getCount()
+
+            val valueList = arrayOfNulls<String>(size)
+
+            // looping through all rows and adding to list
+            if (cursor!!.moveToFirst()) {
+                var i = 0
+                do {
+                    val value = cursor!!.getString(0)
+                    valueList[i] = value
+                    i++
+                } while (cursor!!.moveToNext())
+            }
+            close()
+            // return value list
+            return valueList
+        }
 
     // Getting All Dates
-    public List<String> getAllDatesList(Profile pProfile, Machine pMachine) {
+    fun getAllDatesList(pProfile: Profile?, pMachine: Machine?): MutableList<String?> {
+        val db = this.readableDatabase
 
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        mCursor = null;
+        this.cursor = null
 
         // Select All Machines
-        String selectQuery = "SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME;
+        var selectQuery = "SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME
         if (pMachine != null) {
-            selectQuery += " WHERE " + MACHINE_KEY + "=" + pMachine.id;
-            if (pProfile != null)
-                selectQuery += " AND " + PROFIL_KEY + "=" + pProfile.id; // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
+            selectQuery += " WHERE " + MACHINE_KEY + "=" + pMachine.id
+            if (pProfile != null) selectQuery += " AND " + PROFIL_KEY + "=" + pProfile.id // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
         } else {
-            if (pProfile != null)
-                selectQuery += " WHERE " + PROFIL_KEY + "=" + pProfile.id; // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
+            if (pProfile != null) selectQuery += " WHERE " + PROFIL_KEY + "=" + pProfile.id // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
         }
-        selectQuery += " ORDER BY " + DATE + " DESC";
+        selectQuery += " ORDER BY " + DATE + " DESC"
 
-        mCursor = db.rawQuery(selectQuery, null);
-        int size = mCursor.getCount();
+        this.cursor = db!!.rawQuery(selectQuery, null)
+        val size = cursor!!.getCount()
 
-        List<String> valueList = new ArrayList<>(size);
+        val valueList: MutableList<String?> = ArrayList<String?>(size)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             do {
-                int i = 0;
+                var i = 0
+
                 //String date;
                 //date = mCursor.getString(0);
                 // Change Date format
                 //date = date.substring(0, 3) + "-" + date.substring(5, 6) + "-"
-
-                Date date;
+                var date: Date?
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    date = dateFormat.parse(mCursor.getString(0));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
+                    val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                    date = dateFormat.parse(cursor!!.getString(0))
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                    date = Date()
                 }
 
-                DateFormat dateFormat3 = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
-                dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"));
-                valueList.add(dateFormat3.format(date));
-                i++;
-            } while (mCursor.moveToNext());
+                val dateFormat3 =
+                    android.text.format.DateFormat.getDateFormat(mContext?.getApplicationContext())
+                dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"))
+                valueList.add(dateFormat3.format(date))
+                i++
+            } while (cursor!!.moveToNext())
         }
 
-        close();
+        close()
 
         // return value list
-        return valueList;
+        return valueList
     }
 
-    public Cursor getTop3DatesRecords(Profile pProfile) {
+    fun getTop3DatesRecords(pProfile: Profile?): Cursor? {
+        var selectQuery: String? = null
 
-        String selectQuery = null;
+        if (pProfile == null) return null
 
-        if (pProfile == null)
-            return null;
+        selectQuery = ("SELECT * FROM " + TABLE_NAME
+                + " WHERE " + PROFIL_KEY + "=" + pProfile.id
+                + " AND " + DATE + " IN (SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + DATE + " DESC LIMIT 3)"
+                + " ORDER BY " + DATE + " DESC," + KEY + " DESC")
 
-        selectQuery = "SELECT * FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
-            + " AND " + DATE + " IN (SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + DATE + " DESC LIMIT 3)"
-            + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
-
-        return getRecordsListCursor(selectQuery);
+        return getRecordsListCursor(selectQuery)
     }
 
     // Getting Filtered records
-    public Cursor getFilteredRecords(Profile pProfile, String pMachine, String pDate) {
+    fun getFilteredRecords(pProfile: Profile, pMachine: String?, pDate: String?): Cursor {
+        var lfilterMachine = true
+        var lfilterDate = true
+        var selectQuery: String? = null
 
-        boolean lfilterMachine = true;
-        boolean lfilterDate = true;
-        String selectQuery = null;
-
-        if (pMachine == null || pMachine.isEmpty() || pMachine.equals(mContext.getResources().getText(R.string.all).toString())) {
-            lfilterMachine = false;
+        if (pMachine == null || pMachine.isEmpty() || pMachine == mContext?.getResources()
+                !!.getText(R.string.all).toString()
+        ) {
+            lfilterMachine = false
         }
 
-        if (pDate == null || pDate.isEmpty() || pDate.equals(mContext.getResources().getText(R.string.all).toString())) {
-            lfilterDate = false;
+        if (pDate == null || pDate.isEmpty() || pDate == mContext!!.getResources()
+                .getText(R.string.all).toString()
+        ) {
+            lfilterDate = false
         }
 
         if (lfilterMachine && lfilterDate) {
-            selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine
-                + "\" AND " + DATE + "=\"" + pDate
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
-                + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
+            selectQuery = ("SELECT * FROM " + TABLE_NAME
+                    + " WHERE " + EXERCISE + "=\"" + pMachine
+                    + "\" AND " + DATE + "=\"" + pDate
+                    + "\" AND " + PROFIL_KEY + "=" + pProfile.id
+                    + " ORDER BY " + DATE + " DESC," + KEY + " DESC")
         } else if (!lfilterMachine && lfilterDate) {
-            selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE " + DATE + "=\"" + pDate
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
-                + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
+            selectQuery = ("SELECT * FROM " + TABLE_NAME
+                    + " WHERE " + DATE + "=\"" + pDate
+                    + "\" AND " + PROFIL_KEY + "=" + pProfile.id
+                    + " ORDER BY " + DATE + " DESC," + KEY + " DESC")
         } else if (lfilterMachine) {
-            selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
-                + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
+            selectQuery = ("SELECT * FROM " + TABLE_NAME
+                    + " WHERE " + EXERCISE + "=\"" + pMachine
+                    + "\" AND " + PROFIL_KEY + "=" + pProfile.id
+                    + " ORDER BY " + DATE + " DESC," + KEY + " DESC")
         } else {
-            selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE " + PROFIL_KEY + "=" + pProfile.id
-                + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
+            selectQuery = ("SELECT * FROM " + TABLE_NAME
+                    + " WHERE " + PROFIL_KEY + "=" + pProfile.id
+                    + " ORDER BY " + DATE + " DESC," + KEY + " DESC")
         }
 
         // return value list
-        return getRecordsListCursor(selectQuery);
+        return getRecordsListCursor(selectQuery)
     }
 
     /**
      * @return the last record for a profile p
      */
-    public IRecord getLastRecord(Profile pProfile) {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        IRecord lReturn = null;
+    fun getLastRecord(pProfile: Profile): IRecord? {
+        val db = this.readableDatabase
+        this.cursor = null
+        var lReturn: IRecord? = null
 
         // Select All Machines
-/*
+        /*
         String selectQuery = "SELECT " + KEY + " FROM " + TABLE_NAME
             + " WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " AND " + DATE + "=(SELECT MAX(" + DATE + ") FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.getId() + ");";
 */
-
-        String selectQuery = "SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.id;
-        mCursor = db.rawQuery(selectQuery, null);
+        val selectQuery = ("SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
+                + " WHERE " + PROFIL_KEY + "=" + pProfile.id)
+        this.cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through only the first rows.
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             try {
-                long value = mCursor.getLong(0);
-                lReturn = getRecord(value);
-            } catch (NumberFormatException e) {
-                lReturn = null; // Return une valeur
+                val value = cursor!!.getLong(0)
+                lReturn = getRecord(value)
+            } catch (e: NumberFormatException) {
+                lReturn = null // Return une valeur
             }
         }
 
-        close();
+        close()
 
         // return value list
-        return lReturn;
+        return lReturn
     }
 
 
     /**
      * @return the last record for a profile p
      */
-    public IRecord getLastExerciseRecord(long machineID, Profile p) {
+    fun getLastExerciseRecord(machineID: Long, p: Profile?): IRecord? {
+        val db = this.readableDatabase
+        this.cursor = null
+        var lReturn: IRecord? = null
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        IRecord lReturn = null;
-
-        String selectQuery;
+        val selectQuery: String?
         if (p == null) {
-            selectQuery = "SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
-                + " WHERE " + MACHINE_KEY + "=" + machineID;
+            selectQuery = ("SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
+                    + " WHERE " + MACHINE_KEY + "=" + machineID)
         } else {
-            selectQuery = "SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
-                + " WHERE " + MACHINE_KEY + "=" + machineID + " AND " + PROFIL_KEY + "=" + p.id;
+            selectQuery = ("SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
+                    + " WHERE " + MACHINE_KEY + "=" + machineID + " AND " + PROFIL_KEY + "=" + p.id)
         }
-        mCursor = db.rawQuery(selectQuery, null);
+        this.cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through only the first rows.
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             try {
-                long value = mCursor.getLong(0);
-                lReturn = this.getRecord(value);
-            } catch (NumberFormatException e) {
-                lReturn = null; // Return une valeur
+                val value = cursor!!.getLong(0)
+                lReturn = this.getRecord(value)
+            } catch (e: NumberFormatException) {
+                lReturn = null // Return une valeur
             }
         }
 
-        close();
+        close()
 
         // return value list
-        return lReturn;
+        return lReturn
     }
 
     // Get all record for one Machine
-    public List<IRecord> getAllRecordByMachinesArray(Profile pProfile, String pMachines) {
-        return getAllRecordByMachinesArray(pProfile, pMachines, -1);
+    fun getAllRecordByMachinesArray(pProfile: Profile, pMachines: String?): MutableList<IRecord?> {
+        return getAllRecordByMachinesArray(pProfile, pMachines, -1)
     }
 
-    private List<IRecord> getAllRecordByMachinesArray(Profile pProfile, String pMachines, int pNbRecords) {
-        String mTop;
-        if (pNbRecords == -1) mTop = "";
-        else mTop = " LIMIT " + pNbRecords;
+    private fun getAllRecordByMachinesArray(
+        pProfile: Profile,
+        pMachines: String?,
+        pNbRecords: Int
+    ): MutableList<IRecord?> {
+        val mTop: String?
+        if (pNbRecords == -1) mTop = ""
+        else mTop = " LIMIT " + pNbRecords
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME
-            + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.id
-            + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
+        val selectQuery = ("SELECT * FROM " + TABLE_NAME
+                + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
+                + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop)
 
         // return value list
-        return getRecordsList(selectQuery);
+        return getRecordsList(selectQuery)
     }
 
     // Getting All Records
-    private List<IRecord> getRecordsList(String pRequest) {
-        List<IRecord> valueList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Select All Query
+    private fun getRecordsList(pRequest: String): MutableList<IRecord?> {
+        val valueList: MutableList<IRecord?> = ArrayList<IRecord?>()
+        val db = this.readableDatabase
 
-        mCursor = null;
-        mCursor = db.rawQuery(pRequest, null);
+        // Select All Query
+        this.cursor = null
+        this.cursor = db!!.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst() && mCursor.getCount() > 0) {
+        if (cursor!!.moveToFirst() && cursor!!.getCount() > 0) {
             do {
                 //Get Date
-                Date date;
+                var date: Date?
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    date = dateFormat.parse(mCursor.getString(mCursor.getColumnIndex(DAOFonte.DATE)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
+                    val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                    date =
+                        dateFormat.parse(cursor!!.getString(cursor!!.getColumnIndex(DATE)))
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                    date = Date()
                 }
 
                 //Get Profile
-                DAOProfil lDAOProfil = new DAOProfil(mContext);
-                Profile lProfile = lDAOProfil.getProfil(mCursor.getLong(mCursor.getColumnIndex(DAOFonte.PROFIL_KEY)));
+                val lDAOProfil = DAOProfil(mContext)
+                val lProfile = lDAOProfil.getProfil(
+                    cursor!!.getLong(
+                        cursor!!.getColumnIndex(PROFIL_KEY)
+                    )
+                )
 
-                long machine_key = -1;
+                var machine_key: Long = -1
 
                 //Test if machine_key is properly fill. If not add it.
-                DAOMachine lDAOMachine = new DAOMachine(mContext);
-                if (mCursor.getString(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY)) == null) {
-                    machine_key = lDAOMachine.addMachine(mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)), "", mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)), "", false, "");
+                val lDAOMachine = DAOMachine(mContext)
+                if (cursor!!.getString(cursor!!.getColumnIndex(MACHINE_KEY)) == null) {
+                    machine_key = lDAOMachine.addMachine(
+                        cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)), "", cursor!!.getInt(
+                            cursor!!.getColumnIndex(TYPE)
+                        ), "", false, ""
+                    )
                 } else {
-                    machine_key = mCursor.getLong(mCursor.getColumnIndex(DAOFonte.MACHINE_KEY));
+                    machine_key = cursor!!.getLong(cursor!!.getColumnIndex(MACHINE_KEY))
                 }
 
-                IRecord value = null;
+                var value: IRecord? = null
 
-                if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STRENGTH) {
-                    value = new Fonte(date,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.REPETITION)),
-                        mCursor.getFloat(mCursor.getColumnIndex(DAORecord.WEIGHT)),
+                if (cursor!!.getInt(cursor!!.getColumnIndex(TYPE)) == DAOMachine.TYPE_STRENGTH) {
+                    value = Fonte(
+                        date,
+                        cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(REPETITION)),
+                        cursor!!.getFloat(cursor!!.getColumnIndex(WEIGHT)),
                         lProfile,
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.UNIT)),
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.NOTES)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(UNIT)),
+                        cursor!!.getString(cursor!!.getColumnIndex(NOTES)),
                         machine_key,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)));
-                }  else if (mCursor.getInt(mCursor.getColumnIndex(DAORecord.TYPE)) == DAOMachine.TYPE_STATIC) {
-                    value = new StaticExercise(date,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.SERIE)),
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.SECONDS)),
-                        mCursor.getFloat(mCursor.getColumnIndex(DAORecord.WEIGHT)),
+                        cursor!!.getString(cursor!!.getColumnIndex(TIME))
+                    )
+                } else if (cursor!!.getInt(cursor!!.getColumnIndex(TYPE)) == DAOMachine.TYPE_STATIC) {
+                    value = StaticExercise(
+                        date,
+                        cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(SERIE)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(SECONDS)),
+                        cursor!!.getFloat(cursor!!.getColumnIndex(WEIGHT)),
                         lProfile,
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.UNIT)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(UNIT)),
                         machine_key,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)));
+                        cursor!!.getString(cursor!!.getColumnIndex(TIME))
+                    )
                 } else {
-                    value = new Cardio(date,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.EXERCISE)),
-                        mCursor.getFloat(mCursor.getColumnIndex(DAORecord.DISTANCE)),
-                        mCursor.getLong(mCursor.getColumnIndex(DAORecord.DURATION)),
+                    value = Cardio(
+                        date,
+                        cursor!!.getString(cursor!!.getColumnIndex(EXERCISE)),
+                        cursor!!.getFloat(cursor!!.getColumnIndex(DISTANCE)),
+                        cursor!!.getLong(cursor!!.getColumnIndex(DURATION)),
                         lProfile,
-                        mCursor.getString(mCursor.getColumnIndex(DAORecord.TIME)),
-                        mCursor.getInt(mCursor.getColumnIndex(DAORecord.DISTANCE_UNIT)));
+                        cursor!!.getString(cursor!!.getColumnIndex(TIME)),
+                        cursor!!.getInt(cursor!!.getColumnIndex(DISTANCE_UNIT))
+                    )
                 }
 
-                value.setId(mCursor.getLong(mCursor.getColumnIndex(DAOFonte.KEY)));
+                value.id=(cursor!!.getLong(cursor!!.getColumnIndex(KEY)))
 
                 // Adding value to list
-                valueList.add(value);
-            } while (mCursor.moveToNext());
+                valueList.add(value)
+            } while (cursor!!.moveToNext())
         }
         // return value list
-        return valueList;
+        return valueList
     }
 
     // Updating single value
-    public int updateRecord(IRecord m) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    fun updateRecord(m: IRecord): Int {
+        val db = this.readableDatabase
 
-        ContentValues value = new ContentValues();
+        val value = ContentValues()
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        value.put(DAORecord.DATE, dateFormat.format(m.getDate()));
-        value.put(DAORecord.EXERCISE, m.getExercise());
-        value.put(DAORecord.PROFIL_KEY, m.getProfilKey());
-        value.put(DAORecord.TIME, m.getTime());
-        value.put(DAORecord.TYPE, m.getType());
-        value.put(DAORecord.MACHINE_KEY, m.getExerciseKey());
+        val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+        value.put(DATE, dateFormat.format(m.date))
+        value.put(EXERCISE, m.exercise)
+        value.put(PROFIL_KEY, m.profilKey)
+        value.put(TIME, m.time)
+        value.put(TYPE, m.type)
+        value.put(MACHINE_KEY, m.exerciseKey)
 
         // updating row
-        return db.update(TABLE_NAME, value, KEY + " = ?",
-            new String[]{String.valueOf(m.getId())});
+        return db!!.update(
+            TABLE_NAME, value, KEY + " = ?",
+            arrayOf<String>(m.id.toString())
+        )
     }
 
-    public void closeCursor() {
-        if (mCursor != null) mCursor.close();
+    fun closeCursor() {
+        if (this.cursor != null) cursor!!.close()
     }
 
-    void closeAll() {
-        if (mCursor != null) mCursor.close();
-        close();
+    fun closeAll() {
+        if (this.cursor != null) cursor!!.close()
+        close()
+    }
+
+    companion object {
+        // Contacts table name
+        const val TABLE_NAME: String = "EFfontes"
+
+        const val KEY: String = "_id"
+        const val DATE: String = "date"
+        const val TIME: String = "time"
+        const val EXERCISE: String = "machine"
+        const val PROFIL_KEY: String = "profil_id"
+        const val MACHINE_KEY: String = "machine_id"
+        const val NOTES: String = "notes"
+        const val TYPE: String = "type"
+
+        // Specific to BodyBuilding
+        const val SERIE: String = "serie"
+        const val REPETITION: String = "repetition"
+        const val WEIGHT: String = "poids"
+        const val UNIT: String = "unit" // 0:kg 1:lbs
+
+        // Specific to Cardio
+        const val DISTANCE: String = "distance"
+        const val DURATION: String = "duration"
+        const val DISTANCE_UNIT: String = "distance_unit" // 0:km 1:mi
+
+        // Specific to STATIC
+        const val SECONDS: String = "seconds"
+
+        val TABLE_CREATE: String = ("CREATE TABLE " + TABLE_NAME
+                + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE
+                + " DATE, " + EXERCISE + " TEXT, " + SERIE + " INTEGER, "
+                + REPETITION + " INTEGER, " + WEIGHT + " REAL, " + PROFIL_KEY
+                + " INTEGER, " + UNIT + " INTEGER, " + NOTES + " TEXT, " + MACHINE_KEY
+                + " INTEGER," + TIME + " TEXT," + DISTANCE + " REAL, " + DURATION + " TEXT, " + TYPE + " INTEGER, " + SECONDS + " INTEGER, " + DISTANCE_UNIT + " INTEGER);")
+
+        val TABLE_DROP: String = ("DROP TABLE IF EXISTS "
+                + TABLE_NAME + ";")
     }
 }

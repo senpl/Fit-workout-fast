@@ -1,27 +1,21 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import java.util.Date;
+import java.util.Date
 
-public interface IRecord {
-    long getId();
+interface IRecord {
+    var id: Long
 
-    void setId(long id);
+    val date: Date
 
-    Date getDate();
+    var exercise: String?
 
-    String getExercise();
+    var exerciseKey: Long
 
-    void setExercise(String exercise);
+    val profil: Profile?
 
-    long getExerciseKey();
+    val profilKey: Long
 
-    void setExerciseKey(long id);
+    val time: String?
 
-    Profile getProfil();
-
-    long getProfilKey();
-
-    String getTime();
-
-    int getType();
+    val type: Int
 }

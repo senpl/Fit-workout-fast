@@ -102,8 +102,8 @@ class ExerciseDetailsPager : Fragment() {
             })
         }
 
-        mDbRecord = DAORecord(context)
-        mDbMachine = DAOMachine(context)
+        mDbRecord = DAORecord(requireContext())
+        mDbMachine = DAOMachine(requireContext())
         machine = mDbMachine!!.getMachine(machineIdArg)
 
         (getActivity() as MainActivity).activityToolbar.visibility = View.GONE
@@ -222,13 +222,15 @@ class ExerciseDetailsPager : Fragment() {
                         val lProfile = mDbProfil.getProfil(machineProfilIdArg)
 
                         val listRecords = lDbRecord.getAllRecordByMachinesArray(
-                            lProfile,
+                            lProfile!!,
                             initialMachine.name
                         ) // Recupere tous les records de la machine courante
                         for (record in listRecords) {
-                            record.setExercise(newMachine.name) // Change avec le nouveau nom. Normalement pas utile.
-                            record.setExerciseKey(machineWithSameName.id) // Met l'ID de la nouvelle machine
-                            lDbRecord.updateRecord(record) // Met a jour
+                            record?.exercise =
+                                newMachine.name // Change avec le nouveau nom. Normalement pas utile.
+                            record?.exerciseKey =
+                                machineWithSameName.id // Met l'ID de la nouvelle machine
+                            lDbRecord.updateRecord(record!!) // Met a jour
                         }
 
                         mDbMachine!!.delete(initialMachine) // Supprime l'ancienne machine
@@ -252,15 +254,15 @@ class ExerciseDetailsPager : Fragment() {
                 this.mDbMachine!!.updateMachine(newMachine)
 
                 // Rename all the records with that machine and rename them
-                val lDbRecord = DAORecord(getContext())
-                val mDbProfil = DAOProfil(getContext())
+                val lDbRecord = DAORecord(requireContext())
+                val mDbProfil = DAOProfil(requireContext())
                 val lProfile = mDbProfil.getProfil(machineProfilIdArg)
                 val listRecords = lDbRecord.getAllRecordByMachinesArray(
-                    lProfile,
+                    lProfile!!,
                     initialMachine.name
                 ) // Recupere tous les records de la machine courante
                 for (record in listRecords) {
-                    record.setExercise(lMachineName) // Change avec le nouveau nom (DEPRECATED)
+                    record!!.exercise = lMachineName // Change avec le nouveau nom (DEPRECATED)
                     lDbRecord.updateRecord(record) // met a jour
                 }
 
@@ -316,14 +318,14 @@ class ExerciseDetailsPager : Fragment() {
     }
 
     private fun deleteRecordsAssociatedToMachine() {
-        val mDbRecord = DAORecord(getContext())
-        val mDbProfil = DAOProfil(getContext())
+        val mDbRecord = DAORecord(requireContext())
+        val mDbProfil = DAOProfil(requireContext())
 
         val lProfile = mDbProfil.getProfil(this.machineProfilIdArg)
 
-        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, machine!!.name)
+        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile!!, machine!!.name)
         for (record in listRecords) {
-            mDbRecord.deleteRecord(record.getId())
+            mDbRecord.deleteRecord(record!!.id)
         }
     }
 

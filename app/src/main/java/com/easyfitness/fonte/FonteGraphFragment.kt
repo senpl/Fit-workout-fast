@@ -125,10 +125,10 @@ class FonteGraphFragment : Fragment() {
         )
 
         /* Initialisation de l'historique */
-        if (this.dB == null) this.dB = DAOFonte(getContext())
-        if (mDbCardio == null) mDbCardio = DAOCardio(getContext())
-        if (mDbStatic == null) mDbStatic = DAOStatic(getContext())
-        if (mDbMachine == null) mDbMachine = DAOMachine(getContext())
+        if (this.dB == null) this.dB = DAOFonte(requireContext())
+        if (mDbCardio == null) mDbCardio = DAOCardio(requireContext())
+        if (mDbStatic == null) mDbStatic = DAOStatic(requireContext())
+        if (mDbMachine == null) mDbMachine = DAOMachine(requireContext())
 
         return view
     }
@@ -216,7 +216,7 @@ class FonteGraphFragment : Fragment() {
         lMachine = machineList!!.getSelectedItem().toString()
         lFunction = functionList!!.getSelectedItem().toString()
 
-        val mDbExercise = DAOMachine(this.mainActivity)
+        val mDbExercise = DAOMachine(requireContext())
         val m = mDbExercise.getMachine(lMachine)
         if (m == null) return
         val yVals = ArrayList<Entry?>()
@@ -237,7 +237,7 @@ class FonteGraphFragment : Fragment() {
                 this.profil!!, lMachine, lDAOFunction
             )
             else valueList =
-                mDbStatic!!.getStaticFunctionRecords(this.profil, lMachine, lDAOFunction)
+                mDbStatic!!.getStaticFunctionRecords(this.profil!!, lMachine, lDAOFunction)
 
             if (valueList.size <= 0) {
                 // mLineChart.clear(); Already cleared
@@ -305,7 +305,7 @@ class FonteGraphFragment : Fragment() {
 
             // Recupere les enregistrements
             val valueList = mDbCardio!!.getFunctionRecords(
-                this.profil, lMachine, lDAOFunction
+                this.profil!!, lMachine, lDAOFunction
             )
 
             if (valueList.size <= 0) {
@@ -358,7 +358,7 @@ class FonteGraphFragment : Fragment() {
             desc.setText(lMachine + "/" + lFunction)
             // Recupere les enregistrements
             var valueList: MutableList<GraphData?>? = null
-            valueList = mDbStatic!!.getStaticFunctionRecords(this.profil, lMachine, lDAOFunction)
+            valueList = mDbStatic!!.getStaticFunctionRecords(this.profil!!, lMachine, lDAOFunction)
 
             if (valueList.size <= 0) {
                 // mLineChart.clear(); Already cleared
@@ -429,7 +429,7 @@ class FonteGraphFragment : Fragment() {
             if (this.profil != null) {
                 //functionList.setOnItemSelectedListener(onItemSelectedList);
                 if (mAdapterMachine == null) {
-                    mMachinesArray = dB!!.getAllMachinesStrList()
+                    mMachinesArray = dB!!.allMachinesStrList
                     //Data are refreshed on show
                     mAdapterMachine = ArrayAdapter<String?>(
                         requireContext(), android.R.layout.simple_spinner_item,
@@ -439,10 +439,10 @@ class FonteGraphFragment : Fragment() {
                     machineList!!.setAdapter(mAdapterMachine)
                 } else {
                     /* Initialisation des machines */
-                    if (mMachinesArray == null) mMachinesArray = dB!!.getAllMachinesStrList()
+                    if (mMachinesArray == null) mMachinesArray = dB!!.allMachinesStrList
                     else {
                         mMachinesArray!!.clear()
-                        mMachinesArray!!.addAll(dB!!.getAllMachinesStrList())
+                        mMachinesArray!!.addAll(dB!!.allMachinesStrList)
                         mAdapterMachine!!.notifyDataSetChanged()
                         dB!!.closeCursor()
                     }

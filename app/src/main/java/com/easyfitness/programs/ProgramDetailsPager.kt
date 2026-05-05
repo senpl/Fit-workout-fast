@@ -73,7 +73,7 @@ class ProgramDetailsPager : Fragment() {
                 override fun onPageScrollStateChanged(state: Int) {}
             })
         }
-        val mDbProgram = DAOProgram(context)
+        val mDbProgram = DAOProgram(requireContext())
 
         (activity as MainActivity?)!!.activityToolbar.visibility = View.GONE
         val topToolbar: Toolbar = view.findViewById(R.id.actionToolbarProgram)
@@ -118,7 +118,7 @@ class ProgramDetailsPager : Fragment() {
         val initialProgram: Program = program!!
         val newProgram = getExerciseFragment().program
         val programName = newProgram?.programName
-        val mDbProgram = DAOProgram(context)
+        val mDbProgram = DAOProgram(requireContext())
 
         if (programName == "") {
             KToast.warningToast(activity, resources.getText(R.string.name_is_required).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
@@ -159,7 +159,7 @@ class ProgramDetailsPager : Fragment() {
 
         deleteDialogBuilder.setPositiveButton(resources.getString(R.string.global_yes)) { _: DialogInterface?, _: Int ->
             deleteRecordsAssociatedToProgram()
-            val mDbProgram = DAOProgram(context)
+            val mDbProgram = DAOProgram(requireContext())
             mDbProgram.delete(program)
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -172,12 +172,12 @@ class ProgramDetailsPager : Fragment() {
     }
 
     private fun deleteRecordsAssociatedToProgram() {
-        val mDbRecord = DAORecord(context)
-        val mDbProfile = DAOProfil(context)
+        val mDbRecord = DAORecord(requireContext())
+        val mDbProfile = DAOProfil(requireContext())
         val lProfile = mDbProfile.getProfil(profileIdArg)
-        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, program!!.programName)
+        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile!!, program!!.programName)
         for (record in listRecords) {
-            mDbRecord.deleteRecord(record.id)
+            mDbRecord.deleteRecord(record!!.id)
         }
     }
 

@@ -13,7 +13,7 @@ class Fonte(
     pUnit: Int,
     pNote: String?,
     pMachineKey: Long,
-    pTime: String?
+    pTime: String?,
 ) : ARecord() {
     // Notez que l'identifiant est un long
     val serie: Int
@@ -21,6 +21,22 @@ class Fonte(
     val poids: Float
     val unit: Int
     val note: String?
+//    override val date: Date
+//        get() = TODO("Not yet implemented")
+//    override var exercise: String?
+//        get() = TODO("Not yet implemented")
+//        set(value) {}
+//    override var exerciseKey: Long
+//        get() = TODO("Not yet implemented")
+//        set(value) {}
+//    override val profil: Profile?
+//        get() = TODO("Not yet implemented")
+//    override val profilKey: Long
+//        get() = TODO("Not yet implemented")
+//    override val time: String?
+//        get() = TODO("Not yet implemented")
+//    override val type: Int
+//        get() = TODO("Not yet implemented")
 
     /*
      * Fonte(Date pDate, String pMachine, int pSerie, int pRepetition, int pPoids, Profile pProfile)

@@ -124,7 +124,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
                     )
                     mBodyMeasureDb!!.addBodyMeasure(
                         lDate,
-                        mInitialBodyPart!!.getId(),
+                        mInitialBodyPart!!.id,
                         value,
                         1
                     )
@@ -216,7 +216,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
             this.getResources().getString(R.string.global_yes),
             DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
                 // Suppress the machine
-                mDbBodyPart!!.delete(mInitialBodyPart!!.getId())
+                mDbBodyPart!!.delete(mInitialBodyPart!!.id)
                 // Suppress the associated Fontes records
                 deleteRecordsAssociatedToMachine()
                 requireActivity().onBackPressed()
@@ -234,14 +234,14 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
     }
 
     private fun deleteRecordsAssociatedToMachine() {
-        val mDbBodyMeasure = DAOBodyMeasure(getContext())
+        val mDbBodyMeasure = DAOBodyMeasure(requireContext())
 
         val lProfile = this.profile
 
         val listBodyMeasure =
-            mDbBodyMeasure.getBodyPartMeasuresList(mInitialBodyPart!!.getId(), lProfile)
+            mDbBodyMeasure.getBodyPartMeasuresList(mInitialBodyPart!!.id, lProfile!!)
         for (record in listBodyMeasure) {
-            mDbBodyMeasure.deleteMeasure(record.getId())
+            mDbBodyMeasure.deleteMeasure(record!!.id)
         }
     }
 
@@ -253,7 +253,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
 
         val view = inflater.inflate(R.layout.bodytracking_details_fragment, container, false)
 
-        mDbBodyPart = DAOBodyPart(getContext())
+        mDbBodyPart = DAOBodyPart(requireContext())
 
         addButton = view.findViewById<TextView?>(R.id.buttonAdd)
         nameEdit = view.findViewById<EditableInputView?>(R.id.BODYPART_NAME)
@@ -272,16 +272,16 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         } else {
             addButton.setVisibility(View.VISIBLE);
         }*/
-        if (mInitialBodyPart!!.getBodyPartResKey() != -1) {
+        if (mInitialBodyPart!!.bodyPartResKey != -1) {
             bodyPartImageView!!.setVisibility(View.VISIBLE)
-            bodyPartImageView!!.setImageDrawable(mInitialBodyPart!!.getPicture(getContext()))
+            bodyPartImageView!!.setImageDrawable(mInitialBodyPart!!.getPicture(requireContext()))
         } else {
             bodyPartImageView!!.setImageDrawable(null) // Remove the image, Custom is not managed yet
             bodyPartImageView!!.setVisibility(View.GONE)
         }
 
         /* Initialisation des boutons */
-        if (mInitialBodyPart!!.getType() == BodyPartExtensions.TYPE_WEIGHT) {
+        if (mInitialBodyPart!!.type == BodyPartExtensions.TYPE_WEIGHT) {
             nameEdit!!.ActivateDialog(false)
         }
         nameEdit!!.setOnTextChangeListener(onTextChangeListener)
@@ -298,13 +298,13 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
 
         (getActivity() as MainActivity).activityToolbar.setVisibility(View.GONE)
 
-        nameEdit!!.setText(mInitialBodyPart!!.getName(getContext()))
+        nameEdit!!.setText(mInitialBodyPart!!.getName(requireContext()))
         bodyToolbar!!.setNavigationIcon(R.drawable.ic_back)
         bodyToolbar!!.setNavigationOnClickListener(View.OnClickListener { v: View? -> requireActivity().onBackPressed() })
 
         deleteButton = view.findViewById<ImageButton>(R.id.deleteButton)
         deleteButton!!.setOnClickListener(onClickToolbarItem)
-        if (mInitialBodyPart!!.getType() == BodyPartExtensions.TYPE_WEIGHT) {
+        if (mInitialBodyPart!!.type == BodyPartExtensions.TYPE_WEIGHT) {
             deleteButton!!.setVisibility(View.GONE) // Weight bodypart should not be deleted.
         }
 
@@ -331,13 +331,13 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
 
         for (i in valueList.indices.reversed()) {
             val value = Entry(
-                DateConverter.nbDays(valueList.get(i).getDate().getTime().toDouble()).toFloat(),
-                valueList.get(i).getBodyMeasure()
+                DateConverter.nbDays(valueList.get(i).date!!.getTime().toDouble()).toFloat(),
+                valueList.get(i).bodyMeasure
             )
             yVals.add(value)
-            if (minBodyMeasure == -1f) minBodyMeasure = valueList.get(i).getBodyMeasure()
-            else if (valueList.get(i).getBodyMeasure() < minBodyMeasure) minBodyMeasure =
-                valueList.get(i).getBodyMeasure()
+            if (minBodyMeasure == -1f) minBodyMeasure = valueList.get(i).bodyMeasure
+            else if (valueList.get(i).bodyMeasure < minBodyMeasure) minBodyMeasure =
+                valueList.get(i).bodyMeasure
         }
 
         mDateGraph!!.draw(yVals)
@@ -355,14 +355,14 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
             if (measureList!!.getAdapter() == null) {
                 val mTableAdapter = BodyMeasureCursorAdapter(
                     requireActivity(),
-                    mBodyMeasureDb!!.getCursor(),
+                    mBodyMeasureDb!!.cursor,
                     0,
                     itemClickDeleteRecord
                 )
                 measureList!!.setAdapter(mTableAdapter)
             } else {
                 oldCursor = (measureList!!.getAdapter() as BodyMeasureCursorAdapter).swapCursor(
-                    mBodyMeasureDb!!.getCursor()
+                    mBodyMeasureDb!!.cursor
                 )
                 if (oldCursor != null) oldCursor.close()
             }
@@ -377,12 +377,12 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         if (fragmentView != null) {
             if (this.profile != null) {
                 val valueList = mBodyMeasureDb!!.getBodyPartMeasuresList(
-                    mInitialBodyPart!!.getId(),
-                    this.profile
+                    mInitialBodyPart!!.id,
+                    this.profile!!
                 )
-                DrawGraph(valueList)
-                // update table
-                FillRecordTable(valueList)
+//                DrawGraph(valueList)
+//                // update table
+//                FillRecordTable(valueList)
             }
         }
     }
@@ -426,19 +426,19 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         // Save all the fields in the Profile
         val id = view.getId()
         if (id == R.id.BODYPART_NAME) {
-            mInitialBodyPart!!.setCustomName(nameEdit!!.getText())
+            mInitialBodyPart!!.customName = (nameEdit!!.getText())
             toUpdate = true
         } else if (id == R.id.BODYPART_LOGO) {
             // TODO if it has been deleted, remove the CustomPicture
-            mInitialBodyPart!!.setCustomPicture(mCurrentPhotoPath)
+            mInitialBodyPart!!.customPicture=(mCurrentPhotoPath)
             toUpdate = true
         }
 
         if (toUpdate) {
-            mDbBodyPart!!.update(mInitialBodyPart)
+            mDbBodyPart!!.update(mInitialBodyPart!!)
             KToast.infoToast(
-                getActivity(),
-                mInitialBodyPart!!.getCustomName() + " updated",
+                requireActivity(),
+                mInitialBodyPart!!.customName + " updated",
                 Gravity.BOTTOM,
                 KToast.LENGTH_SHORT
             )

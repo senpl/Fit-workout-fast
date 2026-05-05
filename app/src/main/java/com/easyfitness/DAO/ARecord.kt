@@ -1,84 +1,59 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import java.util.Date;
+import java.util.Date
 
 /* DataBase Object */
-public abstract class ARecord implements IRecord {
-    protected long id;
-    protected Date mDate;
-    protected String mExercise;
-    protected long mExerciseId;
-    protected Profile mProfile;
-    protected String mTime; // Time in HH:MM:SS
-    protected int mType; // TYPE_FONTE or TYPE_STATIC or TYPE_CARDIO
+abstract class ARecord : IRecord {
+    override var id: Long = 0
 
+    var mDate: Date? = null
+    override val date: Date
+        get() = mDate ?: Date()
 
-    public ARecord() {
-        super();
-    }
+    protected var mExercise: String? = null
+    override var exercise: String?
+        get() = mExercise
+        set(value) {
+            this.mExercise = value
+        }
 
-    public ARecord(Date pDate, String pMachine, Profile pProfile, long pMachineKey, String pTime, int pType) {
-        super();
-        this.mDate = pDate;
-        this.mExercise = pMachine;
-        this.mProfile = pProfile;
-        this.mExerciseId = pMachineKey;
-        this.mTime = pTime;
-        this.mType = pType;
-    }
+    protected var mExerciseId: Long = 0
+    override var exerciseKey: Long
+        get() = mExerciseId
+        set(value) {
+            this.mExerciseId = value
+        }
 
-    @Override
-    public long getId() {
-        return id;
-    }
+    protected var mProfile: Profile? = null
+    override val profil: Profile?
+        get() = mProfile
 
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
+    override val profilKey: Long
+        get() = mProfile?.id ?: -1
 
-    @Override
-    public Date getDate() {
-        return mDate;
-    }
+    protected var mTime: String? = null // Time in HH:MM:SS
+    override val time: String?
+        get() = mTime
 
-    @Override
-    public String getExercise() {
-        return mExercise;
-    }
+    protected var mType: Int = 0 // TYPE_FONTE or TYPE_STATIC or TYPE_CARDIO
+    override val type: Int
+        get() = mType
 
-    @Override
-    public void setExercise(String exercise) {
-        this.mExercise = exercise;
-    }
+    constructor() : super()
 
-    @Override
-    public long getExerciseKey() {
-        return mExerciseId;
-    }
-
-    @Override
-    public void setExerciseKey(long id) {
-        this.mExerciseId = id;
-    }
-
-    @Override
-    public Profile getProfil() {
-        return mProfile;
-    }
-
-    @Override
-    public long getProfilKey() {
-        return mProfile.id;
-    }
-
-    @Override
-    public String getTime() {
-        return mTime;
-    }
-
-    @Override
-    public int getType() {
-        return mType;
+    constructor(
+        pDate: Date?,
+        pMachine: String?,
+        pProfile: Profile,
+        pMachineKey: Long,
+        pTime: String?,
+        pType: Int
+    ) : super() {
+        this.mDate = pDate
+        this.mExercise = pMachine
+        this.mProfile = pProfile
+        this.mExerciseId = pMachineKey
+        this.mTime = pTime
+        this.mType = pType
     }
 }

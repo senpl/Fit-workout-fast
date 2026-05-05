@@ -1,8 +1,6 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
 
-public class DAOUtils {
-
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
-
+object DAOUtils {
+    const val DATE_FORMAT: String = "yyyy-MM-dd"
 }

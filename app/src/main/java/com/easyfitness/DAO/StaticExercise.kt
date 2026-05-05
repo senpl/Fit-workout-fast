@@ -1,50 +1,62 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import java.util.Date;
+import java.util.Date
 
 /* DataBase Object */
-public class StaticExercise extends ARecord {
+class StaticExercise(
+    pDate: Date?,
+    pMachine: String?,
+    pSerie: Int,
+    pSecond: Int,
+    pPoids: Float,
+    pProfile: Profile?,
+    pUnit: Int,
+    pMachineKey: Long,
+    pTime: String?,
+//    override val date: Date,
+//    override var exercise: String?,
+//    override var exerciseKey: Long,
+//    override val profil: Profile?,
+//    override val profilKey: Long,
+//    override val time: String?,
+//    override val type: Int
+) : ARecord() {
     // Notez que l'identifiant est un long
-    private int mSerie;
-    private int mSecond;
-    private float mPoids;
-    private int mUnit;
-    private String mNote;
+    val serie: Int
+    val second: Int
+    val poids: Float
+    val unit: Int
+    val note: String? = null
+//    override val date: Date
+//        get() = TODO("Not yet implemented")
+//    override var exercise: String?
+//        get() = TODO("Not yet implemented")
+//        set(value) {}
+//    override var exerciseKey: Long
+//        get() = TODO("Not yet implemented")
+//        set(value) {}
+//    override val profil: Profile?
+//        get() = TODO("Not yet implemented")
+//    override val profilKey: Long
+//        get() = TODO("Not yet implemented")
+//    override val time: String?
+//        get() = TODO("Not yet implemented")
+//    override val type: Int
+//        get() = TODO("Not yet implemented")
 
     /*
      * Fonte(Date pDate, String pMachine, int pSerie, int pSecond, int pPoids, Profile pProfile)
      */
-    public StaticExercise(Date pDate, String pMachine, int pSerie, int pSecond, float pPoids, Profile pProfile, int pUnit, long pMachineKey, String pTime) {
-        super();
-        this.mDate = pDate;
-        this.mExercise = pMachine;
-        this.mSerie = pSerie;
-        this.mSecond = pSecond;
-        this.mPoids = pPoids;
-        this.mUnit = pUnit;
-        this.mProfile = pProfile;
-        this.mExerciseId = pMachineKey;
-        this.mTime = pTime;
-        this.mType = DAOMachine.TYPE_STATIC;
-    }
-
-    public int getSerie() {
-        return mSerie;
-    }
-
-    public int getSecond() {
-        return mSecond;
-    }
-
-    public float getPoids() {
-        return mPoids;
-    }
-
-    public int getUnit() {
-        return mUnit;
-    }
-
-    public String getNote() {
-        return mNote;
+    init {
+        this.mDate = pDate
+        this.mExercise = pMachine
+        this.serie = pSerie
+        this.second = pSecond
+        this.poids = pPoids
+        this.unit = pUnit
+        this.mProfile = pProfile
+        this.mExerciseId = pMachineKey
+        this.mTime = pTime
+        this.mType = DAOMachine.TYPE_STATIC
     }
 }

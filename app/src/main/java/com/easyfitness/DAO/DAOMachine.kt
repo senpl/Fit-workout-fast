@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 
-class DAOMachine(context: Context?) : DAOBase(context) {
+class DAOMachine(context: Context) : DAOBase(context) {
     private val mProfile: Profile? = null
     var cursor: Cursor? = null
         private set
@@ -38,8 +38,8 @@ class DAOMachine(context: Context?) : DAOBase(context) {
         value.put(FAVORITES, pFav)
         value.put(BODYPARTS, pBodyParts)
 
-        val db = this.getWritableDatabase()
-        new_id = db.insert(TABLE_NAME, null, value)
+        val db = this.writableDatabase
+        new_id = db!!.insert(TABLE_NAME, null, value)
         close()
 
         return new_id
@@ -47,9 +47,9 @@ class DAOMachine(context: Context?) : DAOBase(context) {
 
     // Getting single value
     fun getMachine(id: Long): Machine? {
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
         this.cursor = null
-        this.cursor = db.query(
+        this.cursor = db!!.query(
             TABLE_NAME,
             arrayOf<String>(KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES),
             KEY + "=?",
@@ -81,9 +81,9 @@ class DAOMachine(context: Context?) : DAOBase(context) {
 
     // Getting single value
     fun getMachine(pName: String?): Machine? {
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
         this.cursor = null
-        this.cursor = db.query(
+        this.cursor = db!!.query(
             TABLE_NAME,
             arrayOf<String>(KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES),
             NAME + "=?",
@@ -121,11 +121,11 @@ class DAOMachine(context: Context?) : DAOBase(context) {
     // Getting All Records
     private fun getMachineList(pRequest: String): java.util.ArrayList<Machine?> {
         val valueList = java.util.ArrayList<Machine?>()
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
 
         // Select All Query
         this.cursor = null
-        this.cursor = db.rawQuery(pRequest, null)
+        this.cursor = db!!.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
         if (cursor!!.moveToFirst()) {
@@ -151,10 +151,10 @@ class DAOMachine(context: Context?) : DAOBase(context) {
 
     // Getting All Records
     private fun getMachineListCursor(pRequest: String): Cursor {
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
 
         // Select All Query
-        return db.rawQuery(pRequest, null)
+        return db!!.rawQuery(pRequest, null)
     }
 
     fun closeCursor() {
@@ -206,8 +206,8 @@ class DAOMachine(context: Context?) : DAOBase(context) {
      * @return List of Machine object ordered by Favorite and Name
      */
     fun deleteAllEmptyExercises() {
-        val db = this.getWritableDatabase()
-        db.delete(
+        val db = this.readableDatabase
+        db!!.delete(
             TABLE_NAME, NAME + " = ?",
             arrayOf<String>("")
         )
@@ -249,14 +249,14 @@ class DAOMachine(context: Context?) : DAOBase(context) {
     val allMachinesName: Array<String?>
         // Getting All Machines
         get() {
-            val db = this.getReadableDatabase()
+            val db = this.readableDatabase
             this.cursor = null
 
             // Select All Machines
             val selectQuery =
                 ("SELECT DISTINCT  " + NAME + " FROM "
                         + TABLE_NAME + " ORDER BY " + NAME + " COLLATE NOCASE ASC")
-            this.cursor = db.rawQuery(selectQuery, null)
+            this.cursor = db!!.rawQuery(selectQuery, null)
 
             val size = cursor!!.getCount()
 
@@ -279,7 +279,7 @@ class DAOMachine(context: Context?) : DAOBase(context) {
 
     // Updating single value
     fun updateMachine(m: Machine?): Int {
-        val db = this.getWritableDatabase()
+        val db = this.readableDatabase
 
         val value = ContentValues()
         value.put(NAME, m?.name)
@@ -292,7 +292,7 @@ class DAOMachine(context: Context?) : DAOBase(context) {
             value.put(FAVORITES, 0)
 
         // updating row
-        return db.update(
+        return db!!.update(
             TABLE_NAME, value, KEY + " = ?",
             arrayOf<String>(m?.id.toString())
         )
@@ -301,8 +301,8 @@ class DAOMachine(context: Context?) : DAOBase(context) {
     // Deleting single Record
     fun delete(m: Machine?) {
         if (m != null) {
-            val db = this.getWritableDatabase()
-            db.delete(
+            val db = this.readableDatabase
+            db!!.delete(
                 TABLE_NAME, KEY + " = ?",
                 arrayOf<String>(m.id.toString())
             )
@@ -312,8 +312,8 @@ class DAOMachine(context: Context?) : DAOBase(context) {
 
     // Deleting single Record
     fun delete(id: Long) {
-        val db = this.getWritableDatabase()
-        db.delete(TABLE_NAME, KEY + " = ?", arrayOf<String>(id.toString()))
+        val db = this.readableDatabase
+        db!!.delete(TABLE_NAME, KEY + " = ?", arrayOf<String>(id.toString()))
         db.close()
     }
 
@@ -322,8 +322,8 @@ class DAOMachine(context: Context?) : DAOBase(context) {
         get() {
             val countQuery = "SELECT  * FROM " + TABLE_NAME
             open()
-            val db = this.getReadableDatabase()
-            val cursor = db.rawQuery(countQuery, null)
+            val db = this.readableDatabase
+            val cursor = db!!.rawQuery(countQuery, null)
 
             val value = cursor.getCount()
 

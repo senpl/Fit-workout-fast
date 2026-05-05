@@ -1,6 +1,7 @@
 package com.easyfitness.DAO
 
 import android.content.Context
+import java.util.Date
 
 /* DataBase Object */
 class ExerciseInProgram : ARecord {

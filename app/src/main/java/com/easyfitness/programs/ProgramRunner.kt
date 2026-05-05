@@ -212,7 +212,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Initialization of the database
-        daoProgram = DAOProgram(context)
+        daoProgram = DAOProgram(requireContext())
         loadProgramsIntoSpinner(daoProgram)
         val programs = daoProgram.allProgramsNames
         val adapter =
@@ -271,11 +271,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        daoRecord = DAORecord(context)
-        strengthRecordsDao = DAOFonte(context)
-        daoCardio = DAOCardio(context)
-        daoStatic = DAOStatic(context)
-        mDbMachine = DAOMachine(context)
+        daoRecord = DAORecord(requireContext())
+        strengthRecordsDao = DAOFonte(requireContext())
+        daoCardio = DAOCardio(requireContext())
+        daoStatic = DAOStatic(requireContext())
+        mDbMachine = DAOMachine(requireContext())
         val sharedPreferences =
             activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
@@ -296,7 +296,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
         }
         swipeDetectorListener = SwipeDetectorListener(this)
-        mDbMachine = DAOMachine(context)
+        mDbMachine = DAOMachine(requireContext())
         selectedType = TYPE_STRENGTH
         binding.imageExerciseThumb.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
@@ -678,7 +678,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val itemClickCopyRecord = BtnClickListener { id: Long ->
         val r: IRecord? = daoRecord.getRecord(id)
         if (r != null) {
-            setCurrentMachine(r.exercise, r.type)
+            setCurrentMachine(r.exercise!!, r.type)
             when (r.type) {
                 TYPE_STRENGTH -> {
                     val f = r as Fonte
@@ -919,7 +919,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         refreshData()
         val adapter = ArrayAdapter(
             requireView().context,
-            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile)
+            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile!!)
         )
         binding.exerciseEdit.setAdapter(adapter)
         // Launch Rest Countdown
@@ -1377,7 +1377,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             val oldCursor: Cursor
             //Get results
             val limitShowedResults = 10
-            c = (daoRecord.getAllRecordByMachines(profile, exerciseName, limitShowedResults)
+            c = (daoRecord.getAllRecordByMachines(profile!!, exerciseName, limitShowedResults)
                 ?: return@post)
             if (c.count == 0) {
                 binding.recordList.adapter = null

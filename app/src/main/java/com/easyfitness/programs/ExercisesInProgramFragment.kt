@@ -69,7 +69,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        daoProgram = DAOProgram(context)
+        daoProgram = DAOProgram(requireContext())
         programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs == null || programs!!.isEmpty()) {
@@ -136,7 +136,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         }
         binding.unitDistanceSpinner.setSelection(distanceUnit)
         // Initialization of the database
-        mDbMachine = DAOMachine(context)
+        mDbMachine = DAOMachine(requireContext())
         selectedType = TYPE_STRENGTH
         binding.exerciseImage.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
@@ -408,7 +408,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             machineList.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
                 val textView = view.findViewById<TextView>(R.id.LIST_MACHINE_ID)
                 val machineID = textView.text.toString().toLong()
-                val lMachineDb = DAOMachine(context)
+                val lMachineDb = DAOMachine(requireContext())
                 val lMachine = lMachineDb.getMachine(machineID)
                 setCurrentExercise(lMachine!!.name)
                 mainActivity.findViewById<View>(R.id.drawer_layout).requestFocus()

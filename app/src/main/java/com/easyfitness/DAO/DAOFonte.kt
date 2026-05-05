@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
 
-class DAOFonte(context: Context?) : DAORecord(context) {
+class DAOFonte(context: Context) : DAORecord(context) {
     /**
      * @param pDate    Date
      * @param pMachine Machine name
@@ -51,15 +51,15 @@ class DAOFonte(context: Context?) : DAORecord(context) {
         for (fonte in fonteList) {
             addRecord(
                 fonte.mDate,
-                fonte.mExercise,
+                fonte.exercise,
                 DAOMachine.TYPE_STRENGTH,
                 fonte.serie,
                 fonte.repetition,
                 fonte.poids,
-                fonte.mProfile,
+                fonte.profil,
                 fonte.unit,
                 fonte.note,
-                fonte.mTime,
+                fonte.time,
                 0f,
                 0,
                 0,
@@ -82,21 +82,20 @@ class DAOFonte(context: Context?) : DAORecord(context) {
     // Getting All Records
     private fun getRecordsList(pRequest: String): MutableList<Fonte?> {
         val valueList: MutableList<Fonte?> = ArrayList<Fonte?>()
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
 
         // Select All Query
-        mCursor = null
-        mCursor = db.rawQuery(pRequest, null)
+        val cursor = db!!.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst() && mCursor.getCount() > 0) {
+        if (cursor!!.moveToFirst() && cursor?.count!! > 0) {
             do {
                 //Get Date
                 var date: Date?
                 try {
                     val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-                    date = dateFormat.parse(mCursor.getString(mCursor.getColumnIndex(DATE)))
+                    date = dateFormat.parse(cursor!!.getString(cursor.getColumnIndex(DATE)))
                 } catch (e: ParseException) {
                     e.printStackTrace()
                     date = Date()
@@ -105,8 +104,8 @@ class DAOFonte(context: Context?) : DAORecord(context) {
                 //Get Profile
                 val lDAOProfil = DAOProfil(mContext)
                 val lProfile = lDAOProfil.getProfil(
-                    mCursor.getLong(
-                        mCursor.getColumnIndex(
+                    cursor!!.getLong(
+                        cursor.getColumnIndex(
                             PROFIL_KEY
                         )
                     )
@@ -116,35 +115,35 @@ class DAOFonte(context: Context?) : DAORecord(context) {
 
                 //Test is Machine exists. If not create it.
                 val lDAOMachine = DAOMachine(mContext)
-                if (mCursor.getString(mCursor.getColumnIndex(MACHINE_KEY)) == null) {
+                if (cursor!!.getString(cursor.getColumnIndex(MACHINE_KEY)) == null) {
                     machine_key = lDAOMachine.addMachine(
-                        mCursor.getString(
-                            mCursor.getColumnIndex(
+                        cursor!!.getString(
+                            cursor.getColumnIndex(
                                 EXERCISE
                             )
                         ), "", DAOMachine.TYPE_STRENGTH, "", false, ""
                     )
                 } else {
-                    machine_key = mCursor.getLong(mCursor.getColumnIndex(MACHINE_KEY))
+                    machine_key = cursor!!.getLong(cursor!!.getColumnIndex(MACHINE_KEY))
                 }
 
                 val value = Fonte(
-                    date, mCursor.getString(mCursor.getColumnIndex(EXERCISE)),
-                    mCursor.getInt(mCursor.getColumnIndex(SERIE)),
-                    mCursor.getInt(mCursor.getColumnIndex(REPETITION)),
-                    mCursor.getFloat(mCursor.getColumnIndex(WEIGHT)),
+                    date, cursor!!.getString(cursor.getColumnIndex(EXERCISE)),
+                    cursor!!.getInt(cursor!!.getColumnIndex(SERIE)) ,
+                    cursor!!.getInt(cursor!!.getColumnIndex(REPETITION)) ,
+                    cursor!!.getFloat(cursor!!.getColumnIndex(WEIGHT)) ,
                     lProfile,
-                    mCursor.getInt(mCursor.getColumnIndex(UNIT)),
-                    mCursor.getString(mCursor.getColumnIndex(NOTES)),
+                    cursor!!.getInt(cursor.getColumnIndex(UNIT)),
+                    cursor!!.getString(cursor.getColumnIndex(NOTES)),
                     machine_key,
-                    mCursor.getString(mCursor.getColumnIndex(TIME))
+                    cursor!!.getString(cursor.getColumnIndex(TIME))
                 )
 
-                value.setId(mCursor.getLong(mCursor.getColumnIndex(KEY)))
+                value.id=(cursor!!.getLong(cursor.getColumnIndex(KEY)))
 
                 // Adding value to list
                 valueList.add(value)
-            } while (mCursor.moveToNext())
+            } while (cursor!!.moveToNext())
         }
         // return value list
         return valueList
@@ -229,32 +228,32 @@ class DAOFonte(context: Context?) : DAORecord(context) {
 
         // Formation de tableau de valeur
         val valueList: MutableList<GraphData?> = ArrayList<GraphData?>()
-        val db = this.getReadableDatabase()
+        val db = this.readableDatabase
 
-        mCursor = null
-        mCursor = db.rawQuery(selectQuery!!, null)
+        cursor = null
+        cursor = db!!.rawQuery(selectQuery!!, null)
 
         val i = 0.0
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             do {
                 var date: Date?
                 try {
                     val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-                    date = dateFormat.parse(mCursor.getString(1))
+                    date = dateFormat.parse(cursor!!.getString(1))
                 } catch (e: ParseException) {
                     e.printStackTrace()
                     date = Date()
                 }
 
                 val value =
-                    GraphData(DateConverter.nbDays(date.getTime().toDouble()), mCursor.getDouble(0))
+                    GraphData(DateConverter.nbDays(date.getTime().toDouble()), cursor!!.getDouble(0))
 
                 // Adding value to list
                 valueList.add(value)
-            } while (mCursor.moveToNext())
+            } while (cursor!!.moveToNext())
         }
 
         // return value list
@@ -275,18 +274,18 @@ class DAOFonte(context: Context?) : DAORecord(context) {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
         val lDate = dateFormat.format(pDate)
 
-        val db = this.getReadableDatabase()
-        mCursor = null
+        val db = this.readableDatabase
+        cursor = null
 
         // Select All Machines
         val selectQuery = ("SELECT SUM(" + SERIE + ") FROM " + TABLE_NAME
                 + " WHERE " + DATE + "=\"" + lDate + "\" AND " + MACHINE_KEY + "=" + machine_key)
-        mCursor = db.rawQuery(selectQuery, null)
+        cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
-        mCursor.moveToFirst()
+        cursor!!.moveToFirst()
         try {
-            lReturn = mCursor.getInt(0)
+            lReturn = cursor!!.getInt(0)
         } catch (e: NumberFormatException) {
             //Date date = new Date();
             lReturn = 0 // Return une valeur
@@ -312,22 +311,22 @@ class DAOFonte(context: Context?) : DAORecord(context) {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
         val lDate = dateFormat.format(pDate)
 
-        val db = this.getReadableDatabase()
-        mCursor = null
+        val db = this.readableDatabase
+        cursor = null
         // Select All Machines
         val selectQuery =
             ("SELECT " + SERIE + ", " + WEIGHT + ", " + REPETITION + " FROM " + TABLE_NAME
                     + " WHERE " + DATE + "=\"" + lDate + "\" AND " + MACHINE_KEY + "=" + machine_key)
-        mCursor = db.rawQuery(selectQuery, null)
+        cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             var i = 0
             do {
-                val value = mCursor.getInt(0) * mCursor.getFloat(1) * mCursor.getInt(2)
+                val value = cursor!!.getInt(0) * (cursor!!.getFloat(1) ) * (cursor!!.getInt(2) )
                 lReturn += value
                 i++
-            } while (mCursor.moveToNext())
+            } while (cursor!!.moveToNext() )
         }
         close()
 
@@ -340,8 +339,8 @@ class DAOFonte(context: Context?) : DAORecord(context) {
      * @return the total weight for this day
      */
     fun getTotalWeightSession(pDate: Date): Float {
-        val db = this.getReadableDatabase()
-        mCursor = null
+        val db = this.readableDatabase
+        cursor = null
         var lReturn = 0f
 
         val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
@@ -352,16 +351,16 @@ class DAOFonte(context: Context?) : DAORecord(context) {
         val selectQuery =
             ("SELECT " + SERIE + ", " + WEIGHT + ", " + REPETITION + " FROM " + TABLE_NAME
                     + " WHERE " + DATE + "=\"" + lDate + "\"")
-        mCursor = db.rawQuery(selectQuery, null)
+        cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             var i = 0
             do {
-                val value = mCursor.getInt(0) * mCursor.getFloat(1) * mCursor.getInt(2)
+                val value = cursor!!.getInt(0) * (cursor!!.getFloat(1)) * (cursor!!.getInt(2) )
                 lReturn += value
                 i++
-            } while (mCursor.moveToNext())
+            } while (cursor!!.moveToNext())
         }
         close()
 
@@ -373,20 +372,20 @@ class DAOFonte(context: Context?) : DAORecord(context) {
      * @return Max weight for a profile p and a machine m
      */
     fun getMax(p: Profile, m: Machine): Weight? {
-        val db = this.getReadableDatabase()
-        mCursor = null
+        val db = this.writableDatabase
+        cursor = null
         var w: Weight? = null
 
         // Select All Machines
         val selectQuery = ("SELECT MAX(" + WEIGHT + "), " + UNIT + " FROM " + TABLE_NAME
                 + " WHERE " + PROFIL_KEY + "=" + p.id + " AND " + MACHINE_KEY + "=" + m.id)
-        mCursor = db.rawQuery(selectQuery, null)
+        cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             do {
-                w = Weight(mCursor.getFloat(0), mCursor.getInt(1))
-            } while (mCursor.moveToNext())
+                w = Weight(cursor!!.getFloat(0), cursor!!.getInt(1))
+            } while (cursor!!.moveToNext())
         }
         close()
 
@@ -398,20 +397,20 @@ class DAOFonte(context: Context?) : DAORecord(context) {
      * @return Min weight for a profile p and a machine m
      */
     fun getMin(p: Profile?, m: Machine): Weight? {
-        val db = this.getReadableDatabase()
-        mCursor = null
+        val db = this.readableDatabase
+        cursor = null
         var w: Weight? = null
 
         // Select All Machines
         val selectQuery = ("SELECT MIN(" + WEIGHT + "), " + UNIT + " FROM " + TABLE_NAME
                 + " WHERE " + PROFIL_KEY + "=" + p!!.id + " AND " + MACHINE_KEY + "=" + m.id)
-        mCursor = db.rawQuery(selectQuery, null)
+        cursor = db!!.rawQuery(selectQuery, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             do {
-                w = Weight(mCursor.getFloat(0), mCursor.getInt(1))
-            } while (mCursor.moveToNext())
+                w = Weight(cursor!!.getFloat(0), cursor!!.getInt(1))
+            } while (cursor!!.moveToNext())
         }
         close()
 
@@ -421,28 +420,28 @@ class DAOFonte(context: Context?) : DAORecord(context) {
 
     // Updating single value
     fun updateRecord(m: Fonte): Int {
-        val db = this.getWritableDatabase()
+        val db = this.writableDatabase
 
         val value = ContentValues()
 
         val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-        value.put(DATE, dateFormat.format(m.getDate()))
-        value.put(EXERCISE, m.getExercise())
-        value.put(MACHINE_KEY, m.getExerciseKey())
+        value.put(DATE, dateFormat.format(m.date))
+        value.put(EXERCISE, m.exercise)
+        value.put(MACHINE_KEY, m.exerciseKey)
         value.put(SERIE, m.serie)
         value.put(REPETITION, m.repetition)
         value.put(WEIGHT, m.poids)
         value.put(UNIT, m.unit)
         value.put(NOTES, m.note)
-        value.put(PROFIL_KEY, m.getProfilKey())
-        value.put(TIME, m.getTime())
+        value.put(PROFIL_KEY, m.profilKey)
+        value.put(TIME, m.time)
         value.put(TYPE, DAOMachine.TYPE_STRENGTH)
 
         // updating row
-        return db.update(
+        return db!!.update(
             TABLE_NAME, value, KEY + " = ?",
-            arrayOf<String>(m.getId().toString())
+            arrayOf<String>(m.id.toString())
         )
     }
 

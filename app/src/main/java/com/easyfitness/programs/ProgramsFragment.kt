@@ -51,7 +51,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         if (programName.isEmpty()) {
             Toast.makeText(context, "Enter not empty program name", Toast.LENGTH_LONG).show()
         } else {
-            val lDAOProgram = DAOProgram(context)
+            val lDAOProgram = DAOProgram(requireContext())
             val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
             lDAOProgram.addRecord(programName, profileId!!)
             binding.newProgramName.setText("")
@@ -115,7 +115,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         val fragmentView = view
         if (fragmentView != null) {
             if (profil != null) {
-                val daoProgram = DAOProgram(context)
+                val daoProgram = DAOProgram(requireContext())
                 c = daoProgram.allPrograms
                 if (c.count <= 0) {
                     binding.programsList.adapter = null

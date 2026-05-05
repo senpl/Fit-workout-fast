@@ -22,7 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val myPref = findPreference<Preference>("prefShowMP3")
         myPref!!.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
             if (newValue is Boolean) {
-                mActivity!!.showMP3Toolbar(newValue)
+//                mActivity!!.showMP3Toolbar(newValue)
             }
             true
         }

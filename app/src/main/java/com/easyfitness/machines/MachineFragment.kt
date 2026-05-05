@@ -90,7 +90,7 @@ class MachineFragment : Fragment() {
             .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 var temp_machine_key: Long = -1
                 val pMachine = ""
-                val lDAOMachine = DAOMachine(getContext())
+                val lDAOMachine = DAOMachine(requireContext())
                 temp_machine_key =
                     lDAOMachine.addMachine(pMachine, "", DAOMachine.TYPE_STRENGTH, "", false, "")
                 sDialog!!.dismissWithAnimation()
@@ -115,7 +115,7 @@ class MachineFragment : Fragment() {
             .setNeutralClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 var temp_machine_key: Long = -1
                 val pMachine = ""
-                val lDAOMachine = DAOMachine(getContext())
+                val lDAOMachine = DAOMachine(requireContext())
                 temp_machine_key =
                     lDAOMachine.addMachine(pMachine, "", DAOMachine.TYPE_STATIC, "", false, "")
                 sDialog!!.dismissWithAnimation()
@@ -140,7 +140,7 @@ class MachineFragment : Fragment() {
             .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 var temp_machine_key: Long = -1
                 val pMachine = ""
-                val lDAOMachine = DAOMachine(getContext())
+                val lDAOMachine = DAOMachine(requireContext())
                 temp_machine_key =
                     lDAOMachine.addMachine(pMachine, "", DAOMachine.TYPE_CARDIO, "", false, "")
                 sDialog!!.dismissWithAnimation()
@@ -214,7 +214,7 @@ class MachineFragment : Fragment() {
         machineList!!.setOnItemClickListener(onClickListItem)
 
         // Initialisation de l'historique
-        mDbMachine = DAOMachine(getContext())
+        mDbMachine = DAOMachine(requireContext())
 
         return view
     }

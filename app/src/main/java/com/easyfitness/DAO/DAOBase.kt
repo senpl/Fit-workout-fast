@@ -1,30 +1,24 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import androidx.core.content.ContentProviderCompat.requireContext
 
-public class DAOBase {
+open class DAOBase(context: Context) {
+    private var database: SQLiteDatabase? = null
+    private val dbHelper: DatabaseHelper = DatabaseHelper.Companion.getInstance(context)
 
-    private SQLiteDatabase database;
-    private DatabaseHelper dbHelper;
-
-    public DAOBase(Context context) {
-        dbHelper = DatabaseHelper.getInstance(context);
+    fun open(): SQLiteDatabase? {
+        return dbHelper.writableDatabase.also { database = it }
     }
 
-    public SQLiteDatabase open() {
-        return database = dbHelper.getWritableDatabase();
-    }
+    val writableDatabase: SQLiteDatabase
+        get() = dbHelper.writableDatabase.also { database = it }
 
-    public SQLiteDatabase getWritableDatabase() {
-        return database = dbHelper.getWritableDatabase();
-    }
+    val readableDatabase: SQLiteDatabase
+        get() = dbHelper.readableDatabase.also { database = it }
 
-    public SQLiteDatabase getReadableDatabase() {
-        return database = dbHelper.getReadableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
+    fun close() {
+        dbHelper.close()
     }
 }

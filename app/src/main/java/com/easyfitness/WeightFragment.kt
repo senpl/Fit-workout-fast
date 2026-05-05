@@ -253,23 +253,23 @@ class WeightFragment : Fragment() {
         requireView().post(Runnable {
             if (weightBobyPart == null) return@Runnable
             val valueList = mDbBodyMeasure!!.getBodyPartMeasuresListTop4(
-                weightBobyPart!!.getId(),
+                weightBobyPart!!.id,
                 this.profile
             )
 
             // Recupere les enregistrements
-            if (valueList.size < 1) {
+            if (valueList!!.size < 1) {
                 mWeightLineChart!!.clear()
                 return@Runnable
             }
 
             val yVals = ArrayList<Entry?>()
-            if (valueList.size > 0) {
+            if (valueList!!.size > 0) {
                 for (i in valueList.indices.reversed()) {
                     val value = Entry(
                         DateConverter.nbDays(
-                            valueList.get(i)!!.getDate().getTime().toDouble()
-                        ).toFloat(), valueList.get(i)!!.getBodyMeasure()
+                            valueList!!.get(i)!!.date!!.getTime().toDouble()
+                        ).toFloat(), valueList.get(i)!!.bodyMeasure
                     )
                     yVals.add(value)
                     /*if (minBodyMeasure == -1) minBodyMeasure = valueList.get(i).getBodyMeasure();
@@ -284,12 +284,12 @@ class WeightFragment : Fragment() {
         requireView().post(Runnable {
             if (fatBobyPart == null) return@Runnable
             val valueList = mDbBodyMeasure!!.getBodyPartMeasuresListTop4(
-                fatBobyPart!!.getId(),
+                fatBobyPart!!.id,
                 this.profile
             )
 
             // Recupere les enregistrements
-            if (valueList.size < 1) {
+            if (valueList!!.size < 1) {
                 mFatLineChart!!.clear()
                 return@Runnable
             }
@@ -299,8 +299,8 @@ class WeightFragment : Fragment() {
                 for (i in valueList.indices.reversed()) {
                     val value = Entry(
                         DateConverter.nbDays(
-                            valueList.get(i)!!.getDate().getTime().toDouble()
-                        ).toFloat(), valueList.get(i)!!.getBodyMeasure()
+                            valueList!!.get(i)!!.date!!.getTime().toDouble()
+                        ).toFloat(), valueList.get(i)!!.bodyMeasure
                     )
                     yVals.add(value)
                     /*if (minBodyMeasure == -1) minBodyMeasure = valueList.get(i).getBodyMeasure();
@@ -314,12 +314,12 @@ class WeightFragment : Fragment() {
         requireView().post(Runnable {
             if (musclesBobyPart == null) return@Runnable
             val valueList = mDbBodyMeasure!!.getBodyPartMeasuresListTop4(
-                musclesBobyPart!!.getId(),
+                musclesBobyPart!!.id,
                 this.profile
             )
 
             // Recupere les enregistrements
-            if (valueList.size < 1) {
+            if (valueList!!.size < 1) {
                 mMusclesLineChart!!.clear()
                 return@Runnable
             }
@@ -329,8 +329,8 @@ class WeightFragment : Fragment() {
                 for (i in valueList.indices.reversed()) {
                     val value = Entry(
                         DateConverter.nbDays(
-                            valueList.get(i)!!.getDate().getTime().toDouble()
-                        ).toFloat(), valueList.get(i)!!.getBodyMeasure()
+                            valueList.get(i)!!.date!!.getTime().toDouble()
+                        ).toFloat(), valueList.get(i)!!.bodyMeasure
                     )
                     yVals.add(value)
                     /*if (minBodyMeasure == -1) minBodyMeasure = valueList.get(i).getBodyMeasure();
@@ -345,12 +345,12 @@ class WeightFragment : Fragment() {
         requireView().post(Runnable {
             if (waterBobyPart == null) return@Runnable
             val valueList = mDbBodyMeasure!!.getBodyPartMeasuresListTop4(
-                waterBobyPart!!.getId(),
+                waterBobyPart!!.id,
                 this.profile
             )
 
             // Recupere les enregistrements
-            if (valueList.size < 1) {
+            if (valueList!!.size < 1) {
                 mWaterLineChart!!.clear()
                 return@Runnable
             }
@@ -360,8 +360,8 @@ class WeightFragment : Fragment() {
                 for (i in valueList.indices.reversed()) {
                     val value = Entry(
                         DateConverter.nbDays(
-                            valueList.get(i)!!.getDate().getTime().toDouble()
-                        ).toFloat(), valueList.get(i)!!.getBodyMeasure()
+                            valueList.get(i)!!.date!!.getTime().toDouble()
+                        ).toFloat(), valueList.get(i)!!.bodyMeasure
                     )
                     yVals.add(value)
                     /*if (minBodyMeasure == -1) minBodyMeasure = valueList.get(i).getBodyMeasure();
@@ -536,25 +536,25 @@ class WeightFragment : Fragment() {
 
                 if (this.profile != null) {
                     lastWeightValue = mDbBodyMeasure!!.getLastBodyMeasures(
-                        weightBobyPart!!.getId(),
-                        this.profile
+                        weightBobyPart!!.id,
+                        this.profile!!
                     )
                     lastWaterValue = mDbBodyMeasure!!.getLastBodyMeasures(
-                        waterBobyPart!!.getId(),
-                        this.profile
+                        waterBobyPart!!.id,
+                        this.profile!!
                     )
                     lastFatValue = mDbBodyMeasure!!.getLastBodyMeasures(
-                        fatBobyPart!!.getId(),
-                        this.profile
+                        fatBobyPart!!.id,
+                        this.profile!!
                     )
                     lastMusclesValue = mDbBodyMeasure!!.getLastBodyMeasures(
-                        musclesBobyPart!!.getId(),
-                        this.profile
+                        musclesBobyPart!!.id,
+                        this.profile!!
                     )
                 }
 
                 if (lastWeightValue != null) {
-                    weightEdit!!.setText(lastWeightValue.getBodyMeasure().toString())
+                    weightEdit!!.setText(lastWeightValue.bodyMeasure.toString())
                     // update IMC
                     val size = this.profile!!.size
                     if (size == 0) {
@@ -563,14 +563,14 @@ class WeightFragment : Fragment() {
                         ffmiText!!.setText("-")
                         ffmiRank!!.setText(R.string.no_size_available)
                     } else {
-                        val imcValue = calculateImc(lastWeightValue.getBodyMeasure(), size)
+                        val imcValue = calculateImc(lastWeightValue.bodyMeasure, size)
                         imcText!!.setText(String.format("%.1f", imcValue))
                         imcRank!!.setText(getImcText(imcValue))
                         if (lastFatValue != null) {
                             val ffmiValue = calculateFfmi(
-                                lastWeightValue.getBodyMeasure(),
+                                lastWeightValue.bodyMeasure,
                                 size,
-                                lastFatValue.getBodyMeasure()
+                                lastFatValue.bodyMeasure
                             )
                             ffmiText!!.setText(String.format("%.1f", ffmiValue))
                             if (this.profile!!.gender == Gender.FEMALE) ffmiRank!!.setText(
@@ -597,17 +597,17 @@ class WeightFragment : Fragment() {
                 }
 
                 if (lastWaterValue != null) waterEdit!!.setText(
-                    lastWaterValue.getBodyMeasure().toString()
+                    lastWaterValue.bodyMeasure.toString()
                 )
                 else waterEdit!!.setText("-")
 
                 if (lastFatValue != null) fatEdit!!.setText(
-                    lastFatValue.getBodyMeasure().toString()
+                    lastFatValue.bodyMeasure.toString()
                 )
                 else fatEdit!!.setText("-")
 
                 if (lastMusclesValue != null) musclesEdit!!.setText(
-                    lastMusclesValue.getBodyMeasure().toString()
+                    lastMusclesValue.bodyMeasure.toString()
                 )
                 else musclesEdit!!.setText("-")
 

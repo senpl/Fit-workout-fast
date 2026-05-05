@@ -1,35 +1,46 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import java.util.Date;
+import java.util.Date
 
 /* DataBase Object */
-public class Cardio extends ARecord {
+class Cardio(
+    pDate: Date?,
+    pExercice: String?,
+    pDistance: Float,
+    pDuration: Long,
+    pProfile: Profile?,
+    pTime: String?,
+    pDistanceUnit: Int,
+) : ARecord() {
     // Notez que l'identifiant est un long
-    private float mDistance;
-    private long mDuration;
-    private int mDistanceUnit;
+    val distance: Float
+    val duration: Long
+    val distanceUnit: Int
+    override val date: Date
+        get() = TODO("Not yet implemented")
+    override var exercise: String?
+        get() = TODO("Not yet implemented")
+        set(value) {}
+    override var exerciseKey: Long
+        get() = TODO("Not yet implemented")
+        set(value) {}
+    override val profil: Profile?
+        get() = TODO("Not yet implemented")
+    override val profilKey: Long
+        get() = TODO("Not yet implemented")
+    override val time: String?
+        get() = TODO("Not yet implemented")
+    override val type: Int
+        get() = TODO("Not yet implemented")
 
-    public Cardio(Date pDate, String pExercice, float pDistance, long pDuration, Profile pProfile, String pTime, int pDistanceUnit) {
-        this.mDate = pDate;
-        this.mExercise = pExercice;
-        this.mDistance = pDistance;
-        this.mDuration = pDuration;
-        this.mProfile = pProfile;
-        this.mTime = pTime;
-        mDistanceUnit = pDistanceUnit;
-        this.mType = DAOMachine.TYPE_CARDIO;
+    init {
+        this.mDate = pDate
+        this.mExercise = pExercice
+        this.distance = pDistance
+        this.duration = pDuration
+        this.mProfile = pProfile
+        this.mTime = pTime
+        this.distanceUnit = pDistanceUnit
+        this.mType = DAOMachine.TYPE_CARDIO
     }
-
-    public float getDistance() {
-        return mDistance;
-    }
-
-    public long getDuration() {
-        return mDuration;
-    }
-
-    public int getDistanceUnit() {
-        return mDistanceUnit;
-    }
-
 }

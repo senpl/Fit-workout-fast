@@ -1,36 +1,18 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues
+import android.content.Context
+import com.easyfitness.GraphData
+import com.easyfitness.R
+import com.easyfitness.utils.DateConverter
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
-import com.easyfitness.GraphData;
-import com.easyfitness.R;
-import com.easyfitness.utils.DateConverter;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-public class DAOCardio extends DAORecord {
-
-    public static final int DISTANCE_FCT = 0;
-    public static final int DURATION_FCT = 1;
-    public static final int SPEED_FCT = 2;
-    public static final int MAXDURATION_FCT = 3;
-    public static final int MAXDISTANCE_FCT = 4;
-    public static final int NBSERIE_FCT = 5;
-
-    private static final String OLD_TABLE_NAME = "EFcardio";
-
-    private static final String TABLE_ARCHI = KEY + "," + DATE + "," + EXERCISE + "," + DISTANCE + "," + DURATION + "," + PROFIL_KEY + "," + TIME + "," + DISTANCE_UNIT;
-
-    public DAOCardio(Context context) {
-        super(context);
-        mContext = context;
+class DAOCardio(context: Context) : DAORecord(context) {
+    init {
+        mContext = context
     }
 
     /**
@@ -42,140 +24,192 @@ public class DAOCardio extends DAORecord {
      * @param pProfile
      * @return
      */
-    public long addCardioRecord(Date pDate, String pTime, String pMachine, float pDistance, long pDuration, Profile pProfile, int pDistanceUnit) {
-        return addRecord(pDate, pMachine, DAOMachine.TYPE_CARDIO, 0, 0, 0, pProfile, 0, "", pTime, pDistance, pDuration, 0, pDistanceUnit);
+    fun addCardioRecord(
+        pDate: Date?,
+        pTime: String?,
+        pMachine: String?,
+        pDistance: Float,
+        pDuration: Long,
+        pProfile: Profile?,
+        pDistanceUnit: Int
+    ): Long {
+        return addRecord(
+            pDate,
+            pMachine,
+            DAOMachine.TYPE_CARDIO,
+            0,
+            0,
+            0f,
+            pProfile,
+            0,
+            "",
+            pTime,
+            pDistance,
+            pDuration,
+            0,
+            pDistanceUnit
+        )
     }
 
-    public void addCardioList(List<Cardio> cardioList) {
-        for (Cardio cardio: cardioList) {
-            addRecord(cardio.mDate, cardio.getExercise(), DAOMachine.TYPE_CARDIO, 0, 0, 0, cardio.getProfil(), 0, "", cardio.getTime(), cardio.getDistance(), cardio.getDuration(), 0, cardio.getDistanceUnit());
+    fun addCardioList(cardioList: MutableList<Cardio>) {
+        for (cardio in cardioList) {
+            addRecord(
+                cardio.mDate,
+                cardio.exercise,
+                DAOMachine.TYPE_CARDIO,
+                0,
+                0,
+                0f,
+                cardio.profil,
+                0,
+                "",
+                cardio.time,
+                cardio.distance,
+                cardio.duration,
+                0,
+                cardio.distanceUnit
+            )
         }
     }
 
-    public Cardio getRecord(long id) {
-        String selectQuery = "SELECT  " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " WHERE " + KEY + "=" + id;
-        List<Cardio> valueList;
+    override fun getRecord(id: Long): Cardio? {
+        val selectQuery = ("SELECT  " + TABLE_ARCHI + " FROM " + DAORecord.Companion.TABLE_NAME
+                + " WHERE " + DAORecord.Companion.KEY + "=" + id)
+        val valueList: MutableList<Cardio?>?
 
-        valueList = getRecordsList(selectQuery);
-        if (valueList.isEmpty())
-            return null;
-        else
-            return valueList.get(0);
+        valueList = getRecordsList(selectQuery)
+        if (valueList.isEmpty()) return null
+        else return valueList.get(0)
     }
 
     // Getting All Records
-    private List<Cardio> getRecordsList(String pRequest) {
-        List<Cardio> valueList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Select All Query
+    private fun getRecordsList(pRequest: String): MutableList<Cardio?> {
+        val valueList: MutableList<Cardio?> = ArrayList<Cardio?>()
+        val db = this.readableDatabase
 
-        mCursor = null;
-        mCursor = db.rawQuery(pRequest, null);
+        // Select All Query
+//        val mCursor = null
+        var mCursor = db!!.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
         if (mCursor.moveToFirst()) {
             do {
                 //Get Date
-                Date date;
-                date = DateConverter.DBDateStrToDate(mCursor.getString(mCursor.getColumnIndex(DAOCardio.DATE)));
+                val date: Date?
+                date =
+                    DateConverter.DBDateStrToDate(mCursor.getString(mCursor.getColumnIndex(DAORecord.Companion.DATE)))
 
                 //Get Profile
-                DAOProfil lDAOProfil = new DAOProfil(mContext);
-                Profile lProfile = lDAOProfil.getProfil(mCursor.getLong(mCursor.getColumnIndex(DAOCardio.PROFIL_KEY)));
+                val lDAOProfil = DAOProfil(mContext)
+                val lProfile =
+                    lDAOProfil.getProfil(mCursor.getLong(mCursor.getColumnIndex(PROFIL_KEY)))
 
-                Cardio value = new Cardio(date,
-                    mCursor.getString(mCursor.getColumnIndex(DAOCardio.EXERCISE)),
-                    mCursor.getFloat(mCursor.getColumnIndex(DAOCardio.DISTANCE)),
-                    mCursor.getLong(mCursor.getColumnIndex(DAOCardio.DURATION)),
+                val value = Cardio(
+                    date,
+                    mCursor.getString(mCursor.getColumnIndex(EXERCISE)),
+                    mCursor.getFloat(mCursor.getColumnIndex(DISTANCE)),
+                    mCursor.getLong(mCursor.getColumnIndex(DURATION)),
                     lProfile,
-                    mCursor.getString(mCursor.getColumnIndex(DAOFonte.TIME)),
-                    mCursor.getInt(mCursor.getColumnIndex(DAOFonte.DISTANCE_UNIT)));
+                    mCursor.getString(mCursor.getColumnIndex(TIME)),
+                    mCursor.getInt(mCursor.getColumnIndex(DISTANCE_UNIT))
+                )
 
-                value.setId(Long.parseLong(mCursor.getString(mCursor.getColumnIndex(DAOCardio.KEY))));
+                value.id=(
+                    mCursor.getString(mCursor.getColumnIndex(DAORecord.Companion.KEY)).toLong()
+                )
 
                 // Adding value to list
-                valueList.add(value);
-            } while (mCursor.moveToNext());
+                valueList.add(value)
+            } while (mCursor.moveToNext())
         }
         // return value list
-        return valueList;
+        return valueList
     }
 
+    val allRecords: MutableList<Cardio?>
+        // Getting All Records
+        get() {
+            // Select All Query
+            val selectQuery =
+                ("SELECT " + TABLE_ARCHI + " FROM " + DAORecord.Companion.TABLE_NAME
+                        + " ORDER BY " + DAORecord.Companion.KEY + " DESC")
+
+            // return value list
+            return getRecordsList(selectQuery)
+        }
+
     // Getting All Records
-    public List<Cardio> getAllRecords() {
+    fun getAllCardioRecordsByProfile(pProfile: Profile): MutableList<Cardio?> {
         // Select All Query
-        String selectQuery = "SELECT " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " ORDER BY " + KEY + " DESC";
+        val selectQuery = ("SELECT " + TABLE_ARCHI + " FROM " + DAORecord.Companion.TABLE_NAME
+                + " WHERE " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                + " AND " + DAORecord.Companion.TYPE + "=" + DAOMachine.TYPE_CARDIO
+                + " ORDER BY " + DAORecord.Companion.KEY + " DESC")
 
         // return value list
-        return getRecordsList(selectQuery);
-    }
-
-    // Getting All Records
-    public List<Cardio> getAllCardioRecordsByProfile(Profile pProfile) {
-        // Select All Query
-        String selectQuery = "SELECT " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
-            + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
-            + " ORDER BY " + KEY + " DESC";
-
-        // return value list
-        return getRecordsList(selectQuery);
+        return getRecordsList(selectQuery)
     }
 
     // Getting Top 10 Records
-    public List<Cardio> getTop10Records(Profile pProfile) {
+    fun getTop10Records(pProfile: Profile): MutableList<Cardio?> {
         // Select All Query
-        String selectQuery = "SELECT TOP 10 * FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
-            + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
-            + " ORDER BY " + KEY + " DESC";
+        val selectQuery = ("SELECT TOP 10 * FROM " + DAORecord.Companion.TABLE_NAME
+                + " WHERE " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                + " AND " + DAORecord.Companion.TYPE + "=" + DAOMachine.TYPE_CARDIO
+                + " ORDER BY " + DAORecord.Companion.KEY + " DESC")
 
         // return value list
-        return getRecordsList(selectQuery);
+        return getRecordsList(selectQuery)
     }
 
     // Getting Function records
-    public List<GraphData> getFunctionRecords(Profile pProfile, String pMachine,
-                                              int pFunction) {
+    fun getFunctionRecords(
+        pProfile: Profile, pMachine: String?,
+        pFunction: Int
+    ): MutableList<GraphData?> {
+        var lfilterMachine = true
+        val lfilterFunction = true
+        var selectQuery: String? = null
 
-        boolean lfilterMachine = true;
-        boolean lfilterFunction = true;
-        String selectQuery = null;
-
-        if (pMachine == null || pMachine.isEmpty() || pMachine.equals(mContext.getResources().getText(R.string.all).toString())) {
-            lfilterMachine = false;
+        if (pMachine == null || pMachine.isEmpty() || pMachine == mContext?.getResources()
+                !!.getText(R.string.all).toString()
+        ) {
+            lfilterMachine = false
         }
 
-        if (pFunction == DAOCardio.DISTANCE_FCT) {
-            selectQuery = "SELECT SUM(" + DISTANCE + "), " + DATE + " FROM " + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.id
-                + " GROUP BY " + DATE
-                + " ORDER BY date(" + DATE + ") ASC";
-        } else if (pFunction == DAOCardio.DURATION_FCT) {
-            selectQuery = "SELECT SUM(" + DURATION + ") , " + DATE + " FROM "
-                + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.id
-                + " GROUP BY " + DATE
-                + " ORDER BY date(" + DATE + ") ASC";
-        } else if (pFunction == DAOCardio.SPEED_FCT) {
-            selectQuery = "SELECT SUM(" + DISTANCE + ") / SUM(" + DURATION + ")," + DATE + " FROM "
-                + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.id
-                + " GROUP BY " + DATE
-                + " ORDER BY date(" + DATE + ") ASC";
-        } else if (pFunction == DAOCardio.MAXDISTANCE_FCT) {
-            selectQuery = "SELECT MAX(" + DISTANCE + ") , " + DATE + " FROM "
-                + TABLE_NAME
-                + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.id
-                + " GROUP BY " + DATE
-                + " ORDER BY date(" + DATE + ") ASC";
+        if (pFunction == DISTANCE_FCT) {
+            selectQuery =
+                ("SELECT SUM(" + DAORecord.Companion.DISTANCE + "), " + DAORecord.Companion.DATE + " FROM " + DAORecord.Companion.TABLE_NAME
+                        + " WHERE " + DAORecord.Companion.EXERCISE + "=\"" + pMachine + "\""
+                        + " AND " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                        + " GROUP BY " + DAORecord.Companion.DATE
+                        + " ORDER BY date(" + DAORecord.Companion.DATE + ") ASC")
+        } else if (pFunction == DURATION_FCT) {
+            selectQuery =
+                ("SELECT SUM(" + DAORecord.Companion.DURATION + ") , " + DAORecord.Companion.DATE + " FROM "
+                        + DAORecord.Companion.TABLE_NAME
+                        + " WHERE " + DAORecord.Companion.EXERCISE + "=\"" + pMachine + "\""
+                        + " AND " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                        + " GROUP BY " + DAORecord.Companion.DATE
+                        + " ORDER BY date(" + DAORecord.Companion.DATE + ") ASC")
+        } else if (pFunction == SPEED_FCT) {
+            selectQuery =
+                ("SELECT SUM(" + DAORecord.Companion.DISTANCE + ") / SUM(" + DAORecord.Companion.DURATION + ")," + DAORecord.Companion.DATE + " FROM "
+                        + DAORecord.Companion.TABLE_NAME
+                        + " WHERE " + DAORecord.Companion.EXERCISE + "=\"" + pMachine + "\""
+                        + " AND " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                        + " GROUP BY " + DAORecord.Companion.DATE
+                        + " ORDER BY date(" + DAORecord.Companion.DATE + ") ASC")
+        } else if (pFunction == MAXDISTANCE_FCT) {
+            selectQuery =
+                ("SELECT MAX(" + DAORecord.Companion.DISTANCE + ") , " + DAORecord.Companion.DATE + " FROM "
+                        + DAORecord.Companion.TABLE_NAME
+                        + " WHERE " + DAORecord.Companion.EXERCISE + "=\"" + pMachine + "\""
+                        + " AND " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                        + " GROUP BY " + DAORecord.Companion.DATE
+                        + " ORDER BY date(" + DAORecord.Companion.DATE + ") ASC")
         }
+
         // case "MEAN" : selectQuery = "SELECT SUM("+ SERIE + "*" + REPETITION +
         // "*" + WEIGHT +") FROM " + TABLE_NAME + " WHERE " + EXERCISE + "=\"" +
         // pMachine + "\" AND " + DATE + "=\"" + pDate + "\" ORDER BY " + KEY +
@@ -183,118 +217,142 @@ public class DAOCardio extends DAORecord {
         // break;
 
         // Formation de tableau de valeur
-        List<GraphData> valueList = new ArrayList<GraphData>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        mCursor = db.rawQuery(selectQuery, null);
+        val valueList: MutableList<GraphData?> = ArrayList<GraphData?>()
+        val db = this.readableDatabase
+        val mCursor = db!!.rawQuery(selectQuery!!, null)
 
-        double i = 0;
+        val i = 0.0
 
         // looping through all rows and adding to list
         if (mCursor.moveToFirst()) {
             do {
-                Date date;
+                var date: Date?
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    date = dateFormat.parse(mCursor.getString(1));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
+                    val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                    date = dateFormat.parse(mCursor.getString(1))
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                    date = Date()
                 }
 
-                GraphData value = new GraphData(DateConverter.nbDays(date.getTime()),
-                    mCursor.getDouble(0));
+                val value = GraphData(
+                    DateConverter.nbDays(date.getTime().toDouble()),
+                    mCursor.getDouble(0)
+                )
 
                 // Adding value to list
-                valueList.add(value);
-            } while (mCursor.moveToNext());
+                valueList.add(value)
+            } while (mCursor.moveToNext())
         }
 
         // return value list
-        return valueList;
+        return valueList
     }
 
     // Getting All Machines
-    public String[] getAllMachines(Profile pProfile) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
+    override fun getAllMachines(pProfile: Profile): Array<String?> {
+        val db = this.readableDatabase
 
         // Select All Machines
-        String selectQuery = "SELECT DISTINCT  " + EXERCISE + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
-            + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
-            + " ORDER BY " + EXERCISE + " COLLATE NOCASE ASC";
-        mCursor = db.rawQuery(selectQuery, null);
+        val selectQuery =
+            ("SELECT DISTINCT  " + DAORecord.Companion.EXERCISE + " FROM " + DAORecord.Companion.TABLE_NAME
+                    + " WHERE " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                    + " AND " + DAORecord.Companion.TYPE + "=" + DAOMachine.TYPE_CARDIO
+                    + " ORDER BY " + DAORecord.Companion.EXERCISE + " COLLATE NOCASE ASC")
+        val mCursor = db!!.rawQuery(selectQuery, null)
 
-        int size = mCursor.getCount();
+        val size = mCursor.getCount()
 
-        String[] valueList = new String[size];
+        val valueList = arrayOfNulls<String>(size)
 
         // looping through all rows and adding to list
         if (mCursor.moveToFirst()) {
-            int i = 0;
+            var i = 0
             do {
-                String value = mCursor.getString(mCursor.getColumnIndex(DAOCardio.EXERCISE));
-                valueList[i] = value;
-                i++;
-            } while (mCursor.moveToNext());
+                val value = mCursor.getString(mCursor.getColumnIndex(DAORecord.Companion.EXERCISE))
+                valueList[i] = value
+                i++
+            } while (mCursor.moveToNext())
         }
-        close();
+        close()
         // return value list
-        return valueList;
+        return valueList
     }
 
     // Get all record for one Exercise
-    public List<Cardio> getAllCardioRecordByMachines(Profile pProfile, String pExercise) {
+    fun getAllCardioRecordByMachines(pProfile: Profile, pExercise: String?): MutableList<Cardio?> {
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME
-            + " WHERE " + EXERCISE + "=\"" + pExercise + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.id
-            + " ORDER BY " + KEY + " DESC";
+        val selectQuery = ("SELECT * FROM " + DAORecord.Companion.TABLE_NAME
+                + " WHERE " + DAORecord.Companion.EXERCISE + "=\"" + pExercise + "\""
+                + " AND " + DAORecord.Companion.PROFIL_KEY + "=" + pProfile.id
+                + " ORDER BY " + DAORecord.Companion.KEY + " DESC")
 
         // return value list
-        return getRecordsList(selectQuery);
+        return getRecordsList(selectQuery)
     }
 
     // Updating single value
-    public int updateRecord(Profile pProfile, Cardio m) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    fun updateRecord(pProfile: Profile, m: Cardio): Int {
+        val db = this.writableDatabase
 
-        ContentValues value = new ContentValues();
-        value.put(DAOCardio.DATE, m.getDate().toString());
-        value.put(DAOCardio.EXERCISE, m.getExercise());
-        value.put(DAOCardio.MACHINE_KEY, m.getExerciseKey());
-        value.put(DAOCardio.DISTANCE, m.getDistance());
-        value.put(DAOCardio.DURATION, m.getDuration());
-        value.put(DAOCardio.PROFIL_KEY, pProfile.id);
-        value.put(DAOCardio.DISTANCE_UNIT, m.getDistanceUnit());
+        val value = ContentValues()
+        value.put(DAORecord.Companion.DATE, m.date.toString())
+        value.put(DAORecord.Companion.EXERCISE, m.exercise)
+        value.put(DAORecord.Companion.MACHINE_KEY, m.exerciseKey)
+        value.put(DAORecord.Companion.DISTANCE, m.distance)
+        value.put(DAORecord.Companion.DURATION, m.duration)
+        value.put(DAORecord.Companion.PROFIL_KEY, pProfile.id)
+        value.put(DAORecord.Companion.DISTANCE_UNIT, m.distanceUnit)
 
         // updating row
-        return db.update(TABLE_NAME, value, KEY + " = ?",
-            new String[]{String.valueOf(m.getId())});
+        return db!!.update(
+            DAORecord.Companion.TABLE_NAME, value, DAORecord.Companion.KEY + " = ?",
+            arrayOf<String>(m.id.toString())
+        )
     }
 
-    public void populate() {
+    fun populate() {
         // DBORecord(long id, Date pDate, String pMachine, int pSerie, int
         // pRepetition, int pPoids)
-        Date date = new Date();
-        int poids = 10;
+        var date = Date()
+        var poids = 10
 
-        for (int i = 1; i <= 5; i++) {
-            String machine = "Tapis";
-            date.setDate(date.getDay() + i * 10);
-            addCardioRecord(date, "00:00", machine, (float) i * 20, 120000 * i, mProfile, 0);
+        for (i in 1..5) {
+            val machine = "Tapis"
+            date.setDate(date.getDay() + i * 10)
+            addCardioRecord(
+                date,
+                "00:00",
+                machine,
+                i.toFloat() * 20,
+                (120000 * i).toLong(),
+                mProfile,
+                0
+            )
         }
 
-        date = new Date();
-        poids = 12;
+        date = Date()
+        poids = 12
 
-        for (int i = 1; i <= 5; i++) {
-            String machine = "Rameur";
-            date.setDate(date.getDay() + i * 10);
-            addCardioRecord(date, "00:00", machine, 0, 120000 * i * 3, mProfile, 0);
+        for (i in 1..5) {
+            val machine = "Rameur"
+            date.setDate(date.getDay() + i * 10)
+            addCardioRecord(date, "00:00", machine, 0f, (120000 * i * 3).toLong(), mProfile, 0)
         }
     }
 
+    companion object {
+        const val DISTANCE_FCT: Int = 0
+        const val DURATION_FCT: Int = 1
+        const val SPEED_FCT: Int = 2
+        const val MAXDURATION_FCT: Int = 3
+        const val MAXDISTANCE_FCT: Int = 4
+        const val NBSERIE_FCT: Int = 5
+
+        private const val OLD_TABLE_NAME = "EFcardio"
+
+        private val TABLE_ARCHI: String =
+            DAORecord.Companion.KEY + "," + DAORecord.Companion.DATE + "," + DAORecord.Companion.EXERCISE + "," + DAORecord.Companion.DISTANCE + "," + DAORecord.Companion.DURATION + "," + DAORecord.Companion.PROFIL_KEY + "," + DAORecord.Companion.TIME + "," + DAORecord.Companion.DISTANCE_UNIT
+    }
 }

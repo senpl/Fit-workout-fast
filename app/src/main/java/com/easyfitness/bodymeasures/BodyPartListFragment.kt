@@ -54,12 +54,12 @@ class BodyPartListFragment : Fragment() {
             .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 editText.clearFocus()
                 Keyboard.hide(getContext(), editText)
-                val daoBodyPart = DAOBodyPart(getContext())
+                val daoBodyPart = DAOBodyPart(requireContext())
                 val temp_key = daoBodyPart.add(
                     -1,
                     editText.getText().toString(),
                     "",
-                    daoBodyPart.getCount(),
+                    daoBodyPart.count,
                     BodyPartExtensions.TYPE_MUSCLE
                 )
 
@@ -111,8 +111,8 @@ class BodyPartListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            mdbMeasure = DAOBodyMeasure(this.getContext())
-            mdbBodyPart = DAOBodyPart(this.getContext())
+            mdbMeasure = DAOBodyMeasure(this.requireContext())
+            mdbBodyPart = DAOBodyPart(this.requireContext())
             dataModels = ArrayList<BodyPart?>()
             mListAdapter = BodyPartListAdapter(dataModels, requireContext())
 //            mListAdapter!!.setProfile(this.profile)
@@ -155,13 +155,13 @@ class BodyPartListFragment : Fragment() {
 
         dataModels!!.clear()
 
-        val lBodyPartList = mdbBodyPart!!.getMusclesList()
+        val lBodyPartList = mdbBodyPart!!.musclesList
         for (bp in lBodyPartList) {
             var bm: BodyMeasure? = null
             if (this.profile != null) bm =
-                mdbMeasure!!.getLastBodyMeasures(bp.getId(), this.profile)
+                mdbMeasure!!.getLastBodyMeasures(bp!!.id, this.profile!!)
 
-            bp.setLastMeasure(bm)
+            bp!!.lastMeasure=(bm)
 
             dataModels!!.add(bp)
         }
