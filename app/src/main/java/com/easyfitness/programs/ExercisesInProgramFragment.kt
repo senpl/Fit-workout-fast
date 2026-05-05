@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.easyfitness.*
 import com.easyfitness.DAO.*
-import com.easyfitness.DAO.DAOMachine.*
 import com.easyfitness.databinding.TabProgramWithExercisesBinding
 import com.easyfitness.machines.ExerciseDetailsPager
 import com.easyfitness.machines.MachineCursorAdapter
@@ -280,7 +279,8 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                     profile!!, unitPoids,  // Store Unit for future display
                     "",  //Notes,
                     "", 0f, 0, 0, 0,
-                    videoUrl, videoSeconds
+                    videoUrl,
+                    videoSeconds
                 )
                 if (mDbMachine.getMachine(binding.exerciseEdit.text.toString()) == null)
                     mDbMachine.addMachine(binding.exerciseEdit.text.toString(), "", TYPE_STRENGTH, "", false, null)

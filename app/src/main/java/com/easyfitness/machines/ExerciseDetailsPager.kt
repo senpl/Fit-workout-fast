@@ -46,7 +46,7 @@ class ExerciseDetailsPager : Fragment() {
     private val id = 0
     private val onClickToolbarItem = View.OnClickListener { v: View? ->
         // Handle presses on the action bar items
-        val id = v!!.getId()
+        val id = v!!.id
         if (id == R.id.saveButton) {
             saveMachine()
             requireActivity()
@@ -65,10 +65,10 @@ class ExerciseDetailsPager : Fragment() {
         val view = inflater.inflate(R.layout.exercise_pager, container, false)
 
         // Locate the viewpager in activity_main.xml
-        mViewPager = view.findViewById<ViewPager?>(R.id.pager)
+        mViewPager = view.findViewById(R.id.pager)
 
-        if (mViewPager!!.getAdapter() == null) {
-            val args = this.getArguments()
+        if (mViewPager!!.adapter == null) {
+            val args = this.arguments
             machineIdArg = args!!.getLong("machineID")
             machineProfilIdArg = args.getLong("machineProfile")
 
@@ -116,10 +116,10 @@ class ExerciseDetailsPager : Fragment() {
         saveButton = view.findViewById<ImageButton?>(R.id.saveButton)
         saveButton!!.setOnClickListener(onClickToolbarItem)
         saveButton!!.setVisibility(View.GONE) // Hide Save button by default
-        favoriteButton = view.findViewById<MaterialFavoriteButton?>(R.id.favButton)
-        favoriteButton!!.setOnClickListener(View.OnClickListener { v: View? ->
+        favoriteButton = view.findViewById(R.id.favButton)
+        favoriteButton.setOnClickListener(View.OnClickListener { v: View? ->
             val mFav = v as MaterialFavoriteButton
-            val t = mFav.isFavorite()
+            val t = mFav.isFavorite
             mFav.setFavoriteAnimated(!t)
             isFavorite = !t
             requestForSave()

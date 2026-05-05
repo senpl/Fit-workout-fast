@@ -27,7 +27,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
             val countQuery = "SELECT $KEY FROM $TABLE_NAME"
             open()
             val db = this.readableDatabase
-            val cursor = db!!.rawQuery(countQuery, null)
+            val cursor = db.rawQuery(countQuery, null)
             val value = cursor.count
             cursor.close()
             close()
@@ -79,7 +79,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
     private fun getRecord(pName: String): ExerciseInProgram? {
         val db = this.readableDatabase
         cursor = null
-        cursor = db!!.query(TABLE_NAME, arrayOf(EXERCISE), "$EXERCISE=?", arrayOf(pName), null, null, null, null)
+        cursor = db.query(TABLE_NAME, arrayOf(EXERCISE), "$EXERCISE=?", arrayOf(pName), null, null, null, null)
         cursor!!.moveToFirst()
         if (0 <= cursor!!.count) {
             close()
@@ -112,7 +112,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
 
     fun deleteRecord(id: Long) {
         val db = this.writableDatabase
-        db!!.delete(TABLE_NAME, "$KEY = ?", arrayOf(id.toString()))
+        db.delete(TABLE_NAME, "$KEY = ?", arrayOf(id.toString()))
         db.close()
     }
 
@@ -147,7 +147,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         val db = this.readableDatabase
         cursor = null
         try {
-            cursor = db!!.rawQuery(pRequest, null)
+            cursor = db.rawQuery(pRequest, null)
         } catch (ex: Exception) {
             Timber.e("Err in getExList $ex")
             Toast.makeText(mContext, "Ex$ex", Toast.LENGTH_LONG).show()
@@ -209,7 +209,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         val db = this.readableDatabase
         cursor = null
         try {
-            cursor = db!!.rawQuery(pRequest, null)
+            cursor = db.rawQuery(pRequest, null)
         } catch (ex: Exception) {
             Timber.e("Err in getExToList $ex")
             Toast.makeText(mContext, "Ex$ex", Toast.LENGTH_LONG).show()
@@ -246,7 +246,7 @@ class DAOExerciseInProgram(var mContext: Context) : DAOBase(mContext) {
         val db = this.writableDatabase
         val value = ContentValues()
         value.put(field, newValue)
-        return db!!.update(TABLE_NAME, value, "$KEY = ?", arrayOf(exerciseInProgram.id.toString()))
+        return db.update(TABLE_NAME, value, "$KEY = ?", arrayOf(exerciseInProgram.id.toString()))
     }
 
     companion object {
