@@ -149,7 +149,7 @@ public class DAOBodyMeasure extends DAOBase {
      */
     public List<BodyMeasure> getBodyPartMeasuresList(long pBodyPartID, Profile pProfile) {
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.getId() + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC";
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.id + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC";
 
         // return value list
         return getMeasuresList(selectQuery);
@@ -166,7 +166,7 @@ public class DAOBodyMeasure extends DAOBase {
         if (pProfile==null) return null;
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.getId() + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC LIMIT 4;";
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.id + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC LIMIT 4;";
 
         // return value list
         return getMeasuresList(selectQuery);
@@ -182,7 +182,7 @@ public class DAOBodyMeasure extends DAOBase {
         if (pProfile==null) return null;
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " ORDER BY date(" + DATE + ") DESC";
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY date(" + DATE + ") DESC";
 
         // return value list
         return getMeasuresList(selectQuery);
@@ -197,7 +197,7 @@ public class DAOBodyMeasure extends DAOBase {
      */
     public BodyMeasure getLastBodyMeasures(long pBodyPartID, Profile pProfile) {
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.getId() + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC";
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + BODYPART_ID + "=" + pBodyPartID + " AND " + PROFIL_KEY + "=" + pProfile.id + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC";
 
         List<BodyMeasure> array = getMeasuresList(selectQuery);
         if (array.size() <= 0) {

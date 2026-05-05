@@ -116,7 +116,7 @@ public class DAOCardio extends DAORecord {
     public List<Cardio> getAllCardioRecordsByProfile(Profile pProfile) {
         // Select All Query
         String selectQuery = "SELECT " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
             + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
             + " ORDER BY " + KEY + " DESC";
 
@@ -128,7 +128,7 @@ public class DAOCardio extends DAORecord {
     public List<Cardio> getTop10Records(Profile pProfile) {
         // Select All Query
         String selectQuery = "SELECT TOP 10 * FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
             + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
             + " ORDER BY " + KEY + " DESC";
 
@@ -151,28 +151,28 @@ public class DAOCardio extends DAORecord {
         if (pFunction == DAOCardio.DISTANCE_FCT) {
             selectQuery = "SELECT SUM(" + DISTANCE + "), " + DATE + " FROM " + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + DATE
                 + " ORDER BY date(" + DATE + ") ASC";
         } else if (pFunction == DAOCardio.DURATION_FCT) {
             selectQuery = "SELECT SUM(" + DURATION + ") , " + DATE + " FROM "
                 + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + DATE
                 + " ORDER BY date(" + DATE + ") ASC";
         } else if (pFunction == DAOCardio.SPEED_FCT) {
             selectQuery = "SELECT SUM(" + DISTANCE + ") / SUM(" + DURATION + ")," + DATE + " FROM "
                 + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + DATE
                 + " ORDER BY date(" + DATE + ") ASC";
         } else if (pFunction == DAOCardio.MAXDISTANCE_FCT) {
             selectQuery = "SELECT MAX(" + DISTANCE + ") , " + DATE + " FROM "
                 + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + DATE
                 + " ORDER BY date(" + DATE + ") ASC";
         }
@@ -222,7 +222,7 @@ public class DAOCardio extends DAORecord {
 
         // Select All Machines
         String selectQuery = "SELECT DISTINCT  " + EXERCISE + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
             + " AND " + TYPE + "=" + DAOMachine.TYPE_CARDIO
             + " ORDER BY " + EXERCISE + " COLLATE NOCASE ASC";
         mCursor = db.rawQuery(selectQuery, null);
@@ -250,7 +250,7 @@ public class DAOCardio extends DAORecord {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME
             + " WHERE " + EXERCISE + "=\"" + pExercise + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+            + " AND " + PROFIL_KEY + "=" + pProfile.id
             + " ORDER BY " + KEY + " DESC";
 
         // return value list
@@ -267,7 +267,7 @@ public class DAOCardio extends DAORecord {
         value.put(DAOCardio.MACHINE_KEY, m.getExerciseKey());
         value.put(DAOCardio.DISTANCE, m.getDistance());
         value.put(DAOCardio.DURATION, m.getDuration());
-        value.put(DAOCardio.PROFIL_KEY, pProfile.getId());
+        value.put(DAOCardio.PROFIL_KEY, pProfile.id);
         value.put(DAOCardio.DISTANCE_UNIT, m.getDistanceUnit());
 
         // updating row

@@ -1,87 +1,78 @@
-package com.easyfitness.bodymeasures;
+package com.easyfitness.bodymeasures
 
-import android.content.Context;
-import android.database.Cursor;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.database.Cursor
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CursorAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import com.easyfitness.BtnClickListener
+import com.easyfitness.R
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
-import androidx.cardview.widget.CardView;
+class BodyMeasureCursorAdapter(context: Context, c: Cursor?, flags: Int, mD: BtnClickListener?) :
+    CursorAdapter(context, c, flags) {
+    var mDeleteClickListener: BtnClickListener? = null
+    private val mInflater: LayoutInflater
+    private var mContext: Context? = null
 
-import com.easyfitness.BtnClickListener;
-import com.easyfitness.R;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
-import static android.text.format.DateFormat.getDateFormat;
-
-public class BodyMeasureCursorAdapter extends CursorAdapter {
-
-    BtnClickListener mDeleteClickListener = null;
-    private LayoutInflater mInflater;
-    private Context mContext = null;
-
-    public BodyMeasureCursorAdapter(Context context, Cursor c, int flags, BtnClickListener mD) {
-        super(context, c, flags);
-        mContext = context;
-        mDeleteClickListener = mD;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    init {
+        mContext = context
+        mDeleteClickListener = mD
+        mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        TextView t0 = view.findViewById(R.id.LIST_BODYMEASURE_ID);
-        t0.setText(cursor.getString(0));
+    override fun bindView(view: View, context: Context, cursor: Cursor) {
+        val t0 = view.findViewById<TextView>(R.id.LIST_BODYMEASURE_ID)
+        t0.setText(cursor.getString(0))
 
-        TextView t1 = view.findViewById(R.id.LIST_BODYMEASURE_DATE);
-        Date date;
+        val t1 = view.findViewById<TextView>(R.id.LIST_BODYMEASURE_DATE)
+        val date: Date?
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = dateFormat.parse(cursor.getString(1));
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+            date = dateFormat.parse(cursor.getString(1))
 
             //SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy");
             //dateFormat2.setTimeZone(TimeZone.getTimeZone("GMT"));
             //t1.setText(DateFormat.getDateInstance().format(date));
-            DateFormat dateFormat3 = getDateFormat(mContext.getApplicationContext());
-            dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"));
-            t1.setText(dateFormat3.format(date));
-        } catch (ParseException e) {
-            t1.setText("");
-            e.printStackTrace();
+            val dateFormat3 =
+                android.text.format.DateFormat.getDateFormat(mContext!!.getApplicationContext())
+            dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"))
+            t1.setText(dateFormat3.format(date))
+        } catch (e: ParseException) {
+            t1.setText("")
+            e.printStackTrace()
         }
 
-        TextView t2 = view.findViewById(R.id.LIST_BODYMEASURE_WEIGHT);
-        t2.setText(cursor.getString(3));
+        val t2 = view.findViewById<TextView>(R.id.LIST_BODYMEASURE_WEIGHT)
+        t2.setText(cursor.getString(3))
 
-        CardView cdView = view.findViewById(R.id.CARDVIEW);
+        val cdView = view.findViewById<CardView>(R.id.CARDVIEW)
 
-        int mFirstColorOdd = 0;
+        val mFirstColorOdd = 0
         if (cursor.getPosition() % 2 == mFirstColorOdd) {
-            cdView.setBackgroundColor(context.getResources().getColor(R.color.record_background_even));
+            cdView.setBackgroundColor(
+                context.getResources().getColor(R.color.record_background_even)
+            )
         } else {
-            cdView.setBackgroundColor(context.getResources().getColor(R.color.background));
+            cdView.setBackgroundColor(context.getResources().getColor(R.color.background))
         }
 
-        ImageView deletImg = view.findViewById(R.id.deleteButton);
-        deletImg.setTag(cursor.getLong(0));
-        deletImg.setOnClickListener(v -> {
-            if (mDeleteClickListener != null)
-                mDeleteClickListener.onBtnClick((long) v.getTag());
-        });
-
+        val deletImg = view.findViewById<ImageView>(R.id.deleteButton)
+        deletImg.setTag(cursor.getLong(0))
+        deletImg.setOnClickListener(View.OnClickListener { v: View? ->
+            if (mDeleteClickListener != null) mDeleteClickListener!!.onBtnClick(v!!.getTag() as Long)
+        })
     }
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return mInflater.inflate(R.layout.bodymeasure_row, parent, false);
+    override fun newView(context: Context?, cursor: Cursor?, parent: ViewGroup?): View? {
+        return mInflater.inflate(R.layout.bodymeasure_row, parent, false)
     }
-
 }

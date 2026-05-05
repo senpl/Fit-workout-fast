@@ -1,190 +1,189 @@
-package com.easyfitness;
+package com.easyfitness
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.easyfitness.DAO.DatabaseHelper
+import com.easyfitness.licenses.CustomLicense
+import com.fitworkoutfast.MainActivity
+import de.psdev.licensesdialog.LicensesDialog
+import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
+import de.psdev.licensesdialog.licenses.GnuLesserGeneralPublicLicense21
+import de.psdev.licensesdialog.licenses.License
+import de.psdev.licensesdialog.licenses.MITLicense
+import de.psdev.licensesdialog.model.Notice
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+class AboutFragment : Fragment() {
+    private val name: String? = null
+    private val id = 0
+    var mainActivity: MainActivity? = null
+        private set
 
-import com.easyfitness.DAO.DatabaseHelper;
-import com.easyfitness.licenses.CustomLicense;
-import com.fitworkoutfast.MainActivity;
+    private val clickLicense = View.OnClickListener { v: View? ->
+        var name: String? = null
+        var url: String? = null
+        var copyright: String? = null
+        var license: License? = null
 
-import de.psdev.licensesdialog.LicensesDialog;
-import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;
-import de.psdev.licensesdialog.licenses.GnuLesserGeneralPublicLicense21;
-import de.psdev.licensesdialog.licenses.License;
-import de.psdev.licensesdialog.licenses.MITLicense;
-import de.psdev.licensesdialog.model.Notice;
-
-public class AboutFragment extends Fragment {
-    private String name;
-    private int id;
-    private MainActivity mActivity = null;
-
-    private View.OnClickListener clickLicense = v -> {
-
-        String name = null;
-        String url = null;
-        String copyright = null;
-        License license = null;
-
-        int id = v.getId();
+        val id = v!!.getId()
         if (id == R.id.MPAndroidChart) {
-            name = "MPAndroidChart";
-            url = "https://github.com/PhilJay/MPAndroidChart";
-            copyright = "Copyright 2019 Philipp Jahoda";
-            license = new ApacheSoftwareLicense20();
+            name = "MPAndroidChart"
+            url = "https://github.com/PhilJay/MPAndroidChart"
+            copyright = "Copyright 2019 Philipp Jahoda"
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.javaCSV) {
-            name = "JavaCSV";
-            url = "https://sourceforge.net/projects/javacsv/";
-            copyright = "";
-            license = new GnuLesserGeneralPublicLicense21();
+            name = "JavaCSV"
+            url = "https://sourceforge.net/projects/javacsv/"
+            copyright = ""
+            license = GnuLesserGeneralPublicLicense21()
         } else if (id == R.id.antoniomChronometer) {
-            name = "Millisecond-Chronometer";
-            url = "https://github.com/antoniom/Millisecond-Chronometer";
-            copyright = "";
-            license = new ApacheSoftwareLicense20();
+            name = "Millisecond-Chronometer"
+            url = "https://github.com/antoniom/Millisecond-Chronometer"
+            copyright = ""
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.LicensesDialog) {
-            name = "LicensesDialog";
-            url = "https://github.com/PSDev/LicensesDialog";
-            copyright = "Copyright 2013 Philip Schiffer";
-            license = new ApacheSoftwareLicense20();
+            name = "LicensesDialog"
+            url = "https://github.com/PSDev/LicensesDialog"
+            copyright = "Copyright 2013 Philip Schiffer"
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.PagerSlidingTabStrip) {
-            name = "PagerSlidingTabStrip";
-            url = "https://github.com/astuetz/PagerSlidingTabStrip";
-            copyright = "Andreas Stuetz - andreas.stuetz@gmail.com";
-            license = new ApacheSoftwareLicense20();
+            name = "PagerSlidingTabStrip"
+            url = "https://github.com/astuetz/PagerSlidingTabStrip"
+            copyright = "Andreas Stuetz - andreas.stuetz@gmail.com"
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.SmartTabLayout) {
-            name = "SmartTabLayout";
-            url = "https://github.com/ogaclejapan/SmartTabLayout";
-            copyright = "Copyright (C) 2015 ogaclejapan";
-            license = new ApacheSoftwareLicense20();
+            name = "SmartTabLayout"
+            url = "https://github.com/ogaclejapan/SmartTabLayout"
+            copyright = "Copyright (C) 2015 ogaclejapan"
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.flaticonCredits) {
-            name = "Flaticon";
-            url = "https://www.flaticon.com";
-            copyright = "Copyright © 2013-2019 Freepik Company S.L.";
-            license = new CustomLicense("Free License (with attribution)", "https://profile.flaticon.com/license/free");
+            name = "Flaticon"
+            url = "https://www.flaticon.com"
+            copyright = "Copyright © 2013-2019 Freepik Company S.L."
+            license = CustomLicense(
+                "Free License (with attribution)",
+                "https://profile.flaticon.com/license/free"
+            )
         } else if (id == R.id.freepikCredits) {
-            name = "Freepik";
-            url = "https://www.freepik.com";
-            copyright = "Copyright © 2010-2019 Freepik Company S.L.";
-            license = new CustomLicense("Free License (with attribution)", "https://profile.freepik.com/license/free");
+            name = "Freepik"
+            url = "https://www.freepik.com"
+            copyright = "Copyright © 2010-2019 Freepik Company S.L."
+            license = CustomLicense(
+                "Free License (with attribution)",
+                "https://profile.freepik.com/license/free"
+            )
         } else if (id == R.id.CircleProgress) {
-            name = "CircleProgress";
-            url = "https://github.com/lzyzsd/CircleProgress";
-            copyright = "Copyright (C) 2014 Bruce Lee <bruceinpeking#gmail.com>";
-            license = new CustomLicense("WTFPL License", "http://www.wtfpl.net/txt/copying/");
+            name = "CircleProgress"
+            url = "https://github.com/lzyzsd/CircleProgress"
+            copyright = "Copyright (C) 2014 Bruce Lee <bruceinpeking#gmail.com>"
+            license = CustomLicense("WTFPL License", "http://www.wtfpl.net/txt/copying/")
         } else if (id == R.id.CircularImageView) {
-            name = "CircularImageView";
-            url = "https://github.com/lopspower/CircularImageView";
-            copyright = "Lopez Mikhael";
-            license = new ApacheSoftwareLicense20();
+            name = "CircularImageView"
+            url = "https://github.com/lopspower/CircularImageView"
+            copyright = "Lopez Mikhael"
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.ktoast) {
-            name = "KToast";
-            url = "https://github.com/onurkagan/KToast";
-            copyright = "";
-            license = new ApacheSoftwareLicense20();
+            name = "KToast"
+            url = "https://github.com/onurkagan/KToast"
+            copyright = ""
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.SweetAlertDialog) {
-            name = "SweetAlertDialog";
-            url = "https://github.com/F0RIS/sweet-alert-dialog";
-            copyright = "Pedant (http://pedant.cn)";
-            license = new MITLicense();
+            name = "SweetAlertDialog"
+            url = "https://github.com/F0RIS/sweet-alert-dialog"
+            copyright = "Pedant (http://pedant.cn)"
+            license = MITLicense()
         } else if (id == R.id.AndroidImageCropper) {
-            name = "Android-Image-Cropper";
-            url = "https://github.com/ArthurHub/Android-Image-Cropper";
-            copyright = "Copyright 2016, Arthur Teplitzki, 2013, Edmodo, Inc.";
-            license = new ApacheSoftwareLicense20();
+            name = "Android-Image-Cropper"
+            url = "https://github.com/ArthurHub/Android-Image-Cropper"
+            copyright = "Copyright 2016, Arthur Teplitzki, 2013, Edmodo, Inc."
+            license = ApacheSoftwareLicense20()
         } else if (id == R.id.MaterialFavoriteButton) {
-            name = "Material Favorite Button";
-            url = "https://github.com/IvBaranov/MaterialFavoriteButton";
-            copyright = "Copyright 2015 Ivan Baranov";
-            license = new ApacheSoftwareLicense20();
+            name = "Material Favorite Button"
+            url = "https://github.com/IvBaranov/MaterialFavoriteButton"
+            copyright = "Copyright 2015 Ivan Baranov"
+            license = ApacheSoftwareLicense20()
         }
 
-        final Notice notice = new Notice(name, url, copyright, license);
-        new LicensesDialog.Builder(getMainActivity())
+        val notice = Notice(name, url, copyright, license)
+        LicensesDialog.Builder(this.mainActivity)
             .setNotices(notice)
             .build()
-            .show();
-    };
-
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static AboutFragment newInstance(String name, int id) {
-        AboutFragment f = new AboutFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putString("name", name);
-        args.putInt("id", id);
-        f.setArguments(args);
-
-        return f;
+            .show()
     }
 
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        this.mActivity = (MainActivity) activity;
+
+    @Deprecated("Deprecated in Java")
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        this.mainActivity = activity as MainActivity
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.tab_about, container, false);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = inflater.inflate(R.layout.tab_about, container, false)
 
         //TextView pAppVersion = view.findViewById(R.id.app_version_textview);
         //pAppVersion.setText(); TODO get code version from Manifest
+        val mpDBVersionTextView = view.findViewById<TextView>(R.id.database_version)
+        mpDBVersionTextView.setText(DatabaseHelper.DATABASE_VERSION.toString())
 
-        TextView mpDBVersionTextView = view.findViewById(R.id.database_version);
-        mpDBVersionTextView.setText(Integer.toString(DatabaseHelper.DATABASE_VERSION));
+        val mpMPAndroidChartTextView = view.findViewById<TextView>(R.id.MPAndroidChart)
+        val mpJavaCVSTextView = view.findViewById<TextView>(R.id.javaCSV)
+        val mpLicenseDialogTextView = view.findViewById<TextView>(R.id.LicensesDialog)
+        val mpChronometerTextView = view.findViewById<TextView>(R.id.antoniomChronometer)
+        val mpPagerSlidingTabStripTextView = view.findViewById<TextView>(R.id.PagerSlidingTabStrip)
 
-        TextView mpMPAndroidChartTextView = view.findViewById(R.id.MPAndroidChart);
-        TextView mpJavaCVSTextView = view.findViewById(R.id.javaCSV);
-        TextView mpLicenseDialogTextView = view.findViewById(R.id.LicensesDialog);
-        TextView mpChronometerTextView = view.findViewById(R.id.antoniomChronometer);
-        TextView mpPagerSlidingTabStripTextView = view.findViewById(R.id.PagerSlidingTabStrip);
-
-        TextView mpSmartTabLayoutTextView = view.findViewById(R.id.SmartTabLayout);
-        TextView mpFlaticonTextView = view.findViewById(R.id.flaticonCredits);
-        TextView mpFreepikView = view.findViewById(R.id.freepikCredits);
-        TextView mpCircleProgressView = view.findViewById(R.id.CircleProgress);
-        TextView mpCircularImageView = view.findViewById(R.id.CircularImageView);
-        TextView mpkToast = view.findViewById(R.id.ktoast);
-        TextView mpSweetAlertDialog = view.findViewById(R.id.SweetAlertDialog);
-        TextView mpAndroidImageCropper = view.findViewById(R.id.AndroidImageCropper);
-        TextView mpMaterialFavoriteButton = view.findViewById(R.id.MaterialFavoriteButton);
+        val mpSmartTabLayoutTextView = view.findViewById<TextView>(R.id.SmartTabLayout)
+        val mpFlaticonTextView = view.findViewById<TextView>(R.id.flaticonCredits)
+        val mpFreepikView = view.findViewById<TextView>(R.id.freepikCredits)
+        val mpCircleProgressView = view.findViewById<TextView>(R.id.CircleProgress)
+        val mpCircularImageView = view.findViewById<TextView>(R.id.CircularImageView)
+        val mpkToast = view.findViewById<TextView>(R.id.ktoast)
+        val mpSweetAlertDialog = view.findViewById<TextView>(R.id.SweetAlertDialog)
+        val mpAndroidImageCropper = view.findViewById<TextView>(R.id.AndroidImageCropper)
+        val mpMaterialFavoriteButton = view.findViewById<TextView>(R.id.MaterialFavoriteButton)
 
 
-        mpMPAndroidChartTextView.setOnClickListener(clickLicense);
-        mpJavaCVSTextView.setOnClickListener(clickLicense);
-        mpLicenseDialogTextView.setOnClickListener(clickLicense);
-        mpChronometerTextView.setOnClickListener(clickLicense);
-        mpPagerSlidingTabStripTextView.setOnClickListener(clickLicense);
-        mpSmartTabLayoutTextView.setOnClickListener(clickLicense);
-        mpFlaticonTextView.setOnClickListener(clickLicense);
-        mpFreepikView.setOnClickListener(clickLicense);
-        mpCircleProgressView.setOnClickListener(clickLicense);
-        mpCircularImageView.setOnClickListener(clickLicense);
-        mpkToast.setOnClickListener(clickLicense);
-        mpSweetAlertDialog.setOnClickListener(clickLicense);
-        mpAndroidImageCropper.setOnClickListener(clickLicense);
-        mpMaterialFavoriteButton.setOnClickListener(clickLicense);
+        mpMPAndroidChartTextView.setOnClickListener(clickLicense)
+        mpJavaCVSTextView.setOnClickListener(clickLicense)
+        mpLicenseDialogTextView.setOnClickListener(clickLicense)
+        mpChronometerTextView.setOnClickListener(clickLicense)
+        mpPagerSlidingTabStripTextView.setOnClickListener(clickLicense)
+        mpSmartTabLayoutTextView.setOnClickListener(clickLicense)
+        mpFlaticonTextView.setOnClickListener(clickLicense)
+        mpFreepikView.setOnClickListener(clickLicense)
+        mpCircleProgressView.setOnClickListener(clickLicense)
+        mpCircularImageView.setOnClickListener(clickLicense)
+        mpkToast.setOnClickListener(clickLicense)
+        mpSweetAlertDialog.setOnClickListener(clickLicense)
+        mpAndroidImageCropper.setOnClickListener(clickLicense)
+        mpMaterialFavoriteButton.setOnClickListener(clickLicense)
 
         // Inflate the layout for this fragment
-        return view;
+        return view
     }
 
-    public MainActivity getMainActivity() {
-        return this.mActivity;
-    }
+    companion object {
+        /**
+         * Create a new instance of DetailsFragment, initialized to
+         * show the text at 'index'.
+         */
+        fun newInstance(name: String?, id: Int): AboutFragment {
+            val f = AboutFragment()
 
+            // Supply index input as an argument.
+            val args = Bundle()
+            args.putString("name", name)
+            args.putInt("id", id)
+            f.setArguments(args)
+
+            return f
+        }
+    }
 }

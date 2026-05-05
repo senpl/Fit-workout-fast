@@ -1,101 +1,93 @@
-package com.easyfitness.machines;
+package com.easyfitness.machines
 
-import android.content.Context;
-import android.database.Cursor;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.database.Cursor
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CursorAdapter
+import android.widget.Filterable
+import android.widget.ImageView
+import android.widget.TextView
+import com.easyfitness.DAO.DAOMachine
+import com.easyfitness.R
+import com.easyfitness.utils.ImageUtil
+import com.github.ivbaranov.mfb.MaterialFavoriteButton
 
-import com.easyfitness.DAO.DAOMachine;
-import com.easyfitness.DAO.Machine;
-import com.easyfitness.R;
-import com.easyfitness.utils.ImageUtil;
-import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+class MachineCursorAdapter(context: Context, c: Cursor?, flags: Int, pDbMachine: DAOMachine?) :
+    CursorAdapter(context, c, flags), Filterable {
+    var mDbMachine: DAOMachine? = null
+    var iFav: MaterialFavoriteButton? = null
+    private val mInflater: LayoutInflater
 
-public class MachineCursorAdapter extends CursorAdapter implements Filterable {
-
-    DAOMachine mDbMachine = null;
-    MaterialFavoriteButton iFav = null;
-    private LayoutInflater mInflater;
-
-    public MachineCursorAdapter(Context context, Cursor c, int flags, DAOMachine pDbMachine) {
-        super(context, c, flags);
-        mDbMachine = pDbMachine;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    init {
+        mDbMachine = pDbMachine
+        mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    override fun bindView(view: View, context: Context?, cursor: Cursor) {
+        val t0 = view.findViewById<TextView>(R.id.LIST_MACHINE_ID)
+        t0.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.KEY)))
 
-        TextView t0 = view.findViewById(R.id.LIST_MACHINE_ID);
-        t0.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.KEY)));
+        val t1 = view.findViewById<TextView>(R.id.LIST_MACHINE_NAME)
+        t1.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.NAME)))
 
-        TextView t1 = view.findViewById(R.id.LIST_MACHINE_NAME);
-        t1.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.NAME)));
+        val t2 = view.findViewById<TextView>(R.id.LIST_MACHINE_SHORT_DESCRIPTION)
+        t2.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.DESCRIPTION)))
 
-        TextView t2 = view.findViewById(R.id.LIST_MACHINE_SHORT_DESCRIPTION);
-        t2.setText(cursor.getString(cursor.getColumnIndex(DAOMachine.DESCRIPTION)));
+        val i0 = view.findViewById<ImageView>(R.id.LIST_MACHINE_PHOTO)
+        val lPath = cursor.getString(cursor.getColumnIndex(DAOMachine.PICTURE))
 
-        ImageView i0 = view.findViewById(R.id.LIST_MACHINE_PHOTO);
-        String lPath = cursor.getString(cursor.getColumnIndex(DAOMachine.PICTURE));
-
-        int lType = cursor.getInt(cursor.getColumnIndex(DAOMachine.TYPE));
+        val lType = cursor.getInt(cursor.getColumnIndex(DAOMachine.TYPE))
 
         if (lPath != null && !lPath.isEmpty()) {
             try {
-                ImageUtil imgUtil = new ImageUtil();
-                String lThumbPath = imgUtil.getThumbPath(lPath);
-                ImageUtil.setThumb(i0, lThumbPath);
-            } catch (Exception e) {
+                val imgUtil = ImageUtil()
+                val lThumbPath = imgUtil.getThumbPath(lPath)
+                ImageUtil.setThumb(i0, lThumbPath)
+            } catch (e: Exception) {
                 if (lType == DAOMachine.TYPE_STRENGTH) {
-                    i0.setImageResource(R.drawable.ic_gym_bench_50dp); }
-                else if (lType == DAOMachine.TYPE_STATIC ) {
-                    i0.setImageResource(R.drawable.ic_static);
+                    i0.setImageResource(R.drawable.ic_gym_bench_50dp)
+                } else if (lType == DAOMachine.TYPE_STATIC) {
+                    i0.setImageResource(R.drawable.ic_static)
+                } else {
+                    i0.setImageResource(R.drawable.ic_training_white_50dp)
+                    i0.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
                 }
-                else {
-                    i0.setImageResource(R.drawable.ic_training_white_50dp);
-                i0.setScaleType(ImageView.ScaleType.CENTER_INSIDE); }
-                e.printStackTrace();
+                e.printStackTrace()
             }
         } else {
             if (lType == DAOMachine.TYPE_STRENGTH) {
-                i0.setImageResource(R.drawable.ic_gym_bench_50dp); }
-            else if (lType == DAOMachine.TYPE_STATIC ) {
-                i0.setImageResource(R.drawable.ic_static);
+                i0.setImageResource(R.drawable.ic_gym_bench_50dp)
+            } else if (lType == DAOMachine.TYPE_STATIC) {
+                i0.setImageResource(R.drawable.ic_static)
+            } else {
+                i0.setImageResource(R.drawable.ic_training_white_50dp)
             }
-            else {
-                i0.setImageResource(R.drawable.ic_training_white_50dp); }
 
-            i0.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            i0.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
         }
 
-        iFav = view.findViewById(R.id.LIST_MACHINE_FAVORITE);
-        boolean bFav = cursor.getInt(6) == 1;
-        iFav.setFavorite(bFav);
-        iFav.setRotationDuration(500);
-        iFav.setAnimateFavorite(true);
-        iFav.setTag(cursor.getLong(0));
+        iFav = view.findViewById<MaterialFavoriteButton?>(R.id.LIST_MACHINE_FAVORITE)
+        val bFav = cursor.getInt(6) == 1
+        iFav!!.setFavorite(bFav)
+        iFav!!.setRotationDuration(500)
+        iFav!!.setAnimateFavorite(true)
+        iFav!!.setTag(cursor.getLong(0))
 
-        iFav.setOnClickListener(v -> {
-            MaterialFavoriteButton mFav = (MaterialFavoriteButton) v;
-            boolean t = mFav.isFavorite();
-            mFav.setFavoriteAnimated(!t);
+        iFav!!.setOnClickListener(View.OnClickListener { v: View? ->
+            val mFav = v as MaterialFavoriteButton
+            val t = mFav.isFavorite()
+            mFav.setFavoriteAnimated(!t)
             if (mDbMachine != null) {
-                Machine m = mDbMachine.getMachine((long) mFav.getTag());
-                m.setFavorite(!t);
-                mDbMachine.updateMachine(m);
+                val m = mDbMachine!!.getMachine(mFav.getTag() as Long)
+                m?.favorite =!t
+                mDbMachine!!.updateMachine(m)
             }
-        });
+        })
     }
 
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return mInflater.inflate(R.layout.machinelist_row, parent, false);
-
+    override fun newView(context: Context?, cursor: Cursor?, parent: ViewGroup?): View? {
+        return mInflater.inflate(R.layout.machinelist_row, parent, false)
     }
-
 }

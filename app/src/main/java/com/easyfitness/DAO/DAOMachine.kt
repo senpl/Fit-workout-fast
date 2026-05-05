@@ -1,332 +1,373 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
 
-import java.util.ArrayList;
-import java.util.List;
+class DAOMachine(context: Context?) : DAOBase(context) {
+    private val mProfile: Profile? = null
+    var cursor: Cursor? = null
+        private set
 
-public class DAOMachine extends DAOBase {
-
-    // Contacts table name
-    public static final String TABLE_NAME = "EFmachines";
-
-    public static final String KEY = "_id";
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
-    public static final String TYPE = "type";
-    public static final String PICTURE = "picture";
-    public static final String BODYPARTS = "bodyparts";
-    public static final String FAVORITES = "favorites"; // DEPRECATED - Specific DataBase created for this.
-
-
-    public static final int TYPE_STRENGTH = 0;
-    public static final int TYPE_CARDIO = 1;
-    public static final int TYPE_STATIC = 2;
-
-    public static final String TABLE_CREATE_5 = "CREATE TABLE " + TABLE_NAME
-        + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
-        + " TEXT, " + DESCRIPTION + " TEXT, " + TYPE + " INTEGER);";
-
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
-        + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
-        + " TEXT, " + DESCRIPTION + " TEXT, " + TYPE + " INTEGER, " + BODYPARTS + " TEXT, " + PICTURE + " TEXT, " + FAVORITES + " INTEGER);"; //", " + PICTURE_RES + " INTEGER);";
-
-    public static final String TABLE_DROP = "DROP TABLE IF EXISTS "
-        + TABLE_NAME + ";";
-
-    private Profile mProfile = null;
-    private Cursor mCursor = null;
-
-    public DAOMachine(Context context) {
-        super(context);
-    }
-
-/*
-    public void setProfile(Profile pProfile) {
-        mProfile = pProfile;
-    }
+    /*
+   public void setProfile(Profile pProfile) {
+       mProfile = pProfile;
+   }
 */
-
     /**
      * @param pName        le Record a ajouter a la base
      * @param pDescription
      * @param pType
      */
-    public long addMachine(String pName, String pDescription, int pType, String pPicture, boolean pFav, String pBodyParts) {
-        long new_id = -1;
+    fun addMachine(
+        pName: String?,
+        pDescription: String?,
+        pType: Int,
+        pPicture: String?,
+        pFav: Boolean,
+        pBodyParts: String?
+    ): Long {
+        var new_id: Long = -1
 
-        ContentValues value = new ContentValues();
+        val value = ContentValues()
 
-        value.put(DAOMachine.NAME, pName);
-        value.put(DAOMachine.DESCRIPTION, pDescription);
-        value.put(DAOMachine.TYPE, pType);
-        value.put(DAOMachine.PICTURE, pPicture);
-        value.put(DAOMachine.FAVORITES, pFav);
-        value.put(DAOMachine.BODYPARTS, pBodyParts);
+        value.put(NAME, pName)
+        value.put(DESCRIPTION, pDescription)
+        value.put(TYPE, pType)
+        value.put(PICTURE, pPicture)
+        value.put(FAVORITES, pFav)
+        value.put(BODYPARTS, pBodyParts)
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        new_id = db.insert(DAOMachine.TABLE_NAME, null, value);
-        close();
+        val db = this.getWritableDatabase()
+        new_id = db.insert(TABLE_NAME, null, value)
+        close()
 
-        return new_id;
+        return new_id
     }
 
     // Getting single value
-    public Machine getMachine(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        mCursor = db.query(TABLE_NAME, new String[]{KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES}, KEY + "=?",
-            new String[]{String.valueOf(id)}, null, null, null, null);
-        if (mCursor != null)
-            mCursor.moveToFirst();
+    fun getMachine(id: Long): Machine? {
+        val db = this.getReadableDatabase()
+        this.cursor = null
+        this.cursor = db.query(
+            TABLE_NAME,
+            arrayOf<String>(KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES),
+            KEY + "=?",
+            arrayOf<String>(id.toString()),
+            null,
+            null,
+            null,
+            null
+        )
+        if (this.cursor != null) cursor!!.moveToFirst()
 
-        if (mCursor.getCount() == 0)
-            return null;
+        if (cursor!!.getCount() == 0) return null
 
-        Machine value = new Machine(mCursor.getString(1), mCursor.getString(2), mCursor.getInt(3), mCursor.getString(4), mCursor.getString(5), mCursor.getInt(6) == 1);
+        val value = Machine(
+            cursor!!.getString(1),
+            cursor!!.getString(2),
+            cursor!!.getInt(3),
+            cursor!!.getString(4),
+            cursor!!.getString(5),
+            cursor!!.getInt(6) == 1
+        )
 
-        value.setId(mCursor.getLong(0));
+        value.id = cursor!!.getLong(0)
         // return value
-        mCursor.close();
-        close();
-        return value;
+        cursor!!.close()
+        close()
+        return value
     }
 
     // Getting single value
-    public Machine getMachine(String pName) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        mCursor = db.query(TABLE_NAME, new String[]{KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES}, NAME + "=?",
-            new String[]{pName}, null, null, null, null);
-        if (mCursor != null)
-            mCursor.moveToFirst();
+    fun getMachine(pName: String?): Machine? {
+        val db = this.getReadableDatabase()
+        this.cursor = null
+        this.cursor = db.query(
+            TABLE_NAME,
+            arrayOf<String>(KEY, NAME, DESCRIPTION, TYPE, BODYPARTS, PICTURE, FAVORITES),
+            NAME + "=?",
+            arrayOf<String?>(pName),
+            null,
+            null,
+            null,
+            null
+        )
+        if (this.cursor != null) cursor!!.moveToFirst()
 
-        if (mCursor.getCount() == 0)
-            return null;
+        if (cursor!!.getCount() == 0) return null
 
-        Machine value = new Machine(mCursor.getString(1),
-            mCursor.getString(2),
-            mCursor.getInt(3),
-            mCursor.getString(4),
-            mCursor.getString(5),
-            mCursor.getInt(6) == 1);
+        val value = Machine(
+            cursor!!.getString(1),
+            cursor!!.getString(2),
+            cursor!!.getInt(3),
+            cursor!!.getString(4),
+            cursor!!.getString(5),
+            cursor!!.getInt(6) == 1
+        )
 
-        value.setId(mCursor.getLong(0));
+        value.id = cursor!!.getLong(0)
         // return value
-        mCursor.close();
-        close();
-        return value;
+        cursor!!.close()
+        close()
+        return value
     }
 
-    public boolean machineExists(String name) {
-        Machine lMach = getMachine(name);
-        return lMach != null;
+    fun machineExists(name: String?): Boolean {
+        val lMach = getMachine(name)
+        return lMach != null
     }
 
     // Getting All Records
-    private ArrayList<Machine> getMachineList(String pRequest) {
-        ArrayList<Machine> valueList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Select All Query
+    private fun getMachineList(pRequest: String): java.util.ArrayList<Machine?> {
+        val valueList = java.util.ArrayList<Machine?>()
+        val db = this.getReadableDatabase()
 
-        mCursor = null;
-        mCursor = db.rawQuery(pRequest, null);
+        // Select All Query
+        this.cursor = null
+        this.cursor = db.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (cursor!!.moveToFirst()) {
             do {
-                Machine value = new Machine(mCursor.getString(1),
-                    mCursor.getString(2), mCursor.getInt(3), mCursor.getString(4), mCursor.getString(5), mCursor.getInt(6) == 1);
+                val value = Machine(
+                    cursor!!.getString(1),
+                    cursor!!.getString(2),
+                    cursor!!.getInt(3),
+                    cursor!!.getString(4),
+                    cursor!!.getString(5),
+                    cursor!!.getInt(6) == 1
+                )
 
-                value.setId(mCursor.getLong(0));
+                value.id = cursor!!.getLong(0)
 
                 // Adding value to list
-                valueList.add(value);
-            } while (mCursor.moveToNext());
+                valueList.add(value)
+            } while (cursor!!.moveToNext())
         }
         // return value list
-        return valueList;
+        return valueList
     }
 
     // Getting All Records
-    private Cursor getMachineListCursor(String pRequest) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    private fun getMachineListCursor(pRequest: String): Cursor {
+        val db = this.getReadableDatabase()
+
         // Select All Query
-
-        return db.rawQuery(pRequest, null);
+        return db.rawQuery(pRequest, null)
     }
 
-    public Cursor getCursor() {
-        return mCursor;
+    fun closeCursor() {
+        cursor!!.close()
     }
 
-    public void closeCursor() {
-        mCursor.close();
-    }
+    val allMachines: Cursor
+        /**
+         * @return List of Machine object ordered by Favorite and Name
+         */
+        get() {
+            // Select All Query
+            val selectQuery =
+                ("SELECT  * FROM " + TABLE_NAME + " ORDER BY "
+                        + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC")
+
+            // return value list
+            return getMachineListCursor(selectQuery)
+        }
 
     /**
      * @return List of Machine object ordered by Favorite and Name
      */
-    public Cursor getAllMachines() {
+    fun getAllMachines(type: Int): Cursor {
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY "
-            + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC";
+        var selectQuery = ""
+        selectQuery = ("SELECT  * FROM " + TABLE_NAME + " WHERE " + TYPE + "=" + type + " ORDER BY "
+                + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC")
 
         // return value list
-        return getMachineListCursor(selectQuery);
+        return getMachineListCursor(selectQuery)
     }
 
     /**
      * @return List of Machine object ordered by Favorite and Name
      */
-    public Cursor getAllMachines(int type) {
-        // Select All Query
-        String selectQuery = "";
-        selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + TYPE + "=" + type + " ORDER BY "
-            + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC";
-
-        // return value list
-        return getMachineListCursor(selectQuery);
-    }
-
-    /**
-     * @return List of Machine object ordered by Favorite and Name
-     */
-    public Cursor getFilteredMachines(CharSequence filterString) {
+    fun getFilteredMachines(filterString: CharSequence?): Cursor {
         // Select All Query
         // like '%"+inputText+"%'";
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + NAME + " LIKE " + "'%" + filterString + "%' " + " ORDER BY "
-            + FAVORITES + " DESC," + NAME + " ASC";
+        val selectQuery =
+            ("SELECT  * FROM " + TABLE_NAME + " WHERE " + NAME + " LIKE " + "'%" + filterString + "%' " + " ORDER BY "
+                    + FAVORITES + " DESC," + NAME + " ASC")
         // return value list
-        return getMachineListCursor(selectQuery);
+        return getMachineListCursor(selectQuery)
     }
 
 
     /**
      * @return List of Machine object ordered by Favorite and Name
      */
-    public void deleteAllEmptyExercises() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, NAME + " = ?",
-            new String[]{""});
-        db.close();
+    fun deleteAllEmptyExercises() {
+        val db = this.getWritableDatabase()
+        db.delete(
+            TABLE_NAME, NAME + " = ?",
+            arrayOf<String>("")
+        )
+        db.close()
     }
 
-    /**
-     * @return List of Machine object ordered by Favorite and Name
-     */
-    public ArrayList<Machine> getAllMachinesArray() {
+    val allMachinesArray: ArrayList<Machine?>
+        /**
+         * @return List of Machine object ordered by Favorite and Name
+         */
+        get() {
 // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY "
-            + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC";
+            val selectQuery =
+                ("SELECT  * FROM " + TABLE_NAME + " ORDER BY "
+                        + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC")
 
-        // return value list
-        return getMachineList(selectQuery);
-    }
+            // return value list
+            return getMachineList(selectQuery)
+        }
 
     /**
      * @param idList List of Machine IDs to be return
      * @return List of Machine object ordered by Favorite and Name
      */
-    public List<Machine> getAllMachines(List<Long> idList) {
-
-        String ids = idList.toString();
-        ids = ids.replace('[', '(');
-        ids = ids.replace(']', ')');
+    fun getAllMachines(idList: MutableList<Long?>): MutableList<Machine?> {
+        var ids = idList.toString()
+        ids = ids.replace('[', '(')
+        ids = ids.replace(']', ')')
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + KEY + " in " + ids + " ORDER BY "
-            + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC";
+        val selectQuery =
+            ("SELECT  * FROM " + TABLE_NAME + " WHERE " + KEY + " in " + ids + " ORDER BY "
+                    + FAVORITES + " DESC," + NAME + " COLLATE NOCASE ASC")
 
         // return value list
-        return getMachineList(selectQuery);
+        return getMachineList(selectQuery)
     }
 
-    // Getting All Machines
-    public String[] getAllMachinesName() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
+    val allMachinesName: Array<String?>
+        // Getting All Machines
+        get() {
+            val db = this.getReadableDatabase()
+            this.cursor = null
 
-        // Select All Machines
-        String selectQuery = "SELECT DISTINCT  " + NAME + " FROM "
-            + TABLE_NAME + " ORDER BY " + NAME + " COLLATE NOCASE ASC";
-        mCursor = db.rawQuery(selectQuery, null);
+            // Select All Machines
+            val selectQuery =
+                ("SELECT DISTINCT  " + NAME + " FROM "
+                        + TABLE_NAME + " ORDER BY " + NAME + " COLLATE NOCASE ASC")
+            this.cursor = db.rawQuery(selectQuery, null)
 
-        int size = mCursor.getCount();
+            val size = cursor!!.getCount()
 
-        String[] valueList = new String[size];
+            val valueList = arrayOfNulls<String>(size)
 
-        // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
-            int i = 0;
-            do {
-                String value = mCursor.getString(0);
-                valueList[i] = value;
-                i++;
-            } while (mCursor.moveToNext());
+            // looping through all rows and adding to list
+            if (cursor!!.moveToFirst()) {
+                var i = 0
+                do {
+                    val value = cursor!!.getString(0)
+                    valueList[i] = value
+                    i++
+                } while (cursor!!.moveToNext())
+            }
+            cursor!!.close()
+            close()
+            // return value list
+            return valueList
         }
-        mCursor.close();
-        close();
-        // return value list
-        return valueList;
-    }
 
     // Updating single value
-    public int updateMachine(Machine m) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    fun updateMachine(m: Machine?): Int {
+        val db = this.getWritableDatabase()
 
-        ContentValues value = new ContentValues();
-        value.put(DAOMachine.NAME, m.getName());
-        value.put(DAOMachine.DESCRIPTION, m.getDescription());
-        value.put(DAOMachine.TYPE, m.getType());
-        value.put(DAOMachine.BODYPARTS, m.getBodyParts());
-        value.put(DAOMachine.PICTURE, m.getPicture());
-        if (m.getFavorite()) value.put(DAOMachine.FAVORITES, 1);
-        else value.put(DAOMachine.FAVORITES, 0);
+        val value = ContentValues()
+        value.put(NAME, m?.name)
+        value.put(DESCRIPTION, m?.description)
+        value.put(TYPE, m?.type)
+        value.put(BODYPARTS, m?.bodyParts)
+        value.put(PICTURE, m?.picture)
+        if (m?.favorite ==true) value.put(FAVORITES, 1)
+        else
+            value.put(FAVORITES, 0)
 
         // updating row
-        return db.update(TABLE_NAME, value, KEY + " = ?",
-            new String[]{String.valueOf(m.getId())});
+        return db.update(
+            TABLE_NAME, value, KEY + " = ?",
+            arrayOf<String>(m?.id.toString())
+        )
     }
 
     // Deleting single Record
-    public void delete(Machine m) {
+    fun delete(m: Machine?) {
         if (m != null) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            db.delete(TABLE_NAME, KEY + " = ?",
-                new String[]{String.valueOf(m.getId())});
-            db.close();
+            val db = this.getWritableDatabase()
+            db.delete(
+                TABLE_NAME, KEY + " = ?",
+                arrayOf<String>(m.id.toString())
+            )
+            db.close()
         }
     }
 
     // Deleting single Record
-    public void delete(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+    fun delete(id: Long) {
+        val db = this.getWritableDatabase()
+        db.delete(TABLE_NAME, KEY + " = ?", arrayOf<String>(id.toString()))
+        db.close()
     }
 
-    // Getting Profils Count
-    public int getCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME;
-        open();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
+    val count: Int
+        // Getting Profils Count
+        get() {
+            val countQuery = "SELECT  * FROM " + TABLE_NAME
+            open()
+            val db = this.getReadableDatabase()
+            val cursor = db.rawQuery(countQuery, null)
 
-        int value = cursor.getCount();
+            val value = cursor.getCount()
 
-        cursor.close();
-        close();
+            cursor.close()
+            close()
 
-        // return count
-        return value;
+            // return count
+            return value
+        }
+
+    fun populate() {
+        addMachine("Dev Couche", "Developper couche : blabla ", TYPE_STRENGTH, "", true, "")
+        addMachine("Biceps", "Developper couche : blabla ", TYPE_STRENGTH, "", false, "")
     }
 
-    public void populate() {
-        addMachine("Dev Couche", "Developper couche : blabla ", TYPE_STRENGTH, "", true, "");
-        addMachine("Biceps", "Developper couche : blabla ", TYPE_STRENGTH, "", false, "");
+    companion object {
+        // Contacts table name
+        const val TABLE_NAME: String = "EFmachines"
+
+        const val KEY: String = "_id"
+        const val NAME: String = "name"
+        const val DESCRIPTION: String = "description"
+        const val TYPE: String = "type"
+        const val PICTURE: String = "picture"
+        const val BODYPARTS: String = "bodyparts"
+        const val FAVORITES: String =
+            "favorites" // DEPRECATED - Specific DataBase created for this.
+
+
+        const val TYPE_STRENGTH: Int = 0
+        const val TYPE_CARDIO: Int = 1
+        const val TYPE_STATIC: Int = 2
+
+        @JvmField
+        val TABLE_CREATE_5: String = ("CREATE TABLE " + TABLE_NAME
+                + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
+                + " TEXT, " + DESCRIPTION + " TEXT, " + TYPE + " INTEGER);")
+
+        @JvmField
+        val TABLE_CREATE: String = ("CREATE TABLE " + TABLE_NAME
+                + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME
+                + " TEXT, " + DESCRIPTION + " TEXT, " + TYPE + " INTEGER, " + BODYPARTS + " TEXT, " + PICTURE + " TEXT, " + FAVORITES + " INTEGER);") //", " + PICTURE_RES + " INTEGER);";
+
+        val TABLE_DROP: String = ("DROP TABLE IF EXISTS "
+                + TABLE_NAME + ";")
     }
 }

@@ -69,7 +69,7 @@ public abstract class ARecord implements IRecord {
 
     @Override
     public long getProfilKey() {
-        return mProfile.getId();
+        return mProfile.id;
     }
 
     @Override

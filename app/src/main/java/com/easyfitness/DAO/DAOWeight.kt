@@ -1,41 +1,20 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import com.easyfitness.utils.DateConverter
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
-import com.easyfitness.utils.DateConverter;
+class DAOWeight(context: Context?) : DAOBase(context) {
+    private var mProfile: Profile? = null
+    private var mCursor: Cursor? = null
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-public class DAOWeight extends DAOBase {
-
-    // Contacts table name
-    public static final String TABLE_NAME = "EFweight";
-
-    public static final String KEY = "_id";
-    public static final String POIDS = "poids";
-    public static final String DATE = "date";
-    public static final String PROFIL_KEY = "profil_id";
-
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE + " DATE, " + POIDS + " REAL , " + PROFIL_KEY + " INTEGER);";
-
-    public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
-    private Profile mProfile = null;
-    private Cursor mCursor = null;
-
-    public DAOWeight(Context context) {
-        super(context);
-    }
-
-    public void setProfil(Profile pProfile) {
-        mProfile = pProfile;
+    fun setProfil(pProfile: Profile?) {
+        mProfile = pProfile
     }
 
     /**
@@ -43,190 +22,228 @@ public class DAOWeight extends DAOBase {
      * @param pWeight  weight
      * @param pProfile profil associated with the measure
      */
-    public void addWeight(Date pDate, float pWeight, Profile pProfile) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    fun addWeight(pDate: Date, pWeight: Float, pProfile: Profile) {
+        val db = this.getWritableDatabase()
 
-        ContentValues value = new ContentValues();
+        val value = ContentValues()
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
 
-        value.put(DAOWeight.DATE, dateFormat.format(pDate));
-        value.put(DAOWeight.POIDS, pWeight);
-        value.put(DAOWeight.PROFIL_KEY, pProfile.getId());
+        value.put(DATE, dateFormat.format(pDate))
+        value.put(POIDS, pWeight)
+        value.put(PROFIL_KEY, pProfile.id)
 
-        db.insert(DAOWeight.TABLE_NAME, null, value);
-        db.close(); // Closing database connection
+        db.insert(TABLE_NAME, null, value)
+        db.close() // Closing database connection
     }
 
     // Getting single value
-    private ProfileWeight getMeasure(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    private fun getMeasure(id: Long): ProfileWeight {
+        val db = this.getReadableDatabase()
 
-        mCursor = null;
-        mCursor = db.query(TABLE_NAME,
-            new String[]{KEY, DATE, POIDS, PROFIL_KEY},
+        mCursor = null
+        mCursor = db.query(
+            TABLE_NAME,
+            arrayOf<String>(KEY, DATE, POIDS, PROFIL_KEY),
             KEY + "=?",
-            new String[]{String.valueOf(id)},
-            null, null, null, null);
-        if (mCursor != null)
-            mCursor.moveToFirst();
+            arrayOf<String>(id.toString()),
+            null, null, null, null
+        )
+        if (mCursor != null) mCursor!!.moveToFirst()
 
-        Date date;
-        date = DateConverter.DBDateStrToDate(mCursor.getString(1));
+        val date: Date?
+        date = DateConverter.DBDateStrToDate(mCursor!!.getString(1))
 
-        ProfileWeight value = new ProfileWeight(mCursor.getLong(0),
+        val value = ProfileWeight(
+            mCursor!!.getLong(0),
             date,
-            mCursor.getFloat(2),
-            mCursor.getLong(3)
-        );
+            mCursor!!.getFloat(2),
+            mCursor!!.getLong(3)
+        )
 
-        db.close();
+        db.close()
 
         // return value
-        return value;
+        return value
     }
 
-    // Getting single value
-    public ProfileWeight getLastMeasure() {
-        SQLiteDatabase db = this.getReadableDatabase();
+    val lastMeasure: ProfileWeight
+        // Getting single value
+        get() {
+            val db = this.getReadableDatabase()
 
-        mCursor = null;
-        mCursor = db.query(TABLE_NAME,
-            new String[]{KEY, DATE, POIDS, PROFIL_KEY},
-            PROFIL_KEY + "=?",
-            new String[]{String.valueOf(mProfile.getId())},
-            null, null, DATE + " desc, " + KEY + " desc", null);
+            mCursor = null
+            mCursor = db.query(
+                TABLE_NAME,
+                arrayOf<String>(
+                    KEY,
+                    DATE,
+                    POIDS,
+                    PROFIL_KEY
+                ),
+                PROFIL_KEY + "=?",
+                arrayOf<String>(mProfile!!.id.toString()),
+                null,
+                null,
+                DATE + " desc, " + KEY + " desc",
+                null
+            )
 
-        if (mCursor != null)
-            mCursor.moveToFirst();
+            if (mCursor != null) mCursor!!.moveToFirst()
 
-        Date date;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = dateFormat.parse(mCursor.getString(1));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            date = new Date();
+            var date: Date?
+            try {
+                val dateFormat =
+                    SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                date = dateFormat.parse(mCursor!!.getString(1))
+            } catch (e: ParseException) {
+                e.printStackTrace()
+                date = Date()
+            }
+
+            val value = ProfileWeight(
+                mCursor!!.getLong(0),
+                date,
+                mCursor!!.getFloat(2),
+                mCursor!!.getLong(3)
+            )
+
+            db.close()
+
+            // return value
+            return value
         }
 
-        ProfileWeight value = new ProfileWeight(mCursor.getLong(0),
-            date,
-            mCursor.getFloat(2),
-            mCursor.getLong(3)
-        );
-
-        db.close();
-
-        // return value
-        return value;
-    }
-
     // Getting All Measures
-    private List<ProfileWeight> getMeasuresList(String pRequest) {
-        List<ProfileWeight> valueList = new ArrayList<>();
-        // Select All Query
+    private fun getMeasuresList(pRequest: String): MutableList<ProfileWeight?> {
+        val valueList: MutableList<ProfileWeight?> = ArrayList<ProfileWeight?>()
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        mCursor = null;
-        mCursor = db.rawQuery(pRequest, null);
+        // Select All Query
+        val db = this.getReadableDatabase()
+        mCursor = null
+        mCursor = db.rawQuery(pRequest, null)
 
         // looping through all rows and adding to list
-        if (mCursor.moveToFirst()) {
+        if (mCursor!!.moveToFirst()) {
             do {
-                Date date;
+                var date: Date?
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    date = dateFormat.parse(mCursor.getString(1));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
+                    val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+                    date = dateFormat.parse(mCursor!!.getString(1))
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                    date = Date()
                 }
 
-                ProfileWeight value = new ProfileWeight(mCursor.getLong(0),
+                val value = ProfileWeight(
+                    mCursor!!.getLong(0),
                     date,
-                    mCursor.getFloat(2),
-                    mCursor.getLong(3)
-                );
+                    mCursor!!.getFloat(2),
+                    mCursor!!.getLong(3)
+                )
 
                 // Adding value to list
-                valueList.add(value);
-            } while (mCursor.moveToNext());
+                valueList.add(value)
+            } while (mCursor!!.moveToNext())
         }
 
         // return value list
-        return valueList;
+        return valueList
     }
 
-    public Cursor GetCursor() {
-        return mCursor;
+    fun GetCursor(): Cursor? {
+        return mCursor
     }
 
     // Getting All Measures
-    public List<ProfileWeight> getWeightList(Profile pProfile) {
+    fun getWeightList(pProfile: Profile): MutableList<ProfileWeight?> {
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC";
+        val selectQuery =
+            "SELECT * FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.id + " GROUP BY " + DATE + " ORDER BY date(" + DATE + ") DESC"
 
         // return value list
-        return getMeasuresList(selectQuery);
+        return getMeasuresList(selectQuery)
     }
 
     // Updating single value
-    public int updateMeasure(ProfileWeight m) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    fun updateMeasure(m: ProfileWeight): Int {
+        val db = this.getWritableDatabase()
 
-        ContentValues value = new ContentValues();
-        value.put(DAOWeight.DATE, m.getDate().toString());
-        value.put(DAOWeight.POIDS, m.getWeight());
-        value.put(DAOWeight.PROFIL_KEY, m.getProfilId());
+        val value = ContentValues()
+        value.put(DATE, m.getDate().toString())
+        value.put(POIDS, m.getWeight())
+        value.put(PROFIL_KEY, m.getProfilId())
 
         // updating row
-        return db.update(TABLE_NAME, value, KEY + " = ?",
-            new String[]{String.valueOf(m.getId())});
+        return db.update(
+            TABLE_NAME, value, KEY + " = ?",
+            arrayOf<String>(m.getId().toString())
+        )
     }
 
     // Deleting single Measure
-    public void deleteMeasure(ProfileWeight m) {
-        deleteMeasure(m.getId());
+    fun deleteMeasure(m: ProfileWeight) {
+        deleteMeasure(m.getId())
     }
 
     // Deleting single Measure
-    public void deleteMeasure(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY + " = ?",
-            new String[]{String.valueOf(id)});
+    fun deleteMeasure(id: Long) {
+        val db = this.getWritableDatabase()
+        db.delete(
+            TABLE_NAME, KEY + " = ?",
+            arrayOf<String>(id.toString())
+        )
     }
 
-    // Getting Profils Count
-    public int getCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME;
-        open();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
+    val count: Int
+        // Getting Profils Count
+        get() {
+            val countQuery = "SELECT  * FROM " + TABLE_NAME
+            open()
+            val db = this.getReadableDatabase()
+            val cursor = db.rawQuery(countQuery, null)
 
-        int value = cursor.getCount();
-        cursor.close();
-        close();
+            val value = cursor.getCount()
+            cursor.close()
+            close()
 
-        // return count
-        return value;
-    }
-
-    public List<ProfileWeight> getAllRecords() {
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
-        return getMeasuresList(selectQuery);
-    }
-
-    public void populate() {
-        Date date = new Date();
-        int poids = 10;
-
-        for (int i = 1; i <= 5; i++) {
-            date.setTime(date.getTime() + i * 1000 * 60 * 60 * 24 * 2);
-            addWeight(date, (float) i, mProfile);
+            // return count
+            return value
         }
+
+    val allRecords: MutableList<ProfileWeight?>
+        get() {
+            val selectQuery = "SELECT * FROM " + TABLE_NAME
+            return getMeasuresList(selectQuery)
+        }
+
+    fun populate() {
+        val date = Date()
+        val poids = 10
+
+        for (i in 1..5) {
+            date.setTime(date.getTime() + i * 1000 * 60 * 60 * 24 * 2)
+            addWeight(date, i.toFloat(), mProfile!!)
+        }
+    }
+
+    companion object {
+        // Contacts table name
+        const val TABLE_NAME: String = "EFweight"
+
+        const val KEY: String = "_id"
+        const val POIDS: String = "poids"
+        const val DATE: String = "date"
+        const val PROFIL_KEY: String = "profil_id"
+
+        @JvmField
+        val TABLE_CREATE: String =
+            "CREATE TABLE " + TABLE_NAME + " (" + KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE + " DATE, " + POIDS + " REAL , " + PROFIL_KEY + " INTEGER);"
+
+        val TABLE_DROP: String = "DROP TABLE IF EXISTS " + TABLE_NAME + ";"
     }
 }
 

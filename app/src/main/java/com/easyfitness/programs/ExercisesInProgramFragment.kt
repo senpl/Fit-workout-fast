@@ -36,6 +36,9 @@ import java.lang.Integer.parseInt
 import java.util.*
 import androidx.core.view.isGone
 import androidx.core.content.edit
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_CARDIO
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STATIC
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STRENGTH
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises) {
@@ -395,7 +398,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             machineList.adapter = null
         } else {
             if (machineList.adapter == null) {
-                val mTableAdapter = MachineCursorAdapter(activity, c, 0, mDbMachine)
+                val mTableAdapter = MachineCursorAdapter(requireActivity(), c, 0, mDbMachine)
                 machineList.adapter = mTableAdapter
             } else {
                 val mTableAdapter = machineList.adapter as MachineCursorAdapter
@@ -407,7 +410,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
                 val machineID = textView.text.toString().toLong()
                 val lMachineDb = DAOMachine(context)
                 val lMachine = lMachineDb.getMachine(machineID)
-                setCurrentExercise(lMachine.name)
+                setCurrentExercise(lMachine!!.name)
                 mainActivity.findViewById<View>(R.id.drawer_layout).requestFocus()
                 hideKeyboard()
                 if (machineListDialog!!.isShowing) {

@@ -1,379 +1,405 @@
-package com.easyfitness.machines;
+package com.easyfitness.machines
+
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.easyfitness.DAO.DAOMachine
+import com.easyfitness.DAO.DAOProfil
+import com.easyfitness.DAO.DAORecord
+import com.easyfitness.DAO.Machine
+import com.easyfitness.R
+import com.easyfitness.fonte.FonteHistoryFragment
+import com.fitworkoutfast.MainActivity
+import com.github.ivbaranov.mfb.MaterialFavoriteButton
+import com.ogaclejapan.smarttablayout.SmartTabLayout
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
+import com.onurkaganaldemir.ktoastlib.KToast
 
 
-import android.app.AlertDialog;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-
-import com.easyfitness.DAO.DAOMachine;
-import com.easyfitness.DAO.DAOProfil;
-import com.easyfitness.DAO.DAORecord;
-import com.easyfitness.DAO.IRecord;
-import com.easyfitness.DAO.Machine;
-import com.easyfitness.DAO.Profile;
-import com.fitworkoutfast.MainActivity;
-import com.easyfitness.R;
-import com.easyfitness.fonte.FonteHistoryFragment;
-import com.github.ivbaranov.mfb.MaterialFavoriteButton;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
-import com.onurkaganaldemir.ktoastlib.KToast;
-
-import java.util.List;
-
-public class ExerciseDetailsPager extends Fragment {
-    Toolbar top_toolbar = null;
-    long machineIdArg = 0;
-    long machineProfilIdArg = 0;
-    FragmentPagerItemAdapter pagerAdapter = null;
-    ViewPager mViewPager = null;
-    SmartTabLayout viewPagerTab = null;
-    ImageButton deleteButton = null;
-    ImageButton saveButton = null;
-    MaterialFavoriteButton favoriteButton = null;
-    Machine machine = null;
-    boolean isFavorite = false;
-    boolean toBeSaved = false;
-    DAOMachine mDbMachine = null;
-    DAORecord mDbRecord = null;
-    private String name;
-    private int id;
-    private View.OnClickListener onClickToolbarItem = v -> {
+class ExerciseDetailsPager : Fragment() {
+    var top_toolbar: Toolbar? = null
+    var machineIdArg: Long = 0
+    var machineProfilIdArg: Long = 0
+    var pagerAdapter: FragmentPagerItemAdapter? = null
+    var mViewPager: ViewPager? = null
+    var viewPagerTab: SmartTabLayout? = null
+    var deleteButton: ImageButton? = null
+    var saveButton: ImageButton? = null
+    lateinit var favoriteButton: MaterialFavoriteButton
+    var machine: Machine? = null
+    var isFavorite: Boolean = false
+    var toBeSaved: Boolean = false
+    var mDbMachine: DAOMachine? = null
+    var mDbRecord: DAORecord? = null
+    private val name: String? = null
+    private val id = 0
+    private val onClickToolbarItem = View.OnClickListener { v: View? ->
         // Handle presses on the action bar items
-        int id = v.getId();
+        val id = v!!.getId()
         if (id == R.id.saveButton) {
-            saveMachine();
-            assert getActivity() != null;
-            getActivity().findViewById(R.id.tab_machine_details).requestFocus();
+            saveMachine()
+            requireActivity()
+            requireActivity().findViewById<View?>(R.id.tab_machine_details).requestFocus()
         } else if (id == R.id.deleteButton) {
-            deleteMachine();
+            deleteMachine()
         } else {
-            saveMachineDialog();
+            saveMachineDialog()
         }
-    };
-
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static ExerciseDetailsPager newInstance(long machineId, long machineProfile) {
-        ExerciseDetailsPager f = new ExerciseDetailsPager();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putLong("machineID", machineId);
-        args.putLong("machineProfile", machineProfile);
-        f.setArguments(args);
-
-        return f;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.exercise_pager, container, false);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = inflater.inflate(R.layout.exercise_pager, container, false)
 
         // Locate the viewpager in activity_main.xml
-        mViewPager = view.findViewById(R.id.pager);
+        mViewPager = view.findViewById<ViewPager?>(R.id.pager)
 
-        if (mViewPager.getAdapter() == null) {
+        if (mViewPager!!.getAdapter() == null) {
+            val args = this.getArguments()
+            machineIdArg = args!!.getLong("machineID")
+            machineProfilIdArg = args.getLong("machineProfile")
 
-            Bundle args = this.getArguments();
-            machineIdArg = args.getLong("machineID");
-            machineProfilIdArg = args.getLong("machineProfile");
-
-            pagerAdapter = new FragmentPagerItemAdapter(
+            pagerAdapter = FragmentPagerItemAdapter(
                 getChildFragmentManager(), FragmentPagerItems.with(this.getContext())
-                .add(getString(R.string.MachineLabel), MachineDetailsFragment.class, args)
-                .add(getString(R.string.HistoryLabel), FonteHistoryFragment.class, args)
-                .create());
+                    .add(getString(R.string.MachineLabel), MachineDetailsFragment::class.java, args)
+                    .add(getString(R.string.HistoryLabel), FonteHistoryFragment::class.java, args)
+                    .create()
+            )
 
-            mViewPager.setAdapter(pagerAdapter);
+            mViewPager!!.setAdapter(pagerAdapter)
 
-            viewPagerTab = view.findViewById(R.id.viewpagertab);
-            viewPagerTab.setViewPager(mViewPager);
+            viewPagerTab = view.findViewById<SmartTabLayout?>(R.id.viewpagertab)
+            viewPagerTab!!.setViewPager(mViewPager)
 
-            viewPagerTab.setOnPageChangeListener(new OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            viewPagerTab!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
                 }
 
-                @Override
-                public void onPageSelected(int position) {
-                    Fragment frag1 = pagerAdapter.getPage(position);
-                    if (frag1 != null)
-                        frag1.onHiddenChanged(false); // Refresh data
+                override fun onPageSelected(position: Int) {
+                    val frag1 = pagerAdapter!!.getPage(position)
+                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
                 }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
+                override fun onPageScrollStateChanged(state: Int) {
                 }
-            });
+            })
         }
 
-        mDbRecord = new DAORecord(getContext());
-        mDbMachine = new DAOMachine(getContext());
-        machine = mDbMachine.getMachine(machineIdArg);
+        mDbRecord = DAORecord(context)
+        mDbMachine = DAOMachine(context)
+        machine = mDbMachine!!.getMachine(machineIdArg)
 
-        ((MainActivity) getActivity()).getActivityToolbar().setVisibility(View.GONE);
-        top_toolbar = view.findViewById(R.id.actionToolbarMachine);
-        top_toolbar.setNavigationIcon(R.drawable.ic_back);
-        top_toolbar.setNavigationOnClickListener(onClickToolbarItem);
+        (getActivity() as MainActivity).activityToolbar.visibility = View.GONE
+        top_toolbar = view.findViewById<Toolbar?>(R.id.actionToolbarMachine)
+        top_toolbar!!.setNavigationIcon(R.drawable.ic_back)
+        top_toolbar!!.setNavigationOnClickListener(onClickToolbarItem)
 
-        deleteButton = view.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(onClickToolbarItem);
-        saveButton = view.findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(onClickToolbarItem);
-        saveButton.setVisibility(View.GONE); // Hide Save button by default
-        favoriteButton = view.findViewById(R.id.favButton);
-        favoriteButton.setOnClickListener(v -> {
-            MaterialFavoriteButton mFav = (MaterialFavoriteButton) v;
-            boolean t = mFav.isFavorite();
-            mFav.setFavoriteAnimated(!t);
-            isFavorite = !t;
-            requestForSave();
-        });
-        favoriteButton.setFavorite(machine.getFavorite());
+        deleteButton = view.findViewById<ImageButton?>(R.id.deleteButton)
+        deleteButton!!.setOnClickListener(onClickToolbarItem)
+        saveButton = view.findViewById<ImageButton?>(R.id.saveButton)
+        saveButton!!.setOnClickListener(onClickToolbarItem)
+        saveButton!!.setVisibility(View.GONE) // Hide Save button by default
+        favoriteButton = view.findViewById<MaterialFavoriteButton?>(R.id.favButton)
+        favoriteButton!!.setOnClickListener(View.OnClickListener { v: View? ->
+            val mFav = v as MaterialFavoriteButton
+            val t = mFav.isFavorite()
+            mFav.setFavoriteAnimated(!t)
+            isFavorite = !t
+            requestForSave()
+        })
+        favoriteButton!!.setFavorite(machine!!.favorite == true)
 
-        return view;
+        return view
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
     }
 
-    public void requestForSave() {
-        toBeSaved = true; // setting state
-        saveButton.setVisibility(View.VISIBLE);
+    fun requestForSave() {
+        toBeSaved = true // setting state
+        saveButton!!.setVisibility(View.VISIBLE)
     }
 
-    private void saveMachineDialog() {
-        if (getExerciseFragment().toBeSaved() || toBeSaved) {
+    private fun saveMachineDialog() {
+        if (this.exerciseFragment!!.toBeSaved() || toBeSaved) {
             // Afficher une boite de dialogue pour confirmer
-            AlertDialog.Builder backDialogBuilder = new AlertDialog.Builder(getActivity());
+            val backDialogBuilder = AlertDialog.Builder(getActivity())
 
-            backDialogBuilder.setTitle(getActivity().getResources().getText(R.string.global_confirm));
-            backDialogBuilder.setMessage(getActivity().getResources().getText(R.string.backDialog_confirm_text));
+            backDialogBuilder.setTitle(
+                requireActivity().getResources().getText(R.string.global_confirm)
+            )
+            backDialogBuilder.setMessage(
+                requireActivity().getResources().getText(R.string.backDialog_confirm_text)
+            )
 
             // Si oui, supprimer la base de donnee et refaire un Start.
-            backDialogBuilder.setPositiveButton(getResources().getString(R.string.global_yes), (dialog, which) -> {
-                if (saveMachine()) {
-                    getActivity().onBackPressed();
-                }
-            });
+            backDialogBuilder.setPositiveButton(
+                getResources().getString(R.string.global_yes),
+                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                    if (saveMachine()) {
+                        requireActivity().onBackPressed()
+                    }
+                })
 
-            backDialogBuilder.setNegativeButton(getResources().getString(R.string.global_no), (dialog, which) -> getActivity().onBackPressed());
+            backDialogBuilder.setNegativeButton(
+                getResources().getString(R.string.global_no),
+                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int -> requireActivity().onBackPressed() })
 
-            AlertDialog backDialog = backDialogBuilder.create();
-            backDialog.show();
-
+            val backDialog = backDialogBuilder.create()
+            backDialog.show()
         } else {
-            getActivity().onBackPressed();
+            requireActivity().onBackPressed()
         }
     }
 
-    private MainActivity getMainActivity() {
-        return (MainActivity) getActivity();
-    }
+    private val mainActivity: MainActivity?
+        get() = getActivity() as MainActivity?
 
-    private boolean saveMachine() {
-        boolean result = false;
-        final Machine initialMachine = machine;
-        final Machine newMachine = getExerciseFragment().getMachine();
-        final String lMachineName = newMachine.getName(); // Potentiel nouveau nom dans le EditText
+    private fun saveMachine(): Boolean {
+        var result = false
+        val initialMachine = machine
+        val newMachine = this.exerciseFragment!!.machine
+        val lMachineName = newMachine.name // Potentiel nouveau nom dans le EditText
 
         // Si le nom est different du nom actuel
-        if (lMachineName.equals("")) {
-            KToast.warningToast(getActivity(), getResources().getText(R.string.name_is_required).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT);
-        } else if (!initialMachine.getName().equals(lMachineName)) {
-            final Machine machineWithSameName = mDbMachine.getMachine(lMachineName);
+        if (lMachineName == "") {
+            KToast.warningToast(
+                getActivity(),
+                getResources().getText(R.string.name_is_required).toString(),
+                Gravity.BOTTOM,
+                KToast.LENGTH_SHORT
+            )
+        } else if (initialMachine!!.name != lMachineName) {
+            val machineWithSameName = mDbMachine!!.getMachine(lMachineName)
             // Si une machine existe avec le meme nom => Merge
-            if (machineWithSameName != null && newMachine.getId() != machineWithSameName.getId() && newMachine.getType() != machineWithSameName.getType()) {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
+            if (machineWithSameName != null && newMachine.id != machineWithSameName.id && newMachine.type != machineWithSameName.type) {
+                val dialogBuilder = AlertDialog.Builder(this.getActivity())
 
-                dialogBuilder.setTitle(getActivity().getResources().getText(R.string.global_warning));
-                dialogBuilder.setMessage(R.string.renameMachine_error_text2);
-                dialogBuilder.setPositiveButton(getResources().getText(R.string.global_yes), (dialog, which) -> dialog.dismiss());
+                dialogBuilder.setTitle(
+                    requireActivity().getResources().getText(R.string.global_warning)
+                )
+                dialogBuilder.setMessage(R.string.renameMachine_error_text2)
+                dialogBuilder.setPositiveButton(
+                    getResources().getText(R.string.global_yes),
+                    DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int -> dialog!!.dismiss() })
 
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
-            } else if (machineWithSameName != null && newMachine.getId() != machineWithSameName.getId() && newMachine.getType() == machineWithSameName.getType()) {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this.getActivity());
+                val dialog = dialogBuilder.create()
+                dialog.show()
+            } else if (machineWithSameName != null && newMachine.id != machineWithSameName.id && newMachine.type == machineWithSameName.type) {
+                val dialogBuilder = AlertDialog.Builder(this.getActivity())
 
-                dialogBuilder.setTitle(getActivity().getResources().getText(R.string.global_warning));
-                dialogBuilder.setMessage(getActivity().getResources().getText(R.string.renameMachine_warning_text));
+                dialogBuilder.setTitle(
+                    requireActivity().getResources().getText(R.string.global_warning)
+                )
+                dialogBuilder.setMessage(
+                    requireActivity().getResources().getText(R.string.renameMachine_warning_text)
+                )
                 // Si oui, supprimer la base de donnee et refaire un Start.
-                dialogBuilder.setPositiveButton(getResources().getText(R.string.global_yes), (dialog, which) -> {
-                    // Rename all the records with that machine and rename them
-                    DAORecord lDbRecord = new DAORecord(getView().getContext());
-                    DAOProfil mDbProfil = new DAOProfil(getView().getContext());
-                    Profile lProfile = mDbProfil.getProfil(machineProfilIdArg);
+                dialogBuilder.setPositiveButton(
+                    getResources().getText(R.string.global_yes),
+                    DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                        // Rename all the records with that machine and rename them
+                        val lDbRecord = DAORecord(requireView().getContext())
+                        val mDbProfil = DAOProfil(requireView().getContext())
+                        val lProfile = mDbProfil.getProfil(machineProfilIdArg)
 
-                    List<IRecord> listRecords = lDbRecord.getAllRecordByMachinesArray(lProfile, initialMachine.getName()); // Recupere tous les records de la machine courante
-                    for (IRecord record : listRecords) {
-                        record.setExercise(newMachine.getName()); // Change avec le nouveau nom. Normalement pas utile.
-                        record.setExerciseKey(machineWithSameName.getId()); // Met l'ID de la nouvelle machine
-                        lDbRecord.updateRecord(record); // Met a jour
-                    }
+                        val listRecords = lDbRecord.getAllRecordByMachinesArray(
+                            lProfile,
+                            initialMachine.name
+                        ) // Recupere tous les records de la machine courante
+                        for (record in listRecords) {
+                            record.setExercise(newMachine.name) // Change avec le nouveau nom. Normalement pas utile.
+                            record.setExerciseKey(machineWithSameName.id) // Met l'ID de la nouvelle machine
+                            lDbRecord.updateRecord(record) // Met a jour
+                        }
 
-                    mDbMachine.delete(initialMachine); // Supprime l'ancienne machine
+                        mDbMachine!!.delete(initialMachine) // Supprime l'ancienne machine
 
-                    toBeSaved = false;
-                    saveButton.setVisibility(View.GONE);
-                    getActivity().onBackPressed();
-                });
+                        toBeSaved = false
+                        saveButton!!.setVisibility(View.GONE)
+                        requireActivity().onBackPressed()
+                    })
 
-                dialogBuilder.setNegativeButton(getResources().getText(R.string.global_no), (dialog, which) -> {
-                    // Do nothing but close the dialog
-                    dialog.dismiss();
-                });
+                dialogBuilder.setNegativeButton(
+                    getResources().getText(R.string.global_no),
+                    DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                        // Do nothing but close the dialog
+                        dialog!!.dismiss()
+                    })
 
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
+                val dialog = dialogBuilder.create()
+                dialog.show()
             } else {
-                newMachine.setFavorite(favoriteButton.isFavorite());
-                this.mDbMachine.updateMachine(newMachine);
+                newMachine.favorite=favoriteButton.isFavorite
+                this.mDbMachine!!.updateMachine(newMachine)
 
                 // Rename all the records with that machine and rename them
-                DAORecord lDbRecord = new DAORecord(getContext());
-                DAOProfil mDbProfil = new DAOProfil(getContext());
-                Profile lProfile = mDbProfil.getProfil(machineProfilIdArg);
-                List<IRecord> listRecords = lDbRecord.getAllRecordByMachinesArray(lProfile, initialMachine.getName()); // Recupere tous les records de la machine courante
-                for (IRecord record : listRecords) {
-                    record.setExercise(lMachineName); // Change avec le nouveau nom (DEPRECATED)
-                    lDbRecord.updateRecord(record); // met a jour
+                val lDbRecord = DAORecord(getContext())
+                val mDbProfil = DAOProfil(getContext())
+                val lProfile = mDbProfil.getProfil(machineProfilIdArg)
+                val listRecords = lDbRecord.getAllRecordByMachinesArray(
+                    lProfile,
+                    initialMachine.name
+                ) // Recupere tous les records de la machine courante
+                for (record in listRecords) {
+                    record.setExercise(lMachineName) // Change avec le nouveau nom (DEPRECATED)
+                    lDbRecord.updateRecord(record) // met a jour
                 }
 
-                saveButton.setVisibility(View.GONE);
-                toBeSaved = false;
-                getExerciseFragment().machineSaved();
-                result = true;
+                saveButton!!.setVisibility(View.GONE)
+                toBeSaved = false
+                this.exerciseFragment!!.machineSaved()
+                result = true
             }
         } else {
             // Si le nom n'a pas ete modifie.
-            newMachine.setFavorite(favoriteButton.isFavorite());
-            mDbMachine.updateMachine(newMachine);
+            newMachine.favorite=(favoriteButton!!.isFavorite())
+            mDbMachine!!.updateMachine(newMachine)
 
-            saveButton.setVisibility(View.GONE);
-            toBeSaved = false;
-            getExerciseFragment().machineSaved();
-            result = true;
+            saveButton!!.setVisibility(View.GONE)
+            toBeSaved = false
+            this.exerciseFragment!!.machineSaved()
+            result = true
         }
-        return result;
+        return result
     }
 
-    private void deleteMachine() {
+    private fun deleteMachine() {
         // afficher un message d'alerte
-        AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(this.getActivity());
+        val deleteDialogBuilder = AlertDialog.Builder(this.getActivity())
 
-        deleteDialogBuilder.setTitle(getActivity().getResources().getText(R.string.global_confirm));
-        deleteDialogBuilder.setMessage(getActivity().getResources().getText(R.string.deleteMachine_confirm_text));
+        deleteDialogBuilder.setTitle(
+            requireActivity().getResources().getText(R.string.global_confirm)
+        )
+        deleteDialogBuilder.setMessage(
+            requireActivity().getResources().getText(R.string.deleteMachine_confirm_text)
+        )
 
         // Si oui, supprimer la base de donnee et refaire un Start.
-        deleteDialogBuilder.setPositiveButton(this.getResources().getString(R.string.global_yes), (dialog, which) -> {
-            // Suppress the machine
-            mDbMachine.delete(machine);
-            // Suppress the associated Fontes records
-            deleteRecordsAssociatedToMachine();
-            getActivity().onBackPressed();
-        });
+        deleteDialogBuilder.setPositiveButton(
+            this.getResources().getString(R.string.global_yes),
+            DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                // Suppress the machine
+                mDbMachine!!.delete(machine)
+                // Suppress the associated Fontes records
+                deleteRecordsAssociatedToMachine()
+                requireActivity().onBackPressed()
+            })
 
-        deleteDialogBuilder.setNegativeButton(this.getResources().getString(R.string.global_no), (dialog, which) -> {
-            // Do nothing
-            dialog.dismiss();
-        });
+        deleteDialogBuilder.setNegativeButton(
+            this.getResources().getString(R.string.global_no),
+            DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                // Do nothing
+                dialog!!.dismiss()
+            })
 
-        AlertDialog deleteDialog = deleteDialogBuilder.create();
-        deleteDialog.show();
+        val deleteDialog = deleteDialogBuilder.create()
+        deleteDialog.show()
     }
 
-    private void deleteRecordsAssociatedToMachine() {
-        DAORecord mDbRecord = new DAORecord(getContext());
-        DAOProfil mDbProfil = new DAOProfil(getContext());
+    private fun deleteRecordsAssociatedToMachine() {
+        val mDbRecord = DAORecord(getContext())
+        val mDbProfil = DAOProfil(getContext())
 
-        Profile lProfile = mDbProfil.getProfil(this.machineProfilIdArg);
+        val lProfile = mDbProfil.getProfil(this.machineProfilIdArg)
 
-        List<IRecord> listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, machine.getName());
-        for (IRecord record : listRecords) {
-            mDbRecord.deleteRecord(record.getId());
+        val listRecords = mDbRecord.getAllRecordByMachinesArray(lProfile, machine!!.name)
+        for (record in listRecords) {
+            mDbRecord.deleteRecord(record.getId())
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
 
         // Inflate the menu items for use in the action bar
-        inflater.inflate(R.menu.machine_details_menu, menu);
+        inflater.inflate(R.menu.machine_details_menu, menu)
 
-        MenuItem item = menu.findItem(R.id.saveButton);
-        item.setVisible(toBeSaved);
+        val item = menu.findItem(R.id.saveButton)
+        item.setVisible(toBeSaved)
 
-        super.onCreateOptionsMenu(menu, inflater);
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
-    public MachineDetailsFragment getExerciseFragment() {
-        MachineDetailsFragment mpExerciseFrag;
-        mpExerciseFrag = (MachineDetailsFragment) pagerAdapter.getPage(0);
-        return mpExerciseFrag;
-    }
+    val exerciseFragment: MachineDetailsFragment?
+        get() {
+            val mpExerciseFrag: MachineDetailsFragment?
+            mpExerciseFrag = pagerAdapter!!.getPage(0) as MachineDetailsFragment?
+            return mpExerciseFrag
+        }
 
-    public FonteHistoryFragment getHistoricFragment() {
-        FonteHistoryFragment mpHistoryFrag;
-        mpHistoryFrag = (FonteHistoryFragment) pagerAdapter.getPage(1);
-        return mpHistoryFrag;
-    }
+    val historicFragment: FonteHistoryFragment?
+        get() {
+            val mpHistoryFrag: FonteHistoryFragment?
+            mpHistoryFrag = pagerAdapter!!.getPage(1) as FonteHistoryFragment?
+            return mpHistoryFrag
+        }
 
-    public ViewPager getViewPager() {
-        return (ViewPager) getView().findViewById(R.id.pager);
-    }
+    val viewPager: ViewPager?
+        get() = requireView().findViewById<View?>(R.id.pager) as ViewPager?
 
-    public FragmentPagerItemAdapter getViewPagerAdapter() {
-        return (FragmentPagerItemAdapter) ((ViewPager) (getView().findViewById(R.id.pager))).getAdapter();
-    }
+    val viewPagerAdapter: FragmentPagerItemAdapter?
+        get() = ((requireView().findViewById<View?>(R.id.pager)) as ViewPager).getAdapter() as FragmentPagerItemAdapter?
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     // invoked when the activity may be temporarily destroyed, save the instance state here
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+    override fun onSaveInstanceState(outState: Bundle) {
         // call superclass to save any view hierarchy
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState)
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
+    override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
             // rafraichit le fragment courant
 
-            if (getViewPagerAdapter() != null) {
+            if (this.viewPagerAdapter != null) {
                 // Moyen de rafraichir tous les fragments. Attention, les View des fragments peuvent avoir ete detruit.
                 // Il faut donc que cela soit pris en compte dans le refresh des fragments.
-                Fragment frag1;
-                for (int i = 0; i < 3; i++) {
-                    frag1 = getViewPagerAdapter().getPage(i);
-                    if (frag1 != null)
-                        frag1.onHiddenChanged(false); // Refresh data
+                var frag1: Fragment?
+                for (i in 0..2) {
+                    frag1 = this.viewPagerAdapter!!.getPage(i)
+                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
                 }
             }
+        }
+    }
+
+    companion object {
+        /**
+         * Create a new instance of DetailsFragment, initialized to
+         * show the text at 'index'.
+         */
+        fun newInstance(machineId: Long, machineProfile: Long): ExerciseDetailsPager {
+            val f = ExerciseDetailsPager()
+
+            // Supply index input as an argument.
+            val args = Bundle()
+            args.putLong("machineID", machineId)
+            args.putLong("machineProfile", machineProfile)
+            f.setArguments(args)
+
+            return f
         }
     }
 }

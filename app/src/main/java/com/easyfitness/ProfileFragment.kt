@@ -1,366 +1,336 @@
-package com.easyfitness;
+package com.easyfitness
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.app.Activity
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import cn.pedant.SweetAlert.SweetAlertDialog
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
+import com.easyfitness.DAO.DAOProfil
+import com.easyfitness.DAO.Profile
+import com.easyfitness.utils.DateConverter
+import com.easyfitness.utils.EditableInputView.EditableInputView
+import com.easyfitness.utils.EditableInputView.EditableInputView.CustomerDialogBuilder
+import com.easyfitness.utils.EditableInputView.EditableInputView.OnTextChangedListener
+import com.easyfitness.utils.Gender
+import com.easyfitness.utils.ImageUtil
+import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
+import com.easyfitness.utils.RealPathUtil
+import com.fitworkoutfast.MainActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mikhaellopez.circularimageview.CircularImageView
+import com.onurkaganaldemir.ktoastlib.KToast
 
-import androidx.fragment.app.Fragment;
-
-import com.canhub.cropper.CropImage;
-import com.easyfitness.DAO.DAOProfil;
-import com.easyfitness.DAO.Profile;
-import com.fitworkoutfast.MainActivity;
-import com.easyfitness.utils.DateConverter;
-import com.easyfitness.utils.EditableInputView.EditableInputView;
-import com.easyfitness.utils.Gender;
-import com.easyfitness.utils.ImageUtil;
-import com.easyfitness.utils.RealPathUtil;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mikhaellopez.circularimageview.CircularImageView;
-import com.onurkaganaldemir.ktoastlib.KToast;
 //import com.theartofdev.edmodo.cropper.CropImage;
+class ProfileFragment : Fragment() {
+    var sizeEdit: EditableInputView? = null
+    var birthdayEdit: EditableInputView? = null
+    var nameEdit: EditableInputView? = null
+    var genderEdit: EditableInputView? = null
+    var roundProfile: CircularImageView? = null
+    var photoButton: FloatingActionButton? = null
+    var mCurrentPhotoPath: String? = null
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+    var mActivity: MainActivity? = null
+    private var mDb: DAOProfil? = null
+    private var mProfile: Profile? = null
+    private var imgUtil: ImageUtil? = null
+    private val itemOnTextChange =
+        OnTextChangedListener { view: EditableInputView? -> this.requestForSave(requireView()) }
+    private val onClickMachinePhoto = View.OnClickListener { v: View? -> CreatePhotoSourceDialog() }
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
-
-public class ProfileFragment extends Fragment {
-    EditableInputView sizeEdit = null;
-    EditableInputView birthdayEdit = null;
-    EditableInputView nameEdit = null;
-    EditableInputView genderEdit = null;
-    CircularImageView roundProfile = null;
-    FloatingActionButton photoButton = null;
-    String mCurrentPhotoPath = null;
-
-    MainActivity mActivity = null;
-    private DAOProfil mDb = null;
-    private Profile mProfile = null;
-    private ImageUtil imgUtil = null;
-    private EditableInputView.OnTextChangedListener itemOnTextChange = this::requestForSave;
-    private OnClickListener onClickMachinePhoto = v -> CreatePhotoSourceDialog();
-
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static ProfileFragment newInstance(String name, int id) {
-        ProfileFragment f = new ProfileFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putString("name", name);
-        args.putInt("id", id);
-        f.setArguments(args);
-
-        return f;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.profile, container, false);
 
-        sizeEdit = view.findViewById(R.id.size);
-        birthdayEdit = view.findViewById(R.id.birthday);
-        nameEdit = view.findViewById(R.id.name);
-        genderEdit = view.findViewById(R.id.gender);
-        roundProfile = view.findViewById(R.id.photo);
-        photoButton = view.findViewById(R.id.actionCamera);
+        val view = inflater.inflate(R.layout.profile, container, false)
 
-        sizeEdit.setTextSuffix(" cm");
+        sizeEdit = view.findViewById<EditableInputView?>(R.id.size)
+        birthdayEdit = view.findViewById<EditableInputView?>(R.id.birthday)
+        nameEdit = view.findViewById<EditableInputView?>(R.id.name)
+        genderEdit = view.findViewById<EditableInputView?>(R.id.gender)
+        roundProfile = view.findViewById<CircularImageView?>(R.id.photo)
+        photoButton = view.findViewById<FloatingActionButton?>(R.id.actionCamera)
 
-        mDb = new DAOProfil(view.getContext());
-        mProfile = getProfil();
+        sizeEdit!!.setTextSuffix(" cm")
+
+        mDb = DAOProfil(view.getContext())
+        mProfile = this.profil
 
         /* Initialisation des valeurs */
-        imgUtil = new ImageUtil(roundProfile);
+        imgUtil = ImageUtil(roundProfile)
+
         // ImageView must be set in OnStart. Not in OnCreateView
 
         /* Initialisation des boutons */
-
-        genderEdit.setCustomDialogBuilder(view1 -> {
-            SweetAlertDialog dlg =  new SweetAlertDialog(view1.getContext(), SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText(getContext().getString(R.string.edit_value))
+        genderEdit!!.setCustomDialogBuilder(CustomerDialogBuilder { view1: EditableInputView? ->
+            val dlg = SweetAlertDialog(view1!!.getContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(requireContext().getString(R.string.edit_value))
                 .setNeutralText(getString(R.string.maleGender))
                 .setCancelText(getString(R.string.femaleGender))
                 .setConfirmText(getString(R.string.otherGender))
-                .setNeutralClickListener(sDialog -> {
-                    String oldValue = genderEdit.getText();
-                    if (!oldValue.equals(getString(R.string.maleGender))) {
-                        genderEdit.setText(getString(R.string.maleGender));
-                        requestForSave(genderEdit);
+                .setNeutralClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                    val oldValue = genderEdit!!.getText()
+                    if (oldValue != getString(R.string.maleGender)) {
+                        genderEdit!!.setText(getString(R.string.maleGender))
+                        requestForSave(genderEdit!!)
                     }
-                    sDialog.dismissWithAnimation();
+                    sDialog!!.dismissWithAnimation()
                 })
-                .setCancelClickListener(sDialog -> {
-                    String oldValue = genderEdit.getText();
-                    if (!oldValue.equals(getString(R.string.femaleGender))) {
-                        genderEdit.setText(getString(R.string.femaleGender));
-                        requestForSave(genderEdit);
+                .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                    val oldValue = genderEdit!!.getText()
+                    if (oldValue != getString(R.string.femaleGender)) {
+                        genderEdit!!.setText(getString(R.string.femaleGender))
+                        requestForSave(genderEdit!!)
                     }
-                    sDialog.dismissWithAnimation();
+                    sDialog!!.dismissWithAnimation()
                 })
-                .setConfirmClickListener(sDialog -> {
-                    String oldValue = genderEdit.getText();
-                    if (!oldValue.equals(getString(R.string.otherGender))) {
-                        genderEdit.setText(getString(R.string.otherGender));
-                        requestForSave(genderEdit);
+                .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                    val oldValue = genderEdit!!.getText()
+                    if (oldValue != getString(R.string.otherGender)) {
+                        genderEdit!!.setText(getString(R.string.otherGender))
+                        requestForSave(genderEdit!!)
                     }
-                    sDialog.dismissWithAnimation();
-                });
+                    sDialog!!.dismissWithAnimation()
+                })
+            dlg.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
+                val sweetDlg = sDialog as SweetAlertDialog
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM)
+                    .setBackgroundResource(R.color.record_background_odd)
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setPadding(0, 0, 0, 0)
+                //LayoutParams params = (LayoutParams)sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).getLayoutParams();
+                //params.setMargins(0, 0, 0, 0);
+                //dlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM)
+                        .setAutoSizeTextTypeUniformWithConfiguration(
+                            8,
+                            12,
+                            1,
+                            TypedValue.COMPLEX_UNIT_SP
+                        )
+                }
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL)
+                    .setBackgroundResource(R.color.record_background_odd)
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setPadding(0, 0, 0, 0)
 
-                dlg.setOnShowListener(sDialog -> {
-                    SweetAlertDialog sweetDlg = (SweetAlertDialog) sDialog;
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setBackgroundResource(R.color.record_background_odd);
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setPadding(0, 0, 0, 0);
-                    //LayoutParams params = (LayoutParams)sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).getLayoutParams();
-                    //params.setMargins(0, 0, 0, 0);
-                    //dlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        sweetDlg.getButton(SweetAlertDialog.BUTTON_CONFIRM).setAutoSizeTextTypeUniformWithConfiguration(8, 12, 1, TypedValue.COMPLEX_UNIT_SP);
-                    }
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setBackgroundResource(R.color.record_background_odd);
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setPadding(0, 0, 0, 0);
+                //dlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL)
+                        .setAutoSizeTextTypeUniformWithConfiguration(
+                            8,
+                            12,
+                            1,
+                            TypedValue.COMPLEX_UNIT_SP
+                        )
+                }
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL)
+                    .setBackgroundResource(R.color.record_background_odd)
+                sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL).setPadding(0, 0, 0, 0)
 
-                    //dlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        sweetDlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setAutoSizeTextTypeUniformWithConfiguration(8, 12, 1, TypedValue.COMPLEX_UNIT_SP);
-                    }
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL).setBackgroundResource(R.color.record_background_odd);
-                    sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL).setPadding(0, 0, 0, 0);
+                //dlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL)
+                        .setAutoSizeTextTypeUniformWithConfiguration(
+                            8,
+                            12,
+                            1,
+                            TypedValue.COMPLEX_UNIT_SP
+                        )
+                }
+            })
+            dlg
+        })
 
-                    //dlg.getButton(SweetAlertDialog.BUTTON_CANCEL).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        sweetDlg.getButton(SweetAlertDialog.BUTTON_NEUTRAL).setAutoSizeTextTypeUniformWithConfiguration(8, 12, 1, TypedValue.COMPLEX_UNIT_SP);
-                    }
-                });
+        photoButton!!.setOnClickListener(onClickMachinePhoto)
 
-            return dlg;
-        });
+        imgUtil!!.setOnDeleteImageListener(OnDeleteImageListener { imgUtil: ImageUtil? ->
+            imgUtil!!.getView().setImageDrawable(
+                requireActivity().getResources().getDrawable(R.drawable.ic_person_black_24dp)
+            )
+            mCurrentPhotoPath = null
+            requestForSave(imgUtil.getView())
+        })
 
-        photoButton.setOnClickListener(onClickMachinePhoto);
-
-        imgUtil.setOnDeleteImageListener(imgUtil -> {
-            imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_black_24dp));
-            mCurrentPhotoPath = null;
-            requestForSave(imgUtil.getView());
-        });
-
-        return view;
+        return view
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
 
-        roundProfile.post(() -> {
-            refreshData();
-            sizeEdit.setOnTextChangeListener(itemOnTextChange);
-            birthdayEdit.setOnTextChangeListener(itemOnTextChange);
-            nameEdit.setOnTextChangeListener(itemOnTextChange);
-            genderEdit.setOnTextChangeListener(itemOnTextChange);
-        });
+        roundProfile!!.post(Runnable {
+            refreshData()
+            sizeEdit!!.setOnTextChangeListener(itemOnTextChange)
+            birthdayEdit!!.setOnTextChangeListener(itemOnTextChange)
+            nameEdit!!.setOnTextChangeListener(itemOnTextChange)
+            genderEdit!!.setOnTextChangeListener(itemOnTextChange)
+        })
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.mActivity = (MainActivity) activity;
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        this.mActivity = activity as MainActivity
     }
 
-    public String getName() {
-        return getArguments().getString("name");
-    }
+    val name: String?
+        get() = requireArguments().getString("name")
 
-    private void refreshData() {
-        mProfile = getProfil();
+    private fun refreshData() {
+        mProfile = this.profil
 
         /* Initialisation des valeurs */
-        if (mProfile.getSize() == 0) {
-            sizeEdit.setText("");
-            sizeEdit.setHint(getString(R.string.profileEnterYourSize));
+        if (mProfile!!.size == 0) {
+            sizeEdit!!.setText("")
+            sizeEdit!!.setHint(getString(R.string.profileEnterYourSize))
         } else {
-            sizeEdit.setText(String.valueOf(mProfile.getSize()));
+            sizeEdit!!.setText(mProfile!!.size.toString())
         }
 
-        switch (mProfile.getGender()) {
-            case Gender.MALE:
-                genderEdit.setText(getString(R.string.maleGender));
-                break;
-            case Gender.FEMALE:
-                genderEdit.setText(getString(R.string.femaleGender));
-                break;
-            case Gender.OTHER:
-                genderEdit.setText(getString(R.string.otherGender));
-                break;
-            default:
-                genderEdit.setText("");
-                genderEdit.setHint(getString(R.string.enter_gender_here));
+        when (mProfile!!.gender) {
+            Gender.MALE -> genderEdit!!.setText(getString(R.string.maleGender))
+            Gender.FEMALE -> genderEdit!!.setText(getString(R.string.femaleGender))
+            Gender.OTHER -> genderEdit!!.setText(getString(R.string.otherGender))
+            else -> {
+                genderEdit!!.setText("")
+                genderEdit!!.setHint(getString(R.string.enter_gender_here))
+            }
         }
 
-        if (mProfile.getBirthday().getTime() == 0) {
-            birthdayEdit.setText("");
-            birthdayEdit.setHint(getString(R.string.profileEnterYourBirthday));
+        if (mProfile!!.birthday!!.getTime() == 0L) {
+            birthdayEdit!!.setText("")
+            birthdayEdit!!.setHint(getString(R.string.profileEnterYourBirthday))
         } else {
-            birthdayEdit.setText(DateConverter.dateToLocalDateStr(mProfile.getBirthday(), getContext()));
+            birthdayEdit!!.setText(
+                DateConverter.dateToLocalDateStr(
+                    mProfile!!.birthday,
+                    getContext()
+                )
+            )
             //sizeEdit.setNormalColor();
         }
 
-        nameEdit.setText(mProfile.getName());
+        nameEdit!!.setText(mProfile!!.name)
 
-        if (mProfile.getPhoto() != null) {
-            ImageUtil.setPic(roundProfile, mProfile.getPhoto());
-            roundProfile.invalidate();
-        } else
-            roundProfile.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.profile));
+        if (mProfile!!.photo != null) {
+            ImageUtil.setPic(roundProfile, mProfile!!.photo)
+            roundProfile!!.invalidate()
+        } else roundProfile!!.setImageDrawable(
+            requireActivity().getResources().getDrawable(R.drawable.profile)
+        )
     }
 
-    private void requestForSave(View view) {
-        boolean profileToUpdate = false;
-        int viewId = view.getId();
+    private fun requestForSave(view: View) {
+        var profileToUpdate = false
+        val viewId = view.getId()
 
         // Save all the fields in the Profile
         if (viewId == R.id.name) {
-            mProfile.setName(nameEdit.getText());
-            profileToUpdate = true;
+            mProfile!!.name = nameEdit!!.getText()
+            profileToUpdate = true
         } else if (viewId == R.id.size) {
             try {
-                mProfile.setSize((int) Float.parseFloat(sizeEdit.getText()));
-            } catch (NumberFormatException e) {
-                mProfile.setSize(0);
+                mProfile!!.size = sizeEdit!!.getText().toFloat().toInt()
+            } catch (e: NumberFormatException) {
+                mProfile!!.size = 0
             }
-            profileToUpdate = true;
+            profileToUpdate = true
         } else if (viewId == R.id.birthday) {
-            mProfile.setBirthday(DateConverter.localDateStrToDate(birthdayEdit.getText(), getContext()));
-            profileToUpdate = true;
+            mProfile!!.birthday =
+                DateConverter.localDateStrToDate(birthdayEdit!!.getText(), getContext())
+            profileToUpdate = true
         } else if (viewId == R.id.photo) {
-            mProfile.setPhoto(mCurrentPhotoPath);
-            profileToUpdate = true;
+            mProfile!!.photo = mCurrentPhotoPath!!
+            profileToUpdate = true
         } else if (viewId == R.id.gender) {
-            int lGender = Gender.UNKNOWN;
-            if (genderEdit.getText().equals(getString(R.string.maleGender))) {
-                lGender = Gender.MALE;
-            } else if (genderEdit.getText().equals(getString(R.string.femaleGender))) {
-                lGender = Gender.FEMALE;
-            } else if (genderEdit.getText().equals(getString(R.string.otherGender))) {
-                lGender = Gender.OTHER;
+            var lGender = Gender.UNKNOWN
+            if (genderEdit!!.getText() == getString(R.string.maleGender)) {
+                lGender = Gender.MALE
+            } else if (genderEdit!!.getText() == getString(R.string.femaleGender)) {
+                lGender = Gender.FEMALE
+            } else if (genderEdit!!.getText() == getString(R.string.otherGender)) {
+                lGender = Gender.OTHER
             }
-            mProfile.setGender(lGender);
-            profileToUpdate = true;
+            mProfile!!.gender = lGender
+            profileToUpdate = true
         }
 
         if (profileToUpdate) {
-            mDb.updateProfile(mProfile);
-            KToast.infoToast(getActivity(), mProfile.getName() + " updated", Gravity.BOTTOM, KToast.LENGTH_SHORT);
-            mActivity.setCurrentProfil(mProfile);
+            mDb!!.updateProfile(mProfile)
+            KToast.infoToast(
+                getActivity(),
+                mProfile!!.name + " updated",
+                Gravity.BOTTOM,
+                KToast.LENGTH_SHORT
+            )
+            mActivity!!.setCurrentProfil(mProfile)
         }
     }
 
-    private Profile getProfil() {
-        return ((MainActivity) getActivity()).getCurrentProfile();
+    private val profil: Profile?
+        get() = (getActivity() as MainActivity).currentProfile
+
+    val fragment: Fragment
+        get() = this
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden) refreshData()
     }
 
-    public Fragment getFragment() {
-        return this;
+    private fun CreatePhotoSourceDialog(): Boolean {
+        if (imgUtil == null) imgUtil = ImageUtil()
+
+        return imgUtil!!.CreatePhotoSourceDialog(this)
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden) refreshData();
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            ImageUtil.REQUEST_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                mCurrentPhotoPath = imgUtil!!.getFilePath()
+                ImageUtil.setPic(roundProfile, mCurrentPhotoPath)
+                ImageUtil.saveThumb(mCurrentPhotoPath)
+                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
+                requestForSave(roundProfile!!)
+            }
+
+            ImageUtil.REQUEST_PICK_GALERY_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                val realPath: String?
+                realPath = RealPathUtil.getRealPath(this.getContext(), data?.getData())
+
+                ImageUtil.setPic(roundProfile, realPath)
+                ImageUtil.saveThumb(realPath)
+                mCurrentPhotoPath = realPath
+                requestForSave(roundProfile!!)
+            }
+        }
     }
 
-    private boolean CreatePhotoSourceDialog() {
-        if (imgUtil == null)
-            imgUtil = new ImageUtil();
+    companion object {
+        /**
+         * Create a new instance of DetailsFragment, initialized to
+         * show the text at 'index'.
+         */
+        fun newInstance(name: String?, id: Int): ProfileFragment {
+            val f = ProfileFragment()
 
-        return imgUtil.CreatePhotoSourceDialog(this);
-    }
+            // Supply index input as an argument.
+            val args = Bundle()
+            args.putString("name", name)
+            args.putInt("id", id)
+            f.setArguments(args)
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case ImageUtil.REQUEST_TAKE_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    mCurrentPhotoPath = imgUtil.getFilePath();
-                    ImageUtil.setPic(roundProfile, mCurrentPhotoPath);
-                    ImageUtil.saveThumb(mCurrentPhotoPath);
-                    imgUtil.galleryAddPic(this, mCurrentPhotoPath);
-                    requestForSave(roundProfile);
-                }
-                break;
-            case ImageUtil.REQUEST_PICK_GALERY_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    String realPath;
-                    realPath = RealPathUtil.getRealPath(this.getContext(), data.getData());
-
-                    ImageUtil.setPic(roundProfile, realPath);
-                    ImageUtil.saveThumb(realPath);
-                    mCurrentPhotoPath = realPath;
-                    requestForSave(roundProfile);
-                }
-                break;
-//            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-//                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri resultUri = result.getUri();
-//                    String realPath;
-//                    realPath = RealPathUtil.getRealPath(this.getContext(), resultUri);
-//
-//                    // Le fichier est crée dans le cache.
-//                    // Déplacer le fichier dans le repertoire de FastNFitness
-//                    File SourceFile = new File(realPath);
-//
-//                    File storageDir = null;
-//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
-//                    String state = Environment.getExternalStorageState();
-//                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-//                        return;
-//                    } else {
-//                        //We use the FastNFitness directory for saving our .csv file.
-//                        storageDir = Environment.getExternalStoragePublicDirectory("/FastnFitness/Camera/");
-//                        if (!storageDir.exists()) {
-//                            storageDir.mkdirs();
-//                        }
-//                    }
-//                    new File(storageDir.getPath() + imageFileName);
-//                    File DestinationFile;
-//
-//                    try {
-//                        DestinationFile = imgUtil.moveFile(SourceFile, storageDir);
-//                        Log.v("Moving", "Moving file successful.");
-//                        realPath = DestinationFile.getPath();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        Log.v("Moving", "Moving file failed.");
-//                    }
-//
-//                    ImageUtil.setPic(roundProfile, realPath);
-//                    ImageUtil.saveThumb(realPath);
-//                    mCurrentPhotoPath = realPath;
-//                    requestForSave(roundProfile);
-//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                    Exception error = result.getError();
-//                }
-//                break;
+            return f
         }
     }
 }

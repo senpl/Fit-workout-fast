@@ -1,528 +1,516 @@
-package com.easyfitness.machines;
+package com.easyfitness.machines
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.DialogInterface.OnMultiChoiceClickListener
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.exifinterface.media.ExifInterface
+import androidx.fragment.app.Fragment
+import com.easyfitness.DAO.DAOMachine
+import com.easyfitness.DAO.DAORecord
+import com.easyfitness.DAO.Machine
+import com.easyfitness.R
+import com.easyfitness.utils.ImageUtil
+import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
+import com.easyfitness.utils.Keyboard
+import com.easyfitness.utils.RealPathUtil
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
 
-import androidx.exifinterface.media.ExifInterface;
-import androidx.fragment.app.Fragment;
+class MachineDetailsFragment : Fragment() {
+    val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: Int = 101
 
-import com.easyfitness.DAO.DAOMachine;
-import com.easyfitness.DAO.DAORecord;
-import com.easyfitness.DAO.Machine;
-import com.easyfitness.R;
-import com.easyfitness.utils.ImageUtil;
-import com.easyfitness.utils.Keyboard;
-import com.easyfitness.utils.RealPathUtil;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class MachineDetailsFragment extends Fragment {
-    public final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 101;
     // http://labs.makemachine.net/2010/03/android-multi-selection-dialogs/
     //protected CharSequence[] _muscles = {"Biceps", "Triceps", "Epaules", "Pectoraux", "Dorseaux", "Quadriceps", "Adducteurs"};
-    protected List<String> _musclesArray = new ArrayList<String>();
-    protected boolean[] _selections;
-    Spinner typeList = null; /*Halteres, Machines avec Poids, Cardio*/
-    TextView musclesList = null;
-    EditText machineName = null;
-    EditText machineDescription = null;
-    ImageView machinePhoto = null;
-    FloatingActionButton machineAction = null;
-    LinearLayout machinePhotoLayout = null;
-    int selectedType = DAOMachine.TYPE_STRENGTH;
-    String machineNameArg = null;
-    long machineIdArg = 0;
-    long machineProfilIdArg = 0;
-    boolean isImageFitToScreen = false;
-    ExerciseDetailsPager pager = null;
-    ArrayList selectMuscleList = new ArrayList();
-    DAOMachine mDbMachine = null;
-    DAORecord mDbRecord = null;
-    Machine mMachine;
+    protected var _musclesArray: MutableList<String?> = ArrayList<String?>()
+    protected lateinit var _selections: BooleanArray
+    var typeList: Spinner? = null /*Halteres, Machines avec Poids, Cardio*/
+    var musclesList: TextView? = null
+    var machineName: EditText? = null
+    var machineDescription: EditText? = null
+    var machinePhoto: ImageView? = null
+    var machineAction: FloatingActionButton? = null
+    var machinePhotoLayout: LinearLayout? = null
+    var selectedType: Int = DAOMachine.TYPE_STRENGTH
+    var machineNameArg: String? = null
+    var machineIdArg: Long = 0
+    var machineProfilIdArg: Long = 0
+    var isImageFitToScreen: Boolean = false
+    var pager: ExerciseDetailsPager? = null
+    var selectMuscleList: ArrayList<*> = ArrayList<Any?>()
+    var mDbMachine: DAOMachine? = null
+    var mDbRecord: DAORecord? = null
+    var mMachine: Machine? = null
 
-    private View fragmentView = null;
+    private var fragmentView: View? = null
 
-    private ImageUtil imgUtil = null;
-    private boolean isCreateMuscleDialogActive = false;
-    private String mCurrentPhotoPath = null;
-    private boolean toBeSaved;
-    public TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start,
-                                  int before, int count) {
-            requestForSave();
+    private var imgUtil: ImageUtil? = null
+    private var isCreateMuscleDialogActive = false
+    private var mCurrentPhotoPath: String? = null
+    private var toBeSaved = false
+    var watcher: TextWatcher = object : TextWatcher {
+        override fun onTextChanged(
+            s: CharSequence?, start: Int,
+            before: Int, count: Int
+        ) {
+            requestForSave()
         }
 
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
+        override fun beforeTextChanged(
+            s: CharSequence?, start: Int, count: Int,
+            after: Int
+        ) {
         }
 
-        @Override
-        public void afterTextChanged(Editable s) {
+        override fun afterTextChanged(s: Editable?) {
         }
-    };
-    private OnClickListener onClickMusclesList = v -> CreateMuscleDialog();
-    private OnLongClickListener onLongClickMachinePhoto = v -> CreatePhotoSourceDialog();
-    private OnClickListener onClickMachinePhoto = v -> CreatePhotoSourceDialog();
-    private OnFocusChangeListener onFocusMachineList = (arg0, arg1) -> {
+    }
+    private val onClickMusclesList = View.OnClickListener { v: View? -> CreateMuscleDialog() }
+    private val onLongClickMachinePhoto =
+        OnLongClickListener { v: View? -> CreatePhotoSourceDialog() }
+    private val onClickMachinePhoto = View.OnClickListener { v: View? -> CreatePhotoSourceDialog() }
+    private val onFocusMachineList = OnFocusChangeListener { arg0: View?, arg1: Boolean ->
         if (arg1) {
-            CreateMuscleDialog();
+            CreateMuscleDialog()
         }
-    };
-
-
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static MachineDetailsFragment newInstance(long machineId, long machineProfile) {
-        MachineDetailsFragment f = new MachineDetailsFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putLong("machineID", machineId);
-        args.putLong("machineProfile", machineProfile);
-        f.setArguments(args);
-
-        return f;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.machine_details, container, false);
-        fragmentView = view;
+
+        val view = inflater.inflate(R.layout.machine_details, container, false)
+        fragmentView = view
 
         // Initialisation de l'historique
-        mDbMachine = new DAOMachine(view.getContext());
-        mDbRecord = new DAORecord(view.getContext());
+        mDbMachine = DAOMachine(view.getContext())
+        mDbRecord = DAORecord(view.getContext())
 
-        machineName = view.findViewById(R.id.machine_name);
-        machineDescription = view.findViewById(R.id.machine_description);
-        musclesList = view.findViewById(R.id.machine_muscles);
-        machinePhoto = view.findViewById(R.id.machine_photo);
+        machineName = view.findViewById<EditText?>(R.id.machine_name)
+        machineDescription = view.findViewById<EditText?>(R.id.machine_description)
+        musclesList = view.findViewById<TextView?>(R.id.machine_muscles)
+        machinePhoto = view.findViewById<ImageView?>(R.id.machine_photo)
 
-        machinePhotoLayout = view.findViewById(R.id.machine_photo_layout);
-        machineAction = view.findViewById(R.id.actionCamera);
+        machinePhotoLayout = view.findViewById<LinearLayout?>(R.id.machine_photo_layout)
+        machineAction = view.findViewById<FloatingActionButton?>(R.id.actionCamera)
 
-        imgUtil = new ImageUtil(machinePhoto);
+        imgUtil = ImageUtil(machinePhoto)
 
-        buildMusclesTable();
+        buildMusclesTable()
 
-        Bundle args = this.getArguments();
+        val args = this.getArguments()
 
-        machineIdArg = args.getLong("machineID");
-        machineProfilIdArg = args.getLong("machineProfile");
+        machineIdArg = args!!.getLong("machineID")
+        machineProfilIdArg = args.getLong("machineProfile")
 
         // set events
-        musclesList.setOnClickListener(onClickMusclesList);
-        musclesList.setOnFocusChangeListener(onFocusMachineList);
-        machinePhoto.setOnLongClickListener(onLongClickMachinePhoto);
-        machinePhoto.setOnClickListener(v -> {
+        musclesList!!.setOnClickListener(onClickMusclesList)
+        musclesList!!.setOnFocusChangeListener(onFocusMachineList)
+        machinePhoto!!.setOnLongClickListener(onLongClickMachinePhoto)
+        machinePhoto!!.setOnClickListener(View.OnClickListener { v: View? ->
             if (isImageFitToScreen) {
-                isImageFitToScreen = false;
-                machinePhoto.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                machinePhoto.setAdjustViewBounds(true);
-                machinePhoto.setMaxHeight((int) (getView().getHeight() * 0.2));
-                machinePhoto.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                isImageFitToScreen = false
+                machinePhoto!!.setLayoutParams(
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                )
+                machinePhoto!!.setAdjustViewBounds(true)
+                machinePhoto!!.setMaxHeight((requireView().getHeight() * 0.2).toInt())
+                machinePhoto!!.setScaleType(ImageView.ScaleType.CENTER_CROP)
             } else {
-                if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
-                    File f = new File(mCurrentPhotoPath);
+                if (mCurrentPhotoPath != null && !mCurrentPhotoPath!!.isEmpty()) {
+                    val f = File(mCurrentPhotoPath)
                     if (f.exists()) {
-
-                        isImageFitToScreen = true;
+                        isImageFitToScreen = true
 
                         // Get the dimensions of the bitmap
-                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                        bmOptions.inJustDecodeBounds = true;
-                        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-                        float photoW = bmOptions.outWidth;
-                        float photoH = bmOptions.outHeight;
+                        val bmOptions = BitmapFactory.Options()
+                        bmOptions.inJustDecodeBounds = true
+                        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions)
+                        val photoW = bmOptions.outWidth.toFloat()
+                        val photoH = bmOptions.outHeight.toFloat()
 
                         // Determine how much to scale down the image
-                        int scaleFactor = (int) (photoW / (machinePhoto.getWidth())); //Math.min(photoW/targetW, photoH/targetH);machinePhoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        machinePhoto.setAdjustViewBounds(true);
-                        machinePhoto.setMaxHeight((int) (photoH / scaleFactor));
-                        machinePhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                        val scaleFactor =
+                            (photoW / (machinePhoto!!.getWidth())).toInt() //Math.min(photoW/targetW, photoH/targetH);machinePhoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        machinePhoto!!.setAdjustViewBounds(true)
+                        machinePhoto!!.setMaxHeight((photoH / scaleFactor).toInt())
+                        machinePhoto!!.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
                     }
                 }
             }
-        });
-        machineAction.setOnClickListener(onClickMachinePhoto);
+        })
+        machineAction!!.setOnClickListener(onClickMachinePhoto)
 
-        mMachine = mDbMachine.getMachine(machineIdArg);
-        machineNameArg = mMachine.getName();
+        mMachine = mDbMachine!!.getMachine(machineIdArg)
+        machineNameArg = mMachine!!.name
 
-        if (machineNameArg.equals("")) {
-            requestForSave();
+        if (machineNameArg == "") {
+            requestForSave()
         }
 
-        machineName.setText(machineNameArg);
-        machineDescription.setText(mMachine.getDescription());
-        musclesList.setText(this.getInputFromDBString(mMachine.getBodyParts()));
-        mCurrentPhotoPath = mMachine.getPicture();
+        machineName!!.setText(machineNameArg)
+        machineDescription!!.setText(mMachine!!.description)
+        musclesList!!.setText(this.getInputFromDBString(mMachine!!.bodyParts.toString()))
+        mCurrentPhotoPath = mMachine!!.picture
 
-        if (mMachine.getType() == DAOMachine.TYPE_CARDIO) {
-            selectedType = mMachine.getType();
-            view.findViewById(R.id.machine_muscles).setVisibility(View.GONE);
-            view.findViewById(R.id.machine_muscles_textview).setVisibility(View.GONE);
+        if (mMachine!!.type == DAOMachine.TYPE_CARDIO) {
+            selectedType = mMachine!!.type
+            view.findViewById<View?>(R.id.machine_muscles).setVisibility(View.GONE)
+            view.findViewById<View?>(R.id.machine_muscles_textview).setVisibility(View.GONE)
         } else {
-            selectedType = mMachine.getType();
-            view.findViewById(R.id.machine_muscles).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.machine_muscles_textview).setVisibility(View.VISIBLE);
+            selectedType = mMachine!!.type
+            view.findViewById<View?>(R.id.machine_muscles).setVisibility(View.VISIBLE)
+            view.findViewById<View?>(R.id.machine_muscles_textview).setVisibility(View.VISIBLE)
         }
 
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        view.getViewTreeObserver()
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // Ensure you call it only once :
+                    fragmentView!!.getViewTreeObserver().removeOnGlobalLayoutListener(this)
 
-            @Override
-            public void onGlobalLayout() {
-                // Ensure you call it only once :
-                fragmentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                // Here you can get the size :)
-
-                if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
-                    ImageUtil.setPic(machinePhoto, mCurrentPhotoPath);
-                } else {
-                    if (mMachine.getType() == DAOMachine.TYPE_STRENGTH) {
-                        imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp));
-                    } else if (mMachine.getType() == DAOMachine.TYPE_STATIC) {
-                        imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_static));
+                    // Here you can get the size :)
+                    if (mCurrentPhotoPath != null && !mCurrentPhotoPath!!.isEmpty()) {
+                        ImageUtil.setPic(machinePhoto, mCurrentPhotoPath)
                     } else {
-                        imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_training_white_50dp));
+                        if (mMachine!!.type == DAOMachine.TYPE_STRENGTH) {
+                            imgUtil!!.getView().setImageDrawable(
+                                requireActivity().getResources()
+                                    .getDrawable(R.drawable.ic_gym_bench_50dp)
+                            )
+                        } else if (mMachine!!.type == DAOMachine.TYPE_STATIC) {
+                            imgUtil!!.getView().setImageDrawable(
+                                requireActivity().getResources().getDrawable(R.drawable.ic_static)
+                            )
+                        } else {
+                            imgUtil!!.getView().setImageDrawable(
+                                requireActivity().getResources()
+                                    .getDrawable(R.drawable.ic_training_white_50dp)
+                            )
+                        }
+                        machinePhoto!!.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
                     }
-                    machinePhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                    machinePhoto!!.setMaxHeight((requireView().getHeight() * 0.2).toInt())
                 }
-                machinePhoto.setMaxHeight((int) (getView().getHeight() * 0.2));
-            }
-        });
+            })
 
-        machineName.addTextChangedListener(watcher);
-        machineDescription.addTextChangedListener(watcher);
-        musclesList.addTextChangedListener(watcher);
+        machineName!!.addTextChangedListener(watcher)
+        machineDescription!!.addTextChangedListener(watcher)
+        musclesList!!.addTextChangedListener(watcher)
 
-        imgUtil.setOnDeleteImageListener(imgUtil -> {
-            if (mMachine.getType() == DAOMachine.TYPE_STRENGTH) {
-                imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp));
-            } else if (mMachine.getType() == DAOMachine.TYPE_STATIC) {
-                imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_static));
+        imgUtil!!.setOnDeleteImageListener(OnDeleteImageListener { imgUtil: ImageUtil? ->
+            if (mMachine!!.type == DAOMachine.TYPE_STRENGTH) {
+                imgUtil!!.getView().setImageDrawable(
+                    requireActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp)
+                )
+            } else if (mMachine!!.type == DAOMachine.TYPE_STATIC) {
+                imgUtil!!.getView().setImageDrawable(
+                    requireActivity().getResources().getDrawable(R.drawable.ic_static)
+                )
             } else {
-                imgUtil.getView().setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_training_white_50dp));
+                imgUtil!!.getView().setImageDrawable(
+                    requireActivity().getResources().getDrawable(R.drawable.ic_training_white_50dp)
+                )
             }
-            machinePhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            mCurrentPhotoPath = null;
-            requestForSave();
-        });
+            machinePhoto!!.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
+            mCurrentPhotoPath = null
+            requestForSave()
+        })
 
-        if (getParentFragment() instanceof ExerciseDetailsPager) {
-            pager = (ExerciseDetailsPager) getParentFragment();
+        if (getParentFragment() is ExerciseDetailsPager) {
+            pager = getParentFragment() as ExerciseDetailsPager
         }
 
-        return view;
+        return view
     }
 
-    private boolean CreateMuscleDialog() {
-        if (isCreateMuscleDialogActive)
-            return true; // Si la boite de dialog est deja active, alors n'en cree pas une deuxieme.
+    private fun CreateMuscleDialog(): Boolean {
+        if (isCreateMuscleDialogActive) return true // Si la boite de dialog est deja active, alors n'en cree pas une deuxieme.
 
-        isCreateMuscleDialogActive = true;
 
-        Keyboard.hide(getContext(), getView());
+        isCreateMuscleDialogActive = true
 
-        AlertDialog.Builder newMuscleBuilder = new AlertDialog.Builder(this.getActivity());
+        Keyboard.hide(getContext(), getView())
 
-        newMuscleBuilder.setTitle(this.getResources().getString(R.string.selectMuscles));
-        newMuscleBuilder.setMultiChoiceItems(_musclesArray.toArray(new CharSequence[_musclesArray.size()]), _selections, (arg0, arg1, arg2) -> {
-            if (arg2) {
-                // If user select a item then add it in selected items
-                selectMuscleList.add(arg1);
-            } else if (selectMuscleList.contains(arg1)) {
-                // if the item is already selected then remove it
-                selectMuscleList.remove(Integer.valueOf(arg1));
-            }
-        });
+        val newMuscleBuilder = AlertDialog.Builder(this.getActivity())
+
+        newMuscleBuilder.setTitle(this.getResources().getString(R.string.selectMuscles))
+        newMuscleBuilder.setMultiChoiceItems(
+            _musclesArray.toTypedArray<CharSequence?>(),
+            _selections,
+            OnMultiChoiceClickListener { arg0: DialogInterface?, arg1: Int, arg2: Boolean ->
+                if (arg2) {
+                    // If user select a item then add it in selected items
+//                    selectMuscleList.add(arg1)
+                } else if (selectMuscleList.contains(arg1)) {
+                    // if the item is already selected then remove it
+//                    selectMuscleList.remove(arg1)
+                }
+            })
 
         // Set an EditText view to get user input
-        newMuscleBuilder.setPositiveButton(getResources().getString(R.string.global_ok), (dialog, whichButton) -> {
-            StringBuilder msg = new StringBuilder();
-            int i = 0;
-            boolean firstSelection = true;
-            // ( selectMuscleList.size() > 0 ) { // Si on a au moins selectionne un muscle
-            for (i = 0; i < _selections.length; i++) {
-                if (_selections[i] && firstSelection) {
-                    msg = new StringBuilder(_musclesArray.get(i));
-                    firstSelection = false;
-                } else if (_selections[i] && !firstSelection) {
-                    msg.append(";").append(_musclesArray.get(i));
+        newMuscleBuilder.setPositiveButton(
+            getResources().getString(R.string.global_ok),
+            DialogInterface.OnClickListener { dialog: DialogInterface?, whichButton: Int ->
+                var msg = StringBuilder()
+                var i = 0
+                var firstSelection = true
+                // ( selectMuscleList.size() > 0 ) { // Si on a au moins selectionne un muscle
+                i = 0
+                while (i < _selections.size) {
+                    if (_selections[i] && firstSelection) {
+                        msg = StringBuilder(_musclesArray.get(i))
+                        firstSelection = false
+                    } else if (_selections[i] && !firstSelection) {
+                        msg.append(";").append(_musclesArray.get(i))
+                    }
+                    i++
                 }
+                //}
+                setMuscleText(msg.toString())
+                isCreateMuscleDialogActive = false
+            })
+        newMuscleBuilder.setNegativeButton(
+            getResources().getString(R.string.global_cancel),
+            DialogInterface.OnClickListener { dialog: DialogInterface?, whichButton: Int ->
+                isCreateMuscleDialogActive = false
+            })
+
+        newMuscleBuilder.show()
+
+        return true
+    }
+
+    private fun CreatePhotoSourceDialog(): Boolean {
+        if (imgUtil == null) imgUtil = ImageUtil()
+
+        return imgUtil!!.CreatePhotoSourceDialog(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            ImageUtil.REQUEST_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                mCurrentPhotoPath = imgUtil!!.getFilePath()
+                ImageUtil.setPic(machinePhoto, mCurrentPhotoPath)
+                ImageUtil.saveThumb(mCurrentPhotoPath)
+                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
+                requestForSave()
             }
-            //}
-            setMuscleText(msg.toString());
-            isCreateMuscleDialogActive = false;
-        });
-        newMuscleBuilder.setNegativeButton(getResources().getString(R.string.global_cancel), (dialog, whichButton) -> isCreateMuscleDialogActive = false);
 
-        newMuscleBuilder.show();
+            ImageUtil.REQUEST_PICK_GALERY_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                val realPath: String?
+                realPath = RealPathUtil.getRealPath(this.getContext(), data?.getData())
 
-        return true;
-    }
-
-    private boolean CreatePhotoSourceDialog() {
-        if (imgUtil == null)
-            imgUtil = new ImageUtil();
-
-        return imgUtil.CreatePhotoSourceDialog(this);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case ImageUtil.REQUEST_TAKE_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    mCurrentPhotoPath = imgUtil.getFilePath();
-                    ImageUtil.setPic(machinePhoto, mCurrentPhotoPath);
-                    ImageUtil.saveThumb(mCurrentPhotoPath);
-                    imgUtil.galleryAddPic(this, mCurrentPhotoPath);
-                    requestForSave();
-                }
-                break;
-            case ImageUtil.REQUEST_PICK_GALERY_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    String realPath;
-                    realPath = RealPathUtil.getRealPath(this.getContext(), data.getData());
-
-                    ImageUtil.setPic(machinePhoto, realPath);
-                    ImageUtil.saveThumb(realPath);
-                    mCurrentPhotoPath = realPath;
-                    requestForSave();
-                }
-                break;
-//            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-//                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Uri resultUri = result.getUri();
-//                    String realPath;
-//                    realPath = RealPathUtil.getRealPath(this.getContext(), resultUri);
-//
-//                    // Le fichier est crée dans le cache.
-//                    // Déplacer le fichier dans le repertoire de FastNFitness
-//                    File SourceFile = new File(realPath);
-//
-//                    File storageDir = null;
-//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//                    String imageFileName = "JPEG_" + timeStamp + ".jpg";
-//                    String state = Environment.getExternalStorageState();
-//                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-//                        return;
-//                    } else {
-//                        //We use the FastNFitness directory for saving our .csv file.
-//                        storageDir = Environment.getExternalStoragePublicDirectory("/FastnFitness/Camera/");
-//                        if (!storageDir.exists()) {
-//                            storageDir.mkdirs();
-//                        }
-//                    }
-//                    File DestinationFile = null;
-//
-//                    try {
-//                        DestinationFile = imgUtil.moveFile(SourceFile, storageDir);
-//                        Log.v("Moving", "Moving file successful.");
-//                        realPath = DestinationFile.getPath();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        Log.v("Moving", "Moving file failed.");
-//                    }
-//
-//                    ImageUtil.setPic(machinePhoto, realPath);
-//                    ImageUtil.saveThumb(realPath);
-//                    mCurrentPhotoPath = realPath;
-//                    requestForSave();
-//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                    Exception error = result.getError();
-//                }
-//                break;
+                ImageUtil.setPic(machinePhoto, realPath)
+                ImageUtil.saveThumb(realPath)
+                mCurrentPhotoPath = realPath
+                requestForSave()
+            }
         }
     }
 
-    private void setMuscleText(String t) {
-        musclesList.setText(t);
+    private fun setMuscleText(t: String?) {
+        musclesList!!.setText(t)
     }
 
-    public MachineDetailsFragment getThis() {
-        return this;
+    val `this`: MachineDetailsFragment
+        get() = this
+
+    private fun requestForSave() {
+        toBeSaved = true // setting state
+        if (pager != null) pager!!.requestForSave()
     }
 
-    private void requestForSave() {
-        toBeSaved = true; // setting state
-        if (pager != null) pager.requestForSave();
-    }
 
+    private fun buildMusclesTable() {
+        _musclesArray.add(requireActivity().getResources().getString(R.string.biceps))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.triceps))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.pectoraux))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.dorseaux))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.abdominaux))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.quadriceps))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.ischio_jambiers))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.adducteurs))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.mollets))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.deltoids))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.trapezius))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.shoulders))
+        _musclesArray.add(requireActivity().getResources().getString(R.string.obliques))
 
-    private void buildMusclesTable() {
-        _musclesArray.add(getActivity().getResources().getString(R.string.biceps));
-        _musclesArray.add(getActivity().getResources().getString(R.string.triceps));
-        _musclesArray.add(getActivity().getResources().getString(R.string.pectoraux));
-        _musclesArray.add(getActivity().getResources().getString(R.string.dorseaux));
-        _musclesArray.add(getActivity().getResources().getString(R.string.abdominaux));
-        _musclesArray.add(getActivity().getResources().getString(R.string.quadriceps));
-        _musclesArray.add(getActivity().getResources().getString(R.string.ischio_jambiers));
-        _musclesArray.add(getActivity().getResources().getString(R.string.adducteurs));
-        _musclesArray.add(getActivity().getResources().getString(R.string.mollets));
-        _musclesArray.add(getActivity().getResources().getString(R.string.deltoids));
-        _musclesArray.add(getActivity().getResources().getString(R.string.trapezius));
-        _musclesArray.add(getActivity().getResources().getString(R.string.shoulders));
-        _musclesArray.add(getActivity().getResources().getString(R.string.obliques));
-
-         _selections = new boolean[_musclesArray.size()];
+        _selections = BooleanArray(_musclesArray.size)
     }
 
     /*
      * @return the name of the Muscle depending on the language
      */
-    private String getMuscleNameFromId(int id) {
-        String ret = "";
+    private fun getMuscleNameFromId(id: Int): String? {
+        var ret: String? = ""
         try {
-            ret = _musclesArray.get(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+            ret = _musclesArray.get(id)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return ret;
+        return ret
     }
 
     /*
      * @return the name of the Muscle depending on the language
      */
-    private int getMuscleIdFromName(String pName) {
-        for (int i = 0; i < _musclesArray.size(); i++) {
-            if (_musclesArray.get(i).equals(pName)) return i;
+    private fun getMuscleIdFromName(pName: String?): Int {
+        for (i in _musclesArray.indices) {
+            if (_musclesArray.get(i) == pName) return i
         }
-        return -1;
+        return -1
     }
 
     /*
      * @return the name of the Muscle depending on the language
      */
-    private String getDBStringFromInput(String pInput) {
-        String[] data = pInput.split(";");
-        StringBuilder output = new StringBuilder();
+    private fun getDBStringFromInput(pInput: String): String {
+        val data: Array<String?> =
+            pInput.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        var output = StringBuilder()
 
-        if (pInput.isEmpty()) return "";
+        if (pInput.isEmpty()) return ""
 
-        int i = 0;
-        if (data.length > 0) {
-            output = new StringBuilder(String.valueOf(getMuscleIdFromName(data[i])));
-            for (i = 1; i < data.length; i++) {
-                output.append(";").append(getMuscleIdFromName(data[i]));
+        var i = 0
+        if (data.size > 0) {
+            output = StringBuilder(getMuscleIdFromName(data[i]).toString())
+            i = 1
+            while (i < data.size) {
+                output.append(";").append(getMuscleIdFromName(data[i]))
+                i++
             }
         }
 
-        return output.toString();
+        return output.toString()
     }
 
 
     /*
      * @return the name of the Muscle depending on the language
      */
-    private String getInputFromDBString(String pDBString) {
-        String[] data = pDBString.split(";");
-        StringBuilder output = new StringBuilder();
+    private fun getInputFromDBString(pDBString: String): String {
+        val data: Array<String?> =
+            pDBString.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        var output = StringBuilder()
 
-        int i = 0;
+        var i = 0
 
         try {
-            if (data.length > 0) {
-                if (data[0].isEmpty()) return "";
+            if (data.size > 0) {
+                if (data[0]!!.isEmpty()) return ""
 
-                if (!data[i].equals("-1")) {
-                    output = new StringBuilder(getMuscleNameFromId(Integer.parseInt(data[i])));
-                    _selections[Integer.parseInt(data[i])] = true;
-                    for (i = 1; i < data.length; i++) {
-                        if (!data[i].equals("-1")) {
-                            output.append(";").append(getMuscleNameFromId(Integer.parseInt(data[i])));
-                            _selections[Integer.parseInt(data[i])] = true;
+                if (data[i] != "-1") {
+                    output = StringBuilder(getMuscleNameFromId(data[i]!!.toInt()))
+                    _selections[data[i]!!.toInt()] = true
+                    i = 1
+                    while (i < data.size) {
+                        if (data[i] != "-1") {
+                            output.append(";").append(getMuscleNameFromId(data[i]!!.toInt()))
+                            _selections[data[i]!!.toInt()] = true
                         }
+                        i++
                     }
                 }
             }
-        } catch (NumberFormatException e) {
-            output = new StringBuilder();
-            e.printStackTrace();
+        } catch (e: NumberFormatException) {
+            output = StringBuilder()
+            e.printStackTrace()
         }
 
-        return output.toString();
+        return output.toString()
     }
 
-    public int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath) {
-        int rotate = 0;
+    fun getCameraPhotoOrientation(context: Context, imageUri: Uri, imagePath: String): Int {
+        var rotate = 0
         try {
-            context.getContentResolver().notifyChange(imageUri, null);
-            File imageFile = new File(imagePath);
+            context.getContentResolver().notifyChange(imageUri, null)
+            val imageFile = File(imagePath)
 
-            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            val exif = ExifInterface(imageFile.getAbsolutePath())
+            val orientation = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
 
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotate = 180
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotate = 90
             }
 
             //Log.i("RotateImage", "Exif orientation: " + orientation);
             //Log.i("RotateImage", "Rotate value: " + rotate);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return rotate;
+        return rotate
     }
 
-    public boolean toBeSaved() {
-        return toBeSaved;
+    fun toBeSaved(): Boolean {
+        return toBeSaved
     }
 
-    public void machineSaved() {
-        toBeSaved = false;
+    fun machineSaved() {
+        toBeSaved = false
     }
 
-    public Machine getMachine() {
-        Machine m = mMachine;
-        m.setName(machineName.getText().toString());
-        m.setDescription(machineDescription.getText().toString());
-        m.setBodyParts(getDBStringFromInput(this.musclesList.getText().toString()));
-        m.setPicture(mCurrentPhotoPath);
-        m.setFavorite(false);
-        m.setType(selectedType);
-        return m;
+    val machine: Machine
+        get() {
+            val m = mMachine!!
+            m.name=(machineName!!.getText().toString())
+            m.description=(machineDescription!!.getText().toString())
+            m.bodyParts=(getDBStringFromInput(this.musclesList!!.getText().toString()))
+            m.picture=(mCurrentPhotoPath)
+            m.favorite= false
+            m.type=(selectedType)
+            return m
+        }
+
+    companion object {
+        /**
+         * Create a new instance of DetailsFragment, initialized to
+         * show the text at 'index'.
+         */
+        fun newInstance(machineId: Long, machineProfile: Long): MachineDetailsFragment {
+            val f = MachineDetailsFragment()
+
+            // Supply index input as an argument.
+            val args = Bundle()
+            args.putLong("machineID", machineId)
+            args.putLong("machineProfile", machineProfile)
+            f.setArguments(args)
+
+            return f
+        }
     }
 }
 

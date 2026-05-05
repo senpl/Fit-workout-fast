@@ -13,59 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.ikovac.timepickerwithseconds.view
 
-package com.ikovac.timepickerwithseconds.view;
-
-import java.util.Calendar;
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.Window
+import com.easyfitness.R
+import java.text.DateFormat
+import java.util.Calendar
 
 //import com.ikovac.timepickerwithseconds.R;
-import com.easyfitness.R;
-import com.ikovac.timepickerwithseconds.view.TimePicker.OnTimeChangedListener;
-
 /**
- * A dialog that prompts the user for the time of day using a {@link TimePicker}.
+ * A dialog that prompts the user for the time of day using a [TimePicker].
  */
-public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
-        OnTimeChangedListener {
-
+class MyTimePickerDialog(
+    context: Context,
+    theme: Int,
+    callBack: OnTimeSetListener?,
+    hourOfDay: Int, minute: Int, seconds: Int, is24HourView: Boolean
+) : AlertDialog(context, theme), DialogInterface.OnClickListener, TimePicker.OnTimeChangedListener {
     /**
      * The callback interface used to indicate the user is done filling in
      * the time (they clicked on the 'Set' button).
      */
-    public interface OnTimeSetListener {
-
+    fun interface OnTimeSetListener {
         /**
          * @param view The view associated with this listener.
          * @param hourOfDay The hour that was set.
          * @param minute The minute that was set.
          */
-        void onTimeSet(TimePicker view, int hourOfDay, int minute, int seconds);
+        fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int, seconds: Int)
     }
 
-    private static final String HOUR = "hour";
-    private static final String MINUTE = "minute";
-    private static final String SECONDS = "seconds";
-    private static final String IS_24_HOUR = "is24hour";
+    private val mTimePicker: TimePicker
+    private val mCallback: OnTimeSetListener?
+    private val mCalendar: Calendar
+    private val mDateFormat: DateFormat?
 
-    private final TimePicker mTimePicker;
-    private final OnTimeSetListener mCallback;
-    private final Calendar mCalendar;
-    private final java.text.DateFormat mDateFormat;
-
-    int mInitialHourOfDay;
-    int mInitialMinute;
-    int mInitialSeconds;
-    boolean mIs24HourView;
+    var mInitialHourOfDay: Int
+    var mInitialMinute: Int
+    var mInitialSeconds: Int
+    var mIs24HourView: Boolean
 
     /**
      * @param context Parent.
@@ -74,13 +66,14 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
      * @param minute The initial minute.
      * @param is24HourView Whether this is a 24 hour view, or AM/PM.
      */
-    public MyTimePickerDialog(Context context,
-            OnTimeSetListener callBack,
-            int hourOfDay, int minute, int seconds, boolean is24HourView) {
-
-        this(context, 0,
-                callBack, hourOfDay, minute, seconds, is24HourView);
-    }
+    constructor(
+        context: Context,
+        callBack: OnTimeSetListener?,
+        hourOfDay: Int, minute: Int, seconds: Int, is24HourView: Boolean
+    ) : this(
+        context, 0,
+        callBack, hourOfDay, minute, seconds, is24HourView
+    )
 
     /**
      * @param context Parent.
@@ -90,89 +83,96 @@ public class MyTimePickerDialog extends AlertDialog implements OnClickListener,
      * @param minute The initial minute.
      * @param is24HourView Whether this is a 24 hour view, or AM/PM.
      */
-    public MyTimePickerDialog(Context context,
-            int theme,
-            OnTimeSetListener callBack,
-            int hourOfDay, int minute, int seconds, boolean is24HourView) {
-        super(context, theme);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mCallback = callBack;
-        mInitialHourOfDay = hourOfDay;
-        mInitialMinute = minute;
-        mInitialSeconds = seconds;
-        mIs24HourView = is24HourView;
+    init {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mCallback = callBack
+        mInitialHourOfDay = hourOfDay
+        mInitialMinute = minute
+        mInitialSeconds = seconds
+        mIs24HourView = is24HourView
 
-        mDateFormat = DateFormat.getTimeFormat(context);
-        mCalendar = Calendar.getInstance();
-        updateTitle(mInitialHourOfDay, mInitialMinute, mInitialSeconds);
+        mDateFormat = android.text.format.DateFormat.getTimeFormat(context)
+        mCalendar = Calendar.getInstance()
+        updateTitle(mInitialHourOfDay, mInitialMinute, mInitialSeconds)
 
-        setButton(context.getText(android.R.string.dialog_alert_title), this);
-        setButton2(context.getText(android.R.string.cancel), (OnClickListener) null);
+        setButton(context.getText(android.R.string.dialog_alert_title), this)
+        setButton2(
+            context.getText(android.R.string.cancel),
+            null as DialogInterface.OnClickListener?
+        )
+
         //setIcon(android.R.drawable.ic_dialog_time);
+        val inflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(
+            R.layout.time_picker_dialog,
+            null
+        )
+        setView(view)
 
-        LayoutInflater inflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.time_picker_dialog,
-            null);
-        setView(view);
-
-        mTimePicker = (TimePicker) view.findViewById(R.id.timePicker);
+        mTimePicker = view.findViewById<View?>(R.id.timePicker) as TimePicker
         // initialize state
-        mTimePicker.setCurrentHour(mInitialHourOfDay);
-        mTimePicker.setCurrentMinute(mInitialMinute);
-        mTimePicker.setCurrentSecond(mInitialSeconds);
-        mTimePicker.setIs24HourView(mIs24HourView);
-        mTimePicker.setOnTimeChangedListener(this);
+        mTimePicker.currentHour = mInitialHourOfDay
+        mTimePicker.currentMinute = mInitialMinute
+        mTimePicker.setCurrentSecond(mInitialSeconds)
+        mTimePicker.setIs24HourView(mIs24HourView)
+        mTimePicker.setOnTimeChangedListener(this)
     }
 
-    public void onClick(DialogInterface dialog, int which) {
+    override fun onClick(dialog: DialogInterface?, which: Int) {
         if (mCallback != null) {
-            mTimePicker.clearFocus();
-            mCallback.onTimeSet(mTimePicker, mTimePicker.getCurrentHour(),
-                    mTimePicker.getCurrentMinute(), mTimePicker.getCurrentSeconds());
+            mTimePicker.clearFocus()
+            mCallback.onTimeSet(
+                mTimePicker, mTimePicker.currentHour,
+                mTimePicker.currentMinute, mTimePicker.currentSeconds
+            )
         }
     }
 
-    public void onTimeChanged(TimePicker view, int hourOfDay, int minute, int seconds) {
-        updateTitle(hourOfDay, minute, seconds);
+    override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int, seconds: Int) {
+        updateTitle(hourOfDay, minute, seconds)
     }
 
-    public void updateTime(int hourOfDay, int minutOfHour, int seconds) {
-        mTimePicker.setCurrentHour(hourOfDay);
-        mTimePicker.setCurrentMinute(minutOfHour);
-        mTimePicker.setCurrentSecond(seconds);
+    fun updateTime(hourOfDay: Int, minutOfHour: Int, seconds: Int) {
+        mTimePicker.currentHour = hourOfDay
+        mTimePicker.currentMinute = minutOfHour
+        mTimePicker.setCurrentSecond(seconds)
     }
 
-    private void updateTitle(int hour, int minute, int seconds) {
-        String sHour = String.format("%02d", hour);
-        String sMin = String.format("%02d", minute);
-        String sSec = String.format("%02d", seconds);
-        setTitle(sHour + ":" + sMin + ":" + sSec);
+    private fun updateTitle(hour: Int, minute: Int, seconds: Int) {
+        val sHour = String.format("%02d", hour)
+        val sMin = String.format("%02d", minute)
+        val sSec = String.format("%02d", seconds)
+        setTitle(sHour + ":" + sMin + ":" + sSec)
     }
 
-    @Override
-    public Bundle onSaveInstanceState() {
-        Bundle state = super.onSaveInstanceState();
-        state.putInt(HOUR, mTimePicker.getCurrentHour());
-        state.putInt(MINUTE, mTimePicker.getCurrentMinute());
-        state.putInt(SECONDS, mTimePicker.getCurrentSeconds());
-        state.putBoolean(IS_24_HOUR, mTimePicker.is24HourView());
-        return state;
+    override fun onSaveInstanceState(): Bundle {
+        val state = super.onSaveInstanceState()
+        state.putInt(HOUR, mTimePicker.currentHour)
+        state.putInt(MINUTE, mTimePicker.currentMinute)
+        state.putInt(SECONDS, mTimePicker.currentSeconds)
+        state.putBoolean(IS_24_HOUR, mTimePicker.is24HourView())
+        return state
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        int hour = savedInstanceState.getInt(HOUR);
-        int minute = savedInstanceState.getInt(MINUTE);
-        int seconds = savedInstanceState.getInt(SECONDS);
-        mTimePicker.setCurrentHour(hour);
-        mTimePicker.setCurrentMinute(minute);
-        mTimePicker.setCurrentSecond(seconds);
-        mTimePicker.setIs24HourView(savedInstanceState.getBoolean(IS_24_HOUR));
-        mTimePicker.setOnTimeChangedListener(this);
-        updateTitle(hour, minute, seconds);
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val hour = savedInstanceState.getInt(HOUR)
+        val minute = savedInstanceState.getInt(MINUTE)
+        val seconds = savedInstanceState.getInt(SECONDS)
+        mTimePicker.currentHour = hour
+        mTimePicker.currentMinute = minute
+        mTimePicker.setCurrentSecond(seconds)
+        mTimePicker.setIs24HourView(savedInstanceState.getBoolean(IS_24_HOUR))
+        mTimePicker.setOnTimeChangedListener(this)
+        updateTitle(hour, minute, seconds)
     }
 
 
+    companion object {
+        private const val HOUR = "hour"
+        private const val MINUTE = "minute"
+        private const val SECONDS = "seconds"
+        private const val IS_24_HOUR = "is24hour"
+    }
 }

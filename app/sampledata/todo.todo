@@ -1,6 +1,8 @@
-przywrócić dot selector do tego który działał.
-    I spróbować, czy video działa
-    Jeśli działa to opublikować nową wersję
+Naprawić błąd z nie wypełnianiem dzwięku początkowo
+    Bo to crashuje aplikację
+    Jeśli nie ustawione to ustawiać domyślny
+Prosty sposób do importu ćwiczeń
+    i ewentualnie eksportu
 Przywrócić apkę do play store'a bo jednak nie ma sensu robić czegoś,
     czego nie można opublikować
 Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń

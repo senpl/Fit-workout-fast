@@ -12,6 +12,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.easyfitness.DAO.DAOMachine.*
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_CARDIO
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STATIC
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STRENGTH
 import com.easyfitness.DAO.ExerciseInProgram
 import com.easyfitness.R
 import com.easyfitness.utils.BtnOnPostiomClickListener

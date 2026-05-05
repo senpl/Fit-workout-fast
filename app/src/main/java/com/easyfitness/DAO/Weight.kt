@@ -1,41 +1,24 @@
-package com.easyfitness.DAO;
+package com.easyfitness.DAO
 
-import com.easyfitness.utils.UnitConverter;
+import com.easyfitness.utils.UnitConverter
+import java.text.DecimalFormat
 
-import java.text.DecimalFormat;
-
-public class Weight {
-    private float pWeight;
-    private int pUnit;
-
-    public Weight(float weight, int unit) {
-        pWeight = weight;
-        pUnit = unit;
-    }
-
-    public float getStoredWeight() {
-        return pWeight;
-    }
-
-    public float getWeight(int unit) {
-        float weight = pWeight;
+class Weight(val storedWeight: Float, val storedUnit: Int) {
+    fun getWeight(unit: Int): Float {
+        var weight = this.storedWeight
         if (unit == UnitConverter.UNIT_LBS) {
-            weight = UnitConverter.KgtoLbs(pWeight);
+            weight = UnitConverter.KgtoLbs(this.storedWeight)
         }
-        return weight;
+        return weight
     }
 
-    public int getStoredUnit() {
-        return pUnit;
+    override fun toString(): String {
+        val numberFormat = DecimalFormat("#.##")
+        return numberFormat.format(storedWeight.toDouble())
     }
 
-    public String toString() {
-        DecimalFormat numberFormat = new DecimalFormat("#.##");
-        return numberFormat.format(pWeight);
-    }
-
-    public String getWeightStr(int unit) {
-        DecimalFormat numberFormat = new DecimalFormat("#.##");
-        return numberFormat.format(getWeight(unit));
+    fun getWeightStr(unit: Int): String {
+        val numberFormat = DecimalFormat("#.##")
+        return numberFormat.format(getWeight(unit).toDouble())
     }
 }

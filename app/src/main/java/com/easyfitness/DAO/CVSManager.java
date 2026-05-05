@@ -131,7 +131,7 @@ public class CVSManager {
                 csvOutputFonte.write(Integer.toString(records.get(i).getRepetition()));
                 csvOutputFonte.write(Integer.toString(records.get(i).getSerie()));
                 if (records.get(i).getProfil() != null)
-                    csvOutputFonte.write(Long.toString(records.get(i).getProfil().getId()));
+                    csvOutputFonte.write(Long.toString(records.get(i).getProfil().id));
                 else csvOutputFonte.write("-1");
                 csvOutputFonte.write(Integer.toString(records.get(i).getUnit()));
                 if (records.get(i).getNote() == null) csvOutputFonte.write("");
@@ -200,7 +200,7 @@ public class CVSManager {
                 csvOutput.write(Integer.toString(records.get(i).getSecond()));
                 csvOutput.write(Integer.toString(records.get(i).getSerie()));
                 if (records.get(i).getProfil() != null)
-                    csvOutput.write(Long.toString(records.get(i).getProfil().getId()));
+                    csvOutput.write(Long.toString(records.get(i).getProfil().id));
                 else csvOutput.write("-1");
                 csvOutput.write(Integer.toString(records.get(i).getUnit()));
                 if (records.get(i).getNote() == null) csvOutput.write("");
@@ -394,7 +394,7 @@ public class CVSManager {
                 csvOutput.write(Float.toString(cardioRecords.get(i).getDistance()));
                 csvOutput.write(Integer.toString(cardioRecords.get(i).getDistanceUnit()));
                 if (cardioRecords.get(i).getProfil() != null)
-                    csvOutput.write(Long.toString(cardioRecords.get(i).getProfil().getId()));
+                    csvOutput.write(Long.toString(cardioRecords.get(i).getProfil().id));
                 else csvOutput.write("-1");
                 //write the record in the .csv file
                 csvOutput.write(Integer.toString(DAOMachine.TYPE_CARDIO));
@@ -446,7 +446,7 @@ public class CVSManager {
 
             for (int i = 0; i < records.size(); i++) {
                 csvOutput.write(DAOMachine.TABLE_NAME);
-                csvOutput.write(Long.toString(records.get(i).getId()));
+                csvOutput.write(Long.toString(records.get(i).id));
                 csvOutput.write(records.get(i).getName());
                 csvOutput.write(records.get(i).getDescription());
                 csvOutput.write(Integer.toString(records.get(i).getType()));
@@ -501,7 +501,7 @@ public class CVSManager {
                                 }
                                 String notes = csvRecords.get(DAOFonte.NOTES);
 
-                                Fonte fonte = new Fonte(date, machine, serie, repetition, poids, pProfile, unit, notes, dbcMachine.getMachine(machine).getId(), time);
+                                Fonte fonte = new Fonte(date, machine, serie, repetition, poids, pProfile, unit, notes, dbcMachine.getMachine(machine).id, time);
                                 fonteList.add(fonte);
                             } else if (dbcMachine.getMachine(machine).getType() == DAOMachine.TYPE_CARDIO) {
                                 String exercise = csvRecords.get(DAOCardio.EXERCISE);
@@ -521,7 +521,7 @@ public class CVSManager {
                                 if (!csvRecords.get(DAOStatic.UNIT).isEmpty()) {
                                     unit = Integer.valueOf(csvRecords.get(DAOStatic.UNIT));
                                 }
-                                StaticExercise staticExercise = new StaticExercise(date, machine, serie, second, poids, pProfile, unit, dbcMachine.getMachine(machine).getId(), time);
+                                StaticExercise staticExercise = new StaticExercise(date, machine, serie, second, poids, pProfile, unit, dbcMachine.getMachine(machine).id, time);
                                 staticExerciseList.add(staticExercise);
                             }
                         } else {
@@ -552,7 +552,7 @@ public class CVSManager {
                         date = DateConverter.DBDateStrToDate(csvRecords.get(DAOWeight.DATE));
 
                         float poids = Float.valueOf(csvRecords.get(DAOWeight.POIDS));
-                        dbcWeight.addBodyMeasure(date, BodyPartExtensions.WEIGHT, poids, pProfile.getId());
+                        dbcWeight.addBodyMeasure(date, BodyPartExtensions.WEIGHT, poids, pProfile.id);
 
                         break;
                     }
@@ -569,7 +569,7 @@ public class CVSManager {
                         for (BodyPart bp : bodyParts) {
                             if (bp.getName(mContext).equals(bodyPartName)) {
                                 float measure = Float.valueOf(csvRecords.get(DAOBodyMeasure.MEASURE));
-                                dbcBodyMeasure.addBodyMeasure(date, bp.getId(), measure, pProfile.getId());
+                                dbcBodyMeasure.addBodyMeasure(date, bp.getId(), measure, pProfile.id);
                                 dbcBodyPart.close();
                                 break;
                             }

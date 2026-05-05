@@ -132,7 +132,7 @@ public class DAOStatic extends DAORecord {
 
         // Select All Query
         String selectQuery = "SELECT " + TABLE_ARCHI + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
             + " AND " + TYPE + "=" + DAOMachine.TYPE_STATIC
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
 
@@ -151,14 +151,14 @@ public class DAOStatic extends DAORecord {
             selectQuery = "SELECT MAX(" + WEIGHT + ") , " + SECONDS + " FROM "
                 + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + SECONDS
                 + " ORDER BY " + SECONDS + " ASC";
         } else if (pFunction == DAOStatic.NBSERIE_FCT) {
             selectQuery = "SELECT count(" + KEY + ") , " + DATE + " FROM "
                 + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine + "\""
-                + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + " AND " + PROFIL_KEY + "=" + pProfile.id
                 + " GROUP BY " + DATE
                 + " ORDER BY date(" + DATE + ") ASC";
         }
@@ -217,7 +217,7 @@ public class DAOStatic extends DAORecord {
 
         //Test is Machine exists. If not create it.
         DAOMachine lDAOMachine = new DAOMachine(mContext);
-        long machine_key = lDAOMachine.getMachine(pMachine).getId();
+        long machine_key = lDAOMachine.getMachine(pMachine).id;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -255,7 +255,7 @@ public class DAOStatic extends DAORecord {
 
         //Test is Machine exists. If not create it.
         DAOMachine lDAOMachine = new DAOMachine(mContext);
-        long machine_key = lDAOMachine.getMachine(pMachine).getId();
+        long machine_key = lDAOMachine.getMachine(pMachine).id;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -328,7 +328,7 @@ public class DAOStatic extends DAORecord {
 
         // Select All Machines
         String selectQuery = "SELECT MAX(" + WEIGHT + "), " + UNIT + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + p.getId() + " AND " + MACHINE_KEY + "=" + m.getId();
+            + " WHERE " + PROFIL_KEY + "=" + p.id + " AND " + MACHINE_KEY + "=" + m.id;
         mCursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -354,7 +354,7 @@ public class DAOStatic extends DAORecord {
 
         // Select All Machines
         String selectQuery = "SELECT MIN(" + WEIGHT + "), " + UNIT + " FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + p.getId() + " AND " + MACHINE_KEY + "=" + m.getId();
+            + " WHERE " + PROFIL_KEY + "=" + p.id + " AND " + MACHINE_KEY + "=" + m.id;
         mCursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list

@@ -1,191 +1,198 @@
-package com.easyfitness.bodymeasures;
+package com.easyfitness.bodymeasures
 
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import cn.pedant.SweetAlert.SweetAlertDialog
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
+import com.easyfitness.DAO.Profile
+import com.easyfitness.DAO.bodymeasures.BodyMeasure
+import com.easyfitness.DAO.bodymeasures.BodyPart
+import com.easyfitness.DAO.bodymeasures.BodyPartExtensions
+import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure
+import com.easyfitness.DAO.bodymeasures.DAOBodyPart
+import com.easyfitness.R
+import com.easyfitness.bodymeasures.BodyPartDetailsFragment.Companion.newInstance
+import com.easyfitness.utils.Keyboard
+import com.fitworkoutfast.MainActivity
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import cn.pedant.SweetAlert.SweetAlertDialog;
+class BodyPartListFragment : Fragment() {
+    lateinit var dataModels: ArrayList<BodyPart?>
+    lateinit var measureList: ListView
 
-import com.easyfitness.DAO.Profile;
-import com.easyfitness.DAO.bodymeasures.BodyMeasure;
-import com.easyfitness.DAO.bodymeasures.BodyPart;
-import com.easyfitness.DAO.bodymeasures.BodyPartExtensions;
-import com.easyfitness.DAO.bodymeasures.DAOBodyMeasure;
-import com.easyfitness.DAO.bodymeasures.DAOBodyPart;
-import com.fitworkoutfast.MainActivity;
-import com.easyfitness.R;
-import com.easyfitness.utils.Keyboard;
+    private val clickAddButton = View.OnClickListener { v: View? ->
+        val editText = EditText(getContext())
+        editText.setText("")
+        editText.setGravity(Gravity.CENTER)
+        editText.requestFocus()
 
-import java.util.ArrayList;
-import java.util.List;
+        val linearLayout = LinearLayout(requireContext().getApplicationContext())
+        linearLayout.setOrientation(LinearLayout.VERTICAL)
+        linearLayout.addView(editText)
 
-public class BodyPartListFragment extends Fragment {
-    ArrayList<BodyPart> dataModels;
-    ListView measureList = null;
-
-    private View.OnClickListener clickAddButton = v -> {
-        final EditText editText = new EditText(getContext());
-        editText.setText("");
-        editText.setGravity(Gravity.CENTER);
-        editText.requestFocus();
-
-        LinearLayout linearLayout = new LinearLayout(getContext().getApplicationContext());
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(editText);
-
-        final SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
-            .setTitleText(getContext().getString(R.string.enter_bodypart_name))
-            .setCancelText(getContext().getString(R.string.global_cancel))
+        val dialog = SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
+            .setTitleText(requireContext().getString(R.string.enter_bodypart_name))
+            .setCancelText(requireContext().getString(R.string.global_cancel))
             .setHideKeyBoardOnDismiss(true)
-            .setCancelClickListener(sDialog -> {
-                editText.clearFocus();
-                Keyboard.hide(getContext(), editText);
-                sDialog.dismissWithAnimation();})
-            .setConfirmClickListener(sDialog -> {
+            .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                editText.clearFocus()
+                Keyboard.hide(getContext(), editText)
+                sDialog!!.dismissWithAnimation()
+            })
+            .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                editText.clearFocus()
+                Keyboard.hide(getContext(), editText)
+                val daoBodyPart = DAOBodyPart(getContext())
+                val temp_key = daoBodyPart.add(
+                    -1,
+                    editText.getText().toString(),
+                    "",
+                    daoBodyPart.getCount(),
+                    BodyPartExtensions.TYPE_MUSCLE
+                )
 
-                editText.clearFocus();
-                Keyboard.hide(getContext(), editText);
-                DAOBodyPart daoBodyPart = new DAOBodyPart(getContext());
-                long temp_key = daoBodyPart.add(-1, editText.getText().toString(), "", daoBodyPart.getCount(), BodyPartExtensions.TYPE_MUSCLE);
-
-                sDialog.dismiss();
-                BodyPartDetailsFragment bodyPartDetailsFragment = BodyPartDetailsFragment.newInstance(temp_key, true);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                sDialog!!.dismiss()
+                val bodyPartDetailsFragment = newInstance(temp_key, true)
+                val transaction = requireActivity().getSupportFragmentManager().beginTransaction()
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.fragment_container, bodyPartDetailsFragment, MainActivity.BODYTRACKINGDETAILS);
-                transaction.addToBackStack(null);
+                transaction.replace(
+                    R.id.fragment_container,
+                    bodyPartDetailsFragment,
+                    MainActivity.BODYTRACKINGDETAILS
+                )
+                transaction.addToBackStack(null)
                 // Commit the transaction
-                transaction.commit();
-            });
+                transaction.commit()
+            })
         //Keyboard.hide(context, editText);});
-        dialog.setOnShowListener(sDialog -> {
-            editText.requestFocus();
-            Keyboard.show(getContext(), editText);
-        });
+        dialog.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
+            editText.requestFocus()
+            Keyboard.show(getContext(), editText)
+        })
 
-        dialog.setCustomView(linearLayout);
-        dialog.show();
-    };
-
-    private OnItemClickListener onClickListItem = (parent, view, position, id) -> {
-
-        TextView textView = view.findViewById(R.id.LIST_BODYPART_ID);
-        long bodyPartID = Long.parseLong(textView.getText().toString());
-
-        BodyPartDetailsFragment fragment = BodyPartDetailsFragment.newInstance(bodyPartID, true);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, fragment, MainActivity.BODYTRACKINGDETAILS);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
-    };
-    private DAOBodyPart mdbBodyPart;
-    private DAOBodyMeasure mdbMeasure;
-    private BodyPartListAdapter mListAdapter;
-    private Button addButton;
-
-    /**
-     * Create a new instance of DetailsFragment, initialized to
-     * show the text at 'index'.
-     */
-    public static BodyPartListFragment newInstance(String name, int id) {
-        BodyPartListFragment f = new BodyPartListFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putString("name", name);
-        args.putInt("id", id);
-        f.setArguments(args);
-
-        return f;
+        dialog.setCustomView(linearLayout)
+        dialog.show()
     }
 
-    @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private val onClickListItem =
+        OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+            val textView = requireView().findViewById<TextView>(R.id.LIST_BODYPART_ID)
+            val bodyPartID = textView.getText().toString().toLong()
 
-        if (savedInstanceState==null) {
-            mdbMeasure = new DAOBodyMeasure(this.getContext());
-            mdbBodyPart = new DAOBodyPart(this.getContext());
-            dataModels = new ArrayList<>();
-            mListAdapter = new BodyPartListAdapter(dataModels, getContext());
-            mListAdapter.setProfile(getProfile());
+            val fragment = newInstance(bodyPartID, true)
+            val transaction = requireActivity().getSupportFragmentManager().beginTransaction()
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment, MainActivity.BODYTRACKINGDETAILS)
+            transaction.addToBackStack(null)
+
+            // Commit the transaction
+            transaction.commit()
+        }
+    private var mdbBodyPart: DAOBodyPart? = null
+    private var mdbMeasure: DAOBodyMeasure? = null
+    private var mListAdapter: BodyPartListAdapter? = null
+    private var addButton: Button? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null) {
+            mdbMeasure = DAOBodyMeasure(this.getContext())
+            mdbBodyPart = DAOBodyPart(this.getContext())
+            dataModels = ArrayList<BodyPart?>()
+            mListAdapter = BodyPartListAdapter(dataModels, requireContext())
+//            mListAdapter!!.setProfile(this.profile)
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.tab_bodytracking, container, false);
+
+        val view = inflater.inflate(R.layout.tab_bodytracking, container, false)
 
 
-        if (savedInstanceState==null) {
-            addButton = view.findViewById(R.id.addBodyPart);
-            addButton.setOnClickListener(clickAddButton);
+        if (savedInstanceState == null) {
+            addButton = view.findViewById<Button>(R.id.addBodyPart)
+            addButton!!.setOnClickListener(clickAddButton)
 
-            measureList = view.findViewById(R.id.listBodyMeasures);
+            measureList = view.findViewById<ListView?>(R.id.listBodyMeasures)
             // Initialisation des evenements
-            measureList.setOnItemClickListener(onClickListItem);
-            measureList.setAdapter(mListAdapter);
+            measureList!!.setOnItemClickListener(onClickListItem)
+            measureList!!.setAdapter(mListAdapter)
         }
 
-        return view;
+        return view
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
 
-        mdbBodyPart.deleteAllEmptyBodyPart();
-        refreshData();
+        mdbBodyPart!!.deleteAllEmptyBodyPart()
+        refreshData()
     }
 
-    private void refreshData() {
-        if (dataModels==null) {
-            dataModels = new ArrayList<>();
+    private fun refreshData() {
+        if (dataModels == null) {
+            dataModels = ArrayList<BodyPart?>()
         }
 
-        dataModels.clear();
+        dataModels!!.clear()
 
-        List<BodyPart> lBodyPartList = mdbBodyPart.getMusclesList();
-        for (BodyPart bp: lBodyPartList) {
-            BodyMeasure bm = null;
-            if (getProfile()!=null)
-                bm = mdbMeasure.getLastBodyMeasures(bp.getId(), getProfile());
+        val lBodyPartList = mdbBodyPart!!.getMusclesList()
+        for (bp in lBodyPartList) {
+            var bm: BodyMeasure? = null
+            if (this.profile != null) bm =
+                mdbMeasure!!.getLastBodyMeasures(bp.getId(), this.profile)
 
-            bp.setLastMeasure(bm);
+            bp.setLastMeasure(bm)
 
-            dataModels.add(bp);
+            dataModels!!.add(bp)
         }
 
-        if (mListAdapter==null) {
-            mListAdapter = new BodyPartListAdapter(dataModels, getContext());
-            mListAdapter.setProfile(getProfile());
-            measureList.setAdapter(mListAdapter);
-        }
-        else {
-            mListAdapter.notifyDataSetChanged();
+        if (mListAdapter == null) {
+            mListAdapter = BodyPartListAdapter(dataModels, requireContext())
+//            mListAdapter!!.setProfile(this.profile)
+            measureList!!.setAdapter(mListAdapter)
+        } else {
+            mListAdapter!!.notifyDataSetChanged()
         }
     }
 
-    private Profile getProfile() {
-        return ((MainActivity) getActivity()).getCurrentProfile();
-    }
+    private val profile: Profile?
+        get() = (getActivity() as MainActivity).currentProfile
 
+    companion object {
+        /**
+         * Create a new instance of DetailsFragment, initialized to
+         * show the text at 'index'.
+         */
+        fun newInstance(name: String?, id: Int): BodyPartListFragment {
+            val f = BodyPartListFragment()
+
+            // Supply index input as an argument.
+            val args = Bundle()
+            args.putString("name", name)
+            args.putInt("id", id)
+            f.setArguments(args)
+
+            return f
+        }
+    }
 }

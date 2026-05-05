@@ -1,23 +1,19 @@
-package com.easyfitness;
+package com.easyfitness
 
-public class GraphData {
-    private double x, y;
+class GraphData {
+    // in days
+    @JvmField
+    val x: Double
+    @JvmField
+    val y: Double
 
-    public GraphData(double x, double y) {
-        this.x = x;
-        this.y = y;
+    constructor(x: Double, y: Double) {
+        this.x = x
+        this.y = y
     }
 
-    public GraphData(double x, double y, int y_unit) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double getX() {
-        return this.x;
-    } // in days
-
-    public double getY() {
-        return this.y;
+    constructor(x: Double, y: Double, y_unit: Int) {
+        this.x = x
+        this.y = y
     }
 }

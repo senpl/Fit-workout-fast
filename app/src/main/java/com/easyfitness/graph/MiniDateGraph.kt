@@ -1,118 +1,101 @@
-package com.easyfitness.graph;
+package com.easyfitness.graph
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Context
+import androidx.core.content.ContextCompat
+import com.easyfitness.R
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.EntryXComparator
+import com.github.mikephil.charting.utils.Utils
+import java.util.Collections
 
-import androidx.core.content.ContextCompat;
+class MiniDateGraph(context: Context?, chart: LineChart?, name: String?) {
+    var chart: LineChart? = null
+        private set
+    private var mChartName: String? = null
+    private var mContext: Context? = null
 
-import com.easyfitness.R;
-import com.easyfitness.utils.DateConverter;
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.IMarker;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.EntryXComparator;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
-
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
-
-public class MiniDateGraph {
-
-    private LineChart mChart = null;
-    private String mChartName = null;
-    private Context mContext = null;
-
-    public MiniDateGraph(Context context, LineChart chart, String name) {
-        mChart = chart;
-        mChartName = name;
-        mChart.getDescription().setEnabled(false);
-        mChart.setDoubleTapToZoomEnabled(false);
-        mChart.setHorizontalScrollBarEnabled(false);
-        mChart.setVerticalScrollBarEnabled(false);
-        mChart.setAutoScaleMinMaxEnabled(false);
-        mChart.setDrawBorders(false);
-        mChart.setViewPortOffsets(6f, 6f, 6f, 6f);
-        mChart.animateY(1000, Easing.EaseInOutBack); // animate horizontal 3000 milliseconds
-        mChart.setClickable(false);
+    init {
+        this.chart = chart
+        mChartName = name
+        chart!!.getDescription().isEnabled = false
+        chart.setDoubleTapToZoomEnabled(false)
+        chart.setHorizontalScrollBarEnabled(false)
+        chart.setVerticalScrollBarEnabled(false)
+        chart.setAutoScaleMinMaxEnabled(false)
+        chart.setDrawBorders(false)
+        chart.setViewPortOffsets(6f, 6f, 6f, 6f)
+        chart.animateY(1000, Easing.EaseInOutBack) // animate horizontal 3000 milliseconds
+        chart.setClickable(false)
 
 
-        mChart.getAxisRight().setDrawLabels(false);
-        mChart.getAxisLeft().setDrawLabels(false);
-        mChart.getLegend().setEnabled(false);
-        mChart.setPinchZoom(false);
-        mChart.setDescription(null);
-        mChart.setTouchEnabled(false);
-        mChart.setDoubleTapToZoomEnabled(false);
+        chart.getAxisRight().setDrawLabels(false)
+        chart.getAxisLeft().setDrawLabels(false)
+        chart.getLegend().isEnabled = false
+        chart.setPinchZoom(false)
+        chart.setDescription(null)
+        chart.setTouchEnabled(false)
+        chart.setDoubleTapToZoomEnabled(false)
 
-        mContext = context;
+        mContext = context
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
-        l.setEnabled(false);
+        val l = chart.getLegend()
+        l.isEnabled = false
 
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(ColorTemplate.getHoloBlue());
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(false);
-        xAxis.setGranularity(1); // 1 jour
+        val xAxis = chart.getXAxis()
+        xAxis.setDrawLabels(false)
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
+        xAxis.setTextColor(ColorTemplate.getHoloBlue())
+        xAxis.setDrawAxisLine(false)
+        xAxis.setDrawGridLines(false)
+        xAxis.setCenterAxisLabels(false)
+        xAxis.setGranularity(1f) // 1 jour
 
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setEnabled(false);
-        leftAxis.setDrawZeroLine(false);
-        leftAxis.setDrawLabels(false);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setDrawGridLines(false);
-        leftAxis.setGranularityEnabled(false);
+        val leftAxis = chart.getAxisLeft()
+        leftAxis.isEnabled = false
+        leftAxis.setDrawZeroLine(false)
+        leftAxis.setDrawLabels(false)
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue())
+        leftAxis.setDrawGridLines(false)
+        leftAxis.setGranularityEnabled(false)
 
-        mChart.getAxisRight().setEnabled(false);
+        chart.getAxisRight().isEnabled = false
     }
 
-    public void draw(ArrayList<Entry> entries) {
-        mChart.clear();
+    fun draw(entries: ArrayList<Entry?>) {
+        chart!!.clear()
         if (entries.isEmpty()) {
-            return;
+            return
         }
 
-        Collections.sort(entries, new EntryXComparator());
+        Collections.sort<Entry?>(entries, EntryXComparator())
 
         //Log.d("DEBUG", arrayToString(entries));
-
-        LineDataSet set1 = new LineDataSet(entries, mChartName);
-        set1.setLineWidth(3f);
-        set1.setCircleRadius(0f);
-        set1.setDrawFilled(true);
+        val set1 = LineDataSet(entries, mChartName)
+        set1.setLineWidth(3f)
+        set1.setCircleRadius(0f)
+        set1.setDrawFilled(true)
         if (Utils.getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above
-            Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.fade_blue);
-            set1.setFillDrawable(drawable);
+            val drawable = ContextCompat.getDrawable(mContext!!, R.drawable.fade_blue)
+            set1.setFillDrawable(drawable)
         } else {
-            set1.setFillColor(ColorTemplate.getHoloBlue());
+            set1.setFillColor(ColorTemplate.getHoloBlue())
         }
-        set1.setFillAlpha(100);
-        set1.setColor(mContext.getResources().getColor(R.color.toolbar_background));
-        set1.setCircleColor(mContext.getResources().getColor(R.color.toolbar_background));
+        set1.setFillAlpha(100)
+        set1.setColor(mContext!!.getResources().getColor(R.color.toolbar_background))
+        set1.setCircleColor(mContext!!.getResources().getColor(R.color.toolbar_background))
 
         // Create a data object with the datasets
-        LineData data = new LineData(set1);
-        data.setDrawValues(false);
+        val data = LineData(set1)
+        data.setDrawValues(false)
 
         /*data.setValueFormatter(new IValueFormatter() {
             private DecimalFormat mFormat = new DecimalFormat("#.##");
@@ -124,58 +107,63 @@ public class MiniDateGraph {
         });*/
 
         // Set data
-        mChart.setData(data);
+        chart!!.setData(data)
 
-        mChart.invalidate();
+        chart!!.invalidate()
+
         //mChart.animateY(500, Easing.EasingOption.EaseInBack);    //refresh graph
-
     }
 
-    private String arrayToString(ArrayList<Entry> entries) {
-        StringBuilder output = new StringBuilder();
-        String delimiter = "\n"; // Can be new line \n tab \t etc...
-        for (int i = 0; i < entries.size(); i++) {
-            output.append(entries.get(i).getY()).append(" / ").append(entries.get(i).getX()).append(delimiter);
+    private fun arrayToString(entries: ArrayList<Entry?>): String {
+        val output = StringBuilder()
+        val delimiter = "\n" // Can be new line \n tab \t etc...
+        for (i in entries.indices) {
+            output.append(entries.get(i)!!.y).append(" / ").append(entries.get(i)!!.x)
+                .append(delimiter)
         }
 
-        return output.toString();
+        return output.toString()
     }
 
-    public LineChart getChart() {
-        return mChart;
-    }
+    fun setZoom(z: zoomType) {
+        when (z) {
+            zoomType.ZOOM_ALL -> chart!!.fitScreen()
+            zoomType.ZOOM_WEEK -> {
+                chart!!.fitScreen()
+                if (chart!!.getData() != null) {
+                    chart!!.setVisibleXRangeMaximum(7f) // allow 20 values to be displayed at once on the x-axis, not more
+                    chart!!.moveViewToX(
+                        chart!!.getData()!!.getXMax() + (1 - 7)
+                    ) // set the left edge of the chart to x-index 10
+                }
+            }
 
-    public void setZoom(zoomType z) {
-        switch (z) {
-            case ZOOM_ALL:
-                mChart.fitScreen();
-                break;
-            case ZOOM_WEEK:
-                mChart.fitScreen();
-                if (mChart.getData() != null) {
-                    mChart.setVisibleXRangeMaximum((float) 7); // allow 20 values to be displayed at once on the x-axis, not more
-                    mChart.moveViewToX(mChart.getData().getXMax() + (1 - 7)); // set the left edge of the chart to x-index 10
+            zoomType.ZOOM_MONTH -> {
+                chart!!.fitScreen()
+                if (chart!!.getData() != null) {
+                    chart!!.setVisibleXRangeMaximum(30f) // allow 30 values to be displayed at once on the x-axis, not more
+                    chart!!.moveViewToX(
+                        chart!!.getData()!!.getXMax() + (1 - 30).toFloat()
+                    ) // set the left edge of the chart to x-index 10
                 }
-                break;
-            case ZOOM_MONTH:
-                mChart.fitScreen();
-                if (mChart.getData() != null) {
-                    mChart.setVisibleXRangeMaximum((float) 30); // allow 30 values to be displayed at once on the x-axis, not more
-                    mChart.moveViewToX(mChart.getData().getXMax() + (float) (1 - 30)); // set the left edge of the chart to x-index 10
+            }
+
+            zoomType.ZOOM_YEAR -> {
+                chart!!.fitScreen()
+                if (chart!!.getData() != null) {
+                    chart!!.setVisibleXRangeMaximum(365f) // allow 365 values to be displayed at once on the x-axis, not more
+                    chart!!.moveViewToX(
+                        chart!!.getData()!!.getXMax() + (1 - 365).toFloat()
+                    ) // set the left edge of the chart to x-index 10
                 }
-                break;
-            case ZOOM_YEAR:
-                mChart.fitScreen();
-                if (mChart.getData() != null) {
-                    mChart.setVisibleXRangeMaximum((float) 365); // allow 365 values to be displayed at once on the x-axis, not more
-                    mChart.moveViewToX(mChart.getData().getXMax() + (float) (1 - 365)); // set the left edge of the chart to x-index 10
-                }
-                break;
+            }
         }
 
         // refresh
-        mChart.invalidate();
+        chart!!.invalidate()
     }
 
-    public enum zoomType {ZOOM_ALL, ZOOM_YEAR, ZOOM_MONTH, ZOOM_WEEK}
+    enum class zoomType {
+        ZOOM_ALL, ZOOM_YEAR, ZOOM_MONTH, ZOOM_WEEK
+    }
 }

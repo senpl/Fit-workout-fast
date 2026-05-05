@@ -1,90 +1,80 @@
-package com.easyfitness;
+package com.easyfitness
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.view.View;
-import android.widget.Button;
+import android.app.Activity
+import android.app.Dialog
+import android.os.Bundle
+import android.os.SystemClock
+import android.view.View
+import android.widget.Button
+import gr.antoniom.chronometer.Chronometer
 
-import gr.antoniom.chronometer.Chronometer;
+class ChronoDialogbox(var c: Activity) : Dialog(c), View.OnClickListener {
+    var d: Dialog? = null
+    var startstop: Button? = null
+    var exit: Button? = null
+    var reset: Button? = null
+    var chrono: Chronometer? = null
+    var strCurrentTime: String = ""
+    var startTime: Long = 0
+    var stopTime: Long = 0
+    private var chronoStarted = false
+    private var chronoResetted = false
 
-public class ChronoDialogbox extends Dialog implements
-    android.view.View.OnClickListener {
-
-    public Activity c;
-    public Dialog d;
-    public Button startstop, exit, reset;
-    public Chronometer chrono;
-    String strCurrentTime = "";
-    long startTime = 0;
-    long stopTime = 0;
-    private boolean chronoStarted = false;
-    private boolean chronoResetted = false;
-
-    public ChronoDialogbox(Activity a) {
-        super(a);
-        this.c = a;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setTitle(c.getResources().getString(R.string.ChronometerLabel)); //ChronometerLabel
-        setContentView(R.layout.dialog_chrono);
-        this.setCanceledOnTouchOutside(false); // make it modal
+        setTitle(c.getResources().getString(R.string.ChronometerLabel)) //ChronometerLabel
+        setContentView(R.layout.dialog_chrono)
+        this.setCanceledOnTouchOutside(false) // make it modal
 
-        startstop = findViewById(R.id.btn_startstop);
-        exit = findViewById(R.id.btn_exit);
-        reset = findViewById(R.id.btn_reset);
-        chrono = findViewById(R.id.chronoValue);
+        startstop = findViewById<Button>(R.id.btn_startstop)
+        exit = findViewById<Button>(R.id.btn_exit)
+        reset = findViewById<Button>(R.id.btn_reset)
+        chrono = findViewById<Chronometer>(R.id.chronoValue)
 
-        startstop.setOnClickListener(this);
-        exit.setOnClickListener(this);
-        reset.setOnClickListener(this);
-        chrono.setBase(SystemClock.elapsedRealtime());
-        chrono.start();
-        startTime = SystemClock.elapsedRealtime();
-        chronoStarted = true;
+        startstop!!.setOnClickListener(this)
+        exit!!.setOnClickListener(this)
+        reset!!.setOnClickListener(this)
+        chrono!!.base = SystemClock.elapsedRealtime()
+        chrono!!.start()
+        startTime = SystemClock.elapsedRealtime()
+        chronoStarted = true
 
-        startstop.setText("Stop");
-
+        startstop!!.setText("Stop")
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    override fun onClick(v: View) {
+        val id = v.getId()
         if (id == R.id.btn_startstop) {
             if (chronoStarted) {
-                chrono.stop();
-                stopTime = SystemClock.elapsedRealtime();
-                chronoStarted = false;
-                startstop.setText("Start");
+                chrono!!.stop()
+                stopTime = SystemClock.elapsedRealtime()
+                chronoStarted = false
+                startstop!!.setText("Start")
             } else {
                 if (chronoResetted) {
-                    startTime = SystemClock.elapsedRealtime();
-                    chrono.setBase(startTime);
+                    startTime = SystemClock.elapsedRealtime()
+                    chrono!!.base = startTime
                 } else {
-                    startTime = SystemClock.elapsedRealtime() - (stopTime - startTime);
-                    chrono.setBase(startTime);
+                    startTime = SystemClock.elapsedRealtime() - (stopTime - startTime)
+                    chrono!!.base = startTime
                 }
-                chrono.start();
-                chronoStarted = true;
-                startstop.setText("Stop");
+                chrono!!.start()
+                chronoStarted = true
+                startstop!!.setText("Stop")
             }
-            chronoResetted = false;
+            chronoResetted = false
         } else if (id == R.id.btn_reset) {
-            startTime = SystemClock.elapsedRealtime();
-            chrono.setBase(startTime);
-            chrono.setText("00:00:0");
-            chronoResetted = true;
+            startTime = SystemClock.elapsedRealtime()
+            chrono!!.base = startTime
+            chrono!!.setText("00:00:0")
+            chronoResetted = true
         } else if (id == R.id.btn_exit) {
-            chrono.stop();
-            chronoStarted = false;
-            chrono.setText("00:00:0");
-            startstop.setText("Start");
-            dismiss();
+            chrono!!.stop()
+            chronoStarted = false
+            chrono!!.setText("00:00:0")
+            startstop!!.setText("Start")
+            dismiss()
         }
     }
 }

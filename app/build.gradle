@@ -2,18 +2,21 @@ plugins {
     id 'com.android.application'
 //    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.easyfitness"
     compileSdk = 36
+
     defaultConfig {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
         targetSdkVersion 35
         versionCode 83
         versionName "0.26.16"
-//        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -43,15 +46,10 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-
-            ndk{
+            ndk {
                 debugSymbolLevel "FULL"
             }
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            resValue("bool", "FIREBASE_CRASH_ENABLED", "true")
-            proguardFiles getDefaultProguardFile(
-                'proguard-android-optimize.txt'),
-                'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             if (rootProject.file('release.properties').exists()) {
                 signingConfig signingConfigs.release
@@ -76,74 +74,81 @@ android {
         viewBinding true
         resValues true
     }
+
     lint {
         disable 'GoogleAppIndexingWarning'
     }
 
     dependenciesInfo {
-        // Disables dependency metadata when building APKs.
         includeInApk = false
-        // Disables dependency metadata when building Android App Bundles.
         includeInBundle = false
     }
+    kotlinOptions {
+        jvmTarget = '21'
+    }
+//    kotlinOptions {
+//        jvmTarget = '21'
+//    }
+//    kotlinOptions {
+//        jvmTarget = '21'
+//    }
 }
 
 configurations.configureEach {
     resolutionStrategy {
-        force(libs.material)
-        force('androidx.core:core:1.16.0')
+        force 'androidx.core:core:1.15.0'
+        force 'androidx.core:core-ktx:1.15.0'
+        force 'androidx.activity:activity:1.9.3'
+        force 'androidx.activity:activity-ktx:1.9.3'
+        force 'androidx.appcompat:appcompat:1.7.1'
+        force 'androidx.fragment:fragment:1.8.5'
+        force 'androidx.fragment:fragment-ktx:1.8.5'
     }
     exclude group: 'com.android.support', module: 'support-compat'
     exclude group: 'com.android.support', module: 'support-v4'
 }
 
 dependencies {
-// Support
-    implementation(libs.dotsindicator)
+    // AndroidX Support
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.fragment.ktx
     implementation libs.androidx.annotation
     implementation libs.androidx.constraintlayout
-//    implementation libs.androidx.appcompat
     implementation libs.androidx.cardview
     implementation libs.androidx.coordinatorlayout
     implementation libs.androidx.drawerlayout
     implementation libs.androidx.exifinterface
-    implementation libs.androidx.fragment.ktx
     implementation libs.androidx.preference.ktx
+    implementation libs.androidx.recyclerview
     implementation libs.androidx.viewpager
-    implementation libs.youtubeplayer.compose
-    implementation libs.androidx.material
-    implementation libs.library
-    implementation(libs.androidx.activity.compose)
 
-
-// Firebase
-    //implementation 'com.google.firebase:firebase-core:17.0.0'
-
-// Other
-    implementation(libs.licensesdialog) //2.0.0
-    implementation(libs.mpandroidchart)
-    implementation(libs.dotsindicatorwithoutviewpager)
-//    implementation libs.pagerslidingtabstrip //DEPRECATED
-    implementation(libs.smarttablayout.library)
-    implementation(libs.utils.v4)
-    implementation(libs.circleprogress)
-    implementation(libs.material.intro) //1.6.2
-    implementation(libs.circularimageview) //3.2.0
-    implementation(libs.ktoast)
-    implementation(libs.materialfavoritebutton)
-    //implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar', {
-    //    transitive = true
-    //})
-    implementation(libs.numberslidingpicker) //from https://github.com/senpl/NumberSlidingPicker/commit/2cd87266c8e7d7656df9eef964bf062da95833a3
-    implementation(libs.rxjava)
-    implementation(libs.rx2.timer)
-    implementation(libs.fillprogresslayout)
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.ultimateringtonepicker)
-    implementation(libs.android.image.cropper)
-    implementation(libs.dotsindicatorwithoutviewpager)
+    // UI Components
     implementation libs.material
-    debugImplementation(libs.androidx.ui.tooling)
-}
+    implementation libs.androidx.material
+    implementation libs.dotsindicator
+    implementation libs.dotsindicatorwithoutviewpager
+    implementation libs.smarttablayout.library
+    implementation libs.utils.v4
+    implementation libs.circleprogress
+    implementation libs.circularimageview
+    implementation libs.material.intro
+    implementation libs.materialfavoritebutton
+    implementation libs.numberslidingpicker
+    implementation libs.fillprogresslayout
 
-//apply plugin: 'com.google.gms.google-services'
+    // Utilities & Other
+    implementation libs.library
+    implementation libs.mpandroidchart
+    implementation libs.licensesdialog
+    implementation libs.ktoast
+    implementation libs.rxjava
+    implementation libs.rx2.timer
+    implementation libs.ultimateringtonepicker
+    implementation libs.android.image.cropper
+    implementation libs.youtubeplayer.compose
+
+    debugImplementation libs.androidx.ui.tooling
+}

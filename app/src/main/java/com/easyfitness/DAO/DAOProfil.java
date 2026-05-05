@@ -280,12 +280,12 @@ public class DAOProfil extends DAOBase {
 
         // updating row
         return db.update(TABLE_NAME, value, KEY + " = ?",
-            new String[]{String.valueOf(m.getId())});
+            new String[]{String.valueOf(m.id)});
     }
 
     // Deleting single Profile
     public void deleteProfil(Profile m) {
-        deleteProfil(m.getId());
+        deleteProfil(m.id);
     }
 
     // Deleting single Profile

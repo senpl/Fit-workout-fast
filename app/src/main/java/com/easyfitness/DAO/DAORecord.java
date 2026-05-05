@@ -101,7 +101,7 @@ public class DAORecord extends DAOBase {
         if (!lDAOMachine.machineExists(pMachine)) {
             machine_key = lDAOMachine.addMachine(pMachine, "", pType, "", false, "");
         } else {
-            machine_key = lDAOMachine.getMachine(pMachine).getId();
+            machine_key = lDAOMachine.getMachine(pMachine).id;
         }
 
         value.put(DAORecord.DATE, DateConverter.dateToDBDateStr(pDate));
@@ -109,7 +109,7 @@ public class DAORecord extends DAOBase {
         value.put(DAORecord.SERIE, pSerie);
         value.put(DAORecord.REPETITION, pRepetition);
         value.put(DAORecord.WEIGHT, pPoids);
-        value.put(DAORecord.PROFIL_KEY, pProfile.getId());
+        value.put(DAORecord.PROFIL_KEY, pProfile.id);
         value.put(DAORecord.UNIT, pUnit);
         value.put(DAORecord.NOTES, pNote);
         value.put(DAORecord.MACHINE_KEY, machine_key);
@@ -218,7 +218,7 @@ public class DAORecord extends DAOBase {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME
             + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+            + " AND " + PROFIL_KEY + "=" + pProfile.id
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
 
         // return value list
@@ -242,7 +242,7 @@ public class DAORecord extends DAOBase {
 
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME +
-            " WHERE " + PROFIL_KEY + "=" + pProfile.getId() +
+            " WHERE " + PROFIL_KEY + "=" + pProfile.id +
             " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
 
         // Return value list
@@ -273,7 +273,7 @@ public class DAORecord extends DAOBase {
                 + TABLE_NAME + " ORDER BY " + EXERCISE + " ASC";
         } else {
             selectQuery = "SELECT DISTINCT " + EXERCISE + " FROM "
-                + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " ORDER BY " + EXERCISE + " ASC";
+                + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC";
         }
         mCursor = db.rawQuery(selectQuery, null);
 
@@ -301,7 +301,7 @@ public class DAORecord extends DAOBase {
 
         // Select All Machines
         String selectQuery = "SELECT DISTINCT " + EXERCISE + " FROM "
-            + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " ORDER BY " + EXERCISE + " ASC";
+            + TABLE_NAME + "  WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + EXERCISE + " ASC";
         mCursor = db.rawQuery(selectQuery, null);
 
         int size = mCursor.getCount();
@@ -360,12 +360,12 @@ public class DAORecord extends DAOBase {
         // Select All Machines
         String selectQuery = "SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME;
         if (pMachine != null) {
-            selectQuery += " WHERE " + MACHINE_KEY + "=" + pMachine.getId();
+            selectQuery += " WHERE " + MACHINE_KEY + "=" + pMachine.id;
             if (pProfile != null)
-                selectQuery += " AND " + PROFIL_KEY + "=" + pProfile.getId(); // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
+                selectQuery += " AND " + PROFIL_KEY + "=" + pProfile.id; // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
         } else {
             if (pProfile != null)
-                selectQuery += " WHERE " + PROFIL_KEY + "=" + pProfile.getId(); // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
+                selectQuery += " WHERE " + PROFIL_KEY + "=" + pProfile.id; // pProfile should never be null but depending on how the activity is resuming it happen. to be fixed
         }
         selectQuery += " ORDER BY " + DATE + " DESC";
 
@@ -414,8 +414,8 @@ public class DAORecord extends DAOBase {
             return null;
 
         selectQuery = "SELECT * FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
-            + " AND " + DATE + " IN (SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.getId() + " ORDER BY " + DATE + " DESC LIMIT 3)"
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id
+            + " AND " + DATE + " IN (SELECT DISTINCT " + DATE + " FROM " + TABLE_NAME + " WHERE " + PROFIL_KEY + "=" + pProfile.id + " ORDER BY " + DATE + " DESC LIMIT 3)"
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
 
         return getRecordsListCursor(selectQuery);
@@ -440,21 +440,21 @@ public class DAORecord extends DAOBase {
             selectQuery = "SELECT * FROM " + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine
                 + "\" AND " + DATE + "=\"" + pDate
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
                 + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
         } else if (!lfilterMachine && lfilterDate) {
             selectQuery = "SELECT * FROM " + TABLE_NAME
                 + " WHERE " + DATE + "=\"" + pDate
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
                 + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
         } else if (lfilterMachine) {
             selectQuery = "SELECT * FROM " + TABLE_NAME
                 + " WHERE " + EXERCISE + "=\"" + pMachine
-                + "\" AND " + PROFIL_KEY + "=" + pProfile.getId()
+                + "\" AND " + PROFIL_KEY + "=" + pProfile.id
                 + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
         } else {
             selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE " + PROFIL_KEY + "=" + pProfile.getId()
+                + " WHERE " + PROFIL_KEY + "=" + pProfile.id
                 + " ORDER BY " + DATE + " DESC," + KEY + " DESC";
         }
 
@@ -478,7 +478,7 @@ public class DAORecord extends DAOBase {
 */
 
         String selectQuery = "SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
-            + " WHERE " + PROFIL_KEY + "=" + pProfile.getId();
+            + " WHERE " + PROFIL_KEY + "=" + pProfile.id;
         mCursor = db.rawQuery(selectQuery, null);
 
         // looping through only the first rows.
@@ -513,7 +513,7 @@ public class DAORecord extends DAOBase {
                 + " WHERE " + MACHINE_KEY + "=" + machineID;
         } else {
             selectQuery = "SELECT MAX(" + KEY + ") FROM " + TABLE_NAME
-                + " WHERE " + MACHINE_KEY + "=" + machineID + " AND " + PROFIL_KEY + "=" + p.getId();
+                + " WHERE " + MACHINE_KEY + "=" + machineID + " AND " + PROFIL_KEY + "=" + p.id;
         }
         mCursor = db.rawQuery(selectQuery, null);
 
@@ -546,7 +546,7 @@ public class DAORecord extends DAOBase {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME
             + " WHERE " + EXERCISE + "=\"" + pMachines + "\""
-            + " AND " + PROFIL_KEY + "=" + pProfile.getId()
+            + " AND " + PROFIL_KEY + "=" + pProfile.id
             + " ORDER BY " + DATE + " DESC," + KEY + " DESC" + mTop;
 
         // return value list

@@ -52,9 +52,9 @@ import com.easyfitness.DAO.DAOCardio
 import com.easyfitness.DAO.DAOExerciseInProgram
 import com.easyfitness.DAO.DAOFonte
 import com.easyfitness.DAO.DAOMachine
-import com.easyfitness.DAO.DAOMachine.TYPE_CARDIO
-import com.easyfitness.DAO.DAOMachine.TYPE_STRENGTH
-import com.easyfitness.DAO.DAOMachine.TYPE_STATIC
+//import com.easyfitness.DAO.DAOMachine.TYPE_CARDIO
+//import com.easyfitness.DAO.DAOMachine.TYPE_STRENGTH
+//import com.easyfitness.DAO.DAOMachine.TYPE_STATIC
 import com.easyfitness.DAO.DAOProgram
 import com.easyfitness.DAO.DAORecord
 import com.easyfitness.DAO.DAOStatic
@@ -102,13 +102,13 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_CARDIO
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STATIC
+import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STRENGTH
+//import androidx.fragment.app.FragmentStatePagerAdapter
 //import androidx.viewpager2.widget.ViewPager2
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -174,23 +174,23 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 //    private val ARG_OBJECT = "object"
 
-    class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
-        override fun getCount(): Int  = 100
-
-        override fun getItem(i: Int): Fragment {
-            val fragment = DemoObjectFragment()
-            fragment.arguments = Bundle().apply {
-                // Our object is just an integer :-P
-                putInt("demoObj", i + 1)
-            }
-            return fragment
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return "OBJECT ${(position + 1)}"
-        }
-    }
+//    class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+//
+//        override fun getCount(): Int  = 100
+//
+//        override fun getItem(i: Int): Fragment {
+//            val fragment = DemoObjectFragment()
+//            fragment.arguments = Bundle().apply {
+//                // Our object is just an integer :-P
+//                putInt("demoObj", i + 1)
+//            }
+//            return fragment
+//        }
+//
+//        override fun getPageTitle(position: Int): CharSequence {
+//            return "OBJECT ${(position + 1)}"
+//        }
+//    }
 
     class DemoObjectFragment : Fragment() {
 
@@ -987,10 +987,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                         }
                         try {
                             mediaPlayer.prepare()
+                            mediaPlayer.start()
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
-                        mediaPlayer.start()
                     }
                 }
                 .build()
@@ -1031,11 +1031,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.DeleteRecordDialog))
             .setMessage(resources.getString(R.string.areyousure))
-            .setNeutralButton(resources.getString(R.string.global_cancel)) { dialog, which ->
+            .setNeutralButton(resources.getString(R.string.global_cancel)) { _, _ ->
             }
-            .setNegativeButton(resources.getString(R.string.global_no)) { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.global_no)) { _, _ ->
             }
-            .setPositiveButton(resources.getString(R.string.global_yes)) { dialog, which ->
+            .setPositiveButton(resources.getString(R.string.global_yes)) { _, _ ->
                 daoRecord.deleteRecord(idToDelete)
                 updateRecordTable(binding.exerciseEdit.text.toString())
                 KToast.infoToast(
@@ -1221,11 +1221,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
             try {
                 mediaPlayer.prepare()
+                mediaPlayer.isLooping = false
+                mediaPlayer.start()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            mediaPlayer.isLooping = false
-            mediaPlayer.start()
+
         }
     }
 
@@ -1291,7 +1292,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     }
                     val numberFormat = DecimalFormat("#.##")
                     binding.minText.text = numberFormat.format(weight.toDouble()) + " " + unitStr
-                    val maxValue: Weight = strengthRecordsDao.getMax(getProfilFromMain(), m)
+                    val maxValue: Weight =
+                        strengthRecordsDao.getMax(getProfilFromMain(), m) ?: return
                     if (maxValue.storedUnit == UnitConverter.UNIT_LBS) {
                         weight = UnitConverter.KgtoLbs(maxValue.storedWeight)
                         unitStr = requireContext().getString(R.string.LbsUnitLabel)
@@ -1400,8 +1402,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         }
     }
 
-    private fun getProfilFromMain(): Profile? {
-        return mainActivity.currentProfile
+    private fun getProfilFromMain(): Profile {
+        return mainActivity.currentProfile!!
     }
 
     @SuppressLint("SetTextI18n")

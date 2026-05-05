@@ -1,43 +1,48 @@
-package com.easyfitness;
+package com.easyfitness
 
-import android.app.Dialog;
-import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog;
+import android.app.Dialog
+import android.os.Bundle
+import androidx.fragment.app.DialogFragment
+import com.ikovac.timepickerwithseconds.view.MyTimePickerDialog
 
 //@SuppressLint("ValidFragment")
-public class TimePickerDialogFragment extends DialogFragment {
+class TimePickerDialogFragment : DialogFragment() {
+    private var onTimeSetListener: MyTimePickerDialog.OnTimeSetListener? = null
+//    private val Hours = 0
+//    private val Minutes = 0
+//    private val Seconds = 0
 
-    private MyTimePickerDialog.OnTimeSetListener onTimeSetListener;
-    private int Hours=0;
-    private int Minutes=0;
-    private int Seconds=0;
-
-    static public TimePickerDialogFragment newInstance(MyTimePickerDialog.OnTimeSetListener onTimeSetListener, int hour, int min, int sec) {
-        TimePickerDialogFragment pickerFragment = new TimePickerDialogFragment();
-        pickerFragment.setOnTimeSetListener(onTimeSetListener);
-
-        //Pass the date in a bundle.
-        Bundle bundle = new Bundle();
-        bundle.putInt("HOUR", hour);
-        bundle.putInt("MINUTE", min);
-        bundle.putInt("SECOND", sec);
-        pickerFragment.setArguments(bundle);
-        return pickerFragment;
-    }
-
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
-        int hour = bundle.getInt("HOUR");
-        int min = bundle.getInt("MINUTE");
-        int sec = bundle.getInt("SECOND");
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bundle = getArguments()
+        val hour = bundle!!.getInt("HOUR")
+        val min = bundle.getInt("MINUTE")
+        val sec = bundle.getInt("SECOND")
 
         // Create a new instance of TimePickerDialog and return it
-        return new MyTimePickerDialog(getActivity(), onTimeSetListener, hour, min, sec, true);
+        return MyTimePickerDialog(requireActivity(), onTimeSetListener, hour, min, sec, true)
     }
 
-    private void setOnTimeSetListener(MyTimePickerDialog.OnTimeSetListener listener) {
-        this.onTimeSetListener = listener;
+    private fun setOnTimeSetListener(listener: MyTimePickerDialog.OnTimeSetListener?) {
+        this.onTimeSetListener = listener
+    }
+
+    companion object {
+        fun newInstance(
+            onTimeSetListener: MyTimePickerDialog.OnTimeSetListener?,
+            hour: Int,
+            min: Int,
+            sec: Int
+        ): TimePickerDialogFragment {
+            val pickerFragment = TimePickerDialogFragment()
+            pickerFragment.setOnTimeSetListener(onTimeSetListener)
+
+            //Pass the date in a bundle.
+            val bundle = Bundle()
+            bundle.putInt("HOUR", hour)
+            bundle.putInt("MINUTE", min)
+            bundle.putInt("SECOND", sec)
+            pickerFragment.setArguments(bundle)
+            return pickerFragment
+        }
     }
 }

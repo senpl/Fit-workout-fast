@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     private val onMenuItemClick = PopupMenu.OnMenuItemClickListener { item: MenuItem ->
         when (item.itemId) {
             R.id.create_newprofil -> {
-                activity.createNewProfil()
+//                activity.createNewProfil()
                 return@OnMenuItemClickListener true
             }
             R.id.photo_profil -> {
@@ -101,11 +101,11 @@ class MainActivity : AppCompatActivity() {
                         1 -> {
                             val photoPickerIntent = Intent(Intent.ACTION_PICK)
                             photoPickerIntent.type = "image/*"
-                            startActivityForResult(photoPickerIntent, ImageUtil.REQUEST_PICK_GALERY_PHOTO)
+//                            startActivityForResult(photoPickerIntent, ImageUtil.REQUEST_PICK_GALERY_PHOTO)
                         }
                         0 ->                             //dispatchTakePictureIntent(mF);
                             // start picker to get image for cropping and then use the image in cropping activity
-                            //NO LONGER SUPPORTED, PROBABLY TO REMOVE add something to set guidelines on on
+                            //NO LONGER SUPPORTED, PROBABLY TO REMOVE add something to set guidelines on
                             CropImageView.Guidelines.ON
                             //                            BottomSheetDialogFragment.instantiate(,"")
 //                            CropImage.
@@ -476,7 +476,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     val mDbMachines = DAOMachine(activity)
                     // recupere le premier ID de la liste.
-                    val lList2: List<Machine> = mDbMachines.allMachinesArray
+                    val lList2: List<Machine> = mDbMachines.allMachinesArray as List<Machine>
                     var i = 0
                     while (i < lList2.size) {
                         val mTemp = lList2[i]

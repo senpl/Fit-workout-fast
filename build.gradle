@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '2.2.10'
     repositories {
         google()
+        mavenCentral()
 //        maven { url "https://jitpack.io" }
 //        jcenter()
 //        mavenCentral()
@@ -13,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath libs.gradle
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20"
 
         //classpath 'com.google.gms:google-services:4.2.0'
 
