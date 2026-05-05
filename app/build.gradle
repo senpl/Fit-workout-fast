@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
 //    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.android)
 //    alias(libs.plugins.kotlin.android)
 //    alias(libs.plugins.kotlin.android)
 }
@@ -15,8 +15,8 @@ android {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 83
-        versionName "0.26.16"
+        versionCode 84
+        versionName "0.26.17"
     }
 
     signingConfigs {
@@ -83,9 +83,9 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    kotlinOptions {
-        jvmTarget = '21'
-    }
+//    kotlinOptions {
+//        jvmTarget = '21'
+//    }
 //    kotlinOptions {
 //        jvmTarget = '21'
 //    }
