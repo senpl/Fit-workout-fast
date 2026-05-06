@@ -72,7 +72,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         programs = daoProgram.allProgramsNames
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs == null || programs!!.isEmpty()) {
-            val profileId: Long = (requireActivity() as MainActivity).currentProfile!!.id
+            val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
             requireActivity().supportFragmentManager.commit {
@@ -140,7 +140,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         binding.exerciseImage.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
             if (m != null) {
-                val profileId: Long = (requireActivity() as MainActivity).currentProfile!!.id
+                val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
                 val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId)
                 requireActivity().supportFragmentManager.commit {
                     addToBackStack(null)
@@ -395,7 +395,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         }
         val machineList = ListView(v.context)
         val c: Cursor = mDbMachine.allMachines
-        if (c == null || c.count == 0) {
+        if (c.count == 0) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.createExerciseFirst).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
             machineList.adapter = null
         } else {

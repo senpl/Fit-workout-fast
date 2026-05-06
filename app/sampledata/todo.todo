@@ -1,7 +1,3 @@
-Przygotować nową wersję
-    Bo jednak dużo uproszczeń w kodzie jest
-Utils wciąż są w javie
-    Można by usunąć je
 Prosty sposób do importu ćwiczeń
     i ewentualnie eksportu
 Przywrócić apkę do play store'a bo jednak nie ma sensu robić czegoś,
@@ -13,5 +9,6 @@ Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń
 	Niech nagrywa i gdy wykona powtórzenie to po powrocie do około pozycji niech zliczy
 	    Wymagałoby to dodatkowego licznika, które by liczył ile udało mu się zliczyć
 Selector programu niech będzie osobnym ekranem
+    Może da radę nazwę programu przeniść na tytle apki ??
     Bo obecnie zaśmieca interfejs nie wnosząc wiele na ekranie samych ćwiczeń
     Przygotować nowe screeny, bo stare już są nieaktuane ???

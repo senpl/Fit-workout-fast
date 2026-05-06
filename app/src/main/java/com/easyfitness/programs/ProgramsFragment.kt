@@ -52,7 +52,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             Toast.makeText(context, "Enter not empty program name", Toast.LENGTH_LONG).show()
         } else {
             val lDAOProgram = DAOProgram(requireContext())
-            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+            val profileId: Long? = (requireActivity() as MainActivity).currentProfile.id
             lDAOProgram.addRecord(programName, profileId!!)
             binding.newProgramName.setText("")
             mTableAdapter!!.notifyDataSetChanged()
@@ -67,7 +67,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
             val programID = java.lang.Long.valueOf(textViewID.text.toString())
             val programDetailsPager = ProgramDetailsPager.newInstance(
                 programID,
-                (activity as MainActivity?)!!.currentProfile!!.id
+                (activity as MainActivity?)!!.currentProfile.id
             )
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, programDetailsPager, "ProgramDetails")
@@ -138,7 +138,7 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         super.onResume()
         refreshData()
     }
-    
+
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) refreshData()
     }

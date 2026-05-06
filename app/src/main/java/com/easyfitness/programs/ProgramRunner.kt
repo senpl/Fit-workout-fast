@@ -154,7 +154,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             // Create an ArrayAdapter (or your custom adapter)
             // You might want to display program.name in the Spinner
             val programNames = programsList
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programNames)
+            val adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.programSelect.adapter = adapter
             Timber.tag("ProgramRunner")
@@ -195,9 +196,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
     class DemoObjectFragment : Fragment() {
 
-        override fun onCreateView(inflater: LayoutInflater,
-                                  container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View {
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
             return inflater.inflate(R.layout.program_pager, container, false)
         }
 
@@ -217,7 +220,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         loadProgramsIntoSpinner(daoProgram)
         val programs = daoProgram.allProgramsNames
         val adapter =
-            fragment.context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, programs) }
+            fragment.context?.let {
+                ArrayAdapter(
+                    it,
+                    android.R.layout.simple_spinner_item,
+                    programs
+                )
+            }
         binding.programSelect.adapter = adapter
 
         binding.programSelect.onItemSelectedListener = object :
@@ -252,15 +261,15 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             binding.programSelect.invalidate()
                             adapter?.notifyDataSetChanged()
                             binding.exerciseIndicator.invalidate()
-                            binding.exerciseIndicator.visibility=GONE
+                            binding.exerciseIndicator.visibility = GONE
                             Timber.w("IllegalState when changing to bigger exercise")
                         }
                         saveToPreference("currentProgram", programId)
                         saveToPreference("currentProgramPosition", position)
                         refreshData()
                     } else {
-                        val profileId: Long? =
-                            (requireActivity() as MainActivity).currentProfile?.id
+                        val profileId: Long =
+                            (requireActivity() as MainActivity).currentProfile.id
                         val programsFragment = ProgramsFragment.newInstance("", profileId)
                         requireActivity().supportFragmentManager.commit {
                             addToBackStack(null)
@@ -281,7 +290,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             activity?.getPreferences(Context.MODE_PRIVATE)//PreferenceManager.getDefaultSharedPreferences(activity)
         daoExerciseInProgram = DAOExerciseInProgram(requireContext())
         if (programs.isEmpty()) {
-            val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
+            val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
             val programsFragment = ProgramsFragment.newInstance("", profileId)
             Toast.makeText(context, R.string.add_program_first, Toast.LENGTH_LONG).show()
             requireActivity().supportFragmentManager.commit {
@@ -302,8 +311,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.imageExerciseThumb.setOnClickListener {
             val m = mDbMachine.getMachine(binding.exerciseEdit.text.toString())
             if (m != null) {
-                val profileId: Long? = (requireActivity() as MainActivity).currentProfile?.id
-                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId!!)
+                val profileId: Long = (requireActivity() as MainActivity).currentProfile.id
+                val machineDetailsFragment = ExerciseDetailsPager.newInstance(m.id, profileId)
                 requireActivity().supportFragmentManager.commit {
                     addToBackStack(null)
                     add(R.id.fragment_container, machineDetailsFragment)
@@ -487,14 +496,18 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 )
                 val hasRunOnceActionForThisVideo = remember { mutableStateOf(false) }
 
-                PlayVideo(videoHash, startTime,hasRunOnceActionForThisVideo)
+                PlayVideo(videoHash, startTime, hasRunOnceActionForThisVideo)
             }
         }
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
-    private fun PlayVideo(youtubeUrl: String, startTime: Int, hasRunOnceActionForThisVideo: MutableState<Boolean>) {
+    private fun PlayVideo(
+        youtubeUrl: String,
+        startTime: Int,
+        hasRunOnceActionForThisVideo: MutableState<Boolean>
+    ) {
         val coroutineScope = rememberCoroutineScope()
         val hostState = remember { YouTubePlayerHostState() }
         when (val state = hostState.currentState) {
@@ -611,7 +624,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder < exercisesFromProgram.size - 1) {
             currentExerciseOrder++
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            if(binding.exerciseIndicator.isVisible){
+            if (binding.exerciseIndicator.isVisible) {
                 binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
             }
 //            binding.exerciseIndicator.(currentExerciseOrder)
@@ -625,7 +638,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         if (exercisesFromProgram.isNotEmpty() && currentExerciseOrder > 0) {
             currentExerciseOrder--
             binding.currentExerciseNumber.text = (currentExerciseOrder + 1).toString()
-            if(binding.exerciseIndicator.isVisible){
+            if (binding.exerciseIndicator.isVisible) {
                 binding.exerciseIndicator.setDotSelection(currentExerciseOrder)
             }//            binding.exerciseIndicator.onPageChange(currentExerciseOrder)
             refreshData()
@@ -760,7 +773,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             Dialog(onDismissRequest = { showVideoDialog.value = false }
             ) {
                 if (exercisesFromProgram.isNotEmpty()) {
-                    val youtubeUrl= removePlaylistFromYoutubeUrl(
+                    val youtubeUrl = removePlaylistFromYoutubeUrl(
                         this,
                         exercisesFromProgram[currentExerciseOrder].urlVideoStart
                     )
@@ -804,7 +817,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         val date = Date()
         val timeStr = DateConverter.currentTime()
 //        binding.exerciseIndicator[currentExerciseOrder].setBackgroundColor("#CD5B55".toColorInt())
-        binding.exerciseIndicator[currentExerciseOrder].background = "#CD5B55".toColorInt().toDrawable()
+        binding.exerciseIndicator[currentExerciseOrder].background =
+            "#CD5B55".toColorInt().toDrawable()
         when (exerciseType) {
             TYPE_STRENGTH -> {
                 if (binding.seriesEdit.text.toString().isEmpty() ||
@@ -920,7 +934,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         refreshData()
         val adapter = ArrayAdapter(
             requireView().context,
-            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile!!)
+            android.R.layout.simple_dropdown_item_1line, daoRecord.getAllMachines(profile)
         )
         binding.exerciseEdit.setAdapter(adapter)
         // Launch Rest Countdown
@@ -985,9 +999,13 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                             mediaPlayer.setDataSource(this.requireContext(), myUri)
                         } catch (e: IOException) {
                             e.printStackTrace()
+                        } catch (_: FileNotFoundException) {
+                            val uri = RingtoneManager.getDefaultUri(R.raw.chime)
+                            mediaPlayer.setDataSource(uri.toString())
                         }
                         try {
                             mediaPlayer.prepare()
+                            mediaPlayer.isLooping = false
                             mediaPlayer.start()
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -1087,7 +1105,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     val fragment: ProgramRunner
         get() = this
 
-    private val profile: Profile?
+    private val profile: Profile
         get() = mainActivity.currentProfile
 
     val machine: String
@@ -1219,7 +1237,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 mediaPlayer.setDataSource(requireContext(), myUri)
             } catch (e: IOException) {
                 e.printStackTrace()
-            } catch (e1: FileNotFoundException){
+            } catch (_: FileNotFoundException) {
                 val uri = RingtoneManager.getDefaultUri(R.raw.chime)
                 mediaPlayer.setDataSource(uri.toString())
             }
@@ -1282,7 +1300,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private fun updateMinMax(m: Machine?) {
         var unitStr: String
         var weight: Float
-        if (getProfilFromMain() != null && m != null) {
+        if (m != null) {
             if (m.type == TYPE_STRENGTH || m.type == TYPE_STATIC) {
                 val minValue: Weight? = strengthRecordsDao.getMin(getProfilFromMain(), m)
                 if (minValue != null) {
@@ -1381,8 +1399,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             val oldCursor: Cursor
             //Get results
             val limitShowedResults = 10
-            c = (daoRecord.getAllRecordByMachines(profile!!, exerciseName, limitShowedResults)
-                ?: return@post)
+            c = (daoRecord.getAllRecordByMachines(profile, exerciseName, limitShowedResults))
             if (c.count == 0) {
                 binding.recordList.adapter = null
             } else {
@@ -1407,18 +1424,16 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     }
 
     private fun getProfilFromMain(): Profile {
-        return mainActivity.currentProfile!!
+        return mainActivity.currentProfile
     }
 
     @SuppressLint("SetTextI18n")
     private fun refreshData() {
-        if (profile != null) {
-            daoExerciseInProgram.setProfile(profile)
-            if (exercisesFromProgram.isNotEmpty()) {
-                val currentExercise = exercisesFromProgram[currentExerciseOrder]
-                setRunningExercise(currentExercise)
-                updateRecordTable(currentExercise.exerciseName)
-            }
+        daoExerciseInProgram.setProfile(profile)
+        if (exercisesFromProgram.isNotEmpty()) {
+            val currentExercise = exercisesFromProgram[currentExerciseOrder]
+            setRunningExercise(currentExercise)
+            updateRecordTable(currentExercise.exerciseName)
         }
     }
 

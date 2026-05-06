@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private var mpBodyPartListFrag: BodyPartListFragment? = null
     private var currentFragmentName = ""
     private var mDbProfils: DAOProfil? = null
-    var currentProfile: Profile? = null
+    var currentProfile: Profile = Profile("user", 1, DateConverter.dateToDate(2019, 7, 1), 0)
         private set
     private var mCurrentProfilID: Long = -1
     private var mImportcvschosendir = ""
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                     .setItems(profildeleteListArray) { dialog: DialogInterface, which: Int ->
                         val lv = (dialog as AlertDialog).listView
                         val checkedItem = lv.adapter.getItem(which)
-                        if (currentProfile!!.name == checkedItem.toString()) {
+                        if (currentProfile.name == checkedItem.toString()) {
                             KToast.errorToast(activity, activity.resources.getText(R.string.impossibleToDeleteProfile).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
                         } else {
                             val profileToDelete = mDbProfils!!.getProfil(checkedItem.toString())
@@ -396,10 +396,10 @@ class MainActivity : AppCompatActivity() {
             // Afficher une boite de dialogue pour confirmer
             val exportDbBuilder = AlertDialog.Builder(this)
             exportDbBuilder.setTitle(activity.resources.getText(R.string.export_database))
-            exportDbBuilder.setMessage(activity.resources.getText(R.string.export_question).toString() + " " + currentProfile!!.name + "?")
+            exportDbBuilder.setMessage(activity.resources.getText(R.string.export_question).toString() + " " + currentProfile.name + "?")
 
             // Si oui, supprimer la base de donnee et refaire un Start.
-            exportDbBuilder.setPositiveButton(activity.resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int ->
+            exportDbBuilder.setPositiveButton(activity.resources.getText(R.string.global_yes)) { _: DialogInterface, _: Int ->
 //                val cvsMan = CVSManager(activity.baseContext)
 //                if (cvsMan.exportDatabase(currentProfile)) {
 //                    KToast.successToast(activity, currentProfile!!.name + ": " + activity.resources.getText(R.string.export_success), Gravity.BOTTOM, KToast.LENGTH_LONG)
@@ -476,11 +476,13 @@ class MainActivity : AppCompatActivity() {
                     }
                     val mDbMachines = DAOMachine(activity)
                     // recupere le premier ID de la liste.
-                    val lList2: List<Machine> = mDbMachines.allMachinesArray as List<Machine>
+                    val lList2: List<Machine?> = mDbMachines.allMachinesArray
                     var i = 0
                     while (i < lList2.size) {
                         val mTemp = lList2[i]
-                        mDbMachines.delete(mTemp.id)
+                        if(mTemp?.id != null) {
+                            mDbMachines.delete(mTemp.id)
+                        }
                         i++
                     }
 
@@ -569,7 +571,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set an EditText view to get user input
         val input = EditText(this)
-        input.setText(currentProfile!!.name)
+        input.setText(currentProfile.name)
         newBuilder.setView(input)
         newBuilder.setPositiveButton(activity.resources.getText(R.string.global_ok)) { _: DialogInterface?, _: Int ->
             val value = input.text.toString()
@@ -577,7 +579,7 @@ class MainActivity : AppCompatActivity() {
                 // Get current profil
                 val temp = currentProfile
                 // Rename it
-                temp!!.name = value
+                temp.name = value
                 // Commit it
                 mDbProfils!!.updateProfile(temp)
                 // Make it the current.
@@ -675,9 +677,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setCurrentProfil(newProfil: Profile?) {
-        if (newProfil != null) if (currentProfile == null || mCurrentProfilID != newProfil.id || !currentProfile!!.equals(newProfil)) {
+        if (newProfil != null) if ( mCurrentProfilID != newProfil.id || !currentProfile.equals(newProfil)) {
             currentProfile = newProfil
-            mCurrentProfilID = currentProfile!!.id
+            mCurrentProfilID = currentProfile.id
 
             // rafraichit le fragment courant
             val fragmentManager = supportFragmentManager
@@ -689,7 +691,7 @@ class MainActivity : AppCompatActivity() {
             for (i in fragmentManager.fragments.indices) {
                 if (fragmentManager.fragments[i] != null) fragmentManager.fragments[i].onHiddenChanged(true)
             }
-            setDrawerTitle(currentProfile!!.name)
+            setDrawerTitle(currentProfile.name)
 //            setPhotoProfile(currentProfile!!.photo)
             savePreferences()
         }
@@ -732,9 +734,7 @@ class MainActivity : AppCompatActivity() {
         // Restore preferences
         val settings = getSharedPreferences(PREFS_NAME, 0)
         settings.edit {
-            if (currentProfile != null) {
-                putLong("currentProfil", currentProfile!!.id).apply()
-            }
+            putLong("currentProfil", currentProfile.id).apply()
             putBoolean("intro014Launched", mIntro014Launched)
             putBoolean("migrationBD15done", mMigrationBD15done)
         }
@@ -849,15 +849,21 @@ class MainActivity : AppCompatActivity() {
             this.CreateNewProfil();
         } else {*/
         currentProfile = mDbProfils!!.getProfil(mCurrentProfilID)
-        if (currentProfile == null) { // au cas ou il y aurait un probleme de synchro
+        val lList = mDbProfils!!.allProfils
+        if(lList.isEmpty()) {
+            createNewProfil()
+        }
             try {
                 val lList = mDbProfils!!.allProfils
-                currentProfile = lList[0]
+                if(!lList.isEmpty()){
+                    if (lList[0] != null) {
+                        currentProfile = lList[0]!!
+                    }
+                }
             } catch (_: IndexOutOfBoundsException) {
                 createNewProfil()
             }
-        }
-        if (currentProfile != null) setCurrentProfil(currentProfile!!.name)
+        setCurrentProfil(currentProfile.name)
     }
 
     private inner class DrawerItemClickListener : OnItemClickListener {

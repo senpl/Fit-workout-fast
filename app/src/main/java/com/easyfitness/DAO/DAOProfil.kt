@@ -64,11 +64,11 @@ class DAOProfil(private val context: Context) : DAOBase(context) {
     /**
      * @param id long id of the Profile
      */
-    fun getProfil(id: Long): Profile? {
+    fun getProfil(id: Long): Profile {
         val db = this.readableDatabase
         if (mCursor != null) mCursor!!.close()
         mCursor = null
-        mCursor = db!!.query(
+        mCursor = db.query(
             TABLE_NAME,
             arrayOf<String>(KEY, CREATIONDATE, NAME, SIZE, BIRTHDAY, PHOTO, GENDER),
             KEY + "=?",
@@ -107,7 +107,15 @@ class DAOProfil(private val context: Context) : DAOBase(context) {
         } else {
             mCursor!!.close()
             close()
-            return null
+            return Profile(
+                    1,
+                    Date(),
+                    "You",
+                    1,
+                    Date(),
+                    "",
+                    0
+                )
         }
     }
 
