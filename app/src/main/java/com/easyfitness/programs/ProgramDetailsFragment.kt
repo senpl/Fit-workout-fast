@@ -61,6 +61,8 @@ class ProgramDetailsFragment : Fragment() {
         }
         programName.setText(nameArg)
         programName.addTextChangedListener(watcher)
+
+        pager = parentFragment as? ProgramDetailsPager
         return view
     }
 

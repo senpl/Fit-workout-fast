@@ -86,6 +86,13 @@ class ProgramDetailsPager : Fragment() {
         programDelete.setOnClickListener(onClickToolbarItem)
         return view
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity?)!!.activityToolbar.visibility = View.VISIBLE
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.actionToolbarProgram.visibility=View.VISIBLE
     }

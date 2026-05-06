@@ -134,6 +134,11 @@ class ProgramsFragment : Fragment(R.layout.tab_programs) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
+    
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) refreshData()
     }
