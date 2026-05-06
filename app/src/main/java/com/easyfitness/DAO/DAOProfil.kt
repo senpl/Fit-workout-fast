@@ -357,7 +357,7 @@ class DAOProfil(private val context: Context) : DAOBase(context) {
     /* DEBUG ONLY */
     fun populate() {
         val date = Date()
-        val dateBirthday = DateConverter.getNewDate()
+        val dateBirthday = DateConverter.newDate
         var m = Profile(0, date, "Champignon", 120, dateBirthday, null, 0)
         this.addProfil(m)
         m = Profile(0, date, "Musclor", 150, dateBirthday, null, 0)

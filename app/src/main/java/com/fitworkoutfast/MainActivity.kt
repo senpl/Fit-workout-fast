@@ -431,29 +431,29 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.import_database -> {
                 // Create DirectoryChooserDialog and register a callback
-                val fileChooserDialog = FileChooserDialog(this) { chosenDir: String ->
-                    mImportcvschosendir = chosenDir
-                    //Toast.makeText(getActivity().getBaseContext(), "Chosen directory: " +
-                    //    chosenDir, Toast.LENGTH_LONG).show();
-//                    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-//                        .setTitleText(this.resources.getString(R.string.global_confirm_question))
-//                        .setContentText(this.resources.getString(R.string.import_new_exercise_first))
-//                        .setConfirmText(this.resources.getString(R.string.global_yes))
-//                        .setConfirmClickListener { sDialog: SweetAlertDialog ->
-//                            sDialog.dismissWithAnimation()
-//                            val cvsMan = CVSManager(activity.baseContext)
-//                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
-//                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-//                            } else {
-//                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-//                            }
-//                            setCurrentProfil(currentProfile) // Refresh profile
-//                        }
-//                        .setCancelText(this.resources.getString(R.string.global_no))
-//                        .show()
-                }
-                fileChooserDialog.fileFilter = "csv"
-                fileChooserDialog.chooseDirectory(getExternalStorageDirectory().toString() + "/FastnFitness/export")
+//                val fileChooserDialog = FileChooserDialog(this) { chosenDir: String ->
+////                    mImportcvschosendir = chosenDir
+//                    //Toast.makeText(getActivity().getBaseContext(), "Chosen directory: " +
+//                    //    chosenDir, Toast.LENGTH_LONG).show();
+////                    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+////                        .setTitleText(this.resources.getString(R.string.global_confirm_question))
+////                        .setContentText(this.resources.getString(R.string.import_new_exercise_first))
+////                        .setConfirmText(this.resources.getString(R.string.global_yes))
+////                        .setConfirmClickListener { sDialog: SweetAlertDialog ->
+////                            sDialog.dismissWithAnimation()
+////                            val cvsMan = CVSManager(activity.baseContext)
+////                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
+////                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+////                            } else {
+////                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
+////                            }
+////                            setCurrentProfil(currentProfile) // Refresh profile
+////                        }
+////                        .setCancelText(this.resources.getString(R.string.global_no))
+////                        .show()
+//                }
+//                fileChooserDialog.fileFilter = "csv"
+//                fileChooserDialog.chooseDirectory(getExternalStorageDirectory().toString() + "/FastnFitness/export")
                 true
             }
             R.id.action_deleteDB -> {

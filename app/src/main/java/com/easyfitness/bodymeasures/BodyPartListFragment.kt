@@ -48,12 +48,12 @@ class BodyPartListFragment : Fragment() {
             .setHideKeyBoardOnDismiss(true)
             .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 editText.clearFocus()
-                Keyboard.hide(getContext(), editText)
+                Keyboard.hide(requireContext(), editText)
                 sDialog!!.dismissWithAnimation()
             })
             .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 editText.clearFocus()
-                Keyboard.hide(getContext(), editText)
+                Keyboard.hide(requireContext(), editText)
                 val daoBodyPart = DAOBodyPart(requireContext())
                 val temp_key = daoBodyPart.add(
                     -1,
@@ -80,7 +80,7 @@ class BodyPartListFragment : Fragment() {
         //Keyboard.hide(context, editText);});
         dialog.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
             editText.requestFocus()
-            Keyboard.show(getContext(), editText)
+            Keyboard.show(requireContext(), editText)
         })
 
         dialog.setCustomView(linearLayout)

@@ -28,12 +28,11 @@ class RecordCursorAdapter(
 ) : CursorAdapter(context, c, flags) {
     private val mInflater: LayoutInflater
     private var mFirstColorOdd = 0
-    private var mContext: Context? = null
+    private var mContext: Context = context
     private var mDeleteClickListener: BtnClickListener? = null
     private var mCopyClickListener: BtnClickListener? = null
 
     init {
-        mContext = context
         mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mDeleteClickListener = clickDelete
         mCopyClickListener = clickCopy

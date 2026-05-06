@@ -109,6 +109,7 @@ import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STRENGTH
 //import androidx.viewpager2.widget.ViewPager2
 import com.easyfitness.utils.removePlaylistFromYoutubeUrl
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.FileNotFoundException
 
 class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     private val progressScaleFix: Int = 3
@@ -1215,9 +1216,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     RingtoneManager.getDefaultUri(R.raw.chime).toString()
                 )
                 val myUri: Uri = uriString?.toUri() ?: RingtoneManager.getDefaultUri(R.raw.chime)
-                mediaPlayer.setDataSource(this.requireContext(), myUri)
+                mediaPlayer.setDataSource(requireContext(), myUri)
             } catch (e: IOException) {
                 e.printStackTrace()
+            } catch (e1: FileNotFoundException){
+                val uri = RingtoneManager.getDefaultUri(R.raw.chime)
+                mediaPlayer.setDataSource(uri.toString())
             }
             try {
                 mediaPlayer.prepare()

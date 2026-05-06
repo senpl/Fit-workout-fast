@@ -18,11 +18,9 @@ import com.easyfitness.DAO.DAOProfil
 import com.easyfitness.DAO.Profile
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.EditableInputView.EditableInputView
-import com.easyfitness.utils.EditableInputView.EditableInputView.CustomerDialogBuilder
 import com.easyfitness.utils.EditableInputView.EditableInputView.OnTextChangedListener
 import com.easyfitness.utils.Gender
 import com.easyfitness.utils.ImageUtil
-import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
 import com.easyfitness.utils.RealPathUtil
 import com.fitworkoutfast.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -73,32 +71,32 @@ class ProfileFragment : Fragment() {
         // ImageView must be set in OnStart. Not in OnCreateView
 
         /* Initialisation des boutons */
-        genderEdit!!.setCustomDialogBuilder(CustomerDialogBuilder { view1: EditableInputView? ->
+        genderEdit!!.setCustomDialogBuilder({ view1: EditableInputView? ->
             val dlg = SweetAlertDialog(view1!!.getContext(), SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText(requireContext().getString(R.string.edit_value))
                 .setNeutralText(getString(R.string.maleGender))
                 .setCancelText(getString(R.string.femaleGender))
                 .setConfirmText(getString(R.string.otherGender))
                 .setNeutralClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
-                    val oldValue = genderEdit!!.getText()
+                    val oldValue = genderEdit!!.text
                     if (oldValue != getString(R.string.maleGender)) {
-                        genderEdit!!.setText(getString(R.string.maleGender))
+                        genderEdit!!.text=(getString(R.string.maleGender))
                         requestForSave(genderEdit!!)
                     }
                     sDialog!!.dismissWithAnimation()
                 })
                 .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
-                    val oldValue = genderEdit!!.getText()
+                    val oldValue = genderEdit!!.text
                     if (oldValue != getString(R.string.femaleGender)) {
-                        genderEdit!!.setText(getString(R.string.femaleGender))
+                        genderEdit!!.text=(getString(R.string.femaleGender))
                         requestForSave(genderEdit!!)
                     }
                     sDialog!!.dismissWithAnimation()
                 })
                 .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
-                    val oldValue = genderEdit!!.getText()
+                    val oldValue = genderEdit!!.text
                     if (oldValue != getString(R.string.otherGender)) {
-                        genderEdit!!.setText(getString(R.string.otherGender))
+                        genderEdit!!.text=(getString(R.string.otherGender))
                         requestForSave(genderEdit!!)
                     }
                     sDialog!!.dismissWithAnimation()
@@ -154,12 +152,12 @@ class ProfileFragment : Fragment() {
 
         photoButton!!.setOnClickListener(onClickMachinePhoto)
 
-        imgUtil!!.setOnDeleteImageListener(OnDeleteImageListener { imgUtil: ImageUtil? ->
-            imgUtil!!.getView().setImageDrawable(
+        imgUtil!!.setOnDeleteImageListener({ imgUtil: ImageUtil? ->
+            imgUtil!!.view!!.setImageDrawable(
                 requireActivity().getResources().getDrawable(R.drawable.ic_person_black_24dp)
             )
             mCurrentPhotoPath = null
-            requestForSave(imgUtil.getView())
+            requestForSave(imgUtil.view!!)
         })
 
         return view
@@ -190,36 +188,36 @@ class ProfileFragment : Fragment() {
 
         /* Initialisation des valeurs */
         if (mProfile!!.size == 0) {
-            sizeEdit!!.setText("")
+            sizeEdit!!.text=("")
             sizeEdit!!.setHint(getString(R.string.profileEnterYourSize))
         } else {
-            sizeEdit!!.setText(mProfile!!.size.toString())
+            sizeEdit!!.text=(mProfile!!.size.toString())
         }
 
         when (mProfile!!.gender) {
-            Gender.MALE -> genderEdit!!.setText(getString(R.string.maleGender))
-            Gender.FEMALE -> genderEdit!!.setText(getString(R.string.femaleGender))
-            Gender.OTHER -> genderEdit!!.setText(getString(R.string.otherGender))
+            Gender.MALE -> genderEdit!!.text=(getString(R.string.maleGender))
+            Gender.FEMALE -> genderEdit!!.text=(getString(R.string.femaleGender))
+            Gender.OTHER -> genderEdit!!.text=(getString(R.string.otherGender))
             else -> {
-                genderEdit!!.setText("")
+                genderEdit!!.text=("")
                 genderEdit!!.setHint(getString(R.string.enter_gender_here))
             }
         }
 
         if (mProfile!!.birthday!!.getTime() == 0L) {
-            birthdayEdit!!.setText("")
+            birthdayEdit!!.text=("")
             birthdayEdit!!.setHint(getString(R.string.profileEnterYourBirthday))
         } else {
-            birthdayEdit!!.setText(
+            birthdayEdit!!.text=(
                 DateConverter.dateToLocalDateStr(
                     mProfile!!.birthday,
-                    getContext()
+                    requireContext()
                 )
             )
             //sizeEdit.setNormalColor();
         }
 
-        nameEdit!!.setText(mProfile!!.name)
+        nameEdit!!.text=(mProfile!!.name)
 
         if (mProfile!!.photo != null) {
             ImageUtil.setPic(roundProfile, mProfile!!.photo)
@@ -235,29 +233,29 @@ class ProfileFragment : Fragment() {
 
         // Save all the fields in the Profile
         if (viewId == R.id.name) {
-            mProfile!!.name = nameEdit!!.getText()
+            mProfile!!.name = nameEdit!!.text
             profileToUpdate = true
         } else if (viewId == R.id.size) {
             try {
-                mProfile!!.size = sizeEdit!!.getText().toFloat().toInt()
+                mProfile!!.size = sizeEdit!!.text!!.toFloat().toInt()
             } catch (e: NumberFormatException) {
                 mProfile!!.size = 0
             }
             profileToUpdate = true
         } else if (viewId == R.id.birthday) {
             mProfile!!.birthday =
-                DateConverter.localDateStrToDate(birthdayEdit!!.getText(), getContext())
+                DateConverter.localDateStrToDate(birthdayEdit?.text!!, requireContext())
             profileToUpdate = true
         } else if (viewId == R.id.photo) {
             mProfile!!.photo = mCurrentPhotoPath!!
             profileToUpdate = true
         } else if (viewId == R.id.gender) {
             var lGender = Gender.UNKNOWN
-            if (genderEdit!!.getText() == getString(R.string.maleGender)) {
+            if (genderEdit!!.text == getString(R.string.maleGender)) {
                 lGender = Gender.MALE
-            } else if (genderEdit!!.getText() == getString(R.string.femaleGender)) {
+            } else if (genderEdit!!.text == getString(R.string.femaleGender)) {
                 lGender = Gender.FEMALE
-            } else if (genderEdit!!.getText() == getString(R.string.otherGender)) {
+            } else if (genderEdit!!.text == getString(R.string.otherGender)) {
                 lGender = Gender.OTHER
             }
             mProfile!!.gender = lGender
@@ -297,18 +295,21 @@ class ProfileFragment : Fragment() {
 
         when (requestCode) {
             ImageUtil.REQUEST_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
-                mCurrentPhotoPath = imgUtil!!.getFilePath()
-                ImageUtil.setPic(roundProfile, mCurrentPhotoPath)
+                mCurrentPhotoPath = imgUtil!!.filePath
+//                ImageUtil.setPic(roundProfile, mCurrentPhotoPath)
                 ImageUtil.saveThumb(mCurrentPhotoPath)
-                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
+//                if(mCurrentPhotoPath!=null)
+//                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
                 requestForSave(roundProfile!!)
             }
 
             ImageUtil.REQUEST_PICK_GALERY_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 val realPath: String?
-                realPath = RealPathUtil.getRealPath(this.getContext(), data?.getData())
+                if (data?.getData() == null) return
 
-                ImageUtil.setPic(roundProfile, realPath)
+                realPath = RealPathUtil.getRealPath(this.requireContext(), data.data!!)
+
+//                ImageUtil.setPic(roundProfile, realPath)
                 ImageUtil.saveThumb(realPath)
                 mCurrentPhotoPath = realPath
                 requestForSave(roundProfile!!)

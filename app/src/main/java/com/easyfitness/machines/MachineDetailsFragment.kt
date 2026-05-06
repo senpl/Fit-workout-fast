@@ -33,6 +33,7 @@ import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
 import com.easyfitness.utils.Keyboard
 import com.easyfitness.utils.RealPathUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.File
 
 class MachineDetailsFragment : Fragment() {
@@ -196,19 +197,19 @@ class MachineDetailsFragment : Fragment() {
 
                     // Here you can get the size :)
                     if (mCurrentPhotoPath != null && !mCurrentPhotoPath!!.isEmpty()) {
-                        ImageUtil.setPic(machinePhoto, mCurrentPhotoPath)
+                        ImageUtil.setPic(machinePhoto as CircularImageView?, mCurrentPhotoPath)
                     } else {
                         if (mMachine!!.type == DAOMachine.TYPE_STRENGTH) {
-                            imgUtil!!.getView().setImageDrawable(
+                            imgUtil!!.view!!.setImageDrawable(
                                 requireActivity().getResources()
                                     .getDrawable(R.drawable.ic_gym_bench_50dp)
                             )
                         } else if (mMachine!!.type == DAOMachine.TYPE_STATIC) {
-                            imgUtil!!.getView().setImageDrawable(
+                            imgUtil!!.view!!.setImageDrawable(
                                 requireActivity().getResources().getDrawable(R.drawable.ic_static)
                             )
                         } else {
-                            imgUtil!!.getView().setImageDrawable(
+                            imgUtil!!.view!!.setImageDrawable(
                                 requireActivity().getResources()
                                     .getDrawable(R.drawable.ic_training_white_50dp)
                             )
@@ -225,15 +226,15 @@ class MachineDetailsFragment : Fragment() {
 
         imgUtil!!.setOnDeleteImageListener(OnDeleteImageListener { imgUtil: ImageUtil? ->
             if (mMachine!!.type == DAOMachine.TYPE_STRENGTH) {
-                imgUtil!!.getView().setImageDrawable(
+                imgUtil!!.view!!.setImageDrawable(
                     requireActivity().getResources().getDrawable(R.drawable.ic_gym_bench_50dp)
                 )
             } else if (mMachine!!.type == DAOMachine.TYPE_STATIC) {
-                imgUtil!!.getView().setImageDrawable(
+                imgUtil!!.view!!.setImageDrawable(
                     requireActivity().getResources().getDrawable(R.drawable.ic_static)
                 )
             } else {
-                imgUtil!!.getView().setImageDrawable(
+                imgUtil!!.view!!.setImageDrawable(
                     requireActivity().getResources().getDrawable(R.drawable.ic_training_white_50dp)
                 )
             }
@@ -255,7 +256,7 @@ class MachineDetailsFragment : Fragment() {
 
         isCreateMuscleDialogActive = true
 
-        Keyboard.hide(getContext(), getView())
+        Keyboard.hide(requireContext(), requireView())
 
         val newMuscleBuilder = AlertDialog.Builder(this.getActivity())
 
@@ -317,20 +318,20 @@ class MachineDetailsFragment : Fragment() {
 
         when (requestCode) {
             ImageUtil.REQUEST_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
-                mCurrentPhotoPath = imgUtil!!.getFilePath()
-                ImageUtil.setPic(machinePhoto, mCurrentPhotoPath)
-                ImageUtil.saveThumb(mCurrentPhotoPath)
-                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
+                mCurrentPhotoPath = imgUtil!!.filePath
+//                ImageUtil.setPic(machinePhoto, mCurrentPhotoPath)
+//                ImageUtil.saveThumb(mCurrentPhotoPath)
+//                imgUtil!!.galleryAddPic(this, mCurrentPhotoPath)
                 requestForSave()
             }
 
             ImageUtil.REQUEST_PICK_GALERY_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 val realPath: String?
-                realPath = RealPathUtil.getRealPath(this.getContext(), data?.getData())
+//                realPath = RealPathUtil.getRealPath(this.requireContext(), data?.getData())
 
-                ImageUtil.setPic(machinePhoto, realPath)
-                ImageUtil.saveThumb(realPath)
-                mCurrentPhotoPath = realPath
+//                ImageUtil.setPic(machinePhoto, realPath)
+//                ImageUtil.saveThumb(realPath)
+//                mCurrentPhotoPath = realPath
                 requestForSave()
             }
         }

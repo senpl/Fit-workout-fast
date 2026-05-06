@@ -1,37 +1,32 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.ViewGroup;
-import android.widget.ListView;
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.ListView
 
-public class ExpandedListView extends ListView {
-//    private ViewGroup.LayoutParams params;
-//    private int oldCount = 0;
+class ExpandedListView : ListView {
+    //    private ViewGroup.LayoutParams params;
+    //    private int oldCount = 0;
+    constructor(context: Context?) : super(context)
 
-    public ExpandedListView(Context context) {
-        super(context);
-    }
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    public ExpandedListView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    )
 
-    public ExpandedListView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var heightSpec = heightMeasureSpec
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int heightSpec = heightMeasureSpec;
-
-        if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            heightSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        if (getLayoutParams().height == LayoutParams.WRAP_CONTENT) {
+            heightSpec =
+                MeasureSpec.makeMeasureSpec(Int.Companion.MAX_VALUE shr 2, MeasureSpec.AT_MOST)
         }
 
-        super.onMeasure(widthMeasureSpec, heightSpec);
-    }
-/*
+        super.onMeasure(widthMeasureSpec, heightSpec)
+    } /*
     @Override
     protected void onDraw(Canvas canvas) {
         if (getCount() != oldCount && getCount() != 0) {

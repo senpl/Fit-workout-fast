@@ -1,111 +1,104 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.text.InputType;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.os.Bundle
+import android.text.InputType
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import cn.pedant.SweetAlert.SweetAlertDialog
+import java.util.Calendar
+import java.util.Date
 
-import com.easyfitness.R;
+class SweetAlertDialogWithDate : SweetAlertDialog, OnDateSetListener {
+    private lateinit var date: Date
+    private var dateEditView: TextView? = null
+    private var editText: EditText? = null
+    private var linearLayout: LinearLayout? = null
 
-import java.util.Calendar;
-import java.util.Date;
+    private val view: View? = null
+    private val viewGroup: ViewGroup? = null
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+    constructor(context: Context) : super(context)
 
-public class SweetAlertDialogWithDate extends SweetAlertDialog implements DatePickerDialog.OnDateSetListener {
-    private Date date;
-    private TextView dateEditView = null;
-    private EditText editText = null;
-    private LinearLayout linearLayout = null;
+    constructor(context: Context, alertType: Int) : super(context, alertType)
 
-    private View view = null;
-    private ViewGroup viewGroup = null;
-
-    public SweetAlertDialogWithDate(Context context) {
-        super(context);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+        super.setCustomView(linearLayout)
     }
 
-    public SweetAlertDialogWithDate(Context context, int alertType) {
-        super(context, alertType);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
-        super.setCustomView(linearLayout);
-    }
-
-    private void init() {
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+    private fun init() {
+        val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+        )
 
-        dateEditView = new TextView(getContext().getApplicationContext());
+        dateEditView = TextView(getContext().getApplicationContext())
 
-        date = DateConverter.getNewDate();
-        dateEditView.setText(DateConverter.dateToLocalDateStr(date, getContext()));
-        dateEditView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        dateEditView.setGravity(Gravity.CENTER);
-        dateEditView.setLayoutParams(params);
-        dateEditView.setOnClickListener((view) -> {
-            Calendar calendar = Calendar.getInstance();
+        date = DateConverter.newDate
+        dateEditView!!.setText(DateConverter.dateToLocalDateStr(date, getContext()))
+        dateEditView!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+        dateEditView!!.setGravity(Gravity.CENTER)
+        dateEditView!!.setLayoutParams(params)
+        dateEditView!!.setOnClickListener(View.OnClickListener { view: View? ->
+            val calendar = Calendar.getInstance()
+            calendar.setTime(DateConverter.newDate)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
 
-            calendar.setTime(DateConverter.getNewDate());
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this, year, month, day);
-            datePickerDialog.show();
-        });
+            val datePickerDialog = DatePickerDialog(getContext(), this, year, month, day)
+            datePickerDialog.show()
+        })
 
         //editText = view.findViewById(R.id.valueEditText);
-        editText = new EditText(getContext().getApplicationContext());
-        editText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        editText = EditText(getContext().getApplicationContext())
+        editText!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
         //editText.setTextColor(getContext().getColor(R.color.text_color));
-        editText.setText("");
-        editText.setHint("Enter value here");
-        editText.setLayoutParams(params);
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editText.setGravity(Gravity.CENTER);
+        editText!!.setText("")
+        editText!!.setHint("Enter value here")
+        editText!!.setLayoutParams(params)
+        editText!!.setInputType(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
+        editText!!.setGravity(Gravity.CENTER)
 
-        editText.requestFocus();
-        editText.selectAll();
+        editText!!.requestFocus()
+        editText!!.selectAll()
 
-        linearLayout = new LinearLayout(getContext().getApplicationContext());
-        linearLayout.setLayoutParams(params);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(dateEditView);
-        linearLayout.addView(editText);
+        linearLayout = LinearLayout(getContext().getApplicationContext())
+        linearLayout!!.setLayoutParams(params)
+        linearLayout!!.setOrientation(LinearLayout.VERTICAL)
+        linearLayout!!.addView(dateEditView)
+        linearLayout!!.addView(editText)
     }
 
-    public Date GetDate() {
-        return date;
+    fun GetDate(): Date? {
+        return date
     }
 
-    public String GetDateString() {
-        return dateEditView.getText().toString();
+    fun GetDateString(): String {
+        return dateEditView!!.getText().toString()
     }
 
-    public String GetText() {
-        return editText.getText().toString();
+    fun GetText(): String {
+        return editText!!.getText().toString()
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        date = DateConverter.dateToDate(year, month, dayOfMonth);
-        if (dateEditView != null)
-            dateEditView.setText(DateConverter.dateToLocalDateStr(date, getContext().getApplicationContext()));
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        date = DateConverter.dateToDate(year, month, dayOfMonth)
+        if (dateEditView != null) dateEditView!!.setText(
+            DateConverter.dateToLocalDateStr(
+                date,
+                getContext().getApplicationContext()
+            )
+        )
     }
 }

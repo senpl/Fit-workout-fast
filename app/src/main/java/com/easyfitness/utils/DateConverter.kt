@@ -1,121 +1,117 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-import android.content.Context;
+import android.content.Context
+import com.easyfitness.DAO.DAOUtils
+import java.text.DecimalFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
-import com.easyfitness.DAO.DAOUtils;
+object DateConverter {
+    val MILLISECONDINDAY: Int = 60 * 60 * 24 * 1000
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-
-import static android.text.format.DateFormat.getDateFormat;
-
-public class DateConverter {
-
-    static final int MILLISECONDINDAY = 60 * 60 * 24 * 1000;
-
-    public DateConverter() {
+    fun nbDays(millisecondes: Double): Double {
+        return (millisecondes / MILLISECONDINDAY).toInt().toDouble()
     }
 
-    static public double nbDays(double millisecondes) {
-        return (int) (millisecondes / MILLISECONDINDAY);
+    fun nbMinutes(millisecondes: Double): Double {
+        return (millisecondes / (60 * 1000))
     }
 
-    static public double nbMinutes(double millisecondes) {
-        return (double) (millisecondes / (60 * 1000));
-    }
-
-    static public double nbMilliseconds(double days) {
-        return days * MILLISECONDINDAY;
+    fun nbMilliseconds(days: Double): Double {
+        return days * MILLISECONDINDAY
     }
 
 
-    static public Date getNewDate() {
-        return new Date();
-    }
+    val newDate: Date
+        get() = Date()
 
-    static public Date editToDate(String editText) {
-        Date date;
+    fun editToDate(editText: String): Date? {
+        var date: Date?
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = dateFormat.parse(editText);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            date = new Date();
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+            date = dateFormat.parse(editText)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            date = Date()
         }
 
-        return date;
+        return date
     }
 
-    static public Date localDateStrToDate(String dateStr, Context pContext) {
-        Date date;
+    fun localDateStrToDate(dateStr: String, pContext: Context): Date? {
+        var date: Date?
         try {
-            DateFormat dateFormat = getDateFormat(pContext.getApplicationContext());
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = dateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            date = new Date();
+            val dateFormat =
+                android.text.format.DateFormat.getDateFormat(pContext.getApplicationContext())
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+            date = dateFormat.parse(dateStr)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            date = Date()
         }
-        return date;
+        return date
     }
 
-    static public String dateToLocalDateStr(Date date, Context pContext) {
-        DateFormat dateFormat3 = getDateFormat(pContext.getApplicationContext());
-        dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return dateFormat3.format(date);
+    fun dateToLocalDateStr(date: Date?, pContext: Context): String {
+        val dateFormat3 =
+            android.text.format.DateFormat.getDateFormat(pContext.getApplicationContext())
+        dateFormat3.setTimeZone(TimeZone.getTimeZone("GMT"))
+        return dateFormat3.format(date)
     }
 
-    static public String dateToDBDateStr(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return dateFormat.format(date);
+    fun dateToDBDateStr(date: Date?): String {
+        val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+        return dateFormat.format(date)
     }
 
-    static public Date DBDateStrToDate(String dateStr) {
-        Date date;
+    fun DBDateStrToDate(dateStr: String): Date? {
+        var date: Date?
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DAOUtils.DATE_FORMAT);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = dateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            date = new Date();
+            val dateFormat = SimpleDateFormat(DAOUtils.DATE_FORMAT)
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+            date = dateFormat.parse(dateStr)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            date = Date()
         }
-        return date;
+        return date
     }
 
-    static public String currentTime() {
+    fun currentTime(): String {
         //Rajoute le moment du dernier ajout dans le bouton Add
-        Calendar calendar = Calendar.getInstance();
-        int hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
+        val calendar = Calendar.getInstance()
+        val hours = calendar.get(Calendar.HOUR_OF_DAY)
+        val minutes = calendar.get(Calendar.MINUTE)
+        val seconds = calendar.get(Calendar.SECOND)
 
-        DecimalFormat df = new DecimalFormat("00");
-        return df.format(hours) + ":" + df.format(minutes) + ":" + df.format(seconds);
+        val df = DecimalFormat("00")
+        return df.format(hours.toLong()) + ":" + df.format(minutes.toLong()) + ":" + df.format(
+            seconds.toLong()
+        )
     }
 
-    static public String currentDate() {
+    fun currentDate(): String {
         //Rajoute le moment du dernier ajout dans le bouton Add
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
 
-        DecimalFormat df = new DecimalFormat("00");
-        return df.format(day) + "/" + df.format(month + 1) + "/" + df.format(year);
+        val df = DecimalFormat("00")
+        return df.format(day.toLong()) + "/" + df.format((month + 1).toLong()) + "/" + df.format(
+            year.toLong()
+        )
     }
 
-    static public String dateToString(int year, int month, int day) {
+    fun dateToString(year: Int, month: Int, day: Int): String {
         // Do something with the date chosen by the user
-        DecimalFormat df = new DecimalFormat("00");
-        return df.format(day) + "/" + df.format(month) + "/" + df.format(year);
+        val df = DecimalFormat("00")
+        return df.format(day.toLong()) + "/" + df.format(month.toLong()) + "/" + df.format(year.toLong())
     }
 
     /**
@@ -125,57 +121,60 @@ public class DateConverter {
      * @param pContext
      * @return date for local format
      */
-    static public String dateToLocalDateStr(int year, int month, int day, Context pContext) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+    fun dateToLocalDateStr(year: Int, month: Int, day: Int, pContext: Context): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
 
-        Date date = calendar.getTime();
+        val date = calendar.getTime()
 
-        return dateToLocalDateStr(date, pContext);
+        return dateToLocalDateStr(date, pContext)
     }
 
-    static public Date dateToDate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+    fun dateToDate(year: Int, month: Int, day: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
 
-        return calendar.getTime();
+        return calendar.getTime()
     }
 
     /**
      * @param longVal in milliseconds
      * @return duration in format "HH:MM"
      */
-    public static String durationToHoursMinutesStr(long longVal) {
-        longVal = longVal / 1000;
-        int hours = (int) longVal / 3600;
-        int remainder = (int) longVal - hours * 3600;
-        int mins = remainder / 60;
+    fun durationToHoursMinutesStr(longVal: Long): String {
+        var longVal = longVal
+        longVal = longVal / 1000
+        val hours = longVal.toInt() / 3600
+        val remainder = longVal.toInt() - hours * 3600
+        val mins = remainder / 60
+
         //remainder = remainder - mins * 60;
         //int secs = remainder;
-
-        return String.format("%02d:%02d", hours, mins);
+        return String.format("%02d:%02d", hours, mins)
     }
 
     /**
      * @param longVal in milliseconds
      * @return duration in format "HH:MM"
      */
-    public static String durationToHoursMinutesSecondsStr(long longVal) {
-        longVal = longVal / 1000;
-        int hours = (int) longVal / 3600;
-        int remainder = (int) longVal - hours * 3600;
-        int mins = remainder / 60;
-        remainder = remainder - mins * 60;
-        int secs = remainder;
+    fun durationToHoursMinutesSecondsStr(longVal: Long): String {
+        var longVal = longVal
+        longVal = longVal / 1000
+        val hours = longVal.toInt() / 3600
+        var remainder = longVal.toInt() - hours * 3600
+        val mins = remainder / 60
+        remainder = remainder - mins * 60
+        val secs = remainder
 
-        return String.format("%02d:%02d:%02d", hours, mins, secs);
+        return String.format("%02d:%02d:%02d", hours, mins, secs)
     }
 
-    public static long durationStringToLong(String source){
-        String[] tokens = source.split(":");
-        int secondsToMs = Integer.parseInt(tokens[2]) * 1000;
-        int minutesToMs = Integer.parseInt(tokens[1]) * 60000;
-        int hoursToMs = Integer.parseInt(tokens[0]) * 3600000;
-        return secondsToMs + minutesToMs + hoursToMs;
+    fun durationStringToLong(source: String): Long {
+        val tokens: Array<String?> =
+            source.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val secondsToMs = tokens[2]!!.toInt() * 1000
+        val minutesToMs = tokens[1]!!.toInt() * 60000
+        val hoursToMs = tokens[0]!!.toInt() * 3600000
+        return (secondsToMs + minutesToMs + hoursToMs).toLong()
     }
 }

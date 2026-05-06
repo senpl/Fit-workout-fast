@@ -106,33 +106,33 @@ class WeightFragment : Fragment() {
             val viewId = requireView().getId()
             if (viewId == R.id.weightInput) {
                 // push value to database
-                val weightValue = v!!.getText().toFloat()
+                val weightValue = v!!.text.toFloat()
                 mDbBodyMeasure!!.addBodyMeasure(
-                    v.getDate(),
+                    v.date!!,
                     BodyPartExtensions.WEIGHT.toLong(),
                     weightValue,
                     parseLong(this.profile?.id.toString())
                 )
             } else if (viewId == R.id.fatInput) {
-                val fatValue = v!!.getText().toFloat()
+                val fatValue = v!!.text.toFloat()
                 mDbBodyMeasure!!.addBodyMeasure(
-                    v.getDate(),
+                    v.date!!,
                     BodyPartExtensions.FAT.toLong(),
                     fatValue,
                     this.profile!!.id
                 )
             } else if (viewId == R.id.musclesInput) {
-                val musclesValue = v!!.getText().toFloat()
+                val musclesValue = v!!.text.toFloat()
                 mDbBodyMeasure!!.addBodyMeasure(
-                    v.getDate(),
+                    v.date!!,
                     BodyPartExtensions.MUSCLES.toLong(),
                     musclesValue,
                     this.profile!!.id
                 )
             } else if (viewId == R.id.waterInput) {
-                val waterValue = v!!.getText().toFloat()
+                val waterValue = v!!.text.toFloat()
                 mDbBodyMeasure!!.addBodyMeasure(
-                    v.getDate(),
+                    v.date!!,
                     BodyPartExtensions.WATER.toLong(),
                     waterValue,
                     this.profile!!.id
@@ -554,7 +554,7 @@ class WeightFragment : Fragment() {
                 }
 
                 if (lastWeightValue != null) {
-                    weightEdit!!.setText(lastWeightValue.bodyMeasure.toString())
+                    weightEdit!!.text=(lastWeightValue.bodyMeasure.toString())
                     // update IMC
                     val size = this.profile!!.size
                     if (size == 0) {
@@ -589,27 +589,27 @@ class WeightFragment : Fragment() {
                         }
                     }
                 } else {
-                    weightEdit!!.setText("-")
+                    weightEdit!!.text=("-")
                     imcText!!.setText("-")
                     imcRank!!.setText(R.string.no_weight_available)
                     ffmiText!!.setText("-")
                     ffmiRank!!.setText(R.string.no_weight_available)
                 }
 
-                if (lastWaterValue != null) waterEdit!!.setText(
+                if (lastWaterValue != null) waterEdit!!.text=(
                     lastWaterValue.bodyMeasure.toString()
                 )
-                else waterEdit!!.setText("-")
+                else waterEdit!!.text=("-")
 
-                if (lastFatValue != null) fatEdit!!.setText(
+                if (lastFatValue != null) fatEdit!!.text=(
                     lastFatValue.bodyMeasure.toString()
                 )
-                else fatEdit!!.setText("-")
+                else fatEdit!!.text=("-")
 
-                if (lastMusclesValue != null) musclesEdit!!.setText(
+                if (lastMusclesValue != null) musclesEdit!!.text=(
                     lastMusclesValue.bodyMeasure.toString()
                 )
-                else musclesEdit!!.setText("-")
+                else musclesEdit!!.text=("-")
 
 
                 DrawGraph()

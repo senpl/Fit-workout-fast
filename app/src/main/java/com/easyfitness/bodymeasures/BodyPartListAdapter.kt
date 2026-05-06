@@ -16,6 +16,7 @@ import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.ImageUtil
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
+import com.mikhaellopez.circularimageview.CircularImageView
 
 class BodyPartListAdapter(data: ArrayList<BodyPart?>, context: Context) :
     ArrayAdapter<BodyPart?>(context, R.layout.bodypart_row, data), View.OnClickListener {
@@ -66,7 +67,7 @@ class BodyPartListAdapter(data: ArrayList<BodyPart?>, context: Context) :
         )
         else viewHolder.txtLastMeasure!!.setText("-")
         if (dataModel.customPicture != "") {
-            ImageUtil.setPic(viewHolder.logo, dataModel.customPicture)
+            ImageUtil.setPic(viewHolder.logo as CircularImageView?, dataModel.customPicture)
         } else {
             if (dataModel.bodyPartResKey != -1) viewHolder.logo!!.setImageDrawable(
                 dataModel.getPicture(

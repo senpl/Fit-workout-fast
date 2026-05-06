@@ -49,7 +49,7 @@ import java.util.Calendar
 
 class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
     private var addButton: TextView? = null
-    private var nameEdit: EditableInputView? = null
+    private lateinit var nameEdit: EditableInputView
     private var measureList: ExpandedListView? = null
     private var bodyToolbar: Toolbar? = null
     private var mChart: LineChart? = null
@@ -67,15 +67,15 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
-        editDate = TextView(getContext())
-        val date = DateConverter.getNewDate()
+        editDate = TextView(context)
+        val date = DateConverter.newDate
         editDate!!.setLayoutParams(params)
-        editDate!!.setText(DateConverter.dateToLocalDateStr(date, getContext()))
+        editDate!!.setText(DateConverter.dateToLocalDateStr(date, requireContext()))
         editDate!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
         editDate!!.setGravity(Gravity.CENTER)
         editDate!!.setOnClickListener(View.OnClickListener { view: View? ->
             val calendar = Calendar.getInstance()
-            calendar.setTime(DateConverter.getNewDate())
+            calendar.setTime(DateConverter.newDate)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val month = calendar.get(Calendar.MONTH)
             val year = calendar.get(Calendar.YEAR)
@@ -87,7 +87,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
             datePickerDialog.show()
         })
 
-        editText = EditText(getContext())
+        editText = EditText(context)
         editText!!.setText("")
         editText!!.setHint("Enter value here")
         editText!!.setInputType(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
@@ -99,7 +99,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         val linearLayout = LinearLayout(requireContext().applicationContext)
 
         linearLayout.setLayoutParams(params)
-        linearLayout.setOrientation(LinearLayout.VERTICAL)
+        linearLayout.orientation = LinearLayout.VERTICAL
         linearLayout.addView(editDate)
         linearLayout.addView(editText)
 
@@ -108,7 +108,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
             .showCancelButton(true)
             .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
                 editText!!.clearFocus()
-                Keyboard.hide(getContext(), editText)
+                Keyboard.hide(requireContext(), editText)
                 sDialog!!.dismissWithAnimation()
             })
             .setCancelText(requireContext().getString(R.string.global_cancel))
@@ -120,10 +120,10 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
                     value = editText!!.getText().toString().toFloat()
                     val lDate = DateConverter.localDateStrToDate(
                         editDate!!.getText().toString(),
-                        getContext()
+                        requireContext()
                     )
                     mBodyMeasureDb!!.addBodyMeasure(
-                        lDate,
+                        lDate!!,
                         mInitialBodyPart!!.id,
                         value,
                         1
@@ -142,7 +142,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         dialog.setCustomView(linearLayout)
         dialog.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
             Keyboard.show(
-                getContext(),
+                requireContext(),
                 editText
             )
         })
@@ -189,8 +189,8 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
     private var deleteButton: ImageButton? = null
     private val onTextChangeListener =
         OnTextChangedListener { view: EditableInputView? -> this.requestForSave(requireView()) }
-    private var editDate: TextView? = null
-    private var editText: EditText? = null
+    private lateinit var editDate: TextView
+    private lateinit var editText: EditText
     private var bodyPartImageView: ImageView? = null
 
     private val onClickToolbarItem = View.OnClickListener { v: View? ->
@@ -298,7 +298,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
 
         (getActivity() as MainActivity).activityToolbar.setVisibility(View.GONE)
 
-        nameEdit!!.setText(mInitialBodyPart!!.getName(requireContext()))
+        nameEdit!!.text=(mInitialBodyPart!!.getName(requireContext()))
         bodyToolbar!!.setNavigationIcon(R.drawable.ic_back)
         bodyToolbar!!.setNavigationOnClickListener(View.OnClickListener { v: View? -> requireActivity().onBackPressed() })
 
@@ -426,7 +426,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         // Save all the fields in the Profile
         val id = view.getId()
         if (id == R.id.BODYPART_NAME) {
-            mInitialBodyPart!!.customName = (nameEdit!!.getText())
+            mInitialBodyPart!!.customName = (nameEdit!!.text)
             toUpdate = true
         } else if (id == R.id.BODYPART_LOGO) {
             // TODO if it has been deleted, remove the CustomPicture
@@ -450,7 +450,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         if (editDate != null) editDate!!.setText(
             DateConverter.dateToLocalDateStr(
                 date,
-                getContext()
+                requireContext()
             )
         )
     } /*

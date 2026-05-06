@@ -1,8 +1,8 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-public class Gender {
-    public static final int UNKNOWN = 0;
-    public static final int MALE = 1;
-    public static final int FEMALE = 2;
-    public static final int OTHER = 3;
+object Gender {
+    const val UNKNOWN: Int = 0
+    const val MALE: Int = 1
+    const val FEMALE: Int = 2
+    const val OTHER: Int = 3
 }

@@ -1,123 +1,131 @@
-package com.easyfitness.utils.EditableInputView;
+package com.easyfitness.utils.EditableInputView
 
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.text.InputType;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
+import android.text.InputType
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import cn.pedant.SweetAlert.SweetAlertDialog
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
+import com.easyfitness.R
+import com.easyfitness.utils.DateConverter
+import com.easyfitness.utils.Keyboard
+import java.util.Calendar
+import java.util.Date
 
-import com.easyfitness.R;
-import com.easyfitness.utils.DateConverter;
-import com.easyfitness.utils.Keyboard;
+class EditableInputViewWithDate : EditableInputView, OnDateSetListener {
+    var date: Date? = null
+        private set
+    private var dateEditView: TextView? = null
 
-import java.util.Calendar;
-import java.util.Date;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
-public class EditableInputViewWithDate extends EditableInputView implements DatePickerDialog.OnDateSetListener {
-    private Date date;
-    private TextView dateEditView = null;
-
-    public EditableInputViewWithDate(Context context) {
-        super(context);
-        init(context, null);
+    constructor(context: Context) : super(context) {
+        init(context, null)
     }
 
-    public EditableInputViewWithDate(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context, attrs)
     }
 
-    public EditableInputViewWithDate(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs);
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
+        init(context, attrs)
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        date = DateConverter.dateToDate(year, month, dayOfMonth);
-        if (dateEditView != null)
-            dateEditView.setText(DateConverter.dateToLocalDateStr(date, getContext()));
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        date = DateConverter.dateToDate(year, month, dayOfMonth)
+        if (dateEditView != null && date != null) dateEditView!!.setText(
+            DateConverter.dateToLocalDateStr(
+                date!!,
+                getContext()
+            )
+        )
     }
 
-    private EditableInputViewWithDate getEditableInputViewWithDate() {
-        return this;
-    }
+    private val editableInputViewWithDate: EditableInputViewWithDate
+        get() = this
 
-    @Override
-    protected void editDialog(Context context) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+    override fun editDialog(context: Context) {
+        val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+        )
 
-        final TextView editDate = new TextView(getContext());
-        date = DateConverter.getNewDate();
-        editDate.setLayoutParams(params);
-        editDate.setText(DateConverter.dateToLocalDateStr(date, getContext()));
-        editDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        editDate.setGravity(Gravity.CENTER);
-        editDate.setOnClickListener((view) -> {
-                Calendar calendar = Calendar.getInstance();
+        val editDate = TextView(getContext())
+        date = DateConverter.newDate
+        editDate.setLayoutParams(params)
+        editDate.text =(DateConverter.dateToLocalDateStr(date!!, getContext()))
+        editDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+        editDate.setGravity(Gravity.CENTER)
+        editDate.setOnClickListener(OnClickListener { view: View? ->
+            val calendar = Calendar.getInstance()
+            calendar.setTime(DateConverter.newDate)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
 
-                calendar.setTime(DateConverter.getNewDate());
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
+            val datePickerDialog = DatePickerDialog(
+                getContext(),
+                this.editableInputViewWithDate, year, month, day
+            )
+            dateEditView = editDate
+            datePickerDialog.show()
+        })
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), getEditableInputViewWithDate(), year, month, day);
-                dateEditView = editDate;
-                datePickerDialog.show();
-        });
-
-        final EditText editText = new EditText(context);
-        if (getText().contentEquals("-")) {
-            editText.setText("");
-            editText.setHint("Enter value here");
+        val editText = EditText(context)
+        if (text.contentEquals("-")) {
+            editText.setText("")
+            editText.setHint("Enter value here")
         } else {
-            editText.setText(getText());
+            editText.setText(text)
         }
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editText.setGravity(Gravity.CENTER);
-        editText.setLayoutParams(params);
-        editText.requestFocus();
-        editText.selectAll();
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
+        editText.setGravity(Gravity.CENTER)
+        editText.setLayoutParams(params)
+        editText.requestFocus()
+        editText.selectAll()
 
-        LinearLayout linearLayout = new LinearLayout(getContext().getApplicationContext());
+        val linearLayout = LinearLayout(getContext().getApplicationContext())
 
-        linearLayout.setLayoutParams(params);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(editDate);
-        linearLayout.addView(editText);
+        linearLayout.setLayoutParams(params)
+        linearLayout.setOrientation(LinearLayout.VERTICAL)
+        linearLayout.addView(editDate)
+        linearLayout.addView(editText)
 
-        final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
+        val dialog = SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
             .setTitleText(mTitle)
             .showCancelButton(true)
-            .setCancelClickListener(sDialog -> {
-                editText.clearFocus();
-                Keyboard.hide(context, editText);
-                sDialog.dismissWithAnimation();})
+            .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                editText.clearFocus()
+                Keyboard.hide(context, editText)
+                sDialog!!.dismissWithAnimation()
+            })
             .setCancelText(getContext().getString(R.string.global_cancel))
             .setConfirmText(getContext().getString(R.string.AddLabel))
-            .setConfirmClickListener(sDialog -> {
-                Keyboard.hide(sDialog.getContext(), editText);
-                setText(editText.getText().toString());
-                if (mConfirmClickListener != null)
-                    mConfirmClickListener.onTextChanged(EditableInputViewWithDate.this);
-                sDialog.dismissWithAnimation();
-            });
-        dialog.setCustomView(linearLayout);
-        dialog.setOnShowListener(sDialog -> Keyboard.show(getContext(), editText));
-        dialog.show();
-    }
-
-    public Date getDate() {
-        return date;
+            .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                Keyboard.hide(sDialog!!.getContext(), editText)
+                text=(editText.getText().toString())
+                mConfirmClickListener?.onTextChanged(this@EditableInputViewWithDate)
+                sDialog.dismissWithAnimation()
+            })
+        dialog.setCustomView(linearLayout)
+        dialog.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
+            Keyboard.show(
+                getContext(),
+                editText
+            )
+        })
+        dialog.show()
     }
 }

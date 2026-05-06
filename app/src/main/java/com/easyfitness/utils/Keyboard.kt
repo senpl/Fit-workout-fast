@@ -1,27 +1,25 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
-public class Keyboard {
-
-    public static void hide(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if ( imm !=null)
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+object Keyboard {
+    fun hide(context: Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
     }
 
-    public static void show(Context context, View view) {
+    fun show(context: Context, view: View) {
         if (view.requestFocus()) {
-            view.postDelayed(() -> {
-                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-            }, 300);
+            view.postDelayed(Runnable {
+                val inputMethodManager =
+                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }, 300)
             /*InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);*/
         }
     }
-
 }

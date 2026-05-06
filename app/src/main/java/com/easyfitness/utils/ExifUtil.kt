@@ -1,72 +1,71 @@
-package com.easyfitness.utils;
+package com.easyfitness.utils
 
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import androidx.exifinterface.media.ExifInterface
+import java.io.IOException
+import java.lang.reflect.Constructor
+import java.lang.reflect.InvocationTargetException
 
-import androidx.exifinterface.media.ExifInterface;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-class ExifUtil {
-    static Bitmap rotateBitmap(String src, Bitmap bitmap) {
+internal object ExifUtil {
+    fun rotateBitmap(src: String?, bitmap: Bitmap): Bitmap {
         try {
-            int orientation = getExifOrientation(src);
+            val orientation = getExifOrientation(src)
 
             if (orientation == 1) {
-                return bitmap;
+                return bitmap
             }
 
-            Matrix matrix = new Matrix();
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-                    matrix.setScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    matrix.setRotate(180);
-                    break;
-                case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                    matrix.setRotate(180);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_TRANSPOSE:
-                    matrix.setRotate(90);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    matrix.setRotate(90);
-                    break;
-                case ExifInterface.ORIENTATION_TRANSVERSE:
-                    matrix.setRotate(-90);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    matrix.setRotate(-90);
-                    break;
-                default:
-                    return bitmap;
+            val matrix = Matrix()
+            when (orientation) {
+                ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.setScale(-1f, 1f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
+                ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
+                    matrix.setRotate(180f)
+                    matrix.postScale(-1f, 1f)
+                }
+
+                ExifInterface.ORIENTATION_TRANSPOSE -> {
+                    matrix.setRotate(90f)
+                    matrix.postScale(-1f, 1f)
+                }
+
+                ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
+                ExifInterface.ORIENTATION_TRANSVERSE -> {
+                    matrix.setRotate(-90f)
+                    matrix.postScale(-1f, 1f)
+                }
+
+                ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(-90f)
+                else -> return bitmap
             }
 
             try {
-                Bitmap oriented = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                bitmap.recycle();
-                return oriented;
-            } catch (OutOfMemoryError e) {
-                e.printStackTrace();
-                return bitmap;
+                val oriented = Bitmap.createBitmap(
+                    bitmap,
+                    0,
+                    0,
+                    bitmap.getWidth(),
+                    bitmap.getHeight(),
+                    matrix,
+                    true
+                )
+                bitmap.recycle()
+                return oriented
+            } catch (e: OutOfMemoryError) {
+                e.printStackTrace()
+                return bitmap
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
 
-        return bitmap;
+        return bitmap
     }
 
-    private static int getExifOrientation(String src) throws IOException {
-        int orientation = 1;
+    @Throws(IOException::class)
+    private fun getExifOrientation(src: String?): Int {
+        var orientation = 1
 
         try {
             /**
@@ -74,32 +73,39 @@ class ExifUtil {
              * ExifInterface exif = new ExifInterface(src);
              * orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
              */
-            Class<?> exifClass = Class.forName("android.media.ExifInterface");
-            Constructor<?> exifConstructor = exifClass.getConstructor(String.class);
-            Object exifInstance = exifConstructor.newInstance(src);
-            Method getAttributeInt = exifClass.getMethod("getAttributeInt", String.class, int.class);
-            Field tagOrientationField = exifClass.getField("TAG_ORIENTATION");
-            String tagOrientation = (String) tagOrientationField.get(null);
-            orientation = (Integer) getAttributeInt.invoke(exifInstance, new Object[]{tagOrientation, 1});
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            val exifClass = Class.forName("android.media.ExifInterface")
+            val exifConstructor: Constructor<*> = exifClass.getConstructor(String::class.java)
+            val exifInstance: Any = exifConstructor.newInstance(src)
+            val getAttributeInt = exifClass.getMethod(
+                "getAttributeInt",
+                String::class.java,
+                Int::class.javaPrimitiveType
+            )
+            val tagOrientationField = exifClass.getField("TAG_ORIENTATION")
+            val tagOrientation = tagOrientationField.get(null) as String?
+            orientation = (getAttributeInt.invoke(
+                exifInstance,
+                *kotlin.arrayOf<Any?>(tagOrientation, 1)
+            ) as Int?)!!
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            e.printStackTrace()
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        } catch (e: NoSuchFieldException) {
+            e.printStackTrace()
         }
 
-        return orientation;
+        return orientation
     }
 }
 

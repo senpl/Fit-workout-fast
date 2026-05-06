@@ -225,7 +225,9 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
         }
     }
     private val restTimeCheckChange = CompoundButton.OnCheckedChangeListener { _: CompoundButton?, _: Boolean -> saveSharedParams() }
-    private val itemClickDeleteRecord = BtnOnPostiomClickListener { idToDelete: Long, positionOnList: Int -> showDeleteDialog(idToDelete, positionOnList) }
+    private val itemClickDeleteRecord = BtnOnPostiomClickListener { idToDelete: Long, positionOnList: Int? ->
+        positionOnList?.let { showDeleteDialog(idToDelete, it) }
+    }
 
     @SuppressLint("SetTextI18n")
     private val clickAddButton = View.OnClickListener {
@@ -392,7 +394,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
             return@OnClickListener
         }
         val machineList = ListView(v.context)
-        val c: Cursor? = mDbMachine.allMachines
+        val c: Cursor = mDbMachine.allMachines
         if (c == null || c.count == 0) {
             KToast.warningToast(requireActivity(), resources.getText(R.string.createExerciseFirst).toString(), Gravity.BOTTOM, KToast.LENGTH_SHORT)
             machineList.adapter = null
