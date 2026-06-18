@@ -261,21 +261,19 @@ class FileChooserDialog(
             m_context,
             android.R.style.TextAppearance_DeviceDefault_Medium
         )
-        m_titleView!!.setTextColor(m_context.getResources().getColor(android.R.color.black))
+        m_titleView!!.setTextColor(m_context.resources.getColor(android.R.color.black))
 //        m_titleView!!.setGravity(Gravity.CENTER_VERTICAL or Gravity.START)
-        m_titleView!!.setText(title)
+        m_titleView!!.text = title
 
         val newDirButton = Button(m_context)
-        newDirButton.setLayoutParams(
-            ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+        newDirButton.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        newDirButton.setText("New folder")
+        newDirButton.text = "New folder"
         newDirButton.setOnClickListener(View.OnClickListener { v: View? ->
             val input = EditText(m_context)
-            input.setHint("Folder name")
+            input.hint = "Folder name"
             // Show new folder name input dialog
             AlertDialog.Builder(m_context)
                 .setTitle("New folder name")

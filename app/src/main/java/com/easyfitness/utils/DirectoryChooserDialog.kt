@@ -170,7 +170,7 @@ class DirectoryChooserDialog(
         )
         m_titleView!!.setTextAppearance(m_context, android.R.style.TextAppearance_Large)
         m_titleView!!.setTextColor(m_context.getResources().getColor(android.R.color.white))
-        m_titleView!!.setGravity(Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL)
+//        m_titleView!!.setGravity(Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL)
         m_titleView!!.setText(title)
 
         val newDirButton = Button(m_context)
