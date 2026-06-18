@@ -256,7 +256,7 @@ class BodyPartDetailsFragment : Fragment(), OnDateSetListener {
         mDbBodyPart = DAOBodyPart(requireContext())
 
         addButton = view.findViewById<TextView?>(R.id.buttonAdd)
-        nameEdit = view.findViewById<EditableInputView?>(R.id.BODYPART_NAME)
+        nameEdit = view.findViewById(R.id.BODYPART_NAME)
         measureList = view.findViewById<ExpandedListView?>(R.id.listWeightProfil)
         bodyToolbar = view.findViewById<Toolbar?>(R.id.bodyTrackingDetailsToolbar)
         bodyPartImageView = view.findViewById<ImageView>(R.id.BODYPART_LOGO)

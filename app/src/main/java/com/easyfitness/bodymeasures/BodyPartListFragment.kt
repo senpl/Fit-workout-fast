@@ -132,7 +132,7 @@ class BodyPartListFragment : Fragment() {
             addButton = view.findViewById<Button>(R.id.addBodyPart)
             addButton!!.setOnClickListener(clickAddButton)
 
-            measureList = view.findViewById<ListView?>(R.id.listBodyMeasures)
+            measureList = view.findViewById(R.id.listBodyMeasures)
             // Initialisation des evenements
             measureList!!.setOnItemClickListener(onClickListItem)
             measureList!!.setAdapter(mListAdapter)
