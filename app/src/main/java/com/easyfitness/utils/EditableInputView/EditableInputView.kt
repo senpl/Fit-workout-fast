@@ -82,7 +82,7 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
             )
             try {
                 mTitle =
-                    a.getString(R.styleable.editableinput_view_android_title)
+                    a.getString(R.styleable.editableinput_view_android_text)
                 this.text = a.getString(R.styleable.editableinput_view_android_text).toString()
                 valueTextView!!.setGravity(
                     a.getInt(
