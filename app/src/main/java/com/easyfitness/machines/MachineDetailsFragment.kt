@@ -32,6 +32,7 @@ import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
 import com.easyfitness.utils.Keyboard
 import com.easyfitness.utils.RealPathUtil
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 //import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.File
@@ -114,7 +115,7 @@ class MachineDetailsFragment : Fragment() {
         musclesList = view.findViewById<TextView?>(R.id.machine_muscles)
         machinePhoto = view.findViewById<ImageView?>(R.id.machine_photo)
 
-        machinePhotoLayout = view.findViewById<LinearLayout?>(R.id.machine_photo_layout)
+        machinePhotoLayout = view.findViewById(R.id.machine_photo_layout)
         machineAction = view.findViewById<FloatingActionButton?>(R.id.actionCamera)
 
         imgUtil = ImageUtil(machinePhoto)
