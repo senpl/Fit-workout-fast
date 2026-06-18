@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.easyfitness"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId "com.fitworkoutfast"
@@ -138,6 +138,7 @@ dependencies {
     implementation libs.materialfavoritebutton
     implementation libs.numberslidingpicker
     implementation libs.fillprogresslayout
+    implementation libs.customview
 
     // Utilities & Other
     implementation libs.library
