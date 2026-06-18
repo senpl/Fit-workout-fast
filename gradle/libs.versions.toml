@@ -1,5 +1,6 @@
 [versions]
 activity = "1.13.0"
+agp = "9.2.1"
 androidImageCropper = "4.7.0"
 annotation = "1.10.0"
 appcompat = "1.7.1"
@@ -16,16 +17,13 @@ drawerlayout = "1.2.0"
 exifinterface = "1.4.2"
 fillprogresslayout = "0.0.9"
 fragmentKtx = "1.8.9"
-gradle = "9.2.1"
 instadotview = "1.1"
 kotlin = "2.4.0"
-kotlinGradlePlugin = "2.4.0"
 ktoast = "1.0.3"
 library = "1.6.2"
 libraryVersion = "2.0.0"
 licensesdialog = "2.2.0"
 materialfavoritebutton = "0.1.5"
-materialIconsExtended = "1.7.8"
 materialIntro = "1.6"
 materialVersion = "1.11.2"
 mpandroidchart = "3.1.0.28"
@@ -33,7 +31,8 @@ numberslidingpicker = "2cd87266c8e7d7656df9eef964bf062da95833a3"
 pagerslidingtabstrip = "1.0.1"
 preferenceKtx = "1.2.1"
 recyclerview = "1.4.0"
-rx2Timer = "1.0.0"
+rx3Timer = "1.0.0"
+#something is wrong as far as I remember in latest version so keep on 3.1.11 to be compatible with RxTimer and timeres
 rxjava = "3.1.11"
 ultimateringtonepicker = "3.3.0"
 viewpager = "1.1.0"
@@ -47,20 +46,17 @@ customviewVersion="1.2.0"
 [libraries]
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+#androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
-#androidx-core = { module = "androidx.core:core", version.ref = "coreKtx" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
 androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
-#androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
-#androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
@@ -68,9 +64,7 @@ circleprogress = { module = "com.github.lzyzsd:circleprogress", version.ref = "c
 circularimageview = { module = "com.mikhaellopez:circularimageview", version.ref = "circularimageview" }
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicatorVersion" }
 fillprogresslayout = { module = "com.github.JDevZone:FillProgressLayout", version.ref = "fillprogresslayout" }
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 dotsindicatorwithoutviewpager = { module = "com.github.mazenrashed:DotsIndicatorWithoutViewpager", version.ref = "dotsindicatorwithoutviewpager" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
 ktoast = { module = "com.github.onurkagan:ktoast", version.ref = "ktoast" }
 library = { module = "com.github.f0ris.sweetalert:library", version.ref = "library" }
 licensesdialog = { module = "de.psdev.licensesdialog:licensesdialog", version.ref = "licensesdialog" }
@@ -79,7 +73,7 @@ materialfavoritebutton = { module = "com.github.ivbaranov:materialfavoritebutton
 mpandroidchart = { module = "com.github.hannesa2:MPAndroidChart", version.ref = "mpandroidchart" }
 numberslidingpicker = { module = "com.github.senpl:NumberSlidingPicker", version.ref = "numberslidingpicker" }
 #pagerslidingtabstrip = { module = "com.astuetz:pagerslidingtabstrip", version.ref = "pagerslidingtabstrip" }
-rx2-timer = { module = "com.github.thepacific:rx3-timer", version.ref = "rx2Timer" }
+rx3-timer = { module = "com.github.thepacific:rx3-timer", version.ref = "rx3Timer" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 smarttablayout-library = { module = "com.ogaclejapan.smarttablayout:library", version.ref = "libraryVersion" }
 ultimateringtonepicker = { module = "com.github.DeweyReed:UltimateRingtonePicker", version.ref = "ultimateringtonepicker" }
@@ -90,6 +84,5 @@ material = { group = "com.google.android.material", name = "material", version.r
 customview = { group = "androidx.customview", name = "customview", version.ref = "customviewVersion" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "gradle" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.4.0" }
+android = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

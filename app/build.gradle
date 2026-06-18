@@ -1,10 +1,6 @@
 plugins {
-    id 'com.android.application'
-//    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android)
     alias(libs.plugins.kotlin.compose)
-//    alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -14,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 87
         versionName "0.26.20"
     }
@@ -83,15 +79,6 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-//    kotlinOptions {
-//        jvmTarget = '21'
-//    }
-//    kotlinOptions {
-//        jvmTarget = '21'
-//    }
-//    kotlinOptions {
-//        jvmTarget = '21'
-//    }
 }
 
 configurations.configureEach {
@@ -101,7 +88,7 @@ configurations.configureEach {
 dependencies {
     // AndroidX Support
     implementation libs.androidx.core.ktx
-    implementation libs.androidx.appcompat
+//    implementation libs.androidx.appcompat
     implementation libs.androidx.activity.ktx
     implementation libs.androidx.activity.compose
     implementation libs.androidx.fragment.ktx
@@ -136,7 +123,7 @@ dependencies {
     implementation libs.licensesdialog
     implementation libs.ktoast
     implementation libs.rxjava
-    implementation libs.rx2.timer
+    implementation libs.rx3.timer
     implementation libs.ultimateringtonepicker
     implementation libs.android.image.cropper
     implementation libs.youtubeplayer.compose

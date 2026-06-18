@@ -9,11 +9,11 @@ import androidx.viewpager.widget.ViewPager
 import com.easyfitness.R
 import com.easyfitness.programs.NonSwipeableViewPager
 import com.ogaclejapan.smarttablayout.SmartTabLayout
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
+//import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
+//import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 
 class FontesOldPagerFragment : Fragment() {
-    private var pagerAdapter: FragmentPagerItemAdapter? = null
+//    private var pagerAdapter: FragmentPagerItemAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +29,15 @@ class FontesOldPagerFragment : Fragment() {
             args!!.putLong("machineID", -1)
             args.putLong("machineProfile", -1)
 
-            pagerAdapter = FragmentPagerItemAdapter(
-                getChildFragmentManager(),
-                FragmentPagerItems.with(this.getContext()) //                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
-                    .add(R.string.GraphLabel, FonteGraphFragment::class.java, args)
-                    .add(R.string.HistoryLabel, FonteHistoryFragment::class.java, args)
-                    .create()
-            )
+//            pagerAdapter = FragmentPagerItemAdapter(
+//                getChildFragmentManager(),
+////                FragmentPagerItems.with(this.getContext()) //                .add(R.string.ProgramRunnerLabel, ProgramRunner.class)
+////                    .add(R.string.GraphLabel, FonteGraphFragment::class.java, args)
+////                    .add(R.string.HistoryLabel, FonteHistoryFragment::class.java, args)
+////                    .create()
+//            )
 
-            mViewPager.setAdapter(pagerAdapter)
+//            mViewPager.setAdapter(pagerAdapter)
 
             val viewPagerTab = view.findViewById<SmartTabLayout>(R.id.viewpagertab)
             viewPagerTab.setViewPager(mViewPager)
@@ -55,8 +55,8 @@ class FontesOldPagerFragment : Fragment() {
                     //pagerAdapter.getItem(position).onHiddenChanged(false);
                     //Fragment frag1 = (Fragment) pagerAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
 
-                    val frag1 = pagerAdapter!!.getPage(position)
-                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
+//                    val frag1 = pagerAdapter!!.getPage(position)
+//                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
 
 
                     //}
@@ -81,25 +81,25 @@ class FontesOldPagerFragment : Fragment() {
         return view
     }
 
-    private val viewPagerAdapter: FragmentPagerItemAdapter?
-        //    public void onPageSelected(int position) {
-        get() = ((requireView().findViewById<View?>(R.id.pager)) as ViewPager).getAdapter() as FragmentPagerItemAdapter?
+//    private val viewPagerAdapter: FragmentPagerItemAdapter?
+//        //    public void onPageSelected(int position) {
+//        get() = ((requireView().findViewById<View?>(R.id.pager)) as ViewPager).getAdapter() as FragmentPagerItemAdapter?
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        if (!hidden) {
-            // rafraichit le fragment courant
-
-            if (this.viewPagerAdapter != null) {
-                // Moyen de rafraichir tous les fragments. Attention, les View des fragments peuvent avoir ete detruit.
-                // Il faut donc que cela soit pris en compte dans le refresh des fragments.
-                var frag1: Fragment?
-                for (i in 0..<this.viewPagerAdapter!!.getCount()) {
-                    frag1 = this.viewPagerAdapter!!.getPage(i)
-                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
-                }
-            }
-        }
-    }
+//    override fun onHiddenChanged(hidden: Boolean) {
+//        if (!hidden) {
+//            // rafraichit le fragment courant
+//
+//            if (this.viewPagerAdapter != null) {
+//                // Moyen de rafraichir tous les fragments. Attention, les View des fragments peuvent avoir ete detruit.
+//                // Il faut donc que cela soit pris en compte dans le refresh des fragments.
+//                var frag1: Fragment?
+//                for (i in 0..<this.viewPagerAdapter!!.getCount()) {
+//                    frag1 = this.viewPagerAdapter!!.getPage(i)
+//                    if (frag1 != null) frag1.onHiddenChanged(false) // Refresh data
+//                }
+//            }
+//        }
+//    }
 
     companion object {
         //    private String name;

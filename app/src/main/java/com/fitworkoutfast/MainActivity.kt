@@ -283,11 +283,11 @@ class MainActivity : AppCompatActivity() {
         dataList.add(DrawerItem(this.resources.getString(R.string.menu_Workout), R.drawable.ic_fitness_center_white_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.manu_programs), R.drawable.outline_assignment_white_24, true))
         //dataList.add(new DrawerItem(this.getResources().getString(R.string.CardioMenuLabel), R.drawable.ic_running, true));
-        dataList.add(DrawerItem(this.resources.getString(R.string.MachinesLabel), R.drawable.ic_gym_bench_50dp, true))
-        dataList.add(DrawerItem(this.resources.getString(R.string.weightMenuLabel), R.drawable.ic_bathroom_scale_white_50dp, true))
-        dataList.add(DrawerItem(this.resources.getString(R.string.bodytracking), R.drawable.ic_ruler_white_50dp, true))
+//        dataList.add(DrawerItem(this.resources.getString(R.string.MachinesLabel), R.drawable.ic_gym_bench_50dp, true))
+//        dataList.add(DrawerItem(this.resources.getString(R.string.weightMenuLabel), R.drawable.ic_bathroom_scale_white_50dp, true))
+//        dataList.add(DrawerItem(this.resources.getString(R.string.bodytracking), R.drawable.ic_ruler_white_50dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.SettingLabel), R.drawable.ic_settings_white_24dp, true))
-        dataList.add(DrawerItem(this.resources.getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true))
+//        dataList.add(DrawerItem(this.resources.getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.AboutLabel), R.drawable.ic_info_outline_white_24dp, true))
         mDrawerAdapter = CustomDrawerAdapter(this, R.layout.custom_drawer_item,
             dataList)
@@ -354,13 +354,13 @@ class MainActivity : AppCompatActivity() {
         //Save the fragment's instance
         if (fontesPagerFragment!!.isAdded) supportFragmentManager.putFragment(outState, FONTESPAGER, mpFontesPagerFrag!!)
         if (programsFragment.isAdded) supportFragmentManager.putFragment(outState, PROGRAMS, mpProgramPagerFrag!!)
-        if (fontesOldPagerFragment!!.isAdded) supportFragmentManager.putFragment(outState, FONTESPAGER + "OLD", mpFontesOldPagerFrag!!)
-        if (weightFragment!!.isAdded) supportFragmentManager.putFragment(outState, WEIGHT, mpWeightFrag!!)
-        if (profileFragment!!.isAdded) supportFragmentManager.putFragment(outState, PROFILE, mpProfileFrag!!)
-        if (machineFragment!!.isAdded) supportFragmentManager.putFragment(outState, MACHINES, mpMachineFrag!!)
+//        if (fontesOldPagerFragment!!.isAdded) supportFragmentManager.putFragment(outState, FONTESPAGER + "OLD", mpFontesOldPagerFrag!!)
+//        if (weightFragment!!.isAdded) supportFragmentManager.putFragment(outState, WEIGHT, mpWeightFrag!!)
+//        if (profileFragment!!.isAdded) supportFragmentManager.putFragment(outState, PROFILE, mpProfileFrag!!)
+//        if (machineFragment!!.isAdded) supportFragmentManager.putFragment(outState, MACHINES, mpMachineFrag!!)
         if (aboutFragment!!.isAdded) supportFragmentManager.putFragment(outState, ABOUT, mpAboutFrag!!)
         if (settingsFragment.isAdded) supportFragmentManager.putFragment(outState, SETTINGS, mpSettingFrag!!)
-        if (bodyPartFragment!!.isAdded) supportFragmentManager.putFragment(outState, BODYTRACKING, mpBodyPartListFrag!!)
+//        if (bodyPartFragment!!.isAdded) supportFragmentManager.putFragment(outState, BODYTRACKING, mpBodyPartListFrag!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -638,24 +638,24 @@ class MainActivity : AppCompatActivity() {
             PROGRAMS -> {
                 ft.replace(R.id.fragment_container, programsFragment, PROGRAMS)
             }
-            FONTESPAGER + "OLD" -> {
-                ft.replace(R.id.fragment_container, fontesOldPagerFragment!!, FONTESPAGER + "OLD")
-            }
-            WEIGHT -> {
-                ft.replace(R.id.fragment_container, weightFragment!!, WEIGHT)
-            }
+//            FONTESPAGER + "OLD" -> {
+//                ft.replace(R.id.fragment_container, fontesOldPagerFragment!!, FONTESPAGER + "OLD")
+//            }
+//            WEIGHT -> {
+//                ft.replace(R.id.fragment_container, weightFragment!!, WEIGHT)
+//            }
             SETTINGS -> {
                 ft.replace(R.id.fragment_container, settingsFragment, SETTINGS)
             }
-            MACHINES -> {
-                ft.replace(R.id.fragment_container, machineFragment!!, MACHINES)
-            }
+//            MACHINES -> {
+//                ft.replace(R.id.fragment_container, machineFragment!!, MACHINES)
+//            }
             ABOUT -> {
                 ft.replace(R.id.fragment_container, aboutFragment!!, ABOUT)
             }
-            BODYTRACKING -> {
-                ft.replace(R.id.fragment_container, bodyPartFragment!!, BODYTRACKING)
-            }
+//            BODYTRACKING -> {
+//                ft.replace(R.id.fragment_container, bodyPartFragment!!, BODYTRACKING)
+//            }
             PROFILE -> {
                 ft.replace(R.id.fragment_container, profileFragment!!, PROFILE)
             }
