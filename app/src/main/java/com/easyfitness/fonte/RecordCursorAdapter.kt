@@ -75,7 +75,7 @@ class RecordCursorAdapter(
         val tRepsLayout = view.findViewById<LinearLayout>(R.id.REP_LAYOUT)
 
         if (mCopyClickListener == null) {
-            view.findViewById<View?>(R.id.copyButton).setVisibility(View.GONE)
+            view.findViewById<View?>(R.id.copyButton)!!.setVisibility(View.GONE)
         }
 
         /* Specific display */
