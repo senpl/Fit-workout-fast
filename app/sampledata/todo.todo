@@ -1,5 +1,18 @@
+Oczyścić interface
+    Nazwa programu niech będzie wybieralna na początku
+        i w ten sposób zmienialna
+    Wtedy nie potrzebuję górnej belki i mogę ją zostawić ukrytą
+        Poza bocznym manu lub jakimś przyciskiem powrotu
+        bo chcemy mieć taką możliwość
+    Wywalić profil i jego wybór
+        Wywalić timer
+            Jako nie zalecany do użytku
+        jako zbędny feature
 Prosty sposób do importu ćwiczeń
-    i ewentualnie eksportu
+   W formatach z chatgpt i gemini
+        bo jednak to pomocne
+        Przepisywać wytyczne i rekomendowaną ilość
+            dodwać mniej ale wpisywać, że docelowo tak zalecana ilość
 Przywrócić apkę do play store'a bo jednak nie ma sensu robić czegoś,
     czego nie można opublikować
 Rozpoznawanie ruchu z kamery. Do zliczania ćwiczeń
