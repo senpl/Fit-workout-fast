@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.DialogInterface
-import android.content.DialogInterface.OnShowListener
 import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -18,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import cn.pedant.SweetAlert.SweetAlertDialog
-import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.easyfitness.R
 import com.easyfitness.utils.DateConverter
 import com.easyfitness.utils.Keyboard
@@ -58,13 +56,11 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        valueTextView!!.setText(
-            DateConverter.dateToLocalDateStr(
-                year,
-                month,
-                dayOfMonth,
-                getContext()
-            )
+        valueTextView!!.text = DateConverter.dateToLocalDateStr(
+            year,
+            month,
+            dayOfMonth,
+            context
         )
         if (mConfirmClickListener != null) mConfirmClickListener!!.onTextChanged(this@EditableInputView)
     }
@@ -73,8 +69,8 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
         //do setup work here
         mContext = context
         val rootView = inflate(context, R.layout.editableinput_view, this)
-        valueTextView = rootView!!.findViewById<TextView>(R.id.valueTextView)
-        editButton = rootView.findViewById<View>(R.id.editButton)
+        valueTextView = rootView!!.findViewById(R.id.valueTextView)
+        editButton = rootView.findViewById(R.id.editButton)
         mTextValue = ""
         mSuffix = ""
 
@@ -86,7 +82,7 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
             )
             try {
                 mTitle =
-                    a.getString(R.styleable.editableinput_view_android_inputType) //editableinput_view_android_title ?? Not sure
+                    a.getString(R.styleable.editableinput_view_android_title)
                 this.text = a.getString(R.styleable.editableinput_view_android_text).toString()
                 valueTextView!!.setGravity(
                     a.getInt(
@@ -98,31 +94,29 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
                     TypedValue.COMPLEX_UNIT_PX,
                     a.getDimension(R.styleable.editableinput_view_android_textSize, 0f)
                 )
-                valueTextView!!.setMaxLines(
-                    a.getInt(
-                        R.styleable.editableinput_view_android_maxLines,
-                        1
-                    )
+                valueTextView!!.maxLines = a.getInt(
+                    R.styleable.editableinput_view_android_maxLines,
+                    1
                 )
                 valueTextView!!.setLines(a.getInt(R.styleable.editableinput_view_android_lines, 1))
                 textViewInputType = a.getInt(
                     R.styleable.editableinput_view_android_inputType,
                     InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
                 )
-                valueTextView!!.setInputType(textViewInputType)
+                valueTextView!!.inputType = textViewInputType
                 if (a.getBoolean(R.styleable.editableinput_view_iconVisible, false)) {
-                    editButton!!.setVisibility(VISIBLE)
+                    editButton!!.visibility = VISIBLE
                 } else {
-                    editButton!!.setVisibility(GONE)
+                    editButton!!.visibility = GONE
                 }
             } finally {
                 a.recycle()
             }
         }
 
-        valueTextView!!.setOnClickListener(OnClickListener { v: View? -> editDialog(v!!.getContext()) })
+        valueTextView!!.setOnClickListener { v: View? -> editDialog(v!!.context) }
 
-        editButton!!.setOnClickListener(OnClickListener { v: View? -> editDialog(v!!.getContext()) })
+        editButton!!.setOnClickListener { v: View? -> editDialog(v!!.context) }
     }
 
     protected open fun editDialog(context: Context) {
@@ -131,10 +125,10 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
         if (mCustomerDialogBuilder != null) {
             mCustomerDialogBuilder!!.customerDialogBuilder(this)!!.show()
         } else {
-            if ((valueTextView!!.getInputType() and InputType.TYPE_CLASS_DATETIME) > 0) {
+            if ((valueTextView!!.inputType and InputType.TYPE_CLASS_DATETIME) > 0) {
                 val calendar = Calendar.getInstance()
 
-                calendar.setTime(DateConverter.localDateStrToDate(this.text!!, getContext()))
+                calendar.setTime(DateConverter.localDateStrToDate(this.text, getContext()))
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val month = calendar.get(Calendar.MONTH)
                 val year = calendar.get(Calendar.YEAR)
@@ -146,43 +140,43 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
             } else {
                 val editText = EditText(context)
                 editText.setText(mTextValue)
-                editText.setGravity(Gravity.CENTER)
-                editText.setInputType(textViewInputType)
+                editText.gravity = Gravity.CENTER
+                editText.inputType = textViewInputType
                 editText.requestFocus()
 
-                val linearLayout = LinearLayout(context.getApplicationContext())
-                linearLayout.setOrientation(LinearLayout.VERTICAL)
+                val linearLayout = LinearLayout(context.applicationContext)
+//                linearLayout.setOrientation(LinearLayout.VERTICAL)
                 linearLayout.addView(editText)
 
                 val dialog = SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
                     .setTitleText(mTitle)
                     .setCancelText(getContext().getString(R.string.global_cancel))
                     .setHideKeyBoardOnDismiss(true)
-                    .setCancelClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                    .setCancelClickListener { sDialog: SweetAlertDialog? ->
                         editText.clearFocus()
                         Keyboard.hide(context, editText)
                         sDialog!!.dismissWithAnimation()
-                    })
-                    .setConfirmClickListener(OnSweetClickListener { sDialog: SweetAlertDialog? ->
+                    }
+                    .setConfirmClickListener { sDialog: SweetAlertDialog? ->
                         editText.clearFocus()
                         Keyboard.hide(context, editText)
-                        this.text = editText.getText().toString()
+                        this.text = editText.text.toString()
                         sDialog!!.dismissWithAnimation()
                         if (mConfirmClickListener != null) mConfirmClickListener!!.onTextChanged(
                             this@EditableInputView
                         )
-                    })
-                dialog.setOnDismissListener(DialogInterface.OnDismissListener { sDialog: DialogInterface? ->
+                    }
+                dialog.setOnDismissListener { _: DialogInterface? ->
                     rootView!!.requestFocus()
                     val imm =
                         mContext!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-                    if (imm != null) imm.hideSoftInputFromWindow(rootView!!.getWindowToken(), 0)
-                })
+                    imm?.hideSoftInputFromWindow(rootView!!.windowToken, 0)
+                }
                 //Keyboard.hide(context, editText);});
-                dialog.setOnShowListener(OnShowListener { sDialog: DialogInterface? ->
+                dialog.setOnShowListener { _: DialogInterface? ->
                     editText.requestFocus()
                     Keyboard.show(context, editText)
-                })
+                }
 
                 dialog.setCustomView(linearLayout)
                 dialog.show()
@@ -194,19 +188,19 @@ open class EditableInputView : RelativeLayout, OnDateSetListener {
         get() = mTextValue
         set(newValue) {
             mTextValue = newValue
-            valueTextView!!.setText(newValue + mSuffix)
+            valueTextView!!.text=newValue + mSuffix
         }
 
     fun setHint(newValue: String?) {
-        valueTextView!!.setHint(newValue)
+        valueTextView!!.hint=newValue
     }
 
     fun setTextSuffix(newValue: String?) {
         mSuffix = newValue
     }
 
-    val textView: TextView
-        get() = valueTextView!!
+//    val textView: TextView
+//        get() = valueTextView!!
 
     fun ActivateDialog(activate: Boolean) {
         mActivateDialog = activate
