@@ -50,7 +50,7 @@ class ExerciseDetailsPager : Fragment() {
         if (id == R.id.saveButton) {
             saveMachine()
             requireActivity()
-            requireActivity().findViewById<View?>(R.id.tab_machine_details).requestFocus()
+            requireActivity().findViewById<View?>(R.id.tab_machine_details)!!.requestFocus()
         } else if (id == R.id.deleteButton) {
             deleteMachine()
         } else {
