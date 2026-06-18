@@ -32,7 +32,7 @@ import com.easyfitness.utils.ImageUtil
 import com.easyfitness.utils.ImageUtil.OnDeleteImageListener
 import com.easyfitness.utils.Keyboard
 import com.easyfitness.utils.RealPathUtil
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+//import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.File
 
@@ -165,7 +165,7 @@ class MachineDetailsFragment : Fragment() {
                 }
             }
         })
-        machineAction!!.setOnClickListener(onClickMachinePhoto)
+//        machineAction!!.setOnClickListener(onClickMachinePhoto)
 
         mMachine = mDbMachine!!.getMachine(machineIdArg)
         machineNameArg = mMachine!!.name
@@ -181,12 +181,12 @@ class MachineDetailsFragment : Fragment() {
 
         if (mMachine!!.type == DAOMachine.TYPE_CARDIO) {
             selectedType = mMachine!!.type
-            view.findViewById<View?>(R.id.machine_muscles).setVisibility(View.GONE)
-            view.findViewById<View?>(R.id.machine_muscles_textview).setVisibility(View.GONE)
+            view.findViewById<View?>(R.id.machine_muscles)!!.visibility=View.GONE
+            view.findViewById<View?>(R.id.machine_muscles_textview)!!.visibility=View.GONE
         } else {
             selectedType = mMachine!!.type
-            view.findViewById<View?>(R.id.machine_muscles).setVisibility(View.VISIBLE)
-            view.findViewById<View?>(R.id.machine_muscles_textview).setVisibility(View.VISIBLE)
+            view.findViewById<View?>(R.id.machine_muscles)!!.visibility=View.VISIBLE
+            view.findViewById<View?>(R.id.machine_muscles_textview)!!.visibility=View.VISIBLE
         }
 
         view.getViewTreeObserver()
