@@ -262,7 +262,7 @@ class FileChooserDialog(
             android.R.style.TextAppearance_DeviceDefault_Medium
         )
         m_titleView!!.setTextColor(m_context.getResources().getColor(android.R.color.black))
-        m_titleView!!.setGravity(Gravity.CENTER_VERTICAL or Gravity.START)
+//        m_titleView!!.setGravity(Gravity.CENTER_VERTICAL or Gravity.START)
         m_titleView!!.setText(title)
 
         val newDirButton = Button(m_context)
