@@ -139,7 +139,7 @@ class FonteHistoryFragment : Fragment() {
 
         if (machineIdArg != -1L) {
             // Hide the spinner
-            view.findViewById<View?>(R.id.tableRowFilterMachine).setVisibility(View.GONE)
+            view.findViewById<View?>(R.id.tableRowFilterMachine)!!.visibility = View.GONE
             val lDbMachine = DAOMachine(requireContext())
             selectedMachine = lDbMachine.getMachine(machineIdArg)
             mExerciseArray!!.add(selectedMachine!!.name)
