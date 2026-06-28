@@ -1,3 +1,6 @@
+Niech zmiana przez przyciski też pokazuje save
+    Bo w sumie czemu nie.
+
 Oczyścić interface
     Nazwa programu niech będzie wybieralna na początku
         i w ten sposób zmienialna
@@ -8,6 +11,7 @@ Oczyścić interface
         Wywalić timer
             Jako nie zalecany do użytku
         jako zbędny feature
+
 Prosty sposób do importu ćwiczeń
    W formatach z chatgpt i gemini
         bo jednak to pomocne

@@ -387,9 +387,9 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         })
 
         val repsEditChange = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
-            if (!hasFocus) {
+//            if (!hasFocus) {
                 binding.saveReps.visibility = VISIBLE
-            }
+//            }
         }
         binding.repsPicker.onFocusChangeListener = repsEditChange
         binding.saveReps.setOnClickListener {
@@ -1149,9 +1149,19 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         when (exercise.type) {
             TYPE_CARDIO -> {
                 binding.imageExerciseThumb.setImageResource(R.drawable.ic_training_white_50dp)
+                if (exercise.serie >1){
+                    binding.serieCardView.visibility = VISIBLE
+                } else {
+                    binding.serieCardView.visibility = GONE
+                }
             }
 
             TYPE_STATIC -> {
+                if (exercise.serie >1){
+                    binding.serieCardView.visibility = VISIBLE
+                } else {
+                    binding.serieCardView.visibility = GONE
+                }
                 binding.imageExerciseThumb.setImageResource(R.drawable.ic_static)
                 val staticPrepareTime = 5
                 binding.staticFillBackgroundProgress.setDuration(((exercise.seconds + staticPrepareTime) * progressScaleFix).toLong())
@@ -1178,6 +1188,7 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
 
             else -> {
                 binding.imageExerciseThumb.setImageResource(R.drawable.ic_gym_bench_50dp) // Default image
+
             }
         }
         val lMachine = mDbMachine.getMachine(exercise.exerciseName)
@@ -1197,6 +1208,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.seriesEdit.setText(exercise.serie.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
                 binding.poidsEdit.setText(exercise.poids.toString())
+                if (exercise.serie >1){
+                    binding.serieCardView.visibility = VISIBLE
+                } else{
+                    binding.serieCardView.visibility = GONE
+                }
             }
 
             TYPE_CARDIO -> {
@@ -1204,6 +1220,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                     DateConverter.durationToHoursMinutesSecondsStr(exercise.duration)
                 binding.distanceEdit.setText(exercise.distance.toString())
                 binding.unitDistanceSpinner.setSelection(exercise.distanceUnit, false)
+                if (exercise.serie >1){
+                    binding.serieCardView.visibility = VISIBLE
+                } else{
+                    binding.serieCardView.visibility = GONE
+                }
             }
 
             TYPE_STATIC -> {
@@ -1211,6 +1232,11 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.secondsEdit.setText(exercise.seconds.toString())
                 binding.poidsEdit.setText(exercise.poids.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
+                if (exercise.serie >1){
+                    binding.serieCardView.visibility = VISIBLE
+                } else{
+                    binding.serieCardView.visibility = GONE
+                }
             }
         }
     }
@@ -1442,7 +1468,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.saveReps.visibility = GONE
         when (pType) {
             TYPE_CARDIO -> {
-                binding.serieCardView.visibility = GONE
                 binding.repetitionCardView.visibility = GONE
                 binding.weightCardView.visibility = GONE
                 binding.secondsCardView.visibility = GONE
@@ -1453,7 +1478,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             TYPE_STATIC -> {
-                binding.serieCardView.visibility = GONE
                 binding.repetitionCardView.visibility = GONE
                 binding.secondsCardView.visibility = VISIBLE
                 binding.weightCardView.visibility = VISIBLE
@@ -1468,7 +1492,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             }
 
             TYPE_STRENGTH -> {
-                binding.serieCardView.visibility = GONE
                 binding.repetitionCardView.visibility = VISIBLE
                 binding.secondsCardView.visibility = GONE
                 binding.weightCardView.visibility = VISIBLE

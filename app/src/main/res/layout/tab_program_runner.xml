@@ -318,40 +318,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- SETS -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/serieCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="15"
-                android:visibility="gone"
-                >
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/SerieLabel" />
-
-                    <EditText
-                        android:id="@+id/seriesEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:label="@string/SerieLabel"
-                        android:gravity="center"
-                        android:inputType="number"
-                        tools:text="1"
-                        />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <!-- REPS -->
             <com.google.android.material.card.MaterialCardView
@@ -373,7 +340,10 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/RepetitionLabel_short" />
+                        android:text="@string/RepetitionLabel_short"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        />
 
                     <it.sephiroth.android.library.numberpicker.NumberPicker
                         android:id="@+id/repsPicker"
@@ -443,6 +413,52 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- SETS -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/serieCardView"
+                android:background="@drawable/edittext_custom_dark_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:visibility="visible"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/SerieLabel"
+                        android:layout_gravity="center"
+                        android:minWidth="36dp"
+                        android:layout_margin="5dp"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/seriesEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:label="@string/SerieLabel"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:inputType="number"
+                        tools:text="1"
+                        android:textSize="28sp"
+                        android:background="@drawable/edittext_underline_selector"
+                        />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
             <!-- REST -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/restCardView"
@@ -459,7 +475,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
 
                     <TextView
                         android:id="@+id/restTimeLabel"
@@ -481,7 +499,9 @@
                         android:inputType="number"
                         android:singleLine="true"
                         android:text="60"
-                        android:textSize="28sp" />
+                        android:textSize="28sp"
+
+                        />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

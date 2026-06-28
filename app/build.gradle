@@ -11,8 +11,8 @@ android {
         applicationId "com.fitworkoutfast"
         minSdkVersion 26
         targetSdkVersion 36
-        versionCode 87
-        versionName "0.26.20"
+        versionCode 88
+        versionName "0.26.21"
     }
 
     signingConfigs {
