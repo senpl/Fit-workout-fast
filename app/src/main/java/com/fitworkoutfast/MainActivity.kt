@@ -23,6 +23,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -207,6 +210,15 @@ class MainActivity : AppCompatActivity() {
         }
         dataList = ArrayList()
         mDrawerLayout = findViewById(R.id.drawer_layout)
+        val activityToolbar = findViewById<Toolbar>(R.id.actionToolbar)
+        val mainContent = findViewById<View>(R.id.main_content) // Need to add this ID to activity_main.xml
+
+        ViewCompat.setOnApplyWindowInsetsListener(mDrawerLayout!!) { _, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            activityToolbar.updatePadding(top = insets.top)
+            mainContent.updatePadding(bottom = insets.bottom)
+            windowInsets
+        }
         mDrawerList = findViewById(R.id.left_drawer)
         val drawerTitleItem = DrawerItem("TITLE", R.drawable.ic_person_black_24dp, true)
         dataList.add(drawerTitleItem)

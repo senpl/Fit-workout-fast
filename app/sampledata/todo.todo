@@ -1,4 +1,16 @@
-Niech waight będzie ukrywane gdy 0.0 przy static exercise
+Poprawić widoczność w play store
+    Przez naprawę warningów które podają
+        Jak już mi się limity zwiększą
+        Bo w tej chwili nie mam
+Spróbować przerobić z ładniejszym dot indicatorem
+    Bo da mi to działąnie nie zależnie od liczby kropek
+    Teraz przy dużych ponad 16 moggą nie być widoczne.
+Poprawić wygląd UI
+    Przemyśleć, co jeszcze można uprościć/poprawić jeśli chodzi o wygląd
+
+Spróbować wyglądu innego page indicatora
+    Bo będzie trochę bardziej nowocześnie.
+    I będzie można odejść od nie poprawnie ustawianego setDots Które czasem zwracało błąd
 niech działa w I storze
 Niech AI wymyśli ładniejszy ekran, bardziej nowoczesny
 
@@ -6,9 +18,6 @@ Niech AI wymyśli ładniejszy ekran, bardziej nowoczesny
         Poza bocznym menu lub jakimś przyciskiem powrotu
         bo chcemy mieć taką możliwość
 
-
-center notes
-and hide label "Notes" when note is present
 
 Uaktualnić screeny
     Gdy już aplikacja finalnie będzie wyglądać

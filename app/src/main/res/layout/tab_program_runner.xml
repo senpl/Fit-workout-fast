@@ -172,6 +172,7 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:background="@color/sweet_dialog_bg_color_dark"
+                android:minHeight="94dp"
                 android:padding="5dp">
 
                 <!-- WEIGHT -->
@@ -344,6 +345,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/SecondsLabel_short"
+
                             android:layout_margin="5dp" />
 
                         <EditText
@@ -353,7 +355,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:inputType="number"
-                            android:minEms="3"
+                            android:minHeight="68dp"
                             android:textStyle="bold"
                             android:textSize="34sp"
                             android:background="@drawable/edittext_underline_selector"

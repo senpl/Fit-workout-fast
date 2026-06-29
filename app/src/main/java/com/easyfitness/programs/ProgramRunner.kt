@@ -107,6 +107,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.transition.Visibility
 import com.easyfitness.DAO.DAOMachine.Companion.TYPE_CARDIO
 import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STATIC
 import com.easyfitness.DAO.DAOMachine.Companion.TYPE_STRENGTH
@@ -1149,6 +1150,8 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
         binding.notesInExercise.setText(exercise.note)
         when (exercise.type) {
             TYPE_STRENGTH -> {
+                binding.poidsLabel.visibility = VISIBLE
+                binding.unitShow.visibility = VISIBLE
                 binding.repsPicker.progress = exercise.repetition
                 binding.seriesEdit.setText(exercise.serie.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
@@ -1177,6 +1180,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
                 binding.secondsEdit.setText(exercise.seconds.toString())
                 binding.poidsEdit.setText(exercise.poids.toString())
                 binding.restTimeEdit.setText(exercise.secRest.toString())
+                if(exercise.poids<=0.0){
+                    binding.poidsLabel.visibility=GONE
+                    binding.poidsEdit.setText("")
+                    binding.unitShow.visibility=GONE
+                }
+
                 if (exercise.serie > 1) {
                     binding.serieCardView.visibility = VISIBLE
                 } else {
