@@ -20,6 +20,7 @@ import android.view.View.OnKeyListener
 import android.view.View.OnLongClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
@@ -388,6 +389,10 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             viewModel.stopWorkout()
         }
 
+        binding.showExerciseButton.setOnClickListener {
+            showVideoDialog.value = true
+        }
+
 
         if (requireContext().getSharedPreferences("swipeGesturesSwitch", Context.MODE_PRIVATE)
                 .getBoolean("swipeGesturesSwitch", true)
@@ -400,22 +405,6 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
             if (showVideoDialog.value) {
                 ShowVideoDialog()
             }
-            @Composable
-            fun SimpleButton() {
-                Button(onClick = {
-                    showVideoDialog.value = true
-                }) {
-                    Text(text = stringResource(R.string.show_exercise))
-                }
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                SimpleButton()
-            }
-
         }
     }
 
@@ -1030,6 +1019,12 @@ class ProgramRunner : Fragment(R.layout.tab_program_runner) {
     override fun onStart() {
         super.onStart()
         mainActivity = requireActivity() as MainActivity
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     val name: String?

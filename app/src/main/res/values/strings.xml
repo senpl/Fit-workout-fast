@@ -295,6 +295,7 @@
     <string name="ExercisesInProgram">Exercises in program:</string>
     <string name="program_selection">Selected program:</string>
     <string name="program_to_run">Program to run</string>
+    <string name="go_back_to_program_select">Go back to program select</string>
     <string name="arrowPreviousAsText" translatable="false"><![CDATA[<]]></string>
     <string name="arrowNextAsText" translatable="false"><![CDATA[>]]></string>
     <string name="seconds">Seconds</string>

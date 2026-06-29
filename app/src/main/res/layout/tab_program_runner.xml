@@ -25,133 +25,117 @@
         android:paddingBottom="0dp"
         android:scrollbars="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/stopWorkoutButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/back"
-            app:icon="@drawable/ic_back"
-            android:textColor="@android:color/darker_gray"
-            app:iconTint="@android:color/darker_gray"
-            android:layout_gravity="start" />
-
+        <!-- Progress Indicator Card (100% width dots) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="2dp"
-                android:background="@color/sweet_dialog_bg_color_dark">
+                android:padding="8dp"
+                android:background="@color/sweet_dialog_bg_color_dark"
+                android:gravity="center">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.mazenrashed.dotsindicator.DotsIndicator
+                    android:id="@+id/exerciseIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    >
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_85_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.85" />
-                    <com.mazenrashed.dotsindicator.DotsIndicator
-                        android:id="@+id/exerciseIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:dot_height="22dp"
-                        app:dot_width="22dp"
-                        app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
-                        app:margins_between_dots="4dp"
-                        app:selected_dot_resource="@drawable/pager_box_white_24dp"
-                        app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constrainedWidth="true"
-                        app:layout_constraintEnd_toEndOf="@id/guideline_85_percent" />
-
-                    <TextView
-                        android:id="@+id/currentExerciseNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/guideline_85_percent"
-                        app:layout_constraintEnd_toStartOf="@+id/slash"
-                        tools:text="1" />
-
-                    <TextView
-                        android:id="@+id/slash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/slash"
-
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/currentExerciseNumber"
-                        app:layout_constraintEnd_toStartOf="@+id/exerciseInProgramNumber" />
-
-
-                    <TextView
-                        android:id="@+id/exerciseInProgramNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/slash"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:text="22" />
-                    <!--                    <com.hrskrs.instadotlib.InstaDotView-->
-                    <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-                    <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-                        <!--                        android:id="@+id/exerciseIndicator"-->
-                        <!--                        android:layout_width="wrap_content"-->
-                        <!--                        android:layout_height="wrap_content"-->
-                        <!--                        android:layout_gravity="center"-->
-                        <!--                        android:layout_marginTop="16dp"-->
-                        <!--                        android:layout_marginBottom="16dp"-->
-                        <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                        <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                        <!--                        app:dotsColor="@color/blue"-->
-                        <!--                        app:dotsCornerRadius="8dp"-->
-                        <!--                        app:dotsSize="16dp"-->
-                        <!--                        app:dotsSpacing="4dp"-->
-                        <!--                        app:dotsWidthFactor="2.5"-->
-                        <!--                        app:selectedDotColor="@color/colorSecondary"-->
-                        <!--                        app:progressMode="true"-->
-                        <!--                        />-->
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    app:dot_height="18dp"
+                    app:dot_width="18dp"
+                    app:margins_between_dots="4dp"
+                    app:first_selected_dot_resource="@drawable/pager_box_white_24dp"
+                    app:first_unselected_dot_resource="@drawable/pager_blue_grey_400_24dp"
+                    app:selected_dot_resource="@drawable/pager_box_white_24dp"
+                    app:unselected_dot_resource="@drawable/pager_blue_grey_400_24dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-        <RelativeLayout
+
+        <!-- Context Row: Back | Show Exercise (Centered) | Numbers (Right) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:layout_marginTop="4dp">
+
+            <ImageButton
+                android:id="@+id/stopWorkoutButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_back"
+                android:tooltipText="@string/go_back_to_program_select"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/enabled_color" />
+
+            <Button
+                android:id="@+id/showExerciseButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_exercise"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:id="@+id/currentExerciseNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    tools:text="1" />
+
+                <TextView
+                    android:id="@+id/slash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/slash"
+                    android:paddingHorizontal="4dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <TextView
+                    android:id="@+id/exerciseInProgramNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    tools:text="22" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Exercise Name Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="8dp"
+            android:layout_marginTop="4dp">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imageExerciseThumb"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical|center"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_gym_bench_50dp"
                 app:civ_border_width="0dp"
                 app:civ_shadow="false"
@@ -162,20 +146,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/minTouchSize"
-                android:minWidth="@dimen/minTouchSize"
-                android:layout_marginStart="20dp"
                 android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_toEndOf="@+id/imageExerciseThumb"
                 android:hint="@string/MachineHint"
                 android:inputType="none"
                 android:imeOptions="actionNext"
                 android:background="@drawable/edittext_underline_selector"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
+        <!-- Main Workout Controls Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,20 +172,20 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:background="@color/sweet_dialog_bg_color_dark"
-                android:visibility="visible">
+                android:padding="5dp">
 
                 <!-- WEIGHT -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/weightCardView"
                     android:background="@drawable/edittext_custom_dark_background"
-                    android:layout_width="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="30"
-                    android:visibility="visible"
-                    >
+                    android:layout_weight="25"
+                    android:visibility="visible">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
@@ -213,60 +195,45 @@
                             android:id="@+id/poidsLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:labelFor="@+id/poidsEdit"
-                            android:layout_marginStart="10dp"
-                            android:gravity="end"
-                            android:text="@string/PoidsLabel"
-                            />
+                            android:text="@string/PoidsLabel" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="horizontal">
+                            android:layout_gravity="center_horizontal">
 
                             <EditText
                                 android:id="@+id/poidsEdit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
                                 android:minHeight="44dp"
-                                android:autofillHints="false"
                                 android:background="@drawable/edittext_underline_selector"
                                 android:gravity="end"
                                 android:inputType="numberDecimal|numberSigned"
-                                android:label="@string/weightLabel"
                                 android:textStyle="bold"
                                 android:minWidth="48dp"
-                                android:textSize="28sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                android:textSize="34sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:labelFor="@id/weightCardView"
                                 tools:text="10.5" />
+
                             <ImageButton
                                 android:id="@+id/saveWeight"
                                 android:layout_width="22sp"
                                 android:layout_height="22sp"
-                                android:layout_marginStart="7dp"
-                                android:contentDescription="@string/SaveWeightLabel"
+                                android:layout_marginStart="4dp"
+                                android:background="@android:color/transparent"
                                 android:src="@drawable/baseline_save_yellow_a200_24dp"
-                                android:text="@string/SaveWeightLabel"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toTopOf="@+id/unitShow"
-                                app:layout_constraintEnd_toStartOf="@+id/poidsEdit"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/poidsEdit" />
+                                android:contentDescription="@string/SaveWeightLabel"
+                                app:layout_constraintStart_toEndOf="@id/poidsEdit"
+                                app:layout_constraintTop_toTopOf="@id/poidsEdit" />
 
                             <TextView
                                 android:id="@+id/unitShow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="8dp"
-                                android:gravity="start"
-                                android:layout_marginEnd="30sp"
+                                android:layout_marginStart="2dp"
                                 app:layout_constraintBaseline_toBaselineOf="@id/poidsEdit"
                                 app:layout_constraintStart_toEndOf="@id/poidsEdit"
                                 tools:text="kg" />
@@ -275,82 +242,69 @@
                         <LinearLayout
                             android:id="@+id/minMaxLayout"
                             android:layout_width="wrap_content"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_weight="10"
-                            android:baselineAligned="false"
                             android:orientation="horizontal"
                             android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:text="@string/min" />
+                                android:text="@string/min"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/minText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:paddingHorizontal="2dp"
+                                android:textSize="10sp"
                                 tools:text="40 kg" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingStart="20dp"
-                                android:paddingEnd="5dp"
-                                android:text="@string/max" />
+                                android:text="@string/max"
+                                android:textSize="10sp"
+                                android:paddingStart="4dp" />
 
                             <TextView
                                 android:id="@+id/maxText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:paddingHorizontal="2dp"
+                                android:textSize="10sp"
                                 tools:text="80 kg" />
-
                         </LinearLayout>
-
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-
-
 
                 <!-- REPS -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/repetitionCardView"
                     android:background="@drawable/edittext_custom_dark_background"
                     android:layout_margin="5dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="30"
-                    android:visibility="visible"
-                    >
+                    android:layout_weight="50"
+                    android:visibility="visible">
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_margin="5dp">
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/RepetitionLabel_short"
-                            android:textStyle="bold"
-                            android:textSize="28sp"
-                            />
+                            android:text="@string/RepetitionLabel_short" />
 
                         <it.sephiroth.android.library.numberpicker.NumberPicker
                             android:id="@+id/repsPicker"
                             android:background="@drawable/edittext_underline_selector"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
                             app:picker_editTextStyle="@style/textAccent"
                             app:picker_max="100"
                             app:picker_min="0"
@@ -358,43 +312,39 @@
                             app:picker_stepSize="1"
                             app:picker_tracker="exponential" />
 
-
                         <ImageButton
                             android:id="@+id/saveReps"
                             android:visibility="gone"
                             android:layout_width="17dp"
                             android:layout_height="17dp"
-                            android:contentDescription="@string/SaveRepsLabel"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
                             android:src="@drawable/baseline_save_yellow_a200_24dp"
-                            android:text="@string/SaveRepsLabel"
-                            />
-
+                            android:contentDescription="@string/SaveRepsLabel" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- SECONDS -->
+                <!-- SECONDS (Static) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/secondsCardView"
                     android:background="@drawable/edittext_custom_dark_background"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="30"
+                    android:layout_weight="40"
                     android:minHeight="68dp"
                     android:visibility="gone"
-                    android:layout_margin="5dp"
-                    >
+                    android:layout_margin="5dp">
 
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/SecondsLabel_short"
-                            android:layout_margin="5dp"
-                            />
+                            android:layout_margin="5dp" />
 
                         <EditText
                             android:id="@+id/secondsEdit"
@@ -405,10 +355,9 @@
                             android:inputType="number"
                             android:minEms="3"
                             android:textStyle="bold"
-                            android:textSize="28sp"
+                            android:textSize="34sp"
                             android:background="@drawable/edittext_underline_selector"
                             tools:text="10" />
-
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -416,58 +365,47 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/serieCardView"
                     android:background="@drawable/edittext_custom_dark_background"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
+                    android:layout_weight="15"
                     android:visibility="visible"
-                    android:layout_margin="5dp"
-                    android:layout_marginBottom="5dp"
-                    >
+                    android:layout_margin="5dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_margin="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center"
-                        >
+                        android:layout_gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/SerieLabel"
                             android:layout_gravity="center"
-                            android:minWidth="36dp"
-                            android:layout_margin="5dp"
-                            android:layout_marginBottom="5dp"
-                            />
+                            android:minWidth="36dp" />
 
                         <EditText
                             android:id="@+id/seriesEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:label="@string/SerieLabel"
-                            android:layout_gravity="center"
                             android:gravity="center"
                             android:inputType="number"
                             tools:text="1"
-                            android:textSize="28sp"
-                            android:background="@drawable/edittext_underline_selector"
-                            />
-
+                            android:textSize="34sp"
+                            android:background="@drawable/edittext_underline_selector" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+
                 <!-- REST -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/restCardView"
                     android:background="@drawable/edittext_custom_dark_background"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="10"
+                    android:layout_weight="25"
                     android:visibility="visible"
-                    android:layout_margin="5dp"
-                    >
+                    android:layout_margin="5dp">
 
                     <LinearLayout
                         android:id="@+id/restTimeLayout"
@@ -482,8 +420,6 @@
                             android:id="@+id/restTimeLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:text="@string/restLabel" />
 
@@ -498,20 +434,17 @@
                             android:inputType="number"
                             android:singleLine="true"
                             android:text="60"
-                            android:textSize="28sp"
-
-                            />
+                            android:textSize="34sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- DISTANCE -->
+                <!-- DISTANCE (Cardio) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/distanceCardView"
                     style="@style/CardViewStyle"
                     android:layout_height="wrap_content"
                     android:layout_weight="30"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -520,7 +453,7 @@
 
                         <TextView
                             android:id="@+id/textDistance"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/DistanceLabel" />
@@ -536,10 +469,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:autofillHints="false"
                                 android:inputType="numberDecimal|numberSigned"
                                 android:minEms="3"
-                                android:hint="@string/DistanceLabel"
                                 tools:text="10" />
 
                             <Spinner
@@ -552,15 +483,14 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- DURATION -->
+                <!-- DURATION (Cardio) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/durationCardView"
                     style="@style/CardViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="30"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -569,7 +499,7 @@
 
                         <TextView
                             android:id="@+id/textDuration"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/DurationLabel" />
@@ -577,30 +507,41 @@
                         <TextView
                             android:id="@+id/durationEdit"
                             style="@style/editableTextView"
-                            tools:text="01:23:45">
-
-                        </TextView>
+                            tools:text="01:23:45" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
+        <!-- Notes Card (Label removed) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            >
+            android:layout_marginHorizontal="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:id="@+id/notesAndRestLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 android:layout_gravity="top"
-                android:layout_marginStart="20dp"
-                >
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/notesLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/NotesLabel"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/enabled_color"
+                    android:layout_marginBottom="4dp"
+                    android:visibility="gone" />
 
                 <EditText
                     android:id="@+id/notesInExercise"
@@ -608,16 +549,14 @@
                     android:textColor="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints="@string/NotesLabel"
+                    android:gravity="center"
                     android:hint="@string/NotesLabel"
                     android:inputType="text|textMultiLine"
                     android:layout_gravity="bottom"
-                    android:gravity="top"
                     android:ems="10"
                     android:minHeight="18dp"
                     style="@style/editableTextView"
-                    android:paddingVertical="20dp"
-                    />
+                    android:paddingVertical="10dp" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -628,9 +567,7 @@
                         android:id="@+id/restControlLayout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                    </LinearLayout>
+                        android:orientation="vertical" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -639,9 +576,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="fill_parent"
@@ -649,8 +584,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal"
                 android:layout_marginBottom="2dp"
-                android:paddingBottom="5dp"
-                >
+                android:paddingBottom="5dp">
 
                 <ImageButton
                     android:id="@+id/previousExerciseArrow"
@@ -665,7 +599,6 @@
                     android:focusable="true"
                     android:minHeight="68dp"
                     android:src="@drawable/baseline_arrow_white_24"
-                    android:text="@string/arrowPreviousAsText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -677,15 +610,12 @@
                     android:background="@drawable/button_less_rounded_background"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/addButton"
-                    android:layout_toEndOf="@+id/previousExerciseArrow"
                     android:backgroundTint="@color/redWarn"
                     android:clickable="true"
                     android:contentDescription="@string/failedToDoReps"
                     android:focusable="true"
                     android:minHeight="68dp"
                     android:src="@drawable/outline_close_small_54"
-                    android:text="@string/FailLabel"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/previousExerciseArrow"
                     app:layout_constraintTop_toTopOf="parent"
@@ -699,11 +629,8 @@
                     android:layout_width="0dp"
                     android:minHeight="68dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/nextExerciseArrow"
                     android:contentDescription="@string/DoneLabel"
                     android:src="@drawable/round_check_white_48dp"
-                    android:text="@string/DoneLabel"
                     android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/nextExerciseArrow"
@@ -722,13 +649,9 @@
                     app:layout_constraintWidth_percent="0.27"
                     android:minWidth = "64dp"
                     android:minHeight="68dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingStart="3sp"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="end"
                     android:contentDescription="@string/arrowNextAsText"
-                    android:text="@string/arrowNextAsText"
                     android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -765,8 +688,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/reset"
                     android:focusable="true"
-                    android:clickable="true"
-                    />
+                    android:clickable="true" />
             </com.devzone.fillprogresslayout.FillProgressLayout>
 
             <com.devzone.fillprogresslayout.FillProgressLayout
@@ -786,29 +708,13 @@
                     android:id="@+id/countDown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/mi_button_cta_height"
-                    />
+                    android:textSize="@dimen/mi_button_cta_height" />
             </com.devzone.fillprogresslayout.FillProgressLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                >
-                <ImageButton android:visibility="gone"
-                    android:id='@+id/keepScreenOn'
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="2"
-                    android:scaleY="2"
-                    android:contentDescription="KeepScreenOnSwitch"
-                    android:src="@drawable/ic_bolt_on" />
-
-                <androidx.compose.ui.platform.ComposeView
-                    android:id="@+id/compose_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
-            <TextView
+            <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/compose_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -823,8 +729,7 @@
             android:id="@+id/recordList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/row_fonte"
-            />
+            tools:listitem="@layout/row_fonte" />
     </LinearLayout>
 
 

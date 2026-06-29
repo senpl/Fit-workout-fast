@@ -1,9 +1,14 @@
+Niech waight będzie ukrywane gdy 0.0 przy static exercise
+niech działa w I storze
 Niech AI wymyśli ładniejszy ekran, bardziej nowoczesny
 
     Wtedy nie potrzebuję górnej belki i mogę ją zostawić ukrytą
         Poza bocznym menu lub jakimś przyciskiem powrotu
         bo chcemy mieć taką możliwość
 
+
+center notes
+and hide label "Notes" when note is present
 
 Uaktualnić screeny
     Gdy już aplikacja finalnie będzie wyglądać

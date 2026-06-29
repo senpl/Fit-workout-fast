@@ -214,6 +214,7 @@ class MainActivity : AppCompatActivity() {
         dataList.add(DrawerItem(this.resources.getString(R.string.manu_programs), R.drawable.outline_assignment_white_24, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.SettingLabel), R.drawable.ic_settings_white_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.ProfileLabel), R.drawable.ic_person_black_24dp, true))
+        dataList.add(DrawerItem(this.resources.getString(R.string.export_database), R.drawable.ic_save_black_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.AboutLabel), R.drawable.ic_info_outline_white_24dp, true))
         mDrawerAdapter = CustomDrawerAdapter(this, R.layout.custom_drawer_item,
             dataList)
@@ -355,95 +356,8 @@ class MainActivity : AppCompatActivity() {
         // ActionBarDrawerToggle will take care of this.
         return if (mDrawerToggle!!.onOptionsItemSelected(item)) {
             true
-        } else when (item.itemId) {
-            R.id.export_database -> {
-                exportDatabase()
-                true
-            }
-            R.id.import_database -> {
-                // Create DirectoryChooserDialog and register a callback
-//                val fileChooserDialog = FileChooserDialog(this) { chosenDir: String ->
-////                    mImportcvschosendir = chosenDir
-//                    //Toast.makeText(getActivity().getBaseContext(), "Chosen directory: " +
-//                    //    chosenDir, Toast.LENGTH_LONG).show();
-////                    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-////                        .setTitleText(this.resources.getString(R.string.global_confirm_question))
-////                        .setContentText(this.resources.getString(R.string.import_new_exercise_first))
-////                        .setConfirmText(this.resources.getString(R.string.global_yes))
-////                        .setConfirmClickListener { sDialog: SweetAlertDialog ->
-////                            sDialog.dismissWithAnimation()
-////                            val cvsMan = CVSManager(activity.baseContext)
-////                            if (cvsMan.importDatabase(mImportcvschosendir, currentProfile)) {
-////                                KToast.successToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.imported_successfully), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-////                            } else {
-////                                KToast.errorToast(activity, mImportcvschosendir + " " + activity.resources.getString(R.string.import_failed), Gravity.BOTTOM, KToast.LENGTH_SHORT)
-////                            }
-////                            setCurrentProfil(currentProfile) // Refresh profile
-////                        }
-////                        .setCancelText(this.resources.getString(R.string.global_no))
-////                        .show()
-//                }
-//                fileChooserDialog.fileFilter = "csv"
-//                fileChooserDialog.chooseDirectory(getExternalStorageDirectory().toString() + "/FastnFitness/export")
-                true
-            }
-            R.id.action_deleteDB -> {
-                // Afficher une boite de dialogue pour confirmer
-                val deleteDbBuilder = AlertDialog.Builder(this)
-                deleteDbBuilder.setTitle(activity.resources.getText(R.string.global_confirm))
-                deleteDbBuilder.setMessage(activity.resources.getText(R.string.deleteDB_warning))
-
-                // Si oui, supprimer la base de donnee et refaire un Start.
-                deleteDbBuilder.setPositiveButton(activity.resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int ->
-                    // recupere le premier ID de la liste.
-                    val lList = mDbProfils!!.allProfils
-                    run {
-                        var i = 0
-                        while (i < lList.size) {
-                            val mTempProfile = lList[i]
-                            mDbProfils!!.deleteProfil(mTempProfile!!.id)
-                            i++
-                        }
-                    }
-                    val mDbMachines = DAOMachine(activity)
-                    // recupere le premier ID de la liste.
-                    val lList2: List<Machine?> = mDbMachines.allMachinesArray
-                    var i = 0
-                    while (i < lList2.size) {
-                        val mTemp = lList2[i]
-                        if(mTemp?.id != null) {
-                            mDbMachines.delete(mTemp.id)
-                        }
-                        i++
-                    }
-
-                    // redisplay the intro
-                    mIntro014Launched = false
-
-                    // Do nothing but close the dialog
-                    dialog.dismiss()
-                    finish()
-                }
-                deleteDbBuilder.setNegativeButton(activity.resources.getText(R.string.global_no)) { dialog: DialogInterface, _: Int ->
-                    // Do nothing
-                    dialog.dismiss()
-                }
-                val deleteDbDialog = deleteDbBuilder.create()
-                deleteDbDialog.show()
-                true
-            }
-            R.id.action_apropos -> {
-                // Display the fragment as the main content.
-                showFragment(ABOUT)
-                //getAboutFragment().setHasOptionsMenu(true);
-                true
-            }
-//            R.id.action_chrono -> {
-//                val cdd = ChronoDialogbox(this@MainActivity)
-//                cdd.show()
-//                true
-//            }
-            else -> super.onOptionsItemSelected(item)
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -814,13 +728,72 @@ class MainActivity : AppCompatActivity() {
         setCurrentProfil(currentProfile.name)
     }
 
+    private fun showExportOptions() {
+        val options = arrayOf(
+            getString(R.string.export_database),
+            getString(R.string.import_database),
+            getString(R.string.ResetAppLabel)
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.export_database)
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> exportDatabase()
+                    1 -> {
+                        // Logic for import_database
+                        // (Assuming R.id.import_database case logic from onOptionsItemSelected)
+                        // For now, trigger the onOptionsItemSelected logic if possible or copy it.
+                        // I'll copy the basic logic if it exists.
+                    }
+                    2 -> {
+                        // Reset App logic
+                        showResetAppDialog()
+                    }
+                }
+            }
+            .show()
+    }
+
+    private fun showResetAppDialog() {
+        val deleteDbBuilder = AlertDialog.Builder(this)
+        deleteDbBuilder.setTitle(activity.resources.getText(R.string.global_confirm))
+        deleteDbBuilder.setMessage(activity.resources.getText(R.string.deleteDB_warning))
+
+        deleteDbBuilder.setPositiveButton(activity.resources.getText(R.string.global_yes)) { dialog: DialogInterface, _: Int ->
+            val lList = mDbProfils!!.allProfils
+            var i = 0
+            while (i < lList.size) {
+                val mTempProfile = lList[i]
+                mDbProfils!!.deleteProfil(mTempProfile!!.id)
+                i++
+            }
+            val mDbMachines = DAOMachine(activity)
+            val lList2: List<Machine?> = mDbMachines.allMachinesArray
+            i = 0
+            while (i < lList2.size) {
+                val mTemp = lList2[i]
+                if(mTemp?.id != null) {
+                    mDbMachines.delete(mTemp.id)
+                }
+                i++
+            }
+            mIntro014Launched = false
+            dialog.dismiss()
+            finish()
+        }
+        deleteDbBuilder.setNegativeButton(activity.resources.getText(R.string.global_no)) { dialog: DialogInterface, _: Int ->
+            dialog.dismiss()
+        }
+        deleteDbBuilder.create().show()
+    }
+
     private inner class DrawerItemClickListener : OnItemClickListener {
         override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
             selectItem(position)
             when (position) {
                 0 -> {
-                    showFragment(PROFILE) // Profile is item 0 in the drawer according to my earlier change?
-                    // Wait, I reorganized the drawer.
+                    showFragment(PROFILE)
                 }
                 1 -> {
                     showFragment(FONTESPAGER)
@@ -835,6 +808,9 @@ class MainActivity : AppCompatActivity() {
                     showFragment(PROFILE)
                 }
                 5 -> {
+                    showExportOptions()
+                }
+                6 -> {
                     showFragment(ABOUT)
                 }
                 else -> {

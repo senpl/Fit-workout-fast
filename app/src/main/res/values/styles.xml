@@ -189,7 +189,7 @@
         <item name="android:title">@string/edit_value</item>
     </style>
     <style name="textAccent" parent="NumberPicker.EditTextStyle">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">34sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
