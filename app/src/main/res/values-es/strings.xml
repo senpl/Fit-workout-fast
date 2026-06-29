@@ -18,6 +18,9 @@
     <string name="DeleteLabel">Quitar</string>
     <string name="ShareLabel">Compartir</string>
     <string name="EditLabel">Editar</string>
+    <string name="run">Ejecutar</string>
+    <string name="back">Volver</string>
+    <string name="program_to_run">Programa para ejecutar</string>
     <string name="DeleteRecordDialog">¿Quitar este registro?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Culturismo</string>

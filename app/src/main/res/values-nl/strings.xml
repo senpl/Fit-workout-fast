@@ -18,6 +18,9 @@
     <string name="DeleteLabel">Verwijderen</string>
     <string name="ShareLabel">Delen</string>
     <string name="EditLabel">Bewerken</string>
+    <string name="run">Starten</string>
+    <string name="back">Terug</string>
+    <string name="program_to_run">Programma om uit te voeren</string>
     <string name="DeleteRecordDialog">Dit record verwijderen?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Bodybuilding</string>

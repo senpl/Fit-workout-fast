@@ -14,6 +14,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +51,7 @@ class ExercisesInProgramFragment : Fragment(R.layout.tab_program_with_exercises)
     var programs: MutableList<String>? = null
     private var exercisesList: MutableList<ExerciseInProgram> = ArrayList<ExerciseInProgram>().toMutableList()
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private val viewModel: ProgramViewModel by activityViewModels()
     private var _binding: TabProgramWithExercisesBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.

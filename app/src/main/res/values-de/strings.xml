@@ -17,6 +17,9 @@
     <string name="DeleteLabel">Löschen</string>
     <string name="ShareLabel">Teilen</string>
     <string name="EditLabel">Bearbeiten</string>
+    <string name="run">Ausführen</string>
+    <string name="back">Zurück</string>
+    <string name="program_to_run">Auszuführendes Programm</string>
     <string name="DeleteRecordDialog">Aufzeichnung löschen\?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Body Building</string>

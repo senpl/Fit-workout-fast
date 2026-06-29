@@ -18,6 +18,9 @@
     <string name="DeleteLabel">Odstranit</string>
     <string name="ShareLabel">Sdílet</string>
     <string name="EditLabel">Editovat</string>
+    <string name="run">Spustit</string>
+    <string name="back">Zpět</string>
+    <string name="program_to_run">Program ke spuštění</string>
     <string name="DeleteRecordDialog">Odstranit tento záznam?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Kulturistika</string>

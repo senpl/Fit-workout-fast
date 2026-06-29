@@ -16,6 +16,7 @@ import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,8 +24,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.canhub.cropper.CropImageView
 import com.easyfitness.*
 import com.easyfitness.DAO.*
 import com.easyfitness.DAO.cardio.DAOOldCardio
@@ -32,9 +35,12 @@ import com.easyfitness.bodymeasures.BodyPartListFragment
 import com.easyfitness.fonte.FontesOldPagerFragment
 import com.easyfitness.fonte.FontesPagerFragment
 import com.easyfitness.machines.MachineFragment
+import com.easyfitness.programs.ProgramViewModel
 import com.easyfitness.programs.ProgramsPagerFragment
 import com.easyfitness.programs.ProgramsPagerFragment.Companion.newInstance
 import com.easyfitness.utils.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 //import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mikhaellopez.circularimageview.BuildConfig
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -48,6 +54,7 @@ import androidx.core.content.edit
 class MainActivity : AppCompatActivity() {
     private val intro = 111
     private val requestPermissionToExternalStorage = 1001
+    private val programViewModel: ProgramViewModel by viewModels()
     private var mDrawerAdapter: CustomDrawerAdapter? = null
     private lateinit var dataList: MutableList<DrawerItem>//? = null
     private var mpFontesPagerFrag: FontesPagerFragment? = null
@@ -73,7 +80,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mDrawerList: ListView
     private var mDrawerToggle: ActionBarDrawerToggle? = null
     private val musicController = MusicController(this)
-    private var roundProfile: CircularImageView? = null
 
     //    private void savePhotoProfile(String path) {
     //        mCurrentProfile.setPhoto(path);// Enregistrer sur le profile le path de la photo.
@@ -82,86 +88,6 @@ class MainActivity : AppCompatActivity() {
     var currentMachine = ""
     private var mIntro014Launched = false
     private var mMigrationBD15done = false
-    private val onMenuItemClick = PopupMenu.OnMenuItemClickListener { item: MenuItem ->
-        when (item.itemId) {
-            R.id.create_newprofil -> {
-//                activity.createNewProfil()
-                return@OnMenuItemClickListener true
-            }
-            R.id.photo_profil -> {
-                val optionListArray = arrayOfNulls<String>(2)
-//                optionListArray[0] = activity.resources.getString(R.string.camera)
-//                optionListArray[1] = activity.resources.getString(R.string.gallery)
-                //profilListArray[2] = "Remove Image";
-
-                //requestPermissionForWriting(pF);
-                val itemActionbuilder = AlertDialog.Builder(activity)
-                itemActionbuilder.setTitle("").setItems(optionListArray) { _: DialogInterface?, which: Int ->
-                    when (which) {
-                        1 -> {
-                            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-                            photoPickerIntent.type = "image/*"
-//                            startActivityForResult(photoPickerIntent, ImageUtil.REQUEST_PICK_GALERY_PHOTO)
-                        }
-                        0 ->                             //dispatchTakePictureIntent(mF);
-                            // start picker to get image for cropping and then use the image in cropping activity
-                            //NO LONGER SUPPORTED, PROBABLY TO REMOVE add something to set guidelines on
-                            CropImageView.Guidelines.ON
-                            //                            BottomSheetDialogFragment.instantiate(,"")
-//                            CropImage.
-//                                .setGuidelines(CropImageView.Guidelines.ON)
-//                                .start(activity)
-                        2 -> {
-                        }
-                        else -> {
-                        }
-                    }
-                }
-                itemActionbuilder.show()
-                return@OnMenuItemClickListener true
-            }
-            R.id.change_profil -> {
-                val profilListArray = activity.mDbProfils!!.allProfil
-                val changeProfilbuilder = AlertDialog.Builder(activity)
-                changeProfilbuilder.setTitle(activity.resources.getText(R.string.profil_select_profil))
-                    .setItems(profilListArray) { dialog: DialogInterface, which: Int ->
-                        val lv = (dialog as AlertDialog).listView
-                        val checkedItem = lv.adapter.getItem(which)
-                        setCurrentProfil(checkedItem.toString())
-                        KToast.infoToast(activity, activity.resources.getText(R.string.profileSelected).toString() + " : " + checkedItem.toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                    }
-                changeProfilbuilder.show()
-                return@OnMenuItemClickListener true
-            }
-            R.id.delete_profil -> {
-                val profildeleteListArray = activity.mDbProfils!!.allProfil
-                val deleteProfilbuilder = AlertDialog.Builder(activity)
-                deleteProfilbuilder.setTitle(activity.resources.getText(R.string.profil_select_profil_to_delete))
-                    .setItems(profildeleteListArray) { dialog: DialogInterface, which: Int ->
-                        val lv = (dialog as AlertDialog).listView
-                        val checkedItem = lv.adapter.getItem(which)
-                        if (currentProfile.name == checkedItem.toString()) {
-                            KToast.errorToast(activity, activity.resources.getText(R.string.impossibleToDeleteProfile).toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                        } else {
-                            val profileToDelete = mDbProfils!!.getProfil(checkedItem.toString())
-                            mDbProfils!!.deleteProfil(profileToDelete!!)
-                            KToast.infoToast(activity, getString(R.string.profileDeleted) + ":" + checkedItem.toString(), Gravity.BOTTOM, KToast.LENGTH_LONG)
-                        }
-                    }
-                deleteProfilbuilder.show()
-                return@OnMenuItemClickListener true
-            }
-            R.id.rename_profil -> {
-                activity.renameProfil()
-                return@OnMenuItemClickListener true
-            }
-            R.id.param_profil -> {
-                showFragment(PROFILE)
-                return@OnMenuItemClickListener true
-            }
-            else -> return@OnMenuItemClickListener false
-        }
-    }
     private var mBackPressed: Long = 0
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -219,7 +145,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         activityToolbar = findViewById(R.id.actionToolbar)
         setSupportActionBar(activityToolbar)
-        activityToolbar.title = resources.getText(R.string.app_name)
+        supportActionBar?.setDisplayShowTitleEnabled(false) // Disable default title completely
+        activityToolbar.title = null // Ensure toolbar title is null
         if (savedInstanceState == null) {
             if (mpFontesPagerFrag == null) mpFontesPagerFrag = FontesPagerFragment.newInstance(FONTESPAGER, 6)
             if (mpFontesOldPagerFrag == null) mpFontesOldPagerFrag = FontesOldPagerFragment.newInstance(FONTESPAGER + "OLD", 6)
@@ -241,6 +168,9 @@ class MainActivity : AppCompatActivity() {
         }
         loadPreferences()
         DatabaseHelper.renameOldDatabase(this)
+        if (savedInstanceState != null) {
+            currentFragmentName = savedInstanceState.getString("currentFragmentName", FONTESPAGER)
+        }
         if (!mMigrationBD15done) {
             val mDbOldCardio = DAOOldCardio(this)
             val lDAOMachine = DAOMachine(this)
@@ -282,17 +212,12 @@ class MainActivity : AppCompatActivity() {
         dataList.add(drawerTitleItem)
         dataList.add(DrawerItem(this.resources.getString(R.string.menu_Workout), R.drawable.ic_fitness_center_white_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.manu_programs), R.drawable.outline_assignment_white_24, true))
-        //dataList.add(new DrawerItem(this.getResources().getString(R.string.CardioMenuLabel), R.drawable.ic_running, true));
-//        dataList.add(DrawerItem(this.resources.getString(R.string.MachinesLabel), R.drawable.ic_gym_bench_50dp, true))
-//        dataList.add(DrawerItem(this.resources.getString(R.string.weightMenuLabel), R.drawable.ic_bathroom_scale_white_50dp, true))
-//        dataList.add(DrawerItem(this.resources.getString(R.string.bodytracking), R.drawable.ic_ruler_white_50dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.SettingLabel), R.drawable.ic_settings_white_24dp, true))
-//        dataList.add(DrawerItem(this.resources.getString(R.string.single_exercise_and_results), R.drawable.sharp_history_edu_white_24dp, true))
+        dataList.add(DrawerItem(this.resources.getString(R.string.ProfileLabel), R.drawable.ic_person_black_24dp, true))
         dataList.add(DrawerItem(this.resources.getString(R.string.AboutLabel), R.drawable.ic_info_outline_white_24dp, true))
         mDrawerAdapter = CustomDrawerAdapter(this, R.layout.custom_drawer_item,
             dataList)
         mDrawerList.adapter = mDrawerAdapter
-        roundProfile = activityToolbar.findViewById(R.id.imageProfile)
         mDrawerToggle = ActionBarDrawerToggle(
             this,  /* host Activity */
             mDrawerLayout,  /* DrawerLayout object */
@@ -305,6 +230,19 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         musicController.initView()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                combine(
+                    programViewModel.selectedProgramName,
+                    programViewModel.isWorkoutActive
+                ) { name, isActive ->
+                    Pair(name, isActive)
+                }.collect { (name, isActive) ->
+                    updateTitle(name, isActive)
+                }
+            }
+        }
 
         if (!mIntro014Launched) {
             createNewProfil()
@@ -350,6 +288,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString("currentFragmentName", currentFragmentName)
 
         //Save the fragment's instance
         if (fontesPagerFragment!!.isAdded) supportFragmentManager.putFragment(outState, FONTESPAGER, mpFontesPagerFrag!!)
@@ -373,14 +312,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-//        val alertMenuItem = menu.findItem(R.id.action_profil)
-        roundProfile!!.setOnClickListener { v: View? ->
-            val popup = PopupMenu(activity, v)
-            val inflater = popup.menuInflater
-            inflater.inflate(R.menu.profile_actions, popup.menu)
-            popup.setOnMenuItemClickListener(onMenuItemClick)
-            popup.show()
-        }
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -507,11 +438,11 @@ class MainActivity : AppCompatActivity() {
                 //getAboutFragment().setHasOptionsMenu(true);
                 true
             }
-            R.id.action_chrono -> {
-                val cdd = ChronoDialogbox(this@MainActivity)
-                cdd.show()
-                true
-            }
+//            R.id.action_chrono -> {
+//                val cdd = ChronoDialogbox(this@MainActivity)
+//                cdd.show()
+//                true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -611,7 +542,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun setTitle(title: CharSequence) {
-        supportActionBar!!.title = title
+        val toolbarTitle = findViewById<TextView>(R.id.toolbarTitle)
+        toolbarTitle?.text = title
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -625,7 +557,22 @@ class MainActivity : AppCompatActivity() {
         mDrawerToggle!!.onConfigurationChanged(newConfig)
     }
 
-    private fun showFragment(pFragmentName: String) {
+    private fun updateTitle(programName: String? = null, isActive: Boolean? = null) {
+        val name = programName ?: programViewModel.selectedProgramName.value
+        val active = isActive ?: programViewModel.isWorkoutActive.value
+
+        val newTitle = when (currentFragmentName) {
+            FONTESPAGER -> if (active && name != null) name else resources.getText(R.string.menu_Workout)
+            PROGRAMS -> resources.getText(R.string.fitness_programs)
+            SETTINGS -> resources.getText(R.string.SettingLabel)
+            PROFILE -> resources.getText(R.string.ProfileLabel)
+            ABOUT -> resources.getText(R.string.AboutLabel)
+            else -> resources.getText(R.string.app_name)
+        }
+        setTitle(newTitle)
+    }
+
+    fun showFragment(pFragmentName: String) {
         if (currentFragmentName == pFragmentName) return  // If this is already the current fragment, do no replace.
         val fragmentManager = supportFragmentManager
         val ft = fragmentManager.beginTransaction()
@@ -661,6 +608,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         currentFragmentName = pFragmentName
+        updateTitle() // Refresh title when fragment changes
         //if (addToBackStack) ft.addToBackStack(null);
         ft.commit()
     }
@@ -869,46 +817,28 @@ class MainActivity : AppCompatActivity() {
     private inner class DrawerItemClickListener : OnItemClickListener {
         override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
             selectItem(position)
-            title = when (position) {
+            when (position) {
                 0 -> {
-                    showFragment(PROFILE)
-                    getString(R.string.ProfileLabel)
+                    showFragment(PROFILE) // Profile is item 0 in the drawer according to my earlier change?
+                    // Wait, I reorganized the drawer.
                 }
                 1 -> {
                     showFragment(FONTESPAGER)
-                    resources.getText(R.string.menu_Workout)
                 }
                 2 -> {
                     showFragment(PROGRAMS)
-                    resources.getText(R.string.fitness_programs)
                 }
                 3 -> {
-                    showFragment(MACHINES)
-                    resources.getText(R.string.MachinesLabel)
+                    showFragment(SETTINGS)
                 }
                 4 -> {
-                    showFragment(WEIGHT)
-                    resources.getText(R.string.weightMenuLabel)
+                    showFragment(PROFILE)
                 }
                 5 -> {
-                    showFragment(BODYTRACKING)
-                    resources.getText(R.string.bodytracking)
-                }
-                6 -> {
-                    showFragment(SETTINGS)
-                    resources.getText(R.string.SettingLabel)
-                }
-                7 -> {
-                    showFragment(FONTESPAGER + "OLD")
-                    resources.getText(R.string.revision_history_label)
-                }
-                8 -> {
                     showFragment(ABOUT)
-                    resources.getText(R.string.AboutLabel)
                 }
                 else -> {
                     showFragment(FONTESPAGER)
-                    resources.getText(R.string.FonteLabel)
                 }
             }
         }

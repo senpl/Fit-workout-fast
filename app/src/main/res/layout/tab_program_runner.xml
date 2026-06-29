@@ -25,33 +25,24 @@
         android:paddingBottom="0dp"
         android:scrollbars="vertical">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stopWorkoutButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="2dp"
-            android:background="@color/sweet_dialog_bg_color_dark">
-            <TextView
-                android:layout_marginStart="6dp"
-                android:text="@string/ProgramLabel"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textAllCaps="true"/>
-
-            <Spinner
-                android:id="@+id/programSelect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/minTouchSize"
-                android:minWidth="@dimen/minTouchSize"
-                android:padding="2dp"
-                style="@style/TextAppearance.AppCompat.Large" />
-        </LinearLayout>
+            android:layout_margin="8dp"
+            android:text="@string/back"
+            app:icon="@drawable/ic_back"
+            android:textColor="@android:color/darker_gray"
+            app:iconTint="@android:color/darker_gray"
+            android:layout_gravity="start" />
 
         <com.google.android.material.card.MaterialCardView
-            style="@style/CardViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -127,23 +118,23 @@
                     <!--                    <com.hrskrs.instadotlib.InstaDotView-->
                     <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
                     <!--                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator-->
-                    <!--                        android:id="@+id/exerciseIndicator"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:layout_marginTop="16dp"-->
-                    <!--                        android:layout_marginBottom="16dp"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                    <!--                        app:dotsColor="@color/blue"-->
-                    <!--                        app:dotsCornerRadius="8dp"-->
-                    <!--                        app:dotsSize="16dp"-->
-                    <!--                        app:dotsSpacing="4dp"-->
-                    <!--                        app:dotsWidthFactor="2.5"-->
-                    <!--                        app:selectedDotColor="@color/colorSecondary"-->
-                    <!--                        app:progressMode="true"-->
-                    <!--                        />-->
+                        <!--                        android:id="@+id/exerciseIndicator"-->
+                        <!--                        android:layout_width="wrap_content"-->
+                        <!--                        android:layout_height="wrap_content"-->
+                        <!--                        android:layout_gravity="center"-->
+                        <!--                        android:layout_marginTop="16dp"-->
+                        <!--                        android:layout_marginBottom="16dp"-->
+                        <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                        app:dotsColor="@color/blue"-->
+                        <!--                        app:dotsCornerRadius="8dp"-->
+                        <!--                        app:dotsSize="16dp"-->
+                        <!--                        app:dotsSpacing="4dp"-->
+                        <!--                        app:dotsWidthFactor="2.5"-->
+                        <!--                        app:selectedDotColor="@color/colorSecondary"-->
+                        <!--                        app:progressMode="true"-->
+                        <!--                        />-->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -184,406 +175,415 @@
                 android:singleLine="true" />
 
         </RelativeLayout>
-        <LinearLayout
-            android:id="@+id/bodybuildingLayout"
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:background="@color/sweet_dialog_bg_color_dark"
-            android:visibility="visible">
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
-            <!-- WEIGHT -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/weightCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/bodybuildingLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="30"
-                android:visibility="visible"
-                >
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:background="@color/sweet_dialog_bg_color_dark"
+                android:visibility="visible">
 
-                <LinearLayout
+                <!-- WEIGHT -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/weightCardView"
+                    android:background="@drawable/edittext_custom_dark_background"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp">
-
-                    <TextView
-                        android:id="@+id/poidsLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:labelFor="@+id/poidsEdit"
-                        android:layout_marginStart="10dp"
-                        android:gravity="end"
-                        android:text="@string/PoidsLabel"
-                        />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/poidsEdit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:minHeight="44dp"
-                            android:autofillHints="false"
-                            android:background="@drawable/edittext_underline_selector"
-                            android:gravity="end"
-                            android:inputType="numberDecimal|numberSigned"
-                            android:label="@string/weightLabel"
-                            android:textStyle="bold"
-                            android:minWidth="48dp"
-                            android:textSize="28sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:labelFor="@id/weightCardView"
-                            tools:text="10.5" />
-                        <ImageButton
-                            android:id="@+id/saveWeight"
-                            android:layout_width="22sp"
-                            android:layout_height="22sp"
-                            android:layout_marginStart="7dp"
-                            android:contentDescription="@string/SaveWeightLabel"
-                            android:src="@drawable/baseline_save_yellow_a200_24dp"
-                            android:text="@string/SaveWeightLabel"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toTopOf="@+id/unitShow"
-                            app:layout_constraintEnd_toStartOf="@+id/poidsEdit"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/poidsEdit" />
-
-                        <TextView
-                            android:id="@+id/unitShow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginStart="8dp"
-                            android:gravity="start"
-                            android:layout_marginEnd="30sp"
-                            app:layout_constraintBaseline_toBaselineOf="@id/poidsEdit"
-                            app:layout_constraintStart_toEndOf="@id/poidsEdit"
-                            tools:text="kg" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <LinearLayout
-                        android:id="@+id/minMaxLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="10"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:text="@string/min" />
-
-                        <TextView
-                            android:id="@+id/minText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            tools:text="40 kg" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="5dp"
-                            android:text="@string/max" />
-
-                        <TextView
-                            android:id="@+id/maxText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            tools:text="80 kg" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-
-
-            <!-- REPS -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/repetitionCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="30"
-                android:visibility="visible"
-                >
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp">
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/RepetitionLabel_short"
-                        android:textStyle="bold"
-                        android:textSize="28sp"
-                        />
-
-                    <it.sephiroth.android.library.numberpicker.NumberPicker
-                        android:id="@+id/repsPicker"
-                        android:background="@drawable/edittext_underline_selector"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        app:picker_editTextStyle="@style/textAccent"
-                        app:picker_max="100"
-                        app:picker_min="0"
-                        app:picker_orientation="vertical"
-                        app:picker_stepSize="1"
-                        app:picker_tracker="exponential" />
-
-
-                    <ImageButton
-                        android:id="@+id/saveReps"
-                        android:visibility="gone"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
-                        android:contentDescription="@string/SaveRepsLabel"
-                        android:src="@drawable/baseline_save_yellow_a200_24dp"
-                        android:text="@string/SaveRepsLabel"
-                        />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- SECONDS -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/secondsCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="30"
-                android:minHeight="68dp"
-                android:visibility="gone"
-                android:layout_margin="5dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/SecondsLabel_short"
-                        android:layout_margin="5dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/secondsEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:minEms="3"
-                        android:textStyle="bold"
-                        android:textSize="28sp"
-                        android:background="@drawable/edittext_underline_selector"
-                        tools:text="10" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- SETS -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/serieCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:visibility="visible"
-                android:layout_margin="5dp"
-                android:layout_marginBottom="5dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_gravity="center"
+                    android:layout_weight="30"
+                    android:visibility="visible"
                     >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/SerieLabel"
-                        android:layout_gravity="center"
-                        android:minWidth="36dp"
-                        android:layout_margin="5dp"
-                        android:layout_marginBottom="5dp"
-                        />
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:layout_margin="5dp">
 
-                    <EditText
-                        android:id="@+id/seriesEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:label="@string/SerieLabel"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:inputType="number"
-                        tools:text="1"
-                        android:textSize="28sp"
-                        android:background="@drawable/edittext_underline_selector"
-                        />
+                        <TextView
+                            android:id="@+id/poidsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@+id/poidsEdit"
+                            android:layout_marginStart="10dp"
+                            android:gravity="end"
+                            android:text="@string/PoidsLabel"
+                            />
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <!-- REST -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/restCardView"
-                android:background="@drawable/edittext_custom_dark_background"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:visibility="visible"
-                android:layout_margin="5dp"
-                >
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/restTimeLayout"
-                    android:layout_width="match_parent"
+                            <EditText
+                                android:id="@+id/poidsEdit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:minHeight="44dp"
+                                android:autofillHints="false"
+                                android:background="@drawable/edittext_underline_selector"
+                                android:gravity="end"
+                                android:inputType="numberDecimal|numberSigned"
+                                android:label="@string/weightLabel"
+                                android:textStyle="bold"
+                                android:minWidth="48dp"
+                                android:textSize="28sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:labelFor="@id/weightCardView"
+                                tools:text="10.5" />
+                            <ImageButton
+                                android:id="@+id/saveWeight"
+                                android:layout_width="22sp"
+                                android:layout_height="22sp"
+                                android:layout_marginStart="7dp"
+                                android:contentDescription="@string/SaveWeightLabel"
+                                android:src="@drawable/baseline_save_yellow_a200_24dp"
+                                android:text="@string/SaveWeightLabel"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toTopOf="@+id/unitShow"
+                                app:layout_constraintEnd_toStartOf="@+id/poidsEdit"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/poidsEdit" />
+
+                            <TextView
+                                android:id="@+id/unitShow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="8dp"
+                                android:gravity="start"
+                                android:layout_marginEnd="30sp"
+                                app:layout_constraintBaseline_toBaselineOf="@id/poidsEdit"
+                                app:layout_constraintStart_toEndOf="@id/poidsEdit"
+                                tools:text="kg" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:id="@+id/minMaxLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="10"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:text="@string/min" />
+
+                            <TextView
+                                android:id="@+id/minText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                tools:text="40 kg" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingStart="20dp"
+                                android:paddingEnd="5dp"
+                                android:text="@string/max" />
+
+                            <TextView
+                                android:id="@+id/maxText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                tools:text="80 kg" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+
+                <!-- REPS -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repetitionCardView"
+                    android:background="@drawable/edittext_custom_dark_background"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_weight="30"
+                    android:visibility="visible"
+                    >
 
-                    <TextView
-                        android:id="@+id/restTimeLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="@string/restLabel" />
-
-                    <EditText
-                        android:id="@+id/restTimeEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_underline_selector"
-                        android:minHeight="@dimen/minTouchSize"
-                        android:minWidth="68dp"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:text="60"
-                        android:textSize="28sp"
-
-                        />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- DISTANCE -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/distanceCardView"
-                style="@style/CardViewStyle"
-                android:layout_height="wrap_content"
-                android:layout_weight="30"
-                android:visibility="gone"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textDistance"
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/DistanceLabel" />
+                        android:orientation="vertical"
+                        android:layout_margin="5dp">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/RepetitionLabel_short"
+                            android:textStyle="bold"
+                            android:textSize="28sp"
+                            />
+
+                        <it.sephiroth.android.library.numberpicker.NumberPicker
+                            android:id="@+id/repsPicker"
+                            android:background="@drawable/edittext_underline_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            app:picker_editTextStyle="@style/textAccent"
+                            app:picker_max="100"
+                            app:picker_min="0"
+                            app:picker_orientation="vertical"
+                            app:picker_stepSize="1"
+                            app:picker_tracker="exponential" />
+
+
+                        <ImageButton
+                            android:id="@+id/saveReps"
+                            android:visibility="gone"
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:contentDescription="@string/SaveRepsLabel"
+                            android:src="@drawable/baseline_save_yellow_a200_24dp"
+                            android:text="@string/SaveRepsLabel"
+                            />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- SECONDS -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/secondsCardView"
+                    android:background="@drawable/edittext_custom_dark_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:minHeight="68dp"
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/SecondsLabel_short"
+                            android:layout_margin="5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/secondsEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:minEms="3"
+                            android:textStyle="bold"
+                            android:textSize="28sp"
+                            android:background="@drawable/edittext_underline_selector"
+                            tools:text="10" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- SETS -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/serieCardView"
+                    android:background="@drawable/edittext_custom_dark_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:layout_marginBottom="5dp"
+                    >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:layout_margin="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/SerieLabel"
+                            android:layout_gravity="center"
+                            android:minWidth="36dp"
+                            android:layout_margin="5dp"
+                            android:layout_marginBottom="5dp"
+                            />
 
                         <EditText
-                            android:id="@+id/distanceEdit"
+                            android:id="@+id/seriesEdit"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:label="@string/SerieLabel"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:inputType="number"
+                            tools:text="1"
+                            android:textSize="28sp"
+                            android:background="@drawable/edittext_underline_selector"
+                            />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- REST -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/restCardView"
+                    android:background="@drawable/edittext_custom_dark_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/restTimeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/restTimeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@string/restLabel" />
+
+                        <EditText
+                            android:id="@+id/restTimeEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_underline_selector"
+                            android:minHeight="@dimen/minTouchSize"
+                            android:minWidth="68dp"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:text="60"
+                            android:textSize="28sp"
+
+                            />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- DISTANCE -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/distanceCardView"
+                    style="@style/CardViewStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:visibility="gone"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textDistance"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:autofillHints="false"
-                            android:inputType="numberDecimal|numberSigned"
-                            android:minEms="3"
-                            android:hint="@string/DistanceLabel"
-                            tools:text="10" />
+                            android:text="@string/DistanceLabel" />
 
-                        <Spinner
-                            android:id="@+id/unitDistanceSpinner"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:entries="@array/distance_units"
-                            android:minEms="3" />
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/distanceEdit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:autofillHints="false"
+                                android:inputType="numberDecimal|numberSigned"
+                                android:minEms="3"
+                                android:hint="@string/DistanceLabel"
+                                tools:text="10" />
+
+                            <Spinner
+                                android:id="@+id/unitDistanceSpinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/distance_units"
+                                android:minEms="3" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
 
-            <!-- DURATION -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/durationCardView"
-                style="@style/CardViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="30"
-                android:visibility="gone"
-                >
-
-                <LinearLayout
+                <!-- DURATION -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/durationCardView"
+                    style="@style/CardViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_weight="30"
+                    android:visibility="gone"
+                    >
 
-                    <TextView
-                        android:id="@+id/textDuration"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/DurationLabel" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/durationEdit"
-                        style="@style/editableTextView"
-                        tools:text="01:23:45">
+                        <TextView
+                            android:id="@+id/textDuration"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/DurationLabel" />
 
-                    </TextView>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/durationEdit"
+                            style="@style/editableTextView"
+                            tools:text="01:23:45">
+
+                        </TextView>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
         <com.google.android.material.card.MaterialCardView

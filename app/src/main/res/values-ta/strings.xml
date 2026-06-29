@@ -16,6 +16,9 @@
     <string name="DeleteLabel">அழி</string>
     <string name="ShareLabel">பங்கு</string>
     <string name="EditLabel">தொகு</string>
+    <string name="run">இயக்கு</string>
+    <string name="back">பின்னால்</string>
+    <string name="program_to_run">இயக்கும் நிரல்</string>
     <string name="DeleteRecordDialog">இந்த பதிவை அகற்றவா?</string>
     <string name="PoidsLabel">எடை</string>
     <string name="NotesLabel">குறிப்புகள்</string>

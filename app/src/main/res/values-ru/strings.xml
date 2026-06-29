@@ -19,6 +19,9 @@
     <string name="DeleteLabel">Удалить</string>
     <string name="ShareLabel">Поделиться</string>
     <string name="EditLabel">Изменить</string>
+    <string name="run">Запуск</string>
+    <string name="back">Назад</string>
+    <string name="program_to_run">Программа для запуска</string>
     <string name="DeleteRecordDialog">Удалить эту запись?</string>
     <string name="time_set">Задать время</string>
     <string name="FonteLabel">Сила</string>

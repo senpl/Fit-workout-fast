@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="run">Çalıştır</string>
+    <string name="back">Geri</string>
+    <string name="program_to_run">Çalıştırılacak program</string>
     <string name="nextExerciseSwitch">Bir sonraki egzersiz</string>
     <string name="nextExerciseSwitchDescription">Egzersiz menüsündeki tik işaretine tıkladığında programdaki bir sonraki egzersize geçer</string>
     <string name="failedToDoReps">Tekrarları yaparken hata oluştu</string>

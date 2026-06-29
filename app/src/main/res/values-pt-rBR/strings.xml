@@ -18,6 +18,9 @@
     <string name="DeleteLabel">Excluir</string>
     <string name="ShareLabel">Compartilhar</string>
     <string name="EditLabel">Editar</string>
+    <string name="run">Iniciar</string>
+    <string name="back">Voltar</string>
+    <string name="program_to_run">Programa para executar</string>
     <string name="DeleteRecordDialog">Remover esse registro?</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Musculação</string>

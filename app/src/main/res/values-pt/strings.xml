@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="global_confirm">Confirmar</string>
+    <string name="run">Iniciar</string>
+    <string name="back">Voltar</string>
+    <string name="program_to_run">Programa para executar</string>
     <string name="global_confirm_question">Tem certeza\?</string>
     <string name="waterLabel">Água(%)</string>
     <string name="musclesLabel">Músculos(%)</string>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="run">运行</string>
+    <string name="back">返回</string>
+    <string name="program_to_run">要运行的程序</string>
     <string name="ffmiLabel">FFMI</string>
     <string name="emptyExercisesInProgram">进入侧菜单（三横线按钮），按下\"侧菜单\"程序&gt;首先将练习添加到程序中</string>
     <string name="add_exercise_to_program_first">首先在计划中加入运动。不允许没有练习的项目。</string>

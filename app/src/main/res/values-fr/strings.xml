@@ -17,6 +17,9 @@
     <string name="DeleteLabel">Supprimer</string>
     <string name="ShareLabel">Partager</string>
     <string name="EditLabel">Modifier</string>
+    <string name="run">Lancer</string>
+    <string name="back">Retour</string>
+    <string name="program_to_run">Programme à exécuter</string>
     <!-- Fonte Fragment -->
     <string name="FonteLabel">Force physique</string>
     <string name="SerieLabel">Séries</string>

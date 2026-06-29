@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="run">Start</string>
+    <string name="back">Tilbake</string>
+    <string name="program_to_run">Program som skal kjøres</string>
     <string name="waist">Midje</string>
     <string name="right_calves">Høyre legg</string>
     <string name="left_calves">Venstre legg</string>

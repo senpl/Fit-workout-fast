@@ -22,26 +22,31 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/actionToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/toolbar_background"
-            android:elevation="4dp"
-            android:minHeight="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/background"
+            android:elevation="0dp"
+            app:title=""
             android:visibility="visible">
 
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/imageProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_person_black_24dp"
-                app:civ_border_color="#EEEEEE"
-                app:civ_border_width="0dp"
-                app:civ_shadow="false"
-                app:civ_shadow_color="#8BC34A"
-                app:civ_shadow_radius="0dp" />
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textStyle="bold"
+                android:textColor="@color/enabled_color"
+                tools:text="Workout" />
         </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/toolbarDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/actionToolbar"
+            android:background="@color/divider" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/musicToolbar"
@@ -49,10 +54,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="0dp"
-            android:background="@color/toolbar_background"
-            android:elevation="4dp"
+            android:background="@color/background"
+            android:elevation="0dp"
             android:minHeight="?attr/actionBarSize"
             android:padding="0dp"
+            app:title=""
             app:contentInsetStart="0dp"
             app:titleMargins="0dp">
 
@@ -94,6 +100,7 @@
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
                             android:singleLine="true"
+                            android:textColor="@color/enabled_color"
                             tools:text="musique_test.mp3" />
 
                     </LinearLayout>
@@ -127,6 +134,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_skip_previous_black_24dp" />
 
                     <ImageButton
@@ -140,6 +148,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="true"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_stop_black_24dp" />
 
                     <ImageButton
@@ -153,6 +162,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_play_arrow_black_24dp" />
 
                     <ImageButton
@@ -166,6 +176,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="true"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_skip_next_black_24dp" />
 
                     <ImageButton
@@ -179,6 +190,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_replay_blue_24dp" />
 
                     <ImageButton
@@ -192,11 +204,19 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:scaleType="fitCenter"
+                        app:tint="@color/enabled_color"
                         android:src="@drawable/ic_library_music_black_24dp" />
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/musicDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/musicToolbar"
+            android:background="@color/divider" />
 
         <LinearLayout
             android:id="@+id/fragment_container"

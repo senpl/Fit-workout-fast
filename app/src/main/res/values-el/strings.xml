@@ -13,6 +13,9 @@
     <string name="global_warning">Προειδοποίηση</string>
     <string name="global_confirm_question">Είστε σίγουρος;</string>
     <string name="global_confirm">Επιβεβαίωση</string>
+    <string name="run">Εκτέλεση</string>
+    <string name="back">Πίσω</string>
+    <string name="program_to_run">Πρόγραμμα προς εκτέλεση</string>
     <string name="filmUrl">URL έναρξης ταινίας (Youtube)</string>
     <string name="youtubeExerciseStartMoment">Σύνδεσμος στο Youtube για τη στιγμή που ξεκινά η περιγραφή των ασκήσεων</string>
     <string name="show_exercise">Δείξτε άσκηση</string>

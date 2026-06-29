@@ -20,6 +20,9 @@
     <string name="ShareLabel">Share</string>
     <string name="EditLabel">Edit</string>
     <string name="DeleteRecordDialog">Remove this record?</string>
+    <string name="change">Change</string>
+    <string name="run">Run</string>
+    <string name="back">Back</string>
 
     <!-- Time picker  -->
     <string name="time_set">Set time</string>
@@ -291,6 +294,7 @@
     <string name="program_hint">Enter program name</string>
     <string name="ExercisesInProgram">Exercises in program:</string>
     <string name="program_selection">Selected program:</string>
+    <string name="program_to_run">Program to run</string>
     <string name="arrowPreviousAsText" translatable="false"><![CDATA[<]]></string>
     <string name="arrowNextAsText" translatable="false"><![CDATA[>]]></string>
     <string name="seconds">Seconds</string>
